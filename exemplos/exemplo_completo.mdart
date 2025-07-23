@@ -1,0 +1,184 @@
+// Exemplo Completo da Linguagem MiniDart
+// Demonstra todas as funcionalidades implementadas
+
+// --- Declaração e Inicialização de Variáveis ---
+var nome = "MiniDart";
+var versao = 2.0;
+var ativo = verdadeiro;
+var contador = 0;
+var limite = 10;
+
+// --- Operações Aritméticas ---
+var soma = 15 + 25;           // 40
+var subtracao = 100 - 30;     // 70
+var multiplicacao = 6 * 7;    // 42
+var divisao = 84 / 2;         // 42
+var expressao = (10 + 5) * 2; // 30
+
+imprimir "=== DEMONSTRAÇÃO DA LINGUAGEM MINIDART ===";
+imprimir "";
+
+// --- Demonstração de Tipos e Valores ---
+imprimir "--- Variáveis e Tipos ---";
+imprimir "Nome da linguagem: ";
+imprimir nome;
+imprimir "Versão: ";
+imprimir versao;
+imprimir "Status ativo: ";
+imprimir ativo;
+imprimir "";
+
+// --- Demonstração de Operações Aritméticas ---
+imprimir "--- Operações Aritméticas ---";
+imprimir "Soma (15 + 25): ";
+imprimir soma;
+imprimir "Subtração (100 - 30): ";
+imprimir subtracao;
+imprimir "Multiplicação (6 * 7): ";
+imprimir multiplicacao;
+imprimir "Divisão (84 / 2): ";
+imprimir divisao;
+imprimir "Expressão complexa (10 + 5) * 2: ";
+imprimir expressao;
+imprimir "";
+
+// --- Demonstração de Comparações ---
+imprimir "--- Operações de Comparação ---";
+se (soma > 30) {
+  imprimir "A soma é maior que 30";
+} senao {
+  imprimir "A soma é menor ou igual a 30";
+}
+
+se (multiplicacao == 42) {
+  imprimir "A multiplicação é exatamente 42";
+}
+
+se (divisao >= 40) {
+  imprimir "A divisão é maior ou igual a 40";
+}
+
+se (subtracao < 100) {
+  imprimir "A subtração é menor que 100";
+}
+
+imprimir "";
+
+// --- Demonstração de Operadores Lógicos ---
+imprimir "--- Operadores Lógicos ---";
+var condicao1 = verdadeiro;
+var condicao2 = falso;
+
+se (condicao1 e ativo) {
+  imprimir "Ambas condições são verdadeiras";
+}
+
+se (condicao1 ou condicao2) {
+  imprimir "Pelo menos uma condição é verdadeira";
+}
+
+se (!condicao2) {
+  imprimir "A segunda condição é falsa (negação)";
+}
+
+imprimir "";
+
+// --- Demonstração de Estruturas de Controle Aninhadas ---
+imprimir "--- Estruturas de Controle Aninhadas ---";
+var numero = 85;
+
+se (numero > 50) {
+  imprimir "Número é maior que 50";
+  
+  se (numero > 80) {
+    imprimir "  E também é maior que 80";
+    
+    se (numero < 90) {
+      imprimir "    Mas é menor que 90";
+    } senao {
+      imprimir "    E é maior ou igual a 90";
+    }
+  } senao {
+    imprimir "  Mas é menor ou igual a 80";
+  }
+} senao {
+  imprimir "Número é menor ou igual a 50";
+}
+
+imprimir "";
+
+// --- Demonstração de Loop While ---
+imprimir "--- Loop While (Contagem de 1 a 5) ---";
+contador = 1;
+enquanto (contador <= 5) {
+  imprimir "Contagem: ";
+  imprimir contador;
+  contador = contador + 1;
+}
+
+imprimir "";
+
+// --- Demonstração de Loop While com Condição Complexa ---
+imprimir "--- Loop While com Condição Complexa ---";
+var x = 2;
+var y = 16;
+
+enquanto (x < 10 e y > 5) {
+  imprimir "x = ";
+  imprimir x;
+  imprimir ", y = ";
+  imprimir y;
+  
+  x = x + 2;
+  y = y - 3;
+}
+
+imprimir "";
+
+// --- Demonstração de Reatribuição de Variáveis ---
+imprimir "--- Reatribuição de Variáveis ---";
+var variavel = 100;
+imprimir "Valor inicial: ";
+imprimir variavel;
+
+variavel = variavel * 2;
+imprimir "Após multiplicar por 2: ";
+imprimir variavel;
+
+variavel = variavel - 50;
+imprimir "Após subtrair 50: ";
+imprimir variavel;
+
+imprimir "";
+
+// --- Demonstração de Operações com Strings ---
+imprimir "--- Operações com Strings ---";
+var saudacao = "Olá";
+var mundo = "Mundo";
+var exclamacao = "!";
+
+// Concatenação de strings
+var frase = saudacao + " " + mundo + exclamacao;
+imprimir "Frase concatenada: ";
+imprimir frase;
+
+imprimir "";
+
+// --- Demonstração de Valores Especiais ---
+imprimir "--- Valores Especiais ---";
+var nulo_valor = nulo;
+imprimir "Valor nulo: ";
+imprimir nulo_valor;
+
+var verdadeiro_valor = verdadeiro;
+var falso_valor = falso;
+imprimir "Valor verdadeiro: ";
+imprimir verdadeiro_valor;
+imprimir "Valor falso: ";
+imprimir falso_valor;
+
+imprimir "";
+
+// --- Demonstração Final ---
+imprimir "=== FIM DA DEMONSTRAÇÃO ===";
+imprimir "Todas as funcionalidades foram executadas com sucesso!";

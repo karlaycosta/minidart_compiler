@@ -1,0 +1,15 @@
+name: minidart_compiler
+description: Um compilador completo para a linguagem MiniDart com sintaxe em português.
+version: 2.0.0
+# repository: https://github.com/my_org/my_repo
+
+environment:
+  sdk: ^3.8.1
+
+# Add regular dependencies here.
+dependencies:
+  # path: ^1.8.0
+
+dev_dependencies:
+  lints: ^6.0.0
+  test: ^1.24.0
