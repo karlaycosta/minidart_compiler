@@ -1,0 +1,157 @@
+{
+  "Algoritmo básico": {
+    "prefix": "algoritmo",
+    "body": [
+      "algoritmo ${1:nome}",
+      "inicio",
+      "\t$0",
+      "fim"
+    ],
+    "description": "Template básico de algoritmo MiniDart"
+  },
+  "Função": {
+    "prefix": "funcao",
+    "body": [
+      "funcao ${1:nome}(${2:parametros}): ${3:tipo}",
+      "inicio",
+      "\t$0",
+      "\tretorne ${4:valor};",
+      "fim"
+    ],
+    "description": "Template de função MiniDart"
+  },
+  "Procedimento": {
+    "prefix": "procedimento",
+    "body": [
+      "procedimento ${1:nome}(${2:parametros})",
+      "inicio",
+      "\t$0",
+      "fim"
+    ],
+    "description": "Template de procedimento MiniDart"
+  },
+  "Estrutura condicional se": {
+    "prefix": "se",
+    "body": [
+      "se (${1:condicao}) entao",
+      "\t$0",
+      "fim"
+    ],
+    "description": "Estrutura condicional se"
+  },
+  "Estrutura condicional se-senão": {
+    "prefix": "sesenao",
+    "body": [
+      "se (${1:condicao}) entao",
+      "\t${2:// código verdadeiro}",
+      "senao",
+      "\t${3:// código falso}",
+      "fim"
+    ],
+    "description": "Estrutura condicional se-senão"
+  },
+  "Laço enquanto": {
+    "prefix": "enquanto",
+    "body": [
+      "enquanto (${1:condicao}) faca",
+      "\t$0",
+      "fim"
+    ],
+    "description": "Laço enquanto"
+  },
+  "Laço para": {
+    "prefix": "para",
+    "body": [
+      "para ${1:variavel} = ${2:inicio} ate ${3:fim} faca",
+      "\t$0",
+      "fim"
+    ],
+    "description": "Laço para"
+  },
+  "Declaração de variável": {
+    "prefix": "var",
+    "body": [
+      "var ${1:nome}: ${2:tipo} = ${3:valor};"
+    ],
+    "description": "Declaração de variável"
+  },
+  "Constante": {
+    "prefix": "const",
+    "body": [
+      "const ${1:nome}: ${2:tipo} = ${3:valor};"
+    ],
+    "description": "Declaração de constante"
+  },
+  "Escrever": {
+    "prefix": "escreva",
+    "body": [
+      "escreva(${1:\"Mensagem\"});"
+    ],
+    "description": "Comando escreva"
+  },
+  "Ler": {
+    "prefix": "leia",
+    "body": [
+      "leia(${1:variavel});"
+    ],
+    "description": "Comando leia"
+  },
+  "Comentário de linha": {
+    "prefix": "//",
+    "body": [
+      "// ${1:comentário}"
+    ],
+    "description": "Comentário de linha"
+  },
+  "Comentário de bloco": {
+    "prefix": "/*",
+    "body": [
+      "/*",
+      " * ${1:comentário}",
+      " */"
+    ],
+    "description": "Comentário de bloco"
+  },
+  "Tipos básicos - inteiro": {
+    "prefix": "inteiro",
+    "body": [
+      "inteiro"
+    ],
+    "description": "Tipo inteiro"
+  },
+  "Tipos básicos - real": {
+    "prefix": "real",
+    "body": [
+      "real"
+    ],
+    "description": "Tipo real"
+  },
+  "Tipos básicos - texto": {
+    "prefix": "texto",
+    "body": [
+      "texto"
+    ],
+    "description": "Tipo texto"
+  },
+  "Tipos básicos - lógico": {
+    "prefix": "logico",
+    "body": [
+      "logico"
+    ],
+    "description": "Tipo lógico"
+  },
+  "Verdadeiro": {
+    "prefix": "verdadeiro",
+    "body": [
+      "verdadeiro"
+    ],
+    "description": "Valor lógico verdadeiro"
+  },
+  "Falso": {
+    "prefix": "falso",
+    "body": [
+      "falso"
+    ],
+    "description": "Valor lógico falso"
+  }
+}

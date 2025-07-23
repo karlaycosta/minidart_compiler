@@ -1,7 +1,7 @@
 name: minidart_compiler
 description: Um compilador completo para a linguagem MiniDart com sintaxe em português.
-version: 2.0.0
-# repository: https://github.com/my_org/my_repo
+version: 1.2.0
+repository: https://github.com/karlaycosta/minidart_compiler
 
 environment:
   sdk: ^3.8.1
@@ -12,4 +12,10 @@ dependencies:
 
 dev_dependencies:
   lints: ^6.0.0
-  test: ^1.24.0
+  test: ^1.26.3
+
+# Informações para extensão VS Code
+# Para criar a extensão, execute:
+# npm install -g yo generator-code
+# yo code (selecionar "New Language Support")
+# Integrar com este compilador usando os comandos do bin/compile.dart

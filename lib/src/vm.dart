@@ -104,6 +104,7 @@ class VM {
           if (!_isTruthy(_peek(0))) {
             _ip += instruction.operand!;
           }
+          _pop(); // Remove a condição da pilha após verificá-la
           break;
         case OpCode.loop:
           _ip -= instruction.operand!;

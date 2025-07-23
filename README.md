@@ -15,6 +15,7 @@ Um compilador completo para a linguagem **MiniDart** - uma linguagem de programa
 - [Arquitetura](#️-arquitetura)
 - [Instalação](#-instalação)
 - [Uso Rápido](#-uso-rápido)
+- [Extensão VS Code](#️-extensão-vs-code)
 - [Sintaxe MiniDart](#-sintaxe-minidart)
 - [Exemplos](#-exemplos)
 - [Documentação](#-documentação)
@@ -35,6 +36,8 @@ O **MiniDart Compiler** é um projeto educacional que implementa um compilador c
 - 🎯 **Padrão Visitor**: Design patterns modernos para processamento da AST
 - ⚡ **Máquina Virtual**: Execução via bytecode em VM stack-based
 - 🔍 **Análise Completa**: Verificação de escopo, tipos e erros semânticos
+- 🌳 **Visualização AST**: Geração automática de diagramas com Graphviz
+- 🛠️ **Extensão VS Code**: Suporte completo com syntax highlighting e comandos integrados
 - 📝 **Documentação Rica**: Código completamente documentado em português
 
 ---
@@ -49,10 +52,12 @@ O **MiniDart Compiler** é um projeto educacional que implementa um compilador c
 - ✅ **Operadores Comparação**: `>`, `>=`, `<`, `<=`, `==`, `!=`
 - ✅ **Operadores Lógicos**: `e` (AND), `ou` (OR), `!` (NOT)
 - ✅ **Estruturas Condicionais**: `se`/`senao`
-- ✅ **Loops**: `enquanto` (while)
+- ✅ **Loops**: `enquanto` (while) - **Totalmente funcional**
 - ✅ **Blocos de Código**: `{ ... }`
 - ✅ **Impressão**: `imprimir valor;`
 - ✅ **Expressões Complexas**: Precedência e parênteses
+- ✅ **Visualização AST**: Geração automática com Graphviz
+- ✅ **Extensão VS Code**: Syntax highlighting e comandos integrados
 
 ### **🚧 Futuras Implementações**
 
@@ -99,7 +104,9 @@ graph LR
 | **Code Generator** | Geração de bytecode | `lib/src/code_generator.dart` |
 | **Virtual Machine** | Execução | `lib/src/vm.dart` |
 | **AST** | Árvore sintática | `lib/src/ast.dart` |
+| **AST Graphviz Generator** | Visualização AST | `lib/src/ast_graphviz_generator.dart` |
 | **Error Reporter** | Sistema de erros | `lib/src/error.dart` |
+| **VS Code Extension** | IDE Support | `vscode-extension/` |
 
 ---
 
@@ -193,7 +200,65 @@ dart run bin/compile.dart exemplos/exemplo_ast.mdart --ast-only
 
 ---
 
-## 📝 **Sintaxe MiniDart**
+## �️ **Extensão VS Code**
+
+### **🎨 Suporte Completo para MiniDart no VS Code**
+
+O MiniDart inclui uma **extensão completa para Visual Studio Code** com recursos profissionais de desenvolvimento:
+
+#### **✨ Funcionalidades da Extensão**
+
+- 🎨 **Syntax Highlighting**: Cores específicas para palavras-chave em português
+- 📝 **Snippets Inteligentes**: Templates para algoritmo, função, se, enquanto, etc.
+- ⚡ **Comandos Integrados**:
+  - `Ctrl+F5`: Executar arquivo MiniDart
+  - `Ctrl+Shift+B`: Compilar arquivo
+  - `Ctrl+Shift+A`: Gerar AST
+- 🔧 **Configurações Personalizáveis**:
+  - Caminho do compilador
+  - Auto-compilação ao salvar
+  - Geração automática de AST
+- 📄 **Criação de Arquivos**: Templates automáticos para novos arquivos `.mdart`
+- 🖥️ **Terminal Integrado**: Execução direta no terminal do VS Code
+
+#### **📦 Instalação da Extensão**
+
+```bash
+# 1. Desenvolvimento local (para testar)
+cd vscode-extension
+npm install
+npm run compile
+# Pressione F5 no VS Code para testar
+
+# 2. Instalação via VSIX (em breve)
+npm install -g vsce
+vsce package
+code --install-extension minidart-1.2.0.vsix
+```
+
+#### **🚀 Como Usar no VS Code**
+
+1. **Instale a extensão** (seguindo instruções acima)
+2. **Abra um arquivo `.mdart`** ou crie um novo
+3. **Use os comandos**:
+   - Paleta de comandos (`Ctrl+Shift+P`) → "MiniDart"
+   - Botões na barra de título do editor
+   - Menu de contexto (clique direito)
+   - Atalhos de teclado
+
+#### **🎯 Configurações Disponíveis**
+
+```json
+{
+  "minidart.compilerPath": "bin/compile.dart",
+  "minidart.autoCompile": true,
+  "minidart.showAST": false
+}
+```
+
+---
+
+## �📝 **Sintaxe MiniDart**
 
 ### **🔤 Palavras-chave**
 
@@ -403,6 +468,7 @@ minidart_compiler/
 │   └── compile.dart              # Ponto de entrada principal
 ├── 📁 lib/src/
 │   ├── ast.dart                  # Árvore Sintática Abstrata
+│   ├── ast_graphviz_generator.dart # Gerador AST Graphviz
 │   ├── bytecode.dart             # Definições de bytecode
 │   ├── code_generator.dart       # Gerador de código
 │   ├── error.dart                # Sistema de relatório de erros
@@ -412,10 +478,17 @@ minidart_compiler/
 │   ├── symbol_table.dart         # Tabela de símbolos
 │   ├── token.dart                # Definições de tokens
 │   └── vm.dart                   # Máquina virtual
+├── 📁 vscode-extension/
+│   ├── package.json              # Manifest da extensão VS Code
+│   ├── src/extension.ts          # Código principal da extensão
+│   ├── syntaxes/minidart.tmLanguage.json # Grammar syntax highlighting
+│   ├── snippets/minidart.json    # Snippets de código
+│   └── README.md                 # Documentação da extensão
 ├── 📁 exemplos/
 │   ├── exemplo_basico.mdart      # Exemplo básico
 │   ├── exemplo_completo.mdart    # Funcionalidades completas
 │   ├── calculadora_notas.mdart   # Calculadora de notas
+│   ├── exemplo_funcional.mdart   # Programação funcional
 │   └── teste.mdart               # Casos de teste
 ├── 📁 test/
 │   └── minidart_compiler_test.dart

@@ -168,7 +168,7 @@ class CodeGenerator implements AstVisitor<void> {
   }
   
   void _emitLoop(int loopStart) {
-    final offset = _chunk.code.length - loopStart;
+    final offset = _chunk.code.length - loopStart + 1;
     _chunk.write(OpCode.loop, -1, offset);
   }
 }
