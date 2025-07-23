@@ -1,6 +1,6 @@
 # 🚀 **MiniDart Compiler**
 
-Um compilador completo para a linguagem **MiniDart** - uma linguagem de programação educacional com sintaxe em português, implementada em Dart.
+Um compilador completo para a linguagem **MiniDart** - uma linguagem de programação educacional com sintaxe em português, implementado em Dart.
 
 ![Dart](https://img.shields.io/badge/Dart-3.8.1-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
@@ -437,6 +437,8 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para de
 ---
 
 ## 👨‍💻 **Autor**
+
+**Deriks Karlay Dias Costa**
 
 Projeto desenvolvido como demonstração educacional de um compilador completo em Dart.
 

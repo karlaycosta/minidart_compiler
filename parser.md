@@ -374,15 +374,15 @@ void _synchronize() {
 
 ```mermaid
 graph TD
-    A[Lista de Tokens] --> B[parse()]
-    B --> C[_declaration()]
+    A[Lista de Tokens] --> B[parse]
+    B --> C[_declaration]
     C --> D{Token atual?}
-    D -->|var| E[_varDeclaration()]
-    D -->|se| F[_ifStatement()]
-    D -->|enquanto| G[_whileStatement()]
-    D -->|imprimir| H[_printStatement()]
-    D -->|{| I[_block()]
-    D -->|expressão| J[_expressionStatement()]
+    D -->|var| E[_varDeclaration]
+    D -->|se| F[_ifStatement]
+    D -->|enquanto| G[_whileStatement]
+    D -->|imprimir| H[_printStatement]
+    D -->|bloco| I[_block]
+    D -->|expressao| J[_expressionStatement]
     E --> K[AST Node]
     F --> K
     G --> K
