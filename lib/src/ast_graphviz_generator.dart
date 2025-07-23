@@ -218,7 +218,10 @@ class ASTGraphvizGenerator implements AstVisitor<String> {
       value = '🚫 nulo';
       color = 'lightgray';
     } else if (expr.value is String) {
-      value = '📝 "${_escapeLabel(expr.value.toString())}"';
+      // Para strings, remover aspas da string original e re-escapar adequadamente
+      final stringValue = expr.value.toString();
+      final escapedString = _escapeLabel(stringValue);
+      value = '📝 $escapedString';  // Remover aspas duplas extras
       color = 'lightgreen';
     } else if (expr.value is num) {
       value = '🔢 ${expr.value}';
@@ -271,9 +274,10 @@ class ASTGraphvizGenerator implements AstVisitor<String> {
   /// Escapa caracteres especiais para o formato DOT
   String _escapeLabel(String label) {
     return label
-        .replaceAll('"', '\\"')
-        .replaceAll('\n', '\\n')
-        .replaceAll('\t', '\\t')
-        .replaceAll('\\', '\\\\');
+        .replaceAll('\\', '\\\\')  // Escape backslashes primeiro
+        .replaceAll('"', '\\"')    // Escape aspas duplas
+        .replaceAll('\n', '\\n')   // Escape quebras de linha
+        .replaceAll('\t', '\\t')   // Escape tabs
+        .replaceAll('\r', '\\r');  // Escape carriage returns
   }
 }
