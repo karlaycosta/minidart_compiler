@@ -5,6 +5,16 @@ Todas as alterações notáveis deste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [1.1.1] - 2025-07-23
+
+### 🐛 Corrigido
+- **Escape de aspas duplas no gerador AST Graphviz**:
+  - Corrigido erro de sintaxe nas linhas 24 e 40 do arquivo DOT gerado
+  - Removidas aspas duplas extras em strings literais que causavam falha na geração de imagens
+  - Melhorada função `_escapeLabel()` com ordem correta de escape de caracteres especiais
+  - Resolvido erro "syntax error in line X" ao executar comando `dot -Tpng`
+  - Garantida compatibilidade total com Graphviz para geração de PNG, SVG e PDF
+
 ## [1.1.0] - 2025-07-23
 
 ### ✨ Adicionado
