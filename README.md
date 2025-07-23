@@ -153,6 +153,9 @@ dart run bin/compile.dart exemplos/exemplo.mdart
 
 # Ou usar o executável compilado
 ./minidart exemplos/exemplo.mdart
+
+# Gerar apenas a AST em Graphviz (sem executar)
+dart run bin/compile.dart exemplos/exemplo.mdart --ast-only
 ```
 
 ### **3. Saída esperada**
@@ -163,6 +166,30 @@ Número grande:
 Olá, 
 Mundo
 ```
+
+### **4. 🌳 Visualizar a Árvore Sintática (AST)**
+
+O compilador gera automaticamente a AST em formato Graphviz:
+
+```bash
+# Executar o compilador (gera minidart_ast.dot automaticamente)
+dart run bin/compile.dart exemplos/exemplo_ast.mdart
+
+# Converter para imagem (requer Graphviz instalado)
+dot -Tpng minidart_ast.dot -o ast.png
+
+# Outros formatos
+dot -Tsvg minidart_ast.dot -o ast.svg
+dot -Tpdf minidart_ast.dot -o ast.pdf
+
+# Apenas gerar AST (sem compilar/executar)
+dart run bin/compile.dart exemplos/exemplo_ast.mdart --ast-only
+```
+
+**Instalar Graphviz:**
+- **Windows**: `winget install graphviz` ou baixar de [graphviz.org](https://graphviz.org/download/)
+- **Ubuntu/Debian**: `sudo apt install graphviz`
+- **macOS**: `brew install graphviz`
 
 ---
 
@@ -300,6 +327,43 @@ se (nota >= aprovacao) {
 }
 ```
 
+### **🌳 Visualização da AST**
+
+```dart
+// exemplo_ast.mdart
+var x = 10;
+var y = 5;
+
+se (x > y) {
+    imprimir "x é maior que y";
+    x = x + 1;
+} senao {
+    imprimir "y é maior ou igual a x";
+}
+
+imprimir "Resultado final: ";
+imprimir x;
+```
+
+**Gerando a visualização:**
+```bash
+# Compilar e gerar AST
+dart run bin/compile.dart exemplos/exemplo_ast.mdart --ast-only
+
+# Converter para imagem
+dot -Tpng minidart_ast.dot -o ast_exemplo.png
+```
+
+**Características da AST visualizada:**
+- 🟢 **Nós verdes**: Literais (números, strings, booleanos)
+- 🟡 **Nós amarelos**: Declarações de variáveis (`var`)
+- 🟠 **Nós laranja**: Estruturas de controle (`se`, `enquanto`)
+- 🔵 **Nós azuis**: Operadores binários/unários (`+`, `-`, `>`, etc.)
+- 🟦 **Nós cinza**: Blocos de código (`{ ... }`)
+- 🌸 **Nós rosa**: Comandos de impressão (`imprimir`)
+- 🔘 **Círculos**: Operadores e agrupamentos
+- 🔶 **Diamantes**: Estruturas condicionais
+
 ---
 
 ## 📚 **Documentação**
@@ -385,20 +449,31 @@ dart analyze
 dart format .
 ```
 
-### **📊 Debugging**
+### **📊 Debugging e Análise**
 
-O compilador oferece saída detalhada para debugging:
+O compilador oferece ferramentas detalhadas para debugging:
 
 ```bash
-# Modo verbose (se implementado)
-dart run bin/compile.dart --verbose exemplos/teste.mdart
+# Compilação completa com AST
+dart run bin/compile.dart exemplos/teste.mdart
 
-# Análise de tokens
-dart run bin/compile.dart --tokens exemplos/teste.mdart
+# Gerar apenas a AST (sem executar)
+dart run bin/compile.dart exemplos/teste.mdart --ast-only
 
-# Dump da AST
-dart run bin/compile.dart --ast exemplos/teste.mdart
+# Visualizar AST em diferentes formatos
+dot -Tpng minidart_ast.dot -o ast.png     # Imagem PNG
+dot -Tsvg minidart_ast.dot -o ast.svg     # Vetor SVG
+dot -Tpdf minidart_ast.dot -o ast.pdf     # Documento PDF
+
+# Análise interativa (se xdot estiver instalado)
+xdot minidart_ast.dot
 ```
+
+**Arquivos gerados:**
+- `minidart_ast.dot` - Código Graphviz da AST
+- `minidart_ast.png` - Visualização da AST (se Graphviz estiver instalado)
+- Bytecode no terminal - Código intermediário gerado
+- Saída da execução - Resultado do programa MiniDart
 
 ---
 

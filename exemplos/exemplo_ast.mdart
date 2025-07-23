@@ -1,0 +1,13 @@
+// Exemplo simples para demonstrar a AST
+var x = 10;
+var y = 5;
+
+se (x > y) {
+    imprimir "x é maior que y";
+    x = x + 1;
+} senao {
+    imprimir "y é maior ou igual a x";
+}
+
+imprimir "Resultado final: ";
+imprimir x;
