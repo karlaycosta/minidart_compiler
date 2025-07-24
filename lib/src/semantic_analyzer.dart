@@ -56,6 +56,45 @@ class SemanticAnalyzer implements AstVisitor<void> {
     _resolveExpr(stmt.condition);
     _resolveStmt(stmt.body);
   }
+  
+  @override
+  void visitForStmt(ForStmt stmt) {
+    // Resolve as expressões inicializador e condição
+    _resolveExpr(stmt.initializer);
+    _resolveExpr(stmt.condition);
+    
+    // Cria um escopo para a variável do loop
+    _beginScope();
+    // Declara e define a variável de controle
+    _declare(stmt.variable);
+    _define(stmt.variable);
+    
+    // Resolve o corpo dentro do escopo da variável
+    _resolveStmt(stmt.body);
+    
+    // Encerra o escopo
+    _endScope();
+  }
+  
+  @override
+  void visitForStepStmt(ForStepStmt stmt) {
+    // Resolve as expressões inicializador, condição e incremento
+    _resolveExpr(stmt.initializer);
+    _resolveExpr(stmt.condition);
+    _resolveExpr(stmt.step);
+    
+    // Cria um escopo para a variável do loop
+    _beginScope();
+    // Declara e define a variável de controle
+    _declare(stmt.variable);
+    _define(stmt.variable);
+    
+    // Resolve o corpo dentro do escopo da variável
+    _resolveStmt(stmt.body);
+    
+    // Encerra o escopo
+    _endScope();
+  }
 
   @override
   void visitIfStmt(IfStmt stmt) {
@@ -123,6 +162,51 @@ class SemanticAnalyzer implements AstVisitor<void> {
   void visitLiteralExpr(LiteralExpr expr) {
     // Literais não precisam de resolução.
   }
+
+  // ===== NOVOS VISITANTES PARA FUNÇÕES =====
+  
+  @override
+  void visitFunctionStmt(FunctionStmt stmt) {
+    // Declara a função no escopo atual
+    _declare(stmt.name);
+    _define(stmt.name);
+    
+    // Cria um novo escopo para a função
+    _beginScope();
+    
+    // Declara os parâmetros no escopo da função
+    for (final param in stmt.params) {
+      _declare(param.name);
+      _define(param.name);
+    }
+    
+    // Resolve o corpo da função
+    _resolveStmt(stmt.body);
+    
+    // Encerra o escopo da função
+    _endScope();
+  }
+  
+  @override
+  void visitReturnStmt(ReturnStmt stmt) {
+    // Se há um valor de retorno, resolve a expressão
+    if (stmt.value != null) {
+      _resolveExpr(stmt.value!);
+    }
+  }
+  
+  @override
+  void visitCallExpr(CallExpr expr) {
+    // Resolve a expressão que representa a função
+    _resolveExpr(expr.callee);
+    
+    // Resolve todos os argumentos
+    for (final argument in expr.arguments) {
+      _resolveExpr(argument);
+    }
+  }
+
+  // ===== FIM DOS NOVOS VISITANTES =====
 
   // Funções auxiliares para declaração e definição de variáveis
   void _declare(Token name) {

@@ -1,0 +1,3 @@
+var texto = "ola"
+var numero = 5
+imprimir texto + numero

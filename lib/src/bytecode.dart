@@ -27,9 +27,37 @@ enum OpCode {
   jumpIfFalse,
   loop, // Salto para trás
 
+  // --- Operações de Função ---
+  call,         // Chama uma função
+  return_,      // Retorna de uma função
+
   // --- Outras Operações ---
   print,
-  return_,
+}
+
+/// Representa uma função compilada com seu bytecode
+class CompiledFunction {
+  /// Nome da função
+  final String name;
+  
+  /// Número de parâmetros que a função espera
+  final int arity;
+  
+  /// Bytecode da função
+  final BytecodeChunk chunk;
+  
+  /// Nomes dos parâmetros para debugging
+  final List<String> paramNames;
+  
+  CompiledFunction({
+    required this.name,
+    required this.arity,
+    required this.chunk,
+    required this.paramNames,
+  });
+  
+  @override
+  String toString() => 'Function($name/${arity})';
 }
 
 /// Representa uma única instrução de bytecode.
@@ -45,16 +73,52 @@ class Instruction {
   }
 }
 
+/// Representa informação de localização no código fonte
+class SourceLocation {
+  final int line;
+  final int column;
+  
+  SourceLocation(this.line, this.column);
+  
+  @override
+  String toString() => 'linha $line, coluna $column';
+}
+
 /// Um "chunk" de bytecode representa uma sequência de instruções executáveis.
 class BytecodeChunk {
   final List<Instruction> code = [];
   final List<Object?> constants = [];
   final List<int> lines = []; // Mapeia cada instrução à sua linha no código fonte
+  final List<SourceLocation> locations = []; // Mapeia cada instrução à sua localização completa
 
   /// Adiciona uma instrução ao chunk, associando-a a uma linha.
   void write(OpCode opcode, int line, [int? operand]) {
     code.add(Instruction(opcode, operand));
     lines.add(line);
+    locations.add(SourceLocation(line, 1)); // Coluna padrão 1 para compatibilidade
+  }
+
+  /// Adiciona uma instrução ao chunk com localização completa (linha e coluna)
+  void writeWithLocation(OpCode opcode, SourceLocation location, [int? operand]) {
+    code.add(Instruction(opcode, operand));
+    lines.add(location.line);
+    locations.add(location);
+  }
+
+  /// Retorna a linha do código fonte para uma instrução específica
+  int getSourceLine(int instructionIndex) {
+    if (instructionIndex >= 0 && instructionIndex < lines.length) {
+      return lines[instructionIndex];
+    }
+    return -1;
+  }
+
+  /// Retorna a localização completa do código fonte para uma instrução específica
+  SourceLocation? getSourceLocation(int instructionIndex) {
+    if (instructionIndex >= 0 && instructionIndex < locations.length) {
+      return locations[instructionIndex];
+    }
+    return null;
   }
 
   /// Adiciona uma constante à tabela e retorna seu índice.
@@ -80,7 +144,7 @@ class BytecodeChunk {
     String operandStr = '';
     if (instruction.operand != null) {
       operandStr = instruction.operand.toString().padLeft(4, '0');
-      if (instruction.opcode == OpCode.pushConst || instruction.opcode == OpCode.getGlobal || instruction.opcode == OpCode.setGlobal || instruction.opcode == OpCode.defineGlobal) {
+      if (instruction.opcode == OpCode.pushConst || instruction.opcode == OpCode.getGlobal || instruction.opcode == OpCode.setGlobal || instruction.opcode == OpCode.defineGlobal || instruction.opcode == OpCode.call) {
         operandStr += ' (${constants[instruction.operand!]})';
       }
     }

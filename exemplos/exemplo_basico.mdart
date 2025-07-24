@@ -1,150 +1,28 @@
-// Exemplo Básico da Linguagem MiniDart
-// Funcionalidades que trabalham perfeitamente
+// Exemplo Básico - MiniDart
+// Variáveis, operações e impressão
 
-imprimir "=== DEMONSTRAÇÃO MINIDART ===";
-imprimir "";
+imprimir "=== Exemplo Básico MiniDart ===";
 
-// --- Declaração de Variáveis ---
-var a = 10;
-var b = 20;
-var resultado = 0;
-
-imprimir "Variáveis declaradas:";
-imprimir "a = ";
-imprimir a;
-imprimir "b = ";
-imprimir b;
-imprimir "";
-
-// --- Operações Aritméticas ---
-imprimir "Operações aritméticas:";
-
-resultado = a + b;
-imprimir "a + b = ";
-imprimir resultado;
-
-resultado = b - a;
-imprimir "b - a = ";
-imprimir resultado;
-
-resultado = a * 3;
-imprimir "a * 3 = ";
-imprimir resultado;
-
-resultado = b / 4;
-imprimir "b / 4 = ";
-imprimir resultado;
-
-imprimir "";
-
-// --- Estruturas Condicionais ---
-imprimir "Estruturas condicionais:";
-
-se (a < b) {
-  imprimir "a é menor que b";
-}
-
-se (b > 15) {
-  imprimir "b é maior que 15";
-} senao {
-  imprimir "b é menor ou igual a 15";
-}
-
-imprimir "";
-
-// --- Operações com Strings ---
-imprimir "Operações com strings:";
-
+// Declaração de variáveis
 var nome = "MiniDart";
-var versao = "2.0";
+var numero = 42;
+var ativo = verdadeiro;
 
+// Impressão de variáveis
 imprimir "Nome: ";
 imprimir nome;
-imprimir "Versão: ";
-imprimir versao;
+imprimir "Número: ";
+imprimir numero;
+imprimir "Ativo: ";
+imprimir ativo;
 
-imprimir "";
+// Operações básicas
+var soma = 10 + 5;
+var produto = 3 * 7;
 
-// --- Valores Booleanos ---
-imprimir "Valores booleanos:";
+imprimir "Soma 10 + 5 = ";
+imprimir soma;
+imprimir "Produto 3 * 7 = ";
+imprimir produto;
 
-var verdade = verdadeiro;
-var mentira = falso;
-var vazio = nulo;
-
-imprimir "Verdadeiro: ";
-imprimir verdade;
-imprimir "Falso: ";
-imprimir mentira;
-imprimir "Nulo: ";
-imprimir vazio;
-
-imprimir "";
-
-// --- Expressões Complexas ---
-imprimir "Expressões complexas:";
-
-var x = 5;
-var y = 3;
-var complexa = (x + y) * 2;
-
-imprimir "x = ";
-imprimir x;
-imprimir "y = ";
-imprimir y;
-imprimir "(x + y) * 2 = ";
-imprimir complexa;
-
-imprimir "";
-
-// --- Condicionais Aninhadas ---
-imprimir "Condicionais aninhadas:";
-
-var numero = 85;
-
-se (numero > 50) {
-  imprimir "Número maior que 50";
-  
-  se (numero > 80) {
-    imprimir "  E maior que 80";
-  } senao {
-    imprimir "  Mas menor ou igual a 80";
-  }
-} senao {
-  imprimir "Número menor ou igual a 50";
-}
-
-imprimir "";
-
-// --- Operações Lógicas ---
-imprimir "Operações lógicas:";
-
-se (verdade e !mentira) {
-  imprimir "Lógica AND funcionando";
-}
-
-se (verdade ou mentira) {
-  imprimir "Lógica OR funcionando";
-}
-
-imprimir "";
-
-// --- Reatribuição ---
-imprimir "Reatribuição de variáveis:";
-
-var valor = 100;
-imprimir "Valor inicial: ";
-imprimir valor;
-
-valor = valor + 25;
-imprimir "Após somar 25: ";
-imprimir valor;
-
-valor = valor / 5;
-imprimir "Após dividir por 5: ";
-imprimir valor;
-
-imprimir "";
-
-imprimir "=== EXEMPLO CONCLUÍDO ===";
-imprimir "MiniDart funcionando perfeitamente!";
+imprimir "=== Fim do Exemplo ===";

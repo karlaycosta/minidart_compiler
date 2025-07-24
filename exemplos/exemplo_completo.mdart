@@ -1,184 +1,69 @@
-// Exemplo Completo da Linguagem MiniDart
-// Demonstra todas as funcionalidades implementadas
+// Exemplo Completo - MiniDart v1.4.0
+// Demonstra funcionalidades principais da linguagem
 
-// --- Declaração e Inicialização de Variáveis ---
-var nome = "MiniDart";
-var versao = 2.0;
-var ativo = verdadeiro;
-var contador = 0;
-var limite = 10;
+// === FUNCOES ===
 
-// --- Operações Aritméticas ---
-var soma = 15 + 25;           // 40
-var subtracao = 100 - 30;     // 70
-var multiplicacao = 6 * 7;    // 42
-var divisao = 84 / 2;         // 42
-var expressao = (10 + 5) * 2; // 30
+// Funcao que multiplica por 3
+inteiro triplicar(inteiro x) {
+    retornar x * 3;
+}
 
-imprimir "=== DEMONSTRAÇÃO DA LINGUAGEM MINIDART ===";
-imprimir "";
+// Funcao que calcula media
+real media(inteiro a, inteiro b, inteiro c) {
+    retornar (a + b + c) / 3.0;
+}
 
-// --- Demonstração de Tipos e Valores ---
-imprimir "--- Variáveis e Tipos ---";
-imprimir "Nome da linguagem: ";
-imprimir nome;
-imprimir "Versão: ";
-imprimir versao;
-imprimir "Status ativo: ";
-imprimir ativo;
-imprimir "";
+// Funcao de texto
+texto cumprimentar(texto nome) {
+    retornar "Ola, " + nome + "!";
+}
 
-// --- Demonstração de Operações Aritméticas ---
-imprimir "--- Operações Aritméticas ---";
-imprimir "Soma (15 + 25): ";
+// === PROGRAMA PRINCIPAL ===
+
+imprimir "=== MiniDart v1.4.0 - Exemplo Completo ===";
+
+// Declaracao de variaveis
+var inteiro_val = 10;
+var real_val = 3.14;
+var texto_val = "MiniDart";
+var logico_val = verdadeiro;
+
+imprimir "Variaveis declaradas:";
+imprimir inteiro_val;
+imprimir real_val;
+imprimir texto_val;
+imprimir logico_val;
+
+// Operacoes aritmeticas
+var soma = inteiro_val + 5;
+var produto = real_val * 2.0;
+
+imprimir "Operacoes:";
+imprimir "10 + 5 = ";
 imprimir soma;
-imprimir "Subtração (100 - 30): ";
-imprimir subtracao;
-imprimir "Multiplicação (6 * 7): ";
-imprimir multiplicacao;
-imprimir "Divisão (84 / 2): ";
-imprimir divisao;
-imprimir "Expressão complexa (10 + 5) * 2: ";
-imprimir expressao;
-imprimir "";
+imprimir "3.14 * 2.0 = ";
+imprimir produto;
 
-// --- Demonstração de Comparações ---
-imprimir "--- Operações de Comparação ---";
-se (soma > 30) {
-  imprimir "A soma é maior que 30";
-} senao {
-  imprimir "A soma é menor ou igual a 30";
-}
+// Testando funcoes
+imprimir "=== Testando Funcoes ===";
 
-se (multiplicacao == 42) {
-  imprimir "A multiplicação é exatamente 42";
-}
+// Triplicar
+var trip = triplicar(7);
+imprimir "7 * 3 = ";
+imprimir trip;
 
-se (divisao >= 40) {
-  imprimir "A divisão é maior ou igual a 40";
-}
+// Media
+var med = media(8, 6, 10);
+imprimir "Media de 8, 6, 10 = ";
+imprimir med;
 
-se (subtracao < 100) {
-  imprimir "A subtração é menor que 100";
-}
+// Funcao de texto
+var saudacao = cumprimentar("Usuario");
+imprimir saudacao;
 
-imprimir "";
+// Combinando funcoes
+var combinado = triplicar(4) + media(1, 2, 3);
+imprimir "triplicar(4) + media(1,2,3) = ";
+imprimir combinado;
 
-// --- Demonstração de Operadores Lógicos ---
-imprimir "--- Operadores Lógicos ---";
-var condicao1 = verdadeiro;
-var condicao2 = falso;
-
-se (condicao1 e ativo) {
-  imprimir "Ambas condições são verdadeiras";
-}
-
-se (condicao1 ou condicao2) {
-  imprimir "Pelo menos uma condição é verdadeira";
-}
-
-se (!condicao2) {
-  imprimir "A segunda condição é falsa (negação)";
-}
-
-imprimir "";
-
-// --- Demonstração de Estruturas de Controle Aninhadas ---
-imprimir "--- Estruturas de Controle Aninhadas ---";
-var numero = 85;
-
-se (numero > 50) {
-  imprimir "Número é maior que 50";
-  
-  se (numero > 80) {
-    imprimir "  E também é maior que 80";
-    
-    se (numero < 90) {
-      imprimir "    Mas é menor que 90";
-    } senao {
-      imprimir "    E é maior ou igual a 90";
-    }
-  } senao {
-    imprimir "  Mas é menor ou igual a 80";
-  }
-} senao {
-  imprimir "Número é menor ou igual a 50";
-}
-
-imprimir "";
-
-// --- Demonstração de Loop While ---
-imprimir "--- Loop While (Contagem de 1 a 5) ---";
-contador = 1;
-enquanto (contador <= 5) {
-  imprimir "Contagem: ";
-  imprimir contador;
-  contador = contador + 1;
-}
-
-imprimir "";
-
-// --- Demonstração de Loop While com Condição Complexa ---
-imprimir "--- Loop While com Condição Complexa ---";
-var x = 2;
-var y = 16;
-
-enquanto (x < 10 e y > 5) {
-  imprimir "x = ";
-  imprimir x;
-  imprimir ", y = ";
-  imprimir y;
-  
-  x = x + 2;
-  y = y - 3;
-}
-
-imprimir "";
-
-// --- Demonstração de Reatribuição de Variáveis ---
-imprimir "--- Reatribuição de Variáveis ---";
-var variavel = 100;
-imprimir "Valor inicial: ";
-imprimir variavel;
-
-variavel = variavel * 2;
-imprimir "Após multiplicar por 2: ";
-imprimir variavel;
-
-variavel = variavel - 50;
-imprimir "Após subtrair 50: ";
-imprimir variavel;
-
-imprimir "";
-
-// --- Demonstração de Operações com Strings ---
-imprimir "--- Operações com Strings ---";
-var saudacao = "Olá";
-var mundo = "Mundo";
-var exclamacao = "!";
-
-// Concatenação de strings
-var frase = saudacao + " " + mundo + exclamacao;
-imprimir "Frase concatenada: ";
-imprimir frase;
-
-imprimir "";
-
-// --- Demonstração de Valores Especiais ---
-imprimir "--- Valores Especiais ---";
-var nulo_valor = nulo;
-imprimir "Valor nulo: ";
-imprimir nulo_valor;
-
-var verdadeiro_valor = verdadeiro;
-var falso_valor = falso;
-imprimir "Valor verdadeiro: ";
-imprimir verdadeiro_valor;
-imprimir "Valor falso: ";
-imprimir falso_valor;
-
-imprimir "";
-
-// --- Demonstração Final ---
-imprimir "=== FIM DA DEMONSTRAÇÃO ===";
-imprimir "Todas as funcionalidades foram executadas com sucesso!";
+imprimir "=== Fim do Exemplo ===";

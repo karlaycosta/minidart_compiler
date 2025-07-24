@@ -45,6 +45,18 @@ abstract interface class AstVisitor<T> {
   
   /// Visita um loop while (enquanto)
   T visitWhileStmt(WhileStmt stmt);
+  
+  /// Visita um loop for (para)
+  T visitForStmt(ForStmt stmt);
+  
+  /// Visita um loop for com incremento personalizado (para...passo)
+  T visitForStepStmt(ForStepStmt stmt);
+  
+  /// Visita uma declaração de função
+  T visitFunctionStmt(FunctionStmt stmt);
+  
+  /// Visita um comando de retorno
+  T visitReturnStmt(ReturnStmt stmt);
 
   // === Visitantes para Expressions (Expressões) ===
   
@@ -68,6 +80,9 @@ abstract interface class AstVisitor<T> {
   
   /// Visita o uso de uma variável (referência pelo nome)
   T visitVariableExpr(VariableExpr expr);
+  
+  /// Visita uma chamada de função
+  T visitCallExpr(CallExpr expr);
 }
 
 // ============================================================================
@@ -197,6 +212,136 @@ final class WhileStmt extends Stmt {
   WhileStmt(this.condition, this.body);
   
   @override T accept<T>(AstVisitor<T> visitor) => visitor.visitWhileStmt(this);
+}
+
+/// **Statement de Loop For: para variavel = inicio ate fim faca statement**
+/// 
+/// Implementa loops com contador automático na linguagem MiniDart.
+/// Executa o corpo com variável incrementada automaticamente.
+/// 
+/// **Exemplo:** `para i = 1 ate 5 faca { imprimir i; }`
+final class ForStmt extends Stmt {
+  /// Nome da variável de controle
+  final Token variable;
+  
+  /// Expressão para valor inicial
+  final Expr initializer;
+  
+  /// Expressão para valor final
+  final Expr condition;
+  
+  /// Statement executado repetidamente
+  final Stmt body;
+  
+  ForStmt(this.variable, this.initializer, this.condition, this.body);
+  
+  @override T accept<T>(AstVisitor<T> visitor) => visitor.visitForStmt(this);
+}
+
+/// **Statement de Loop For com Incremento: para variavel = inicio ate fim passo incremento faca statement**
+/// 
+/// Implementa loops com contador e incremento personalizável na linguagem MiniDart.
+/// Permite especificar quanto a variável deve ser incrementada a cada iteração.
+/// 
+/// **Exemplo:** `para i = 0 ate 10 passo 2 faca { imprimir i; }` (0, 2, 4, 6, 8, 10)
+final class ForStepStmt extends Stmt {
+  /// Nome da variável de controle
+  final Token variable;
+  
+  /// Expressão para valor inicial
+  final Expr initializer;
+  
+  /// Expressão para valor final
+  final Expr condition;
+  
+  /// Expressão para incremento por iteração
+  final Expr step;
+  
+  /// Statement executado repetidamente
+  final Stmt body;
+  
+  ForStepStmt(this.variable, this.initializer, this.condition, this.step, this.body);
+  
+  @override T accept<T>(AstVisitor<T> visitor) => visitor.visitForStepStmt(this);
+}
+
+// ============================================================================
+// CLASSES DE SUPORTE PARA FUNÇÕES
+// ============================================================================
+
+/// **Informação de Tipo**
+/// 
+/// Representa um tipo de dados na linguagem MiniDart com informações 
+/// sobre a localização no código fonte para relatórios de erro.
+final class TypeInfo {
+  /// Token que representa o tipo (inteiro, real, texto, logico, vazio)
+  final Token type;
+  
+  TypeInfo(this.type);
+  
+  /// Retorna o nome do tipo como string
+  String get name => type.lexeme;
+  
+  @override
+  String toString() => name;
+}
+
+/// **Parâmetro de Função**
+/// 
+/// Representa um parâmetro formal de uma função, incluindo seu tipo e nome.
+final class Parameter {
+  /// Tipo do parâmetro
+  final TypeInfo type;
+  
+  /// Nome do parâmetro
+  final Token name;
+  
+  Parameter(this.type, this.name);
+  
+  @override
+  String toString() => '${type.name} ${name.lexeme}';
+}
+
+/// **Statement de Declaração de Função: <tipo> nome(params) { body }**
+/// 
+/// Declara uma função com tipo de retorno, nome, parâmetros e corpo.
+/// 
+/// **Exemplo:** `inteiro somar(inteiro a, inteiro b) { retornar a + b; }`
+final class FunctionStmt extends Stmt {
+  /// Tipo de retorno da função
+  final TypeInfo? returnType;
+  
+  /// Nome da função
+  final Token name;
+  
+  /// Lista de parâmetros formais
+  final List<Parameter> params;
+  
+  /// Corpo da função (geralmente um BlockStmt)
+  final Stmt body;
+  
+  FunctionStmt(this.returnType, this.name, this.params, this.body);
+  
+  @override T accept<T>(AstVisitor<T> visitor) => visitor.visitFunctionStmt(this);
+}
+
+/// **Statement de Retorno: retornar [expressão];**
+/// 
+/// Comando para retornar um valor de uma função e encerrar sua execução.
+/// 
+/// **Exemplos:** 
+/// - `retornar;` (retorno vazio)
+/// - `retornar 42;` (retorna valor)
+final class ReturnStmt extends Stmt {
+  /// Token do comando retornar (para localização de erros)
+  final Token keyword;
+  
+  /// Expressão a ser retornada (pode ser null para retorno vazio)
+  final Expr? value;
+  
+  ReturnStmt(this.keyword, this.value);
+  
+  @override T accept<T>(AstVisitor<T> visitor) => visitor.visitReturnStmt(this);
 }
 
 // ============================================================================
@@ -371,6 +516,26 @@ final class VariableExpr extends Expr {
   @override T accept<T>(AstVisitor<T> visitor) => visitor.visitVariableExpr(this);
 }
 
+/// **Expressão de Chamada de Função: função(argumentos)**
+/// 
+/// Representa uma chamada de função com argumentos.
+/// 
+/// **Exemplo:** `somar(10, 20)` ou `imprimir("Olá mundo")`
+final class CallExpr extends Expr {
+  /// Expressão que resolve para a função (geralmente VariableExpr)
+  final Expr callee;
+  
+  /// Token do parêntese de fechamento (para localização de erros)
+  final Token paren;
+  
+  /// Lista de argumentos passados para a função
+  final List<Expr> arguments;
+  
+  CallExpr(this.callee, this.paren, this.arguments);
+  
+  @override T accept<T>(AstVisitor<T> visitor) => visitor.visitCallExpr(this);
+}
+
 // ============================================================================
 // GUIA DE USO DA AST
 // ============================================================================
@@ -410,7 +575,11 @@ final class VariableExpr extends Expr {
 /// │   ├── IfStmt
 /// │   ├── PrintStmt
 /// │   ├── VarDeclStmt
-/// │   └── WhileStmt
+/// │   ├── WhileStmt
+/// │   ├── ForStmt
+/// │   ├── ForStepStmt
+/// │   ├── FunctionStmt
+/// │   └── ReturnStmt
 /// └── Expr (Expressions)
 ///     ├── AssignExpr
 ///     ├── BinaryExpr
@@ -418,5 +587,6 @@ final class VariableExpr extends Expr {
 ///     ├── LiteralExpr
 ///     ├── LogicalExpr
 ///     ├── UnaryExpr
-///     └── VariableExpr
+///     ├── VariableExpr
+///     └── CallExpr
 /// ```

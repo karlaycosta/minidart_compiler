@@ -1,8 +1,8 @@
 {
   "name": "minidart",
   "displayName": "MiniDart Language Support",
-  "description": "Suporte completo para a linguagem MiniDart com syntax highlighting, compilação e visualização de AST",
-  "version": "1.1.1",
+  "description": "Suporte completo para a linguagem MiniDart com syntax highlighting, compilação, visualização de AST, loops 'para' e funções completas",
+  "version": "1.4.0",
   "publisher": "deriks-karlay",
   "author": "Deriks Karlay Dias Costa <karlay@example.com>",
   "repository": {
@@ -151,7 +151,7 @@
         },
         "minidart.autoCompile": {
           "type": "boolean",
-          "default": true,
+          "default": false,
           "description": "Compilar automaticamente ao salvar"
         },
         "minidart.showAST": {

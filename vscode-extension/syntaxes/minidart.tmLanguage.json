@@ -30,7 +30,7 @@
       "patterns": [
         {
           "name": "keyword.control.minidart",
-          "match": "\\b(algoritmo|inicio|fim|se|senao|enquanto|para|faca|ate|retorne|pare|continue)\\b"
+          "match": "\\b(algoritmo|inicio|fim|se|senao|enquanto|para|faca|ate|passo|retornar|pare|continue)\\b"
         },
         {
           "name": "keyword.declaration.minidart",
@@ -46,7 +46,7 @@
         },
         {
           "name": "keyword.other.minidart",
-          "match": "\\b(leia|escreva)\\b"
+          "match": "\\b(leia|escreva|imprimir)\\b"
         }
       ]
     },

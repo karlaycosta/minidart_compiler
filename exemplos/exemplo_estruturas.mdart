@@ -1,0 +1,89 @@
+// Exemplo de Estruturas de Controle - MiniDart v1.4.0
+
+imprimir "=== Estruturas de Controle ===";
+
+// === ESTRUTURAS CONDICIONAIS (IF/ELSE) ===
+
+imprimir "--- Testando Condicionais ---";
+
+// Teste simples com número
+var numero = 15;
+imprimir "Numero: ";
+imprimir numero;
+
+se (numero > 10) {
+    imprimir "Numero e maior que 10";
+} senao {
+    imprimir "Numero e menor ou igual a 10";
+}
+
+// Teste com valor booleano
+var ativo = verdadeiro;
+se (ativo) {
+    imprimir "Status: Ativo";
+} senao {
+    imprimir "Status: Inativo";
+}
+
+// Teste de comparação
+var idade = 18;
+se (idade >= 18) {
+    imprimir "Maior de idade";
+} senao {
+    imprimir "Menor de idade";
+}
+
+// === ESTRUTURAS DE REPETIÇÃO (WHILE) ===
+
+imprimir "--- Testando Loops ---";
+
+// Contador simples
+imprimir "Contando de 1 a 5:";
+var contador = 1;
+enquanto (contador <= 5) {
+    imprimir contador;
+    contador = contador + 1;
+}
+
+// Loop com decremento
+imprimir "Contagem regressiva de 3 a 1:";
+var regressivo = 3;
+enquanto (regressivo >= 1) {
+    imprimir regressivo;
+    regressivo = regressivo - 1;
+}
+
+// Loop for
+para i = 1 ate 10 faca {
+    imprimir i;
+}
+
+// Loop for com incremento personalizado
+para x = 0 ate 20 passo 2 faca {
+    imprimir x;  // 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20
+}
+
+// === COMBINANDO ESTRUTURAS ===
+
+imprimir "--- Estruturas Combinadas ---";
+
+// Teste de comparações
+var nota = 85;
+imprimir "Nota: ";
+imprimir nota;
+
+se (nota >= 80) {
+    imprimir "Conceito: Bom!";
+} senao {
+    imprimir "Conceito: Precisa melhorar";
+}
+
+// Outro teste simples
+var valor = 42;
+se (valor == 42) {
+    imprimir "Valor especial encontrado!";
+} senao {
+    imprimir "Valor comum";
+}
+
+imprimir "=== Fim dos Testes ===";

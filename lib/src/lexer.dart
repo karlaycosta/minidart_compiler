@@ -49,6 +49,12 @@ class Lexer {
   /// Número da linha atual (para rastreamento de erros)
   int _line = 1;
 
+  /// Posição da coluna atual na linha (para rastreamento de erros)
+  int _column = 1;
+
+  /// Posição da coluna onde o token atual começou
+  int _tokenStartColumn = 1;
+
   final int length;
 
   /// **Tabela de Palavras-Chave da Linguagem MiniDart**
@@ -69,7 +75,7 @@ class Lexer {
     'classe': TokenType.class_, // Declaração de classe
     'senao': TokenType.else_, // Estrutura condicional ELSE
     'falso': TokenType.false_, // Literal booleano false
-    'fun': TokenType.fun, // Declaração de função
+    'funcao': TokenType.fun, // Declaração de função
     'para': TokenType.for_, // Loop FOR
     'se': TokenType.if_, // Estrutura condicional IF
     'nulo': TokenType.nil, // Literal valor nulo
@@ -81,6 +87,15 @@ class Lexer {
     'verdadeiro': TokenType.true_, // Literal booleano true
     'var': TokenType.var_, // Declaração de variável
     'enquanto': TokenType.while_, // Loop WHILE
+    'ate': TokenType.to_, // Loop FOR - até
+    'faca': TokenType.do_, // Loop FOR - faça
+    'passo': TokenType.step_, // Loop FOR - incremento
+    // Tipos de dados
+    'inteiro': TokenType.inteiro, // Tipo de dados inteiro
+    'real': TokenType.real, // Tipo de dados real/float
+    'texto': TokenType.texto, // Tipo de dados string
+    'logico': TokenType.logico, // Tipo de dados boolean
+    'vazio': TokenType.vazio, // Tipo de retorno void
   };
 
   /// **Construtor do Lexer**
@@ -115,10 +130,11 @@ class Lexer {
   List<Token> scanTokens() {
     while (_isNotEnd) {
       _start = _current; // Marca o início do próximo token
+      _tokenStartColumn = _column; // Marca a coluna do início do token
       _scanToken(); // Processa um token
     }
     // Adiciona token de fim de arquivo
-    _tokens.add(Token(type: TokenType.eof, lexeme: "", line: _line));
+    _tokens.add(Token(type: TokenType.eof, lexeme: "", line: _line, column: _column));
     return _tokens;
   }
 
@@ -201,11 +217,14 @@ class Lexer {
       case ' ': // Espaço
       case '\r': // Carriage return
       case '\t': // Tab
-      // Ignora caracteres de espaçamento
+        // Ignora caracteres de espaçamento
+        break;
 
       // === Quebra de linha ===
       case '\n':
         _line++; // Incrementa contador de linha para rastreamento
+        _column = 1; // Reset da coluna para nova linha
+        break;
 
       // === String literal ===
       case '"':
@@ -317,6 +336,7 @@ class Lexer {
     while (_peek() != '"' && _isNotEnd) {
       if (_peek() == '\n') {
         _line++; // Rastreia quebras de linha dentro da string
+        _column = 1; // Reset da coluna para nova linha
       }
       _advance();
     }
@@ -462,8 +482,12 @@ class Lexer {
   ///
   /// **Retorna:** O caractere que foi consumido
   ///
-  /// **Efeito colateral:** Incrementa _current
-  String _advance() => _source[_current++];
+  /// **Efeito colateral:** Incrementa _current e _column
+  String _advance() {
+    final char = _source[_current++];
+    _column++;
+    return char;
+  }
 
   /// **Criação e Adição de Token**
   ///
@@ -479,6 +503,6 @@ class Lexer {
   /// 3. Adiciona à lista de tokens
   void _addToken(TokenType type, [Object? literal]) {
     final text = _source.substring(_start, _current);
-    _tokens.add(Token(type: type, lexeme: text, literal: literal, line: _line));
+    _tokens.add(Token(type: type, lexeme: text, literal: literal, line: _line, column: _tokenStartColumn));
   }
 }

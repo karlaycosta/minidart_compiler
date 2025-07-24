@@ -44,6 +44,18 @@ enum TokenType {
   true_,
   var_,
   while_,
+  
+  // Novos tokens para loop for
+  to_,         // 'ate'
+  do_,         // 'faca'
+  step_,       // 'passo'
+  
+  // Tipos de dados
+  inteiro,     // 'inteiro'
+  real,        // 'real'
+  texto,       // 'texto'
+  logico,      // 'logico'
+  vazio,       // 'vazio'
 
   eof,
 }
@@ -53,12 +65,14 @@ class Token {
   final String lexeme;
   final Object? literal;
   final int line;
+  final int column;
 
   Token({
     required this.type,
     required this.lexeme,
     this.literal,
     required this.line,
+    required this.column,
   });
 
   @override
@@ -128,6 +142,17 @@ extension TokenTypeExtension on TokenType {
       TokenType.true_ => 'Verdadeiro',
       TokenType.var_ => 'Variável',
       TokenType.while_ => 'Enquanto (loop)',
+      TokenType.to_ => 'Até (loop for)',
+      TokenType.do_ => 'Faça (loop)',
+      TokenType.step_ => 'Passo (incremento)',
+      // ========================================================================
+      // TIPOS DE DADOS
+      // ========================================================================
+      TokenType.inteiro => 'Tipo Inteiro',
+      TokenType.real => 'Tipo Real',
+      TokenType.texto => 'Tipo Texto',
+      TokenType.logico => 'Tipo Lógico',
+      TokenType.vazio => 'Tipo Vazio',
       // ========================================================================
       // ESPECIAIS
       // ========================================================================
@@ -183,6 +208,15 @@ extension TokenTypeExtension on TokenType {
       TokenType.true_ => 'verdadeiro',
       TokenType.var_ => 'var',
       TokenType.while_ => 'enquanto',
+      TokenType.to_ => 'ate',
+      TokenType.do_ => 'faca',
+      TokenType.step_ => 'passo',
+      // Tipos de dados
+      TokenType.inteiro => 'inteiro',
+      TokenType.real => 'real',
+      TokenType.texto => 'texto',
+      TokenType.logico => 'logico',
+      TokenType.vazio => 'vazio',
       // Especiais
       TokenType.eof => '<EOF>',
     };

@@ -128,6 +128,58 @@ class ASTGraphvizGenerator implements AstVisitor<String> {
     
     return nodeId;
   }
+  
+  @override
+  String visitForStmt(ForStmt stmt) {
+    final nodeId = _nextId();
+    _buffer.writeln('  $nodeId [label="🔄 para", fillcolor=orange, shape=diamond];');
+    
+    // Variável
+    _buffer.writeln('  ${nodeId}_var [label="${stmt.variable.lexeme}", fillcolor=lightgreen];');
+    _buffer.writeln('  $nodeId -> ${nodeId}_var [label="variável"];');
+    
+    // Inicializador
+    final initId = stmt.initializer.accept(this);
+    _buffer.writeln('  $nodeId -> $initId [label="início"];');
+    
+    // Condição (limite)
+    final condId = stmt.condition.accept(this);
+    _buffer.writeln('  $nodeId -> $condId [label="até"];');
+    
+    // Corpo
+    final bodyId = stmt.body.accept(this);
+    _buffer.writeln('  $nodeId -> $bodyId [label="faça"];');
+    
+    return nodeId;
+  }
+  
+  @override
+  String visitForStepStmt(ForStepStmt stmt) {
+    final nodeId = _nextId();
+    _buffer.writeln('  $nodeId [label="🔄 para+passo", fillcolor=orange, shape=diamond];');
+    
+    // Variável
+    _buffer.writeln('  ${nodeId}_var [label="${stmt.variable.lexeme}", fillcolor=lightgreen];');
+    _buffer.writeln('  $nodeId -> ${nodeId}_var [label="variável"];');
+    
+    // Inicializador
+    final initId = stmt.initializer.accept(this);
+    _buffer.writeln('  $nodeId -> $initId [label="início"];');
+    
+    // Condição (limite)
+    final condId = stmt.condition.accept(this);
+    _buffer.writeln('  $nodeId -> $condId [label="até"];');
+    
+    // Incremento
+    final stepId = stmt.step.accept(this);
+    _buffer.writeln('  $nodeId -> $stepId [label="passo"];');
+    
+    // Corpo
+    final bodyId = stmt.body.accept(this);
+    _buffer.writeln('  $nodeId -> $bodyId [label="faça"];');
+    
+    return nodeId;
+  }
 
   @override
   String visitPrintStmt(PrintStmt stmt) {
@@ -270,6 +322,75 @@ class ASTGraphvizGenerator implements AstVisitor<String> {
     
     return nodeId;
   }
+
+  // ===== NOVOS VISITANTES PARA FUNÇÕES =====
+  
+  @override
+  String visitFunctionStmt(FunctionStmt stmt) {
+    final nodeId = _nextId();
+    final funcName = _escapeLabel(stmt.name.lexeme);
+    final returnTypeName = stmt.returnType?.name ?? "vazio";
+    _buffer.writeln('  $nodeId [label="🔧 função $funcName\\n($returnTypeName)", fillcolor=lightblue, shape=box];');
+    
+    // Parâmetros
+    if (stmt.params.isNotEmpty) {
+      final paramsId = _nextId();
+      _buffer.writeln('  ${paramsId} [label="📝 parâmetros", fillcolor=lightgreen];');
+      _buffer.writeln('  $nodeId -> $paramsId [label="params"];');
+      
+      for (int i = 0; i < stmt.params.length; i++) {
+        final param = stmt.params[i];
+        final paramId = _nextId();
+        _buffer.writeln('  $paramId [label="${param.type.name} ${_escapeLabel(param.name.lexeme)}", fillcolor=white];');
+        _buffer.writeln('  $paramsId -> $paramId [label="param ${i + 1}"];');
+      }
+    }
+    
+    // Corpo da função
+    final bodyId = stmt.body.accept(this);
+    _buffer.writeln('  $nodeId -> $bodyId [label="corpo"];');
+    
+    return nodeId;
+  }
+  
+  @override
+  String visitReturnStmt(ReturnStmt stmt) {
+    final nodeId = _nextId();
+    _buffer.writeln('  $nodeId [label="↩️ retornar", fillcolor=orange];');
+    
+    if (stmt.value != null) {
+      final valueId = stmt.value!.accept(this);
+      _buffer.writeln('  $nodeId -> $valueId [label="valor"];');
+    }
+    
+    return nodeId;
+  }
+  
+  @override
+  String visitCallExpr(CallExpr expr) {
+    final nodeId = _nextId();
+    _buffer.writeln('  $nodeId [label="📞 chamada", fillcolor=lightcyan, shape=ellipse];');
+    
+    // Função sendo chamada
+    final calleeId = expr.callee.accept(this);
+    _buffer.writeln('  $nodeId -> $calleeId [label="função"];');
+    
+    // Argumentos
+    if (expr.arguments.isNotEmpty) {
+      final argsId = _nextId();
+      _buffer.writeln('  ${argsId} [label="📋 argumentos", fillcolor=lightgreen];');
+      _buffer.writeln('  $nodeId -> $argsId [label="args"];');
+      
+      for (int i = 0; i < expr.arguments.length; i++) {
+        final argId = expr.arguments[i].accept(this);
+        _buffer.writeln('  $argsId -> $argId [label="arg ${i + 1}"];');
+      }
+    }
+    
+    return nodeId;
+  }
+
+  // ===== FIM DOS NOVOS VISITANTES =====
 
   /// Escapa caracteres especiais para o formato DOT
   String _escapeLabel(String label) {

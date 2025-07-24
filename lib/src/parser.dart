@@ -23,6 +23,16 @@ class Parser {
   Stmt _declaration() {
     try {
       if (_match([TokenType.var_])) return _varDeclaration();
+      
+      // Verificar se é uma declaração de função (tipo + identificador + parênteses)
+      if (_isTypeToken(_peek()) && 
+          _current + 1 < _tokens.length && 
+          _peekNext().type == TokenType.identifier && 
+          _current + 2 < _tokens.length && 
+          _peekNextNext().type == TokenType.leftParen) {
+        return _functionDeclaration();
+      }
+      
       return _statement();
     } on ParseError {
       _synchronize();
@@ -44,6 +54,8 @@ class Parser {
     if (_match([TokenType.if_])) return _ifStatement();
     if (_match([TokenType.print_])) return _printStatement();
     if (_match([TokenType.while_])) return _whileStatement();
+    if (_match([TokenType.for_])) return _forStatement();
+    if (_match([TokenType.return_])) return _returnStatement();
     if (_match([TokenType.leftBrace])) return BlockStmt(_block());
     return _expressionStatement();
   }
@@ -67,6 +79,29 @@ class Parser {
     _consume(TokenType.rightParen, "Esperado ')' após a condição do 'enquanto'.");
     final body = _statement();
     return WhileStmt(condition, body);
+  }
+  
+  Stmt _forStatement() {
+    // para variavel = inicio ate fim [passo incremento] faca statement
+    final variable = _consume(TokenType.identifier, "Esperado nome da variável após 'para'.");
+    _consume(TokenType.equal, "Esperado '=' após o nome da variável.");
+    final initializer = _expression();
+    _consume(TokenType.to_, "Esperado 'ate' após o valor inicial.");
+    final condition = _expression();
+    
+    // Verifica se há incremento personalizado
+    if (_match([TokenType.step_])) {
+      // Sintaxe: para variavel = inicio ate fim passo incremento faca statement
+      final step = _expression();
+      _consume(TokenType.do_, "Esperado 'faca' após o incremento.");
+      final body = _statement();
+      return ForStepStmt(variable, initializer, condition, step, body);
+    } else {
+      // Sintaxe: para variavel = inicio ate fim faca statement (incremento = 1)
+      _consume(TokenType.do_, "Esperado 'faca' após o valor final.");
+      final body = _statement();
+      return ForStmt(variable, initializer, condition, body);
+    }
   }
 
   List<Stmt> _block() {
@@ -120,7 +155,21 @@ class Parser {
       final right = _unary();
       return UnaryExpr(operator, right);
     }
-    return _primary();
+    return _call();
+  }
+
+  Expr _call() {
+    Expr expr = _primary();
+
+    while (true) {
+      if (_match([TokenType.leftParen])) {
+        expr = _finishCall(expr);
+      } else {
+        break;
+      }
+    }
+
+    return expr;
   }
 
   Expr _primary() {
@@ -152,6 +201,95 @@ class Parser {
     }
     return expr;
   }
+
+  // ===== NOVOS MÉTODOS PARA FUNÇÕES =====
+
+  /// Verifica se o token representa um tipo válido
+  bool _isTypeToken(Token token) {
+    return token.type == TokenType.inteiro ||
+           token.type == TokenType.real ||
+           token.type == TokenType.texto ||
+           token.type == TokenType.logico ||
+           token.type == TokenType.vazio;
+  }
+
+  /// Retorna o próximo token sem consumi-lo
+  Token _peekNext() {
+    if (_current + 1 >= _tokens.length) return _tokens.last;
+    return _tokens[_current + 1];
+  }
+
+  /// Retorna o token seguinte ao próximo sem consumi-lo
+  Token _peekNextNext() {
+    if (_current + 2 >= _tokens.length) return _tokens.last;
+    return _tokens[_current + 2];
+  }
+
+  /// Analisa declaração de função: tipo nome(params) { body }
+  Stmt _functionDeclaration() {
+    // Consumir o tipo de retorno
+    final returnTypeToken = _advance();
+    final returnType = TypeInfo(returnTypeToken);
+
+    // Consumir o nome da função
+    final name = _consume(TokenType.identifier, "Esperado nome da função.");
+
+    // Consumir parênteses e parâmetros
+    _consume(TokenType.leftParen, "Esperado '(' após nome da função.");
+    
+    final parameters = <Parameter>[];
+    if (!_check(TokenType.rightParen)) {
+      do {
+        // Tipo do parâmetro
+        if (!_isTypeToken(_peek())) {
+          throw _error(_peek(), "Esperado tipo do parâmetro.");
+        }
+        final paramType = TypeInfo(_advance());
+        
+        // Nome do parâmetro
+        final paramName = _consume(TokenType.identifier, "Esperado nome do parâmetro.");
+        
+        parameters.add(Parameter(paramType, paramName));
+      } while (_match([TokenType.comma]));
+    }
+    
+    _consume(TokenType.rightParen, "Esperado ')' após parâmetros.");
+
+    // Corpo da função
+    _consume(TokenType.leftBrace, "Esperado '{' antes do corpo da função.");
+    final body = BlockStmt(_block());
+
+    return FunctionStmt(returnType, name, parameters, body);
+  }
+
+  /// Analisa comando de retorno: retornar [expressão];
+  Stmt _returnStatement() {
+    final keyword = _previous();
+    Expr? value;
+    
+    if (!_check(TokenType.semicolon)) {
+      value = _expression();
+    }
+    
+    _consume(TokenType.semicolon, "Esperado ';' após valor de retorno.");
+    return ReturnStmt(keyword, value);
+  }
+
+  /// Finaliza uma chamada de função processando os argumentos
+  Expr _finishCall(Expr callee) {
+    final arguments = <Expr>[];
+    
+    if (!_check(TokenType.rightParen)) {
+      do {
+        arguments.add(_expression());
+      } while (_match([TokenType.comma]));
+    }
+    
+    final paren = _consume(TokenType.rightParen, "Esperado ')' após argumentos.");
+    return CallExpr(callee, paren, arguments);
+  }
+
+  // ===== FIM DOS NOVOS MÉTODOS =====
 
   bool _match(List<TokenType> types) {
     for (final type in types) {
@@ -198,6 +336,11 @@ class Parser {
         case TokenType.while_:
         case TokenType.print_:
         case TokenType.return_:
+        case TokenType.inteiro:
+        case TokenType.real:
+        case TokenType.texto:
+        case TokenType.logico:
+        case TokenType.vazio:
           return;
         default:
           break;

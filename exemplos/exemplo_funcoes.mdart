@@ -1,0 +1,34 @@
+// Exemplo Simples de Funcoes - MiniDart v1.4.0
+
+// Funcao que soma dois numeros
+inteiro somar(inteiro a, inteiro b) {
+    retornar a + b;
+}
+
+// Funcao que calcula o quadrado
+inteiro quadrado(inteiro x) {
+    retornar x * x;
+}
+
+// Funcao que calcula area do retangulo
+inteiro area_retangulo(inteiro largura, inteiro altura) {
+    retornar largura * altura;
+}
+
+// === PROGRAMA PRINCIPAL ===
+imprimir "=== Exemplo de Funcoes ===";
+
+// Testando as funcoes
+var soma = somar(10, 15);
+imprimir "10 + 15 = ";
+imprimir soma;
+
+var quad = quadrado(6);
+imprimir "6 ao quadrado = ";
+imprimir quad;
+
+var area = area_retangulo(8, 5);
+imprimir "Area 8x5 = ";
+imprimir area;
+
+imprimir "=== Fim do Exemplo ===";

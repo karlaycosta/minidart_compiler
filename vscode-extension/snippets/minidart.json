@@ -1,100 +1,121 @@
 {
-  "Algoritmo básico": {
-    "prefix": "algoritmo",
+  "Programa básico MiniDart": {
+    "prefix": "minidart",
     "body": [
-      "algoritmo ${1:nome}",
-      "inicio",
-      "\t$0",
-      "fim"
+      "// Programa MiniDart",
+      "var ${1:nome} = \"${2:valor}\";",
+      "",
+      "imprimir ${1:nome};",
+      "$0"
     ],
-    "description": "Template básico de algoritmo MiniDart"
+    "description": "Template básico de programa MiniDart"
   },
-  "Função": {
+  "Função MiniDart": {
     "prefix": "funcao",
     "body": [
-      "funcao ${1:nome}(${2:parametros}): ${3:tipo}",
-      "inicio",
+      "funcao ${1:nome}(${2:parametros}) {",
       "\t$0",
-      "\tretorne ${4:valor};",
-      "fim"
+      "\tretornar ${3:valor};",
+      "}"
     ],
     "description": "Template de função MiniDart"
   },
-  "Procedimento": {
-    "prefix": "procedimento",
+  "Função simples": {
+    "prefix": "funcaosimples",
     "body": [
-      "procedimento ${1:nome}(${2:parametros})",
-      "inicio",
-      "\t$0",
-      "fim"
+      "funcao ${1:quadrado}(${2:x}) {",
+      "\tretornar ${2:x} * ${2:x};",
+      "}",
+      "",
+      "var ${3:resultado} = ${1:quadrado}(${4:5});",
+      "imprimir ${3:resultado};"
     ],
-    "description": "Template de procedimento MiniDart"
+    "description": "Exemplo de função simples"
+  },
+  "Função com múltiplos parâmetros": {
+    "prefix": "funcaomultipla",
+    "body": [
+      "funcao ${1:somar}(${2:a}, ${3:b}) {",
+      "\tretornar ${2:a} + ${3:b};",
+      "}",
+      "",
+      "var ${4:resultado} = ${1:somar}(${5:10}, ${6:20});",
+      "imprimir ${4:resultado};"
+    ],
+    "description": "Função com múltiplos parâmetros"
   },
   "Estrutura condicional se": {
     "prefix": "se",
     "body": [
-      "se (${1:condicao}) entao",
+      "se (${1:condicao}) {",
       "\t$0",
-      "fim"
+      "}"
     ],
     "description": "Estrutura condicional se"
   },
-  "Estrutura condicional se-senão": {
+  "Estrutura condicional se-senao": {
     "prefix": "sesenao",
     "body": [
-      "se (${1:condicao}) entao",
+      "se (${1:condicao}) {",
       "\t${2:// código verdadeiro}",
-      "senao",
+      "} senao {",
       "\t${3:// código falso}",
-      "fim"
+      "}"
     ],
-    "description": "Estrutura condicional se-senão"
+    "description": "Estrutura condicional se-senao"
   },
   "Laço enquanto": {
     "prefix": "enquanto",
     "body": [
-      "enquanto (${1:condicao}) faca",
+      "var ${1:contador} = ${2:0};",
+      "enquanto (${1:contador} < ${3:10}) {",
+      "\timprimir ${1:contador};",
+      "\t${1:contador} = ${1:contador} + 1;",
       "\t$0",
-      "fim"
+      "}"
     ],
     "description": "Laço enquanto"
   },
   "Laço para": {
     "prefix": "para",
     "body": [
-      "para ${1:variavel} = ${2:inicio} ate ${3:fim} faca",
+      "para ${1:i} = ${2:1} ate ${3:10} faca {",
+      "\timprimir ${1:i};",
       "\t$0",
-      "fim"
+      "}"
     ],
-    "description": "Laço para"
+    "description": "Laço para básico"
+  },
+  "Laço para com incremento": {
+    "prefix": "parapasso",
+    "body": [
+      "para ${1:x} = ${2:0} ate ${3:20} passo ${4:2} faca {",
+      "\timprimir ${1:x};",
+      "\t$0",
+      "}"
+    ],
+    "description": "Laço para com incremento personalizado"
   },
   "Declaração de variável": {
     "prefix": "var",
     "body": [
-      "var ${1:nome}: ${2:tipo} = ${3:valor};"
+      "var ${1:nome} = ${2:valor};"
     ],
     "description": "Declaração de variável"
   },
-  "Constante": {
-    "prefix": "const",
+  "Imprimir": {
+    "prefix": "imprimir",
     "body": [
-      "const ${1:nome}: ${2:tipo} = ${3:valor};"
+      "imprimir ${1:valor};"
     ],
-    "description": "Declaração de constante"
+    "description": "Comando imprimir"
   },
-  "Escrever": {
-    "prefix": "escreva",
+  "Retornar": {
+    "prefix": "retornar",
     "body": [
-      "escreva(${1:\"Mensagem\"});"
+      "retornar ${1:valor};"
     ],
-    "description": "Comando escreva"
-  },
-  "Ler": {
-    "prefix": "leia",
-    "body": [
-      "leia(${1:variavel});"
-    ],
-    "description": "Comando leia"
+    "description": "Comando retornar"
   },
   "Comentário de linha": {
     "prefix": "//",
@@ -102,43 +123,6 @@
       "// ${1:comentário}"
     ],
     "description": "Comentário de linha"
-  },
-  "Comentário de bloco": {
-    "prefix": "/*",
-    "body": [
-      "/*",
-      " * ${1:comentário}",
-      " */"
-    ],
-    "description": "Comentário de bloco"
-  },
-  "Tipos básicos - inteiro": {
-    "prefix": "inteiro",
-    "body": [
-      "inteiro"
-    ],
-    "description": "Tipo inteiro"
-  },
-  "Tipos básicos - real": {
-    "prefix": "real",
-    "body": [
-      "real"
-    ],
-    "description": "Tipo real"
-  },
-  "Tipos básicos - texto": {
-    "prefix": "texto",
-    "body": [
-      "texto"
-    ],
-    "description": "Tipo texto"
-  },
-  "Tipos básicos - lógico": {
-    "prefix": "logico",
-    "body": [
-      "logico"
-    ],
-    "description": "Tipo lógico"
   },
   "Verdadeiro": {
     "prefix": "verdadeiro",
@@ -153,5 +137,33 @@
       "falso"
     ],
     "description": "Valor lógico falso"
+  },
+  "Nulo": {
+    "prefix": "nulo",
+    "body": [
+      "nulo"
+    ],
+    "description": "Valor nulo"
+  },
+  "Calculadora com funções": {
+    "prefix": "calculadora",
+    "body": [
+      "funcao somar(a, b) {",
+      "\tretornar a + b;",
+      "}",
+      "",
+      "funcao multiplicar(x, y) {",
+      "\tretornar x * y;",
+      "}",
+      "",
+      "var resultado1 = somar(${1:10}, ${2:20});",
+      "var resultado2 = multiplicar(${3:5}, ${4:6});",
+      "",
+      "imprimir \"Soma: \";",
+      "imprimir resultado1;",
+      "imprimir \"Multiplicação: \";",
+      "imprimir resultado2;"
+    ],
+    "description": "Exemplo de calculadora com funções"
   }
 }

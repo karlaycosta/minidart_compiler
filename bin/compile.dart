@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:convert';
 import 'package:minidart_compiler/src/lexer.dart';
 import 'package:minidart_compiler/src/parser.dart';
 import 'package:minidart_compiler/src/error.dart';
@@ -11,26 +12,42 @@ import 'package:minidart_compiler/src/ast_graphviz_generator.dart';
 final errorReporter = ErrorReporter();
 
 void main(List<String> args) {
+  // Verifica se é pedido para mostrar a versão
+  if (args.contains('--version') || args.contains('-v')) {
+    print('MiniDart Compiler v1.4.1');
+    print('Copyright (c) 2025 Deriks Karlay Dias Costa');
+    print('Linguagem de programação educacional em português');
+    exit(0);
+  }
+
   if (args.isEmpty) {
-    print('Uso: dart bin/compile.dart <caminho_para_arquivo.mdart> [--ast-only]');
+    print('Uso: dart bin/compile.dart <caminho_para_arquivo.mdart> [opções]');
     print('');
     print('Opções:');
-    print('  --ast-only    Gera apenas a AST em Graphviz (não executa o código)');
+    print(
+      '  --ast-only, -a   Gera apenas a AST em Graphviz (não executa o código)',
+    );
+    print('  --bytecode, -b   Mostra o bytecode gerado durante a compilação');
+    print('  --version,  -v   Mostra a versão do compilador');
     print('');
     print('Exemplos:');
     print('  dart bin/compile.dart exemplos/exemplo_basico.mdart');
     print('  dart bin/compile.dart exemplos/exemplo_ast.mdart --ast-only');
+    print('  dart bin/compile.dart exemplos/teste.mdart --bytecode');
+    print('  dart bin/compile.dart exemplos/teste.mdart -b');
+    print('  dart bin/compile.dart --version');
     exit(64); // Código de erro para uso incorreto.
   }
 
   final filePath = args.first;
-  final astOnly = args.contains('--ast-only');
+  final astOnly = args.contains('--ast-only') || args.contains('-a');
+  final showBytecode = args.contains('--bytecode') || args.contains('-b');
   final source = File(filePath).readAsStringSync();
 
-  run(source, astOnly: astOnly);
+  run(source, astOnly: astOnly, showBytecode: showBytecode);
 }
 
-void run(String source, {bool astOnly = false}) {
+void run(String source, {bool astOnly = false, bool showBytecode = false}) {
   errorReporter.reset();
 
   // --- Fase 1: Análise Léxica (Scanner) ---
@@ -52,13 +69,12 @@ void run(String source, {bool astOnly = false}) {
   }
 
   // 🌳 === GERAÇÃO DA AST EM GRAPHVIZ ===
-  print('--- AST em Graphviz ---');
-  final astGenerator = ASTGraphvizGenerator();
-  astGenerator.saveAndVisualize(statements, filename: 'minidart_ast');
-  print('-----------------------\n');
-
   // Se for apenas AST, parar aqui
   if (astOnly) {
+    print('--- AST em Graphviz ---');
+    final astGenerator = ASTGraphvizGenerator();
+    astGenerator.saveAndVisualize(statements, filename: 'minidart_ast');
+    print('-----------------------\n');
     print('✅ AST gerada com sucesso! Use o comando abaixo para visualizar:');
     print('   dot -Tpng minidart_ast.dot -o minidart_ast.png');
     return;
@@ -78,13 +94,17 @@ void run(String source, {bool astOnly = false}) {
   final codeGenerator = CodeGenerator();
   final chunk = codeGenerator.compile(statements);
 
-  print('--- Bytecode Gerado ---');
-  chunk.disassemble();
-  print('-----------------------\n');
+  // Mostra bytecode apenas se solicitado
+  if (showBytecode) {
+    print('--- Bytecode Gerado ---');
+    chunk.disassemble();
+    print('-----------------------\n');
+  }
 
   // --- Fase 5: Execução na VM ---
   final vm = VM();
-  print('--- Saída da Execução ---');
+  vm.setFunctions(
+    codeGenerator.functions,
+  ); // Passa as funções compiladas para a VM
   vm.interpret(chunk);
-  print('-------------------------');
 }
