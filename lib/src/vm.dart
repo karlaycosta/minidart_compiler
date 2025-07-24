@@ -48,7 +48,7 @@ class VM {
     try {
       return _run();
     } on VmRuntimeError catch (e) {
-      print('Erro de Execução: ${e.message}');
+      stderr.writeln('Erro de Execução: ${e.message}');
       return InterpretResult.runtimeError;
     }
   }
@@ -131,7 +131,7 @@ class VM {
           break;
         case OpCode.print:
           final value = _stringify(_pop());
-          stdout.write(value + '\n');
+          stdout.write('$value\n');
           break;
         case OpCode.jump:
           _ip += instruction.operand!;
@@ -235,9 +235,14 @@ class VM {
       args.insert(0, _pop()); // Remove argumentos na ordem reversa
     }
     
-    // Define parâmetros como variáveis globais temporárias
+    // Salva as variáveis globais que podem ser sobrescritas pelos parâmetros
+    final savedGlobals = <String, Object?>{};
     for (int i = 0; i < function.paramNames.length; i++) {
-      _globals[function.paramNames[i]] = args[i];
+      final paramName = function.paramNames[i];
+      if (_globals.containsKey(paramName)) {
+        savedGlobals[paramName] = _globals[paramName];
+      }
+      _globals[paramName] = args[i];
     }
 
     // Cria um novo frame de chamada
@@ -251,9 +256,13 @@ class VM {
     // Executa a função
     final result = _executeFunction(frame);
     
-    // Limpa parâmetros temporários
+    // Restaura as variáveis globais originais
     for (final paramName in function.paramNames) {
-      _globals.remove(paramName);
+      if (savedGlobals.containsKey(paramName)) {
+        _globals[paramName] = savedGlobals[paramName];
+      } else {
+        _globals.remove(paramName);
+      }
     }
     
     return result;
@@ -373,6 +382,24 @@ class VM {
         break;
       case OpCode.print:
         print(_pop());
+        break;
+      case OpCode.jump:
+        _ip += instruction.operand!;
+        break;
+      case OpCode.jumpIfFalse:
+        if (!_isTruthy(_peek(0))) {
+          _ip += instruction.operand!;
+        }
+        _pop(); // Remove a condição da pilha após verificá-la
+        break;
+      case OpCode.loop:
+        _ip -= instruction.operand!;
+        break;
+      case OpCode.call:
+        final argCount = instruction.operand!;
+        if (!_callValue(_peek(0), argCount)) {
+          _runtimeError("Erro na chamada de função.");
+        }
         break;
       default:
         _runtimeError("Operação não suportada: ${instruction.opcode}");

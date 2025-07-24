@@ -92,6 +92,21 @@ class ASTGraphvizGenerator implements AstVisitor<String> {
   }
 
   @override
+  String visitTypedVarDeclStmt(TypedVarDeclStmt stmt) {
+    final nodeId = _nextId();
+    final varName = _escapeLabel(stmt.name.lexeme);
+    final typeName = _escapeLabel(stmt.type.name);
+    _buffer.writeln('  $nodeId [label="📦 $typeName $varName", fillcolor=lightblue];');
+    
+    if (stmt.initializer != null) {
+      final initId = stmt.initializer!.accept(this);
+      _buffer.writeln('  $nodeId -> $initId [label="inicializar"];');
+    }
+    
+    return nodeId;
+  }
+
+  @override
   String visitIfStmt(IfStmt stmt) {
     final nodeId = _nextId();
     _buffer.writeln('  $nodeId [label="🔀 se", fillcolor=orange, shape=diamond];');

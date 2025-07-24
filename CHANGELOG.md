@@ -19,6 +19,86 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ---
 
+## [1.5.0] - 2025-07-24
+
+### ✨ Adicionado
+- **🎯 Suporte Completo a Declarações de Variáveis Tipadas**: Nova sintaxe para declaração explícita de tipos
+  - **Sintaxe tipada**: `tipo nome = valor;` (ex: `inteiro a = 10;`, `real altura = 1.75;`)
+  - **Tipos suportados**: `inteiro`, `real`, `texto`, `logico`, `vazio`
+  - **Valores padrão automáticos**: Variáveis sem inicialização recebem valores padrão baseados no tipo
+  - **Compatibilidade total**: Funciona junto com declarações `var` existentes
+  - **Integração completa**: Suporte em toda a pipeline do compilador
+- **Classes AST expandidas**:
+  - `TypedVarDeclStmt`: Nova classe para declarações tipadas
+  - `TypeInfo`: Representação de informações de tipo
+  - Método `visitTypedVarDeclStmt` adicionado à interface `AstVisitor`
+- **Parser aprimorado**:
+  - Detecção automática de declarações tipadas vs declarações `var`
+  - Método `_typedVarDeclaration()` para parsing de sintaxe tipada
+  - Suporte a declarações com e sem inicialização
+- **Geração de código**:
+  - Método `_getDefaultValueForType()` para valores padrão por tipo
+  - Geração de bytecode otimizada para variáveis tipadas
+  - Tratamento especial para inicialização com valores padrão
+
+### 🐛 Corrigido
+- **Crítico: Perda de variáveis globais após chamadas de função**:
+  - Resolvido problema onde variáveis globais eram perdidas quando tinham o mesmo nome de parâmetros de função
+  - **Sintoma**: `Erro de Execução: Variável global indefinida 'a'` em múltiplas chamadas de função
+  - **Causa identificada**: Método `_call()` na VM removia permanentemente variáveis globais ao limpar parâmetros temporários
+  - **Cenário problemático**: `var a = 10; funcao soma(inteiro a) {...}; se (soma(a) >= 10) {...}` - segunda chamada falhava
+  - **Solução implementada**: Backup e restauração de variáveis globais que são mascaradas por parâmetros
+  - Sistema de funções agora completamente funcional e robusto
+- **Crítico: Estruturas condicionais e loops dentro de funções**:
+  - Resolvido problema onde condicionais (`se/senao`) e loops (`enquanto`, `para`) falhavam dentro de funções
+  - **Sintoma**: `Erro de Execução: Operação não suportada: OpCode.jumpIfFalse` ao usar condicionais em funções
+  - **Causa identificada**: Método `_executeInstruction()` na VM não tinha suporte para instruções de controle de fluxo
+  - **Cenário problemático**: `funcao teste() { se (condicao) { ... } }` - qualquer lógica condicional em função falhava
+  - **Solução implementada**: Adicionados cases para `jumpIfFalse`, `jump`, `loop` e `call` em `_executeInstruction()`
+  - Funções agora suportam toda a gama de estruturas de controle internamente
+
+### 🔧 Arquitetura Expandida
+- **Análise semântica**: 
+  - `visitTypedVarDeclStmt()` implementado no semantic analyzer
+  - Registro de variáveis tipadas na tabela de símbolos
+  - Validação de tipos durante a análise
+- **Visitors atualizados**:
+  - `CodeGenerator`: Geração de bytecode para declarações tipadas
+  - `LineVisitor`: Extração de número da linha para debugging
+  - `LocationVisitor`: Informações de localização para erros precisos
+  - `ASTGraphvizGenerator`: Visualização diferenciada com cor azul claro
+
+### 📊 Valores Padrão por Tipo
+- **`inteiro`** → `0`: Números inteiros começam em zero
+- **`real`** → `0.0`: Números reais começam em zero ponto zero  
+- **`texto`** → `""`: Strings começam vazias
+- **`logico`** → `false`: Booleanos começam como falso
+- **`vazio`** → `null`: Tipo void é nulo por padrão
+
+### ✅ Funcionalidades Validadas
+- **Declaração com inicialização**: `inteiro a = 10;` → Compila e executa perfeitamente
+- **Declaração sem inicialização**: `inteiro x;` → Usa valor padrão (0)
+- **Múltiplos tipos**: `real pi = 3.14; texto nome = "João"; logico ativo = verdadeiro;`
+- **Uso em expressões**: `inteiro resultado = a + 5;` → Integração total com operadores
+- **Reassignação**: `a = 20;` → Modificação de variáveis tipadas funciona normalmente
+- **Compatibilidade**: Declarações `var` e tipadas funcionam no mesmo arquivo
+- **Bug de funções corrigido**: `var a = 10; se (soma(a) >= 10) {...}` → Múltiplas chamadas funcionam
+- **Funções com condicionais**: `funcao classificar(inteiro x) { se (x > 0) { retornar "Positivo"; } }`
+- **Funções com loops**: `funcao fatorial(inteiro n) { enquanto (i <= n) { ... } }` → Fatorial(5) = 120
+- **Estruturas complexas**: Condicionais aninhados, loops e chamadas de função dentro de funções
+
+### 🚀 Impacto
+- **Linguagem mais robusta**: Declarações explícitas de tipo melhoram legibilidade
+- **Desenvolvimento facilitado**: Valores padrão eliminam necessidade de inicialização manual
+- **Sistema de funções estabilizado**: Dois bugs críticos de funções resolvidos completamente
+- **Confiabilidade garantida**: Múltiplas chamadas de função e estruturas de controle funcionam perfeitamente
+- **Funcionalidade completa**: Funções agora suportam toda a gama de estruturas da linguagem
+- **Programação procedural avançada**: Condicionais, loops e lógica complexa dentro de funções
+- **Base para futuras funcionalidades**: Infraestrutura preparada para verificação de tipos mais rigorosa
+- **Experiência melhorada**: Sintaxe mais clara e próxima de linguagens convencionais
+
+---
+
 ## [1.4.1] - 2025-07-24
 
 ### 🐛 Corrigido

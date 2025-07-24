@@ -1,3 +1,0 @@
-var nome = "MiniDart";
-var numero = 42;
-imprimir nome + numero;

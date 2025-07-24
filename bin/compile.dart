@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:convert';
 import 'package:minidart_compiler/src/lexer.dart';
 import 'package:minidart_compiler/src/parser.dart';
 import 'package:minidart_compiler/src/error.dart';
@@ -54,7 +53,7 @@ void run(String source, {bool astOnly = false, bool showBytecode = false}) {
   final lexer = Lexer(source, errorReporter);
   final tokens = lexer.scanTokens();
   if (errorReporter.hadError) {
-    print('Erros encontrados durante a análise léxica. Compilação abortada.');
+    stderr.writeln('Erros encontrados durante a análise léxica. Compilação abortada.');
     return;
   }
 
@@ -62,7 +61,7 @@ void run(String source, {bool astOnly = false, bool showBytecode = false}) {
   final parser = Parser(tokens, errorReporter);
   final statements = parser.parse();
   if (errorReporter.hadError) {
-    print(
+    stderr.writeln(
       'Erros encontrados durante a análise sintática. Compilação abortada.',
     );
     return;
@@ -84,7 +83,7 @@ void run(String source, {bool astOnly = false, bool showBytecode = false}) {
   final semanticAnalyzer = SemanticAnalyzer(errorReporter);
   semanticAnalyzer.analyze(statements);
   if (errorReporter.hadError) {
-    print(
+    stderr.writeln(
       'Erros encontrados durante a análise semântica. Compilação abortada.',
     );
     return;

@@ -43,6 +43,9 @@ abstract interface class AstVisitor<T> {
   /// Visita uma declaração de variável (var nome = valor;)
   T visitVarDeclStmt(VarDeclStmt stmt);
   
+  /// Visita uma declaração de variável tipada (tipo nome = valor;)
+  T visitTypedVarDeclStmt(TypedVarDeclStmt stmt);
+  
   /// Visita um loop while (enquanto)
   T visitWhileStmt(WhileStmt stmt);
   
@@ -194,6 +197,31 @@ final class VarDeclStmt extends Stmt {
   VarDeclStmt(this.name, this.initializer);
   
   @override T accept<T>(AstVisitor<T> visitor) => visitor.visitVarDeclStmt(this);
+}
+
+/// **Statement de Declaração de Variável Tipada: tipo nome = valor**
+/// 
+/// Implementa declarações de variáveis com tipos explícitos na linguagem MiniDart.
+/// Permite especificar o tipo da variável na declaração.
+/// 
+/// **Exemplos:** 
+/// - `inteiro idade = 25;`
+/// - `texto nome = "João";`
+/// - `real altura = 1.75;`
+/// - `logico ativo = verdadeiro;`
+final class TypedVarDeclStmt extends Stmt {
+  /// Informação sobre o tipo da variável
+  final TypeInfo type;
+  
+  /// Token que representa o nome da variável
+  final Token name;
+  
+  /// Expressão para calcular o valor inicial (opcional)
+  final Expr? initializer;
+  
+  TypedVarDeclStmt(this.type, this.name, this.initializer);
+  
+  @override T accept<T>(AstVisitor<T> visitor) => visitor.visitTypedVarDeclStmt(this);
 }
 
 /// **Statement de Loop While: enquanto (condição) statement**

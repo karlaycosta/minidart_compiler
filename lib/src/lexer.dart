@@ -72,18 +72,14 @@ class Lexer {
   /// - **Orientação a objetos**: isto, super
   static final Map<String, TokenType> _keywords = {
     'e': TokenType.and, // Operador lógico AND
-    'classe': TokenType.class_, // Declaração de classe
     'senao': TokenType.else_, // Estrutura condicional ELSE
     'falso': TokenType.false_, // Literal booleano false
-    'funcao': TokenType.fun, // Declaração de função
     'para': TokenType.for_, // Loop FOR
     'se': TokenType.if_, // Estrutura condicional IF
     'nulo': TokenType.nil, // Literal valor nulo
     'ou': TokenType.or, // Operador lógico OR
     'imprimir': TokenType.print_, // Comando de impressão
     'retornar': TokenType.return_, // Comando de retorno de função
-    'super': TokenType.super_, // Referência à classe pai
-    'isto': TokenType.this_, // Referência ao objeto atual
     'verdadeiro': TokenType.true_, // Literal booleano true
     'var': TokenType.var_, // Declaração de variável
     'enquanto': TokenType.while_, // Loop WHILE
@@ -134,7 +130,9 @@ class Lexer {
       _scanToken(); // Processa um token
     }
     // Adiciona token de fim de arquivo
-    _tokens.add(Token(type: TokenType.eof, lexeme: "", line: _line, column: _column));
+    _tokens.add(
+      Token(type: TokenType.eof, lexeme: "", line: _line, column: _column),
+    );
     return _tokens;
   }
 
@@ -503,6 +501,14 @@ class Lexer {
   /// 3. Adiciona à lista de tokens
   void _addToken(TokenType type, [Object? literal]) {
     final text = _source.substring(_start, _current);
-    _tokens.add(Token(type: type, lexeme: text, literal: literal, line: _line, column: _tokenStartColumn));
+    _tokens.add(
+      Token(
+        type: type,
+        lexeme: text,
+        literal: literal,
+        line: _line,
+        column: _tokenStartColumn,
+      ),
+    );
   }
 }

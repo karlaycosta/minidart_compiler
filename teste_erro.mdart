@@ -1,4 +1,0 @@
-// Teste de erro runtime
-var texto = "ola";
-var numero = 5;
-imprimir texto + numero

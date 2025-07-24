@@ -33,6 +33,13 @@ class Parser {
         return _functionDeclaration();
       }
       
+      // Verificar se é uma declaração de variável tipada (tipo + identificador + =)
+      if (_isTypeToken(_peek()) && 
+          _current + 1 < _tokens.length && 
+          _peekNext().type == TokenType.identifier) {
+        return _typedVarDeclaration();
+      }
+      
       return _statement();
     } on ParseError {
       _synchronize();
@@ -48,6 +55,36 @@ class Parser {
     }
     _consume(TokenType.semicolon, "Esperado ';' após a declaração da variável.");
     return VarDeclStmt(name, initializer);
+  }
+
+  /// **Análise de Declaração de Variável Tipada**
+  /// 
+  /// Processa declarações como: inteiro a = 10; ou texto nome = "João";
+  /// 
+  /// **Sintaxe:** tipo identificador [= expressão];
+  /// 
+  /// **Exemplos:**
+  /// - inteiro idade = 25;
+  /// - real altura = 1.75;
+  /// - texto nome = "Maria";
+  /// - logico ativo = verdadeiro;
+  /// - inteiro contador; // sem inicialização
+  Stmt _typedVarDeclaration() {
+    // Consumir o tipo
+    final typeToken = _advance();
+    final type = TypeInfo(typeToken);
+    
+    // Consumir o nome da variável
+    final name = _consume(TokenType.identifier, "Esperado nome da variável após tipo.");
+    
+    // Verificar se há inicialização
+    Expr? initializer;
+    if (_match([TokenType.equal])) {
+      initializer = _expression();
+    }
+    
+    _consume(TokenType.semicolon, "Esperado ';' após a declaração da variável tipada.");
+    return TypedVarDeclStmt(type, name, initializer);
   }
 
   Stmt _statement() {
@@ -328,8 +365,6 @@ class Parser {
     while (!_isAtEnd()) {
       if (_previous().type == TokenType.semicolon) return;
       switch (_peek().type) {
-        case TokenType.class_:
-        case TokenType.fun:
         case TokenType.var_:
         case TokenType.for_:
         case TokenType.if_:

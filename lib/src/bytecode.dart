@@ -1,3 +1,5 @@
+import 'dart:io';
+
 /// Define os Opcodes (códigos de operação) para a Máquina Virtual MiniDart.
 enum OpCode {
   // --- Operações de Pilha e Constantes ---
@@ -129,7 +131,7 @@ class BytecodeChunk {
 
   /// Desmonta o bytecode para depuração.
   void disassemble() {
-    print('--- Desmontagem do Bytecode ---');
+    stdout.writeln('--- Desmontagem do Bytecode ---');
     for (int offset = 0; offset < code.length; offset++) {
       _disassembleInstruction(offset);
     }
@@ -149,6 +151,6 @@ class BytecodeChunk {
       }
     }
 
-    print('$offsetStr $lineStr $opName $operandStr');
+    stdout.writeln('$offsetStr $lineStr $opName $operandStr');
   }
 }

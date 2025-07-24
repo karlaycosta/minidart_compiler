@@ -1,11 +1,11 @@
-# 🚀 **MiniDart Compiler v1.4.1**
+# 🚀 **MiniDart Compiler v1.5.0**
 
 Um compilador completo para a linguagem **MiniDart** - uma linguagem de programação educacional com sintaxe em português, implementado em Dart.
 
 ![Dart](https://img.shields.io/badge/Dart-3.8.1-blue)
-![Version](https://img.shields.io/badge/Version-v1.4.1-brightgreen)
+![Version](https://img.shields.io/badge/Version-v1.5.0-brightgreen)
 ![License](https://img.shields.io/badge/License-MIT-green)
-![Status](https://img.shields.io/badge/Status-Active-brightgreen)
+![Status](https://img.shields.io/badge/Status-Stable-brightgreen)
 
 ---
 
@@ -33,11 +33,12 @@ O **MiniDart Compiler** é um projeto educacional que implementa um compilador c
 ### **🌟 Principais Características**
 
 - 🇧🇷 **Sintaxe em Português**: Keywords como `se`, `senao`, `enquanto`, `para`, `funcao`, `retornar`, `imprimir`
-- 🏗️ **Arquitetura Modular**: Lexer → Parser → Semantic Analyzer → Code Generator → VM
+- � **Declarações Tipadas**: Suporte completo a tipos explícitos (`inteiro`, `real`, `texto`, `logico`, `vazio`)
+- �🏗️ **Arquitetura Modular**: Lexer → Parser → Semantic Analyzer → Code Generator → VM
 - 🎯 **Padrão Visitor**: Design patterns modernos para processamento da AST
 - ⚡ **Máquina Virtual**: Execução via bytecode em VM stack-based com call stack completo
 - 🔍 **Análise Completa**: Verificação de escopo, tipos e erros semânticos
-- 🎯 **Funções Completas**: Sistema completo de funções com parâmetros e retorno
+- 🎯 **Funções Avançadas**: Sistema robusto com condicionais, loops e chamadas aninhadas
 - 🌳 **Visualização AST**: Geração automática de diagramas com Graphviz
 - 🛠️ **Extensão VS Code**: Suporte completo com syntax highlighting e comandos integrados
 - 🎯 **Erro Reporting Preciso**: Localização exata com linha e coluna `[linha X, coluna Y]`
@@ -50,18 +51,20 @@ O **MiniDart Compiler** é um projeto educacional que implementa um compilador c
 
 ### **🔧 Funcionalidades Implementadas**
 
-- ✅ **Variáveis**: Declaração e atribuição (`var nome = "João";`)
+- ✅ **Declarações Tipadas**: `inteiro a = 10;`, `real altura = 1.75;`, `texto nome = "João";`, `logico ativo = verdadeiro;`
+- ✅ **Valores Padrão Automáticos**: Variáveis sem inicialização recebem valores baseados no tipo
+- ✅ **Variáveis Tradicionais**: Declaração e atribuição (`var nome = "João";`)
 - ✅ **Tipos de Dados**: Números, strings, booleanos, nulo
 - ✅ **Operadores Aritméticos**: `+`, `-`, `*`, `/`
 - ✅ **Operadores Comparação**: `>`, `>=`, `<`, `<=`, `==`, `!=`
 - ✅ **Operadores Lógicos**: `e` (AND), `ou` (OR), `!` (NOT)
-- ✅ **Estruturas Condicionais**: `se`/`senao`
-- ✅ **Loops**: `enquanto` (while), `para` (for) - **Totalmente funcionais**
-- ✅ **Funções**: Declaração, chamada, parâmetros e retorno - **Implementação completa**
+- ✅ **Estruturas Condicionais**: `se`/`senao` (incluindo dentro de funções)
+- ✅ **Loops Avançados**: `enquanto` (while), `para` (for básico e com incremento personalizado)
+- ✅ **Funções Robustas**: Declaração, chamada, parâmetros, retorno, condicionais e loops internos
 - ✅ **Blocos de Código**: `{ ... }`
 - ✅ **Impressão**: `imprimir valor;`
-- ✅ **Expressões Complexas**: Precedência e parênteses
-- ✅ **Visualização AST**: Geração automática com Graphviz
+- ✅ **Expressões Complexas**: Precedência, parênteses e chamadas aninhadas
+- ✅ **Visualização AST**: Geração automática com Graphviz (incluindo tipos)
 - ✅ **Extensão VS Code**: Syntax highlighting e comandos integrados
 
 ### **🚧 Futuras Implementações**
@@ -324,11 +327,20 @@ code --install-extension minidart-1.2.0.vsix
 
 | Português | Função |
 |-----------|---------|
-| `var` | Declaração de variável |
+| `var` | Declaração de variável tradicional |
+| `inteiro` | Tipo inteiro |
+| `real` | Tipo ponto flutuante |
+| `texto` | Tipo string |
+| `logico` | Tipo booleano |
+| `vazio` | Tipo void |
 | `se` | Condicional if |
 | `senao` | Condicional else |
 | `enquanto` | Loop while |
 | `para` | Loop for |
+| `ate` | Até (limite for) |
+| `passo` | Incremento personalizado |
+| `faca` | Faça (corpo for) |
+| `funcao` | Declaração de função |
 | `retornar` | Retorno de função |
 | `imprimir` | Comando print |
 | `verdadeiro` | Boolean true |
@@ -340,19 +352,23 @@ code --install-extension minidart-1.2.0.vsix
 ### **🎯 Tipos de Dados**
 
 ```dart
-// Números (int/double)
-var inteiro = 42;
-var decimal = 3.14;
+// ===== DECLARAÇÕES TIPADAS (v1.5.0) =====
+inteiro idade = 25;           // Inteiro
+real altura = 1.75;           // Ponto flutuante
+texto nome = "Maria";         // String
+logico ativo = verdadeiro;    // Booleano
 
-// Strings
-var texto = "Olá, MiniDart!";
+// Valores padrão automáticos
+inteiro contador;             // Inicializa com 0
+real preco;                   // Inicializa com 0.0
+texto descricao;              // Inicializa com ""
+logico disponivel;            // Inicializa com falso
 
-// Booleanos
-var ativo = verdadeiro;
-var inativo = falso;
-
-// Nulo
-var vazio = nulo;
+// ===== DECLARAÇÕES TRADICIONAIS =====
+var numero = 42;              // Inferência de tipo
+var texto = "Olá, MiniDart!"; // String
+var ativo = verdadeiro;       // Boolean
+var vazio = nulo;             // Null
 ```
 
 ### **⚙️ Operadores**
@@ -429,59 +445,116 @@ imprimir area_retangulo(5, 3);
 
 ## 🎪 **Exemplos**
 
-### **📊 Calculadora Simples**
+### **📊 Calculadora com Tipos**
 
 ```dart
-// calculadora.mdart
-var a = 10;
-var b = 3;
+// calculadora_tipada.mdart
+inteiro a = 10;
+inteiro b = 3;
+real resultado;
 
-imprimir "Calculadora MiniDart";
+imprimir "Calculadora MiniDart com Tipos";
 imprimir "a = ";
 imprimir a;
 imprimir "b = ";
 imprimir b;
 
+resultado = a + b;
 imprimir "Soma: ";
-imprimir a + b;
+imprimir resultado;
 
+resultado = a * b;
 imprimir "Multiplicação: ";
-imprimir a * b;
+imprimir resultado;
 
+logico maior = a > b;
 imprimir "a > b: ";
-imprimir a > b;
+imprimir maior;
 ```
 
-### **🔢 Contador com Loop**
+### **🔢 Sistema de Notas Tipado**
 
 ```dart
-// contador.mdart
-var i = 1;
-var limite = 5;
+// sistema_notas.mdart
+real nota1 = 8.5;
+real nota2 = 7.2;
+real media;
+texto situacao;
 
-imprimir "Contando até ";
-imprimir limite;
+media = (nota1 + nota2) / 2;
 
-enquanto (i <= limite) {
-    imprimir "Número: ";
-    imprimir i;
-    i = i + 1;
+se (media >= 7.0) {
+    situacao = "Aprovado";
+} senao {
+    situacao = "Reprovado";
 }
 
-imprimir "Fim da contagem!";
+imprimir "Nota 1: ";
+imprimir nota1;
+imprimir "Nota 2: ";
+imprimir nota2;
+imprimir "Média: ";
+imprimir media;
+imprimir "Situação: ";
+imprimir situacao;
 ```
 
-### **🎯 Validação de Nota**
+### **🎯 Funções com Lógica Avançada**
 
 ```dart
-// notas.mdart
-var nota = 8.5;
-var aprovacao = 7.0;
+// funcoes_avancadas.mdart
+// Função com condicional interna
+texto classificar_idade(inteiro anos) {
+    se (anos < 18) {
+        retornar "Menor de idade";
+    } senao {
+        retornar "Maior de idade";
+    }
+}
 
-se (nota >= aprovacao) {
-    imprimir "Aprovado!";
-    imprimir "Nota: ";
-    imprimir nota;
+// Função com loop interno
+inteiro fatorial(inteiro n) {
+    var resultado = 1;
+    var i = 1;
+    enquanto (i <= n) {
+        resultado = resultado * i;
+        i = i + 1;
+    }
+    retornar resultado;
+}
+
+// Testando as funções
+inteiro idade = 25;
+texto classificacao = classificar_idade(idade);
+inteiro fat5 = fatorial(5);
+
+imprimir "Idade: ";
+imprimir idade;
+imprimir "Classificação: ";
+imprimir classificacao;
+imprimir "Fatorial de 5: ";
+imprimir fat5;
+```
+
+### **🌟 Exemplo Completo de Todas as Funcionalidades**
+
+Execute o arquivo que demonstra **todas as 13 categorias** de funcionalidades do MiniDart:
+
+```bash
+dart run bin/compile.dart exemplos/exemplo_completo_v1.5.0.mdart
+```
+
+Este exemplo inclui:
+- ✅ **Declarações tipadas** e tradicionais
+- ✅ **Operações** aritméticas e lógicas  
+- ✅ **Funções** com condicionais e loops internos
+- ✅ **Estruturas de controle** completas
+- ✅ **Loops** básicos e com incremento
+- ✅ **Blocos e escopo**
+- ✅ **Expressões complexas** e chamadas aninhadas
+- ✅ **Operadores** relacionais e lógicos
+- ✅ **Reassignação** de variáveis
+- ✅ **Demonstração integrativa** final
 } senao {
     imprimir "Reprovado";
     imprimir "Nota insuficiente: ";
@@ -683,32 +756,60 @@ xdot minidart_ast.dot
 
 ---
 
-## 🆕 **Novidades v1.4.1 (24/07/2025)**
+## 🆕 **Novidades v1.5.0 (24/07/2025)**
 
-### **🎯 Melhorias Críticas de Debugging**
+### **🎯 Declarações de Variáveis Tipadas**
 
-- **🐛 Correção crítica**: Mapeamento correto de linhas em erros de runtime
-  - ❌ **Antes**: Erros mostravam linha de bytecode (ex: linha 78)
-  - ✅ **Agora**: Erros mostram linha correta do código fonte (ex: linha 3)
-- **🎯 Localização precisa**: Informação de coluna nos erros
-  - **Formato**: `[linha X, coluna Y]` para identificação exata do problema
-- **🔧 CLI aprimorada**: Opções curtas para maior produtividade
-  - `--ast-only` → `-a` (gerar apenas AST)
-  - `--bytecode` → `-b` (mostrar bytecode)
-  - `--version` → `-v` (versão do compilador)
+- **✨ Nova sintaxe**: `inteiro a = 10;`, `real altura = 1.75;`, `texto nome = "João";`
+- **🎯 Tipos suportados**: `inteiro`, `real`, `texto`, `logico`, `vazio`
+- **⚡ Valores padrão automáticos**: Variáveis sem inicialização recebem valores baseados no tipo
+- **🔄 Compatibilidade total**: Funciona junto com declarações `var` existentes
+- **🏗️ Pipeline completa**: Suporte em toda a arquitetura do compilador
 
-### **⚡ Interface Mais Limpa**
+### **🐛 Correções Críticas do Sistema de Funções**
 
-- **Execução padrão**: Saída limpa, sem informações técnicas desnecessárias
-- **Debugging sob demanda**: Bytecode e AST apenas quando solicitados
-- **Experiência profissional**: Interface CLI consistente com ferramentas modernas
+- **🔧 Bug de variáveis globais**: Resolvido mascaramento de variáveis em chamadas de função
+- **🎯 Estruturas condicionais em funções**: Condicionais e loops agora funcionam dentro de funções
+- **⚡ Funções robustas**: Sistema completo com todas as estruturas de controle
 
-### **🛠️ Arquitetura Aprimorada**
+### **� Funcionalidades Validadas**
 
-- **SourceLocation**: Sistema completo de mapeamento linha/coluna
-- **LocationVisitor**: Novo visitor para extração de localização da AST
-- **Compatibilidade**: Suporte a diferentes line endings (Windows/Unix)
-- **Estabilidade**: Correções no lexer para tokenização precisa
+- **📊 Exemplo completo**: `exemplo_completo_todas_funcionalidades.mdart` demonstra todas as 13 categorias
+- **🧪 Testes abrangentes**: Fatorial, classificação de idade, calculadora de IMC
+- **🎯 Integração perfeita**: Chamadas aninhadas, expressões complexas, múltiplos tipos
+
+### **💡 Arquitetura Expandida**
+
+- **AST**: Nova classe `TypedVarDeclStmt` e sistema `TypeInfo`
+- **Parser**: Detecção automática de declarações tipadas vs tradicionais
+- **VM**: Geração de valores padrão e execução otimizada
+- **Visitors**: Suporte completo em todos os visitors (CodeGenerator, LineVisitor, LocationVisitor, ASTGraphvizGenerator)
+
+---
+
+## 📈 **Histórico de Versões**
+
+### **v1.4.1** - Melhorias de Debugging
+- **Erro reporting** - Localização precisa `[linha X, coluna Y]`
+- **CLI aprimorada** - Opções curtas e interface limpa
+
+### **v1.4.0** - Sistema de Funções  
+- **Funções completas** - Declaração, chamada, parâmetros e retorno
+- **Call stack** - Sistema robusto de pilha de chamadas
+
+### **v1.3.0** - Loops Avançados
+- **For com incremento** - `para x = 0 ate 10 passo 2 faca`
+- **Extensão VS Code** - Syntax highlighting atualizado
+
+### **v1.2.0** - Extensão VS Code
+- **IDE Integration** - Suporte completo no Visual Studio Code
+- **Loop básico** - `para i = 1 ate 5 faca`
+
+### **v1.1.0** - Visualização AST
+- **Graphviz** - Geração automática de diagramas da AST
+
+### **v1.0.0** - Lançamento Inicial
+- **Pipeline completo** - Lexer, Parser, Semantic Analyzer, Code Generator, VM
 
 ---
 

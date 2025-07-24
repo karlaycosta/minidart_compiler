@@ -1,0 +1,213 @@
+// =======================================================
+// EXEMPLO COMPLETO DE TODAS AS FUNCIONALIDADES MINIDART
+// =======================================================
+
+// 1. DECLARAÇÕES DE VARIÁVEIS TIPADAS (v1.5.0)
+imprimir "=== 1. DECLARAÇÕES TIPADAS ===";
+inteiro idade = 25;
+real altura = 1.75;
+texto nome = "Maria";
+logico ativo = verdadeiro;
+
+imprimir "Idade:";
+imprimir idade;
+imprimir "Altura:";
+imprimir altura;
+imprimir "Nome:";
+imprimir nome;
+imprimir "Ativo:";
+imprimir ativo;
+
+// Declaração com valor padrão
+inteiro contador;
+imprimir "Contador inicial:";
+imprimir contador;
+
+// 2. DECLARAÇÕES TRADICIONAIS (v1.0.0)
+imprimir "=== 2. DECLARAÇÕES VAR ===";
+var peso = 70.5;
+var cidade = "São Paulo";
+var estudando = verdadeiro;
+
+imprimir peso;
+imprimir cidade;
+imprimir estudando;
+
+// 3. OPERAÇÕES ARITMÉTICAS E LÓGICAS (v1.0.0)
+imprimir "=== 3. OPERAÇÕES ===";
+var soma = idade + 5;
+var multiplicacao = altura * 2;
+var concatenacao = nome + " Silva";
+var comparacao = idade >= 18;
+var logica = ativo e estudando;
+
+imprimir "Soma:";
+imprimir soma;
+imprimir "Multiplicação:";
+imprimir multiplicacao;
+imprimir "Concatenação:";
+imprimir concatenacao;
+imprimir "Maior de idade:";
+imprimir comparacao;
+imprimir "Ativo e estudando:";
+imprimir logica;
+
+// 4. FUNÇÕES COMPLETAS (v1.4.0)
+imprimir "=== 4. FUNÇÕES ===";
+
+// Função com um parâmetro
+inteiro dobrar(inteiro numero) {
+    retornar numero * 2;
+}
+
+// Função com múltiplos parâmetros
+real calcular_imc(real peso, real altura) {
+    retornar peso / (altura * altura);
+}
+
+// Função com lógica condicional
+texto classificar_idade(inteiro anos) {
+    se (anos < 18) {
+        retornar "Menor de idade";
+    } senao {
+        retornar "Maior de idade";
+    }
+}
+
+// Função com loop interno
+inteiro fatorial(inteiro n) {
+    var resultado = 1;
+    var i = 1;
+    enquanto (i <= n) {
+        resultado = resultado * i;
+        i = i + 1;
+    }
+    retornar resultado;
+}
+
+// Testando as funções
+var idade_dobrada = dobrar(idade);
+var imc = calcular_imc(peso, altura);
+var classificacao = classificar_idade(idade);
+var fatorial_cinco = fatorial(5);
+
+imprimir "Idade dobrada:";
+imprimir idade_dobrada;
+imprimir "IMC:";
+imprimir imc;
+imprimir "Classificação:";
+imprimir classificacao;
+imprimir "Fatorial de 5:";
+imprimir fatorial_cinco;
+
+// 5. ESTRUTURAS CONDICIONAIS (v1.0.0)
+imprimir "=== 5. CONDICIONAIS ===";
+
+se (imc < 18.5) {
+    imprimir "Abaixo do peso";
+} senao {
+    se (imc < 25) {
+        imprimir "Peso normal";
+    } senao {
+        se (imc < 30) {
+            imprimir "Sobrepeso";
+        } senao {
+            imprimir "Obesidade";
+        }
+    }
+}
+
+// 6. LOOPS WHILE (v1.0.0)
+imprimir "=== 6. LOOP ENQUANTO ===";
+var i = 1;
+enquanto (i <= 3) {
+    imprimir "Iteração:";
+    imprimir i;
+    i = i + 1;
+}
+
+// 7. LOOPS FOR BÁSICO (v1.2.0)
+imprimir "=== 7. LOOP PARA BÁSICO ===";
+para j = 1 ate 3 faca {
+    imprimir "Loop for:";
+    imprimir j;
+}
+
+// 8. LOOPS FOR COM INCREMENTO PERSONALIZADO (v1.3.0)
+imprimir "=== 8. LOOP PARA COM PASSO ===";
+para k = 0 ate 10 passo 2 faca {
+    imprimir "Passo 2:";
+    imprimir k;
+}
+
+// 9. BLOCOS E ESCOPO (v1.0.0)
+imprimir "=== 9. BLOCOS E ESCOPO ===";
+var global = "Global";
+{
+    var local = "Local";
+    imprimir global;
+    imprimir local;
+}
+
+// 10. EXPRESSÕES COMPLEXAS E CHAMADAS ANINHADAS
+imprimir "=== 10. EXPRESSÕES COMPLEXAS ===";
+var resultado_complexo = dobrar(calcular_imc(peso, altura));
+imprimir "IMC dobrado:";
+imprimir resultado_complexo;
+
+// Condição com múltiplas chamadas de função
+se (dobrar(idade) > calcular_imc(peso, altura) * 10) {
+    imprimir "Idade dobrada é muito maior que IMC";
+} senao {
+    imprimir "Valores proporcionais";
+}
+
+// 11. OPERADORES RELACIONAIS E LÓGICOS (v1.0.0)
+imprimir "=== 11. OPERADORES ===";
+var maior = idade > 20;
+var menor = altura < 2.0;
+var igual = nome == "Maria";
+var diferente = peso != 0;
+var e_logico = maior e ativo;
+var ou_logico = menor ou estudando;
+
+imprimir "Maior que 20:";
+imprimir maior;
+imprimir "Altura < 2m:";
+imprimir menor;
+imprimir "Nome é Maria:";
+imprimir igual;
+imprimir "Peso diferente de 0:";
+imprimir diferente;
+imprimir "Maior que 20 E ativo:";
+imprimir e_logico;
+imprimir "Altura < 2m OU estudando:";
+imprimir ou_logico;
+
+// 12. REASSIGNAÇÃO DE VARIÁVEIS
+imprimir "=== 12. REASSIGNAÇÃO ===";
+contador = dobrar(5);
+imprimir "Contador atualizado:";
+imprimir contador;
+
+nome = "João";
+imprimir "Nome atualizado:";
+imprimir nome;
+
+// 13. DEMONSTRAÇÃO FINAL INTEGRATIVA
+imprimir "=== 13. DEMONSTRAÇÃO FINAL ===";
+imprimir "Sistema MiniDart funcionando com todas as funcionalidades!";
+
+// Calculadora de estatísticas pessoais
+inteiro calcular_idade_futura(inteiro idade_atual, inteiro anos_adicionar) {
+    retornar idade_atual + anos_adicionar;
+}
+
+para anos = 5 ate 15 passo 5 faca {
+    var idade_futura = calcular_idade_futura(idade, anos);
+    imprimir "Em";
+    imprimir anos;
+    imprimir "anos, você terá:";
+    imprimir idade_futura;
+    imprimir "anos";
+}

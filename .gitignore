@@ -18,9 +18,13 @@ minidart_ast.png
 minidart_ast.svg
 minidart_ast.pdf
 
-# Arquivos temporários
+# Arquivos temporários e de análise
 *.tmp
 *.temp
+ANALYSIS_RESULTADO.md
+
+# WebAssembly gerado
+web/
 
 # IDEs
 .vscode/settings.json

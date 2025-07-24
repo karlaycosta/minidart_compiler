@@ -38,6 +38,23 @@ class CodeGenerator implements AstVisitor<void> {
     _chunk.write(OpCode.pop, -1); // Descarta o resultado da expressão
   }
 
+  Object? _getDefaultValueForType(TypeInfo type) {
+    switch (type.name) {
+      case 'inteiro':
+        return 0;
+      case 'real':
+        return 0.0;
+      case 'texto':
+        return '';
+      case 'logico':
+        return false;
+      case 'vazio':
+        return null;
+      default:
+        return null;
+    }
+  }
+
   @override
   void visitIfStmt(IfStmt stmt) {
     _generateExpr(stmt.condition);
@@ -66,6 +83,19 @@ class CodeGenerator implements AstVisitor<void> {
       _generateExpr(stmt.initializer!);
     } else {
       _emitConstant(null, stmt.name.line); // Valor padrão nulo
+    }
+    final globalIndex = _chunk.addConstant(stmt.name.lexeme);
+    _chunk.write(OpCode.defineGlobal, stmt.name.line, globalIndex);
+  }
+  
+  @override
+  void visitTypedVarDeclStmt(TypedVarDeclStmt stmt) {
+    if (stmt.initializer != null) {
+      _generateExpr(stmt.initializer!);
+    } else {
+      // Valor padrão baseado no tipo
+      final defaultValue = _getDefaultValueForType(stmt.type);
+      _emitConstant(defaultValue, stmt.name.line);
     }
     final globalIndex = _chunk.addConstant(stmt.name.lexeme);
     _chunk.write(OpCode.defineGlobal, stmt.name.line, globalIndex);
@@ -325,6 +355,7 @@ class LineVisitor implements AstVisitor<int> {
   @override int visitIfStmt(IfStmt stmt) => -1;
   @override int visitPrintStmt(PrintStmt stmt) => stmt.expression.accept(this);
   @override int visitVarDeclStmt(VarDeclStmt stmt) => stmt.name.line;
+  @override int visitTypedVarDeclStmt(TypedVarDeclStmt stmt) => stmt.name.line;
   @override int visitWhileStmt(WhileStmt stmt) => -1;
   @override int visitForStmt(ForStmt stmt) => stmt.variable.line;
   @override int visitForStepStmt(ForStepStmt stmt) => stmt.variable.line;
@@ -349,6 +380,7 @@ class LocationVisitor implements AstVisitor<SourceLocation> {
   @override SourceLocation visitIfStmt(IfStmt stmt) => SourceLocation(-1, -1);
   @override SourceLocation visitPrintStmt(PrintStmt stmt) => stmt.expression.accept(this);
   @override SourceLocation visitVarDeclStmt(VarDeclStmt stmt) => SourceLocation(stmt.name.line, stmt.name.column);
+  @override SourceLocation visitTypedVarDeclStmt(TypedVarDeclStmt stmt) => SourceLocation(stmt.name.line, stmt.name.column);
   @override SourceLocation visitWhileStmt(WhileStmt stmt) => SourceLocation(-1, -1);
   @override SourceLocation visitForStmt(ForStmt stmt) => SourceLocation(stmt.variable.line, stmt.variable.column);
   @override SourceLocation visitForStepStmt(ForStepStmt stmt) => SourceLocation(stmt.variable.line, stmt.variable.column);

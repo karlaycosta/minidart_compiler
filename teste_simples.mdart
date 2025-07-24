@@ -1,3 +1,0 @@
-var numero = 5;
-var texto = "ola";
-imprimir texto + numero

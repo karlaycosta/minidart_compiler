@@ -52,6 +52,20 @@ class SemanticAnalyzer implements AstVisitor<void> {
   }
 
   @override
+  void visitTypedVarDeclStmt(TypedVarDeclStmt stmt) {
+    // Declara a variável tipada no escopo atual.
+    _declare(stmt.name);
+    // Se houver um inicializador, resolve-o.
+    if (stmt.initializer != null) {
+      _resolveExpr(stmt.initializer!);
+    }
+    // Define a variável como inicializada.
+    _define(stmt.name);
+    // TODO: Futuramente, adicionar verificação de compatibilidade de tipos
+    // entre o tipo declarado (stmt.type) e o tipo do inicializador
+  }
+
+  @override
   void visitWhileStmt(WhileStmt stmt) {
     _resolveExpr(stmt.condition);
     _resolveStmt(stmt.body);

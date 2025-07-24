@@ -1,0 +1,10 @@
+inteiro soma(inteiro a) {
+    retornar a + 10;
+}
+var a = 10;
+imprimir soma(a);
+se (soma(a) >= 10) {
+    imprimir "É maior...";
+} senao {
+    imprimir "É menor...";
+}
