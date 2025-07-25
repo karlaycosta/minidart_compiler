@@ -1,0 +1,21 @@
+// Teste de inferência de tipos para constantes
+constante var idade = 16;        // deve inferir inteiro
+constante var altura = 1.75;     // deve inferir real
+constante var nome = "João";     // deve inferir texto
+constante var ativo = verdadeiro; // deve inferir logico
+
+imprima idade;
+imprima altura;
+imprima nome;
+imprima ativo;
+
+// Testando uso em expressões
+var resultado = idade + 5;
+imprima resultado;
+
+// Testando constante explícita vs inferida
+constante inteiro MAXIMO = 100;
+constante var MINIMO = 0;
+
+imprima MAXIMO;
+imprima MINIMO;

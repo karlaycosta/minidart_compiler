@@ -1,0 +1,6 @@
+// Teste de variáveis tipadas
+inteiro numero = 50;
+real decimal = 2.5;
+
+imprima numero;   // Deve ser 50 (sem .0)
+imprima decimal;  // Deve ser 2.5

@@ -5,6 +5,42 @@ Todas as alterações notáveis deste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [1.12.4] - 2025-01-XX
+
+### 🐛 Corrigido
+- **Crítico: Impressão incorreta de tipos inteiros**: Correção da exibição de valores inteiros
+  - **Problema**: Constantes e variáveis do tipo `inteiro` eram impressas como números decimais (ex: `16.0` em vez de `16`)
+  - **Causa identificada**: Sistema de tipos sempre armazenava valores como `double` internamente, sem conversão para exibição
+  - **Solução implementada**: 
+    - Novo `OpCode.toInt` adicionado ao conjunto de instruções bytecode
+    - Code generator emite instrução `toInt` para tipos inteiros em declarações e constantes
+    - VM processa instrução `toInt` convertendo valores double para int antes da exibição
+    - Formatação inteligente: números inteiros exibem sem casas decimais, reais mantêm formato original
+  - **Arquivos modificados**: `bytecode.dart`, `code_generator.dart`, `vm.dart`
+  - **Resultado**: `constante inteiro idade = 16` agora imprime corretamente `16` em vez de `16.0`
+
+### ✨ Adicionado
+- **📚 Documentação Completa**: Criação do arquivo `resumo.md` com todas as funcionalidades
+  - **Conteúdo**: Mais de 50 funcionalidades documentadas com exemplos práticos
+  - **Estrutura**: Tipos de dados, operadores, estruturas de controle, funções, loops
+  - **Exemplos**: Código prático para cada funcionalidade da linguagem
+  - **Guia de referência**: Manual completo para desenvolvedores MiniDart
+- **📦 Publicação GitHub**: Repositório atualizado com todas as melhorias
+  - **Commits organizados**: Histórico limpo com mensagens descritivas
+  - **Documentação sincronizada**: README, CHANGELOG e código alinhados
+  - **Versionamento**: Tags de versão para controle de releases
+
+### 🔧 Melhorado
+- **🎨 Extensão VS Code v1.5.1**: Atualização da extensão com correções importantes
+  - **Snippets corrigidos**: Uso correto de `imprima` e `retorne` em todos os templates
+  - **Comando de execução**: Correção do comando `--run` para execução direta
+  - **Syntax highlighting**: Suporte aprimorado para palavras reservadas atualizadas
+  - **Documentação**: README e USAGE.md atualizados com sintaxe correta
+- **⚡ Sistema de tipos aprimorado**: Melhor handling de conversões numéricas
+  - **Preservação de tipos**: Inteiros mantêm identidade visual sem perder precisão
+  - **Compatibilidade**: Sistema continua suportando operações matemáticas mistas
+  - **Performance**: Conversão eficiente sem overhead significativo
+
 ## [1.12.3] - 2025-01-XX
 
 ### 📝 Alterado

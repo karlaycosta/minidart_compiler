@@ -99,19 +99,32 @@ class Parser {
   /// - constante real PI = 3.14159;
   /// - constante logico DEBUG = verdadeiro;
   Stmt _constDeclaration() {
-    // Consumir o tipo (obrigatório)
-    if (!_isTypeToken(_peek())) {
-      throw _error(_peek(), "Esperado tipo após 'constante'.");
+    TypeInfo? type;
+    
+    // Verificar se é declaração tipada (constante tipo nome) ou inferência (constante var nome)
+    if (_isTypeToken(_peek())) {
+      // Declaração tipada: constante inteiro nome = valor;
+      final typeToken = _advance();
+      type = TypeInfo(typeToken);
+    } else if (_check(TokenType.var_)) {
+      // Declaração com inferência: constante var nome = valor;
+      _advance(); // consumir 'var'
+      type = null; // será inferido do initializer
+    } else {
+      throw _error(_peek(), "Esperado tipo ou 'var' após 'constante'.");
     }
-    final typeToken = _advance();
-    final type = TypeInfo(typeToken);
     
     // Consumir o nome da constante
-    final name = _consume(TokenType.identifier, "Esperado nome da constante após tipo.");
+    final name = _consume(TokenType.identifier, "Esperado nome da constante.");
     
     // Inicialização é obrigatória para constantes
     _consume(TokenType.equal, "Constantes devem ser inicializadas. Esperado '='.");
     final initializer = _expression();
+    
+    // Se tipo não foi especificado, inferir do valor inicial
+    if (type == null) {
+      type = _inferTypeFromExpression(initializer);
+    }
     
     _consume(TokenType.semicolon, "Esperado ';' após a declaração da constante.");
     return ConstDeclStmt(type, name, initializer);
@@ -504,6 +517,74 @@ class Parser {
   ParseError _error(Token token, String message) {
     _errorReporter.error(token.line, message);
     return ParseError();
+  }
+  
+  /// **Inferência de Tipo baseada em Expressão**
+  /// 
+  /// Infere o tipo de uma constante baseado no valor inicial fornecido.
+  /// Usado para declarações do tipo: constante var nome = valor;
+  TypeInfo _inferTypeFromExpression(Expr expr) {
+    if (expr is LiteralExpr) {
+      final value = expr.value;
+      if (value is double) {
+        // Verificar se é um número inteiro (sem casas decimais)
+        if (value == value.toInt()) {
+          // É um número inteiro (ex: 16.0 -> inferir como inteiro)
+          return TypeInfo(Token(
+            type: TokenType.inteiro,
+            lexeme: 'inteiro',
+            literal: null,
+            line: _peek().line,
+            column: _peek().column,
+          ));
+        } else {
+          // É um número real com casas decimais (ex: 1.75 -> inferir como real)
+          return TypeInfo(Token(
+            type: TokenType.real,
+            lexeme: 'real',
+            literal: null,
+            line: _peek().line,
+            column: _peek().column,
+          ));
+        }
+      } else if (value is int) {
+        // Criar token artificial para tipo inteiro
+        return TypeInfo(Token(
+          type: TokenType.inteiro,
+          lexeme: 'inteiro',
+          literal: null,
+          line: _peek().line,
+          column: _peek().column,
+        ));
+      } else if (value is String) {
+        // Criar token artificial para tipo texto
+        return TypeInfo(Token(
+          type: TokenType.texto,
+          lexeme: 'texto',
+          literal: null,
+          line: _peek().line,
+          column: _peek().column,
+        ));
+      } else if (value is bool) {
+        // Criar token artificial para tipo logico
+        return TypeInfo(Token(
+          type: TokenType.logico,
+          lexeme: 'logico',
+          literal: null,
+          line: _peek().line,
+          column: _peek().column,
+        ));
+      }
+    }
+    
+    // Se não conseguir inferir, assume tipo real como padrão (compatível com números)
+    return TypeInfo(Token(
+      type: TokenType.real,
+      lexeme: 'real',
+      literal: null,
+      line: _peek().line,
+      column: _peek().column,
+    ));
   }
   
   // Sincroniza o parser após um erro para tentar continuar.

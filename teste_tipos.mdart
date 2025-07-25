@@ -1,0 +1,13 @@
+// Teste de tipos
+constante inteiro numero = 42;
+constante real pi = 3.14;
+constante texto nome = "João";
+constante logico ativo = verdadeiro;
+
+imprima numero;  // Deve ser 42 (sem .0)
+imprima pi;      // Deve ser 3.14
+imprima nome;    // Deve ser João
+imprima ativo;   // Deve ser true
+
+var valor = 100;
+imprima valor;   // Deve ser 100.0 (pois é var, não tipada)

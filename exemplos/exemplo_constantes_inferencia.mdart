@@ -1,0 +1,41 @@
+// Demonstração de declaração de constantes com inferência de tipo
+
+// === ANTES: Sintaxe explícita (ainda suportada) ===
+constante inteiro LIMITE = 100;
+constante real PI = 3.14159;
+constante texto EMPRESA = "MiniDart Corp";
+constante logico DEBUG = verdadeiro;
+
+imprima "=== Constantes explícitas ===";
+imprima LIMITE;
+imprima PI;
+imprima EMPRESA;
+imprima DEBUG;
+
+// === NOVO: Sintaxe com inferência ===
+constante var idade = 25;           // inferido como inteiro
+constante var altura = 1.80;        // inferido como real  
+constante var nome = "Maria";       // inferido como texto
+constante var ativo = falso;        // inferido como logico
+
+imprima "=== Constantes com inferência ===";
+imprima idade;
+imprima altura;
+imprima nome;
+imprima ativo;
+
+// === Uso em expressões ===
+imprima "=== Uso em expressões ===";
+var resultado = idade + LIMITE;
+imprima resultado;
+
+var area = PI * altura * altura;
+imprima area;
+
+var status = idade >= 18 ? "adulto" : "menor";
+imprima status;
+
+// === Demonstração que tipos são preservados ===
+imprima "=== Tipos preservados ===";
+imprima idade;   // Inteiro sem casa decimal
+imprima altura;  // Real com casa decimal
