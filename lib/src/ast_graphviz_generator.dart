@@ -489,6 +489,21 @@ class ASTGraphvizGenerator implements AstVisitor<String> {
   }
   
   @override
+  String visitImportStmt(ImportStmt stmt) {
+    final nodeId = _nextId();
+    final escapedLibrary = _escapeLabel(stmt.library.lexeme);
+    
+    if (stmt.alias != null) {
+      final escapedAlias = _escapeLabel(stmt.alias!.lexeme);
+      _buffer.writeln('  $nodeId [label="📦 importar\\n$escapedLibrary como $escapedAlias", fillcolor=lightgray];');
+    } else {
+      _buffer.writeln('  $nodeId [label="📦 importar\\n$escapedLibrary", fillcolor=lightgray];');
+    }
+    
+    return nodeId;
+  }
+  
+  @override
   String visitCallExpr(CallExpr expr) {
     final nodeId = _nextId();
     _buffer.writeln('  $nodeId [label="📞 chamada", fillcolor=lightcyan, shape=ellipse];');
@@ -508,6 +523,19 @@ class ASTGraphvizGenerator implements AstVisitor<String> {
         _buffer.writeln('  $argsId -> $argId [label="arg ${i + 1}"];');
       }
     }
+    
+    return nodeId;
+  }
+
+  @override
+  String visitMemberAccessExpr(MemberAccessExpr expr) {
+    final nodeId = _nextId();
+    final escapedProperty = _escapeLabel(expr.property.lexeme);
+    _buffer.writeln('  $nodeId [label="🔗 acesso\\n$escapedProperty", fillcolor=lightblue, shape=ellipse];');
+    
+    // Objeto sendo acessado
+    final objectId = expr.object.accept(this);
+    _buffer.writeln('  $nodeId -> $objectId [label="objeto"];');
     
     return nodeId;
   }

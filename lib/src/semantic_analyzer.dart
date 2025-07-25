@@ -11,6 +11,11 @@ class SemanticAnalyzer implements AstVisitor<void> {
   
   // Conjunto para rastrear nomes de constantes (não podem ser reatribuídas)
   final Set<String> _constants = <String>{};
+  
+  // Mapa para rastrear imports e seus aliases
+  // Chave: nome usado no código (alias ou nome original)
+  // Valor: nome da biblioteca original
+  final Map<String, String> _importedLibraries = <String, String>{};
 
   SemanticAnalyzer(this._errorReporter);
 
@@ -194,6 +199,14 @@ class SemanticAnalyzer implements AstVisitor<void> {
   @override
   void visitVariableExpr(VariableExpr expr) {
     final symbol = _currentScope.get(expr.name);
+    
+    // Verificar se é uma biblioteca padrão ou importada
+    if (['math', 'string', 'io'].contains(expr.name.lexeme) || 
+        _importedLibraries.containsKey(expr.name.lexeme)) {
+      // É uma biblioteca padrão ou importada, sempre válida
+      return;
+    }
+    
     if (symbol == null) {
       _errorReporter.error(expr.name.line, "Variável '${expr.name.lexeme}' não declarada.");
     } else if (!symbol.isInitialized) {
@@ -334,6 +347,45 @@ class SemanticAnalyzer implements AstVisitor<void> {
   }
   
   @override
+  void visitImportStmt(ImportStmt stmt) {
+    // Validar se a biblioteca existe
+    final libraryName = stmt.library.lexeme;
+    final validLibraries = ['math', 'string', 'io', 'data'];
+    
+    if (!validLibraries.contains(libraryName)) {
+      _errorReporter.error(stmt.library.line, "Biblioteca '$libraryName' não reconhecida. Bibliotecas disponíveis: ${validLibraries.join(', ')}");
+      return;
+    }
+    
+    // Determinar o nome usado (alias ou nome original)
+    final usedName = stmt.alias?.lexeme ?? libraryName;
+    
+    // Verificar conflitos com variáveis existentes
+    final existingSymbol = _currentScope.get(Token(
+      type: TokenType.identifier,
+      lexeme: usedName,
+      line: stmt.alias?.line ?? stmt.library.line,
+      column: stmt.alias?.column ?? stmt.library.column,
+    ));
+    
+    if (existingSymbol != null) {
+      _errorReporter.error(stmt.alias?.line ?? stmt.library.line, 
+        "O nome '$usedName' conflita com uma variável já declarada.");
+      return;
+    }
+    
+    // Verificar se já foi importado com nome diferente
+    if (_importedLibraries.containsKey(usedName)) {
+      _errorReporter.error(stmt.alias?.line ?? stmt.library.line,
+        "O nome '$usedName' já está sendo usado para a biblioteca '${_importedLibraries[usedName]}'.");
+      return;
+    }
+    
+    // Registrar o import
+    _importedLibraries[usedName] = libraryName;
+  }
+  
+  @override
   void visitCallExpr(CallExpr expr) {
     // Resolve a expressão que representa a função
     _resolveExpr(expr.callee);
@@ -342,6 +394,33 @@ class SemanticAnalyzer implements AstVisitor<void> {
     for (final argument in expr.arguments) {
       _resolveExpr(argument);
     }
+  }
+
+  @override
+  void visitMemberAccessExpr(MemberAccessExpr expr) {
+    // Resolve a expressão do objeto
+    _resolveExpr(expr.object);
+    
+    // Para acesso a membro, verificamos se é uma biblioteca conhecida
+    if (expr.object is VariableExpr) {
+      final objectName = (expr.object as VariableExpr).name.lexeme;
+      
+      // Verificar se é uma biblioteca importada (com ou sem alias)
+      final libraryName = _importedLibraries[objectName];
+      if (libraryName != null) {
+        // É uma biblioteca importada, válida
+        return;
+      }
+      
+      // Verificar se é uma biblioteca padrão usada sem import (compatibilidade)
+      if (['math', 'string', 'io'].contains(objectName)) {
+        // É uma biblioteca padrão, sempre válida (compatibilidade retroativa)
+        return;
+      }
+    }
+    
+    // Se não é uma biblioteca conhecida, trata como acesso normal
+    // (para futuras extensões como objetos customizados)
   }
 
   // ===== FIM DOS NOVOS VISITANTES =====

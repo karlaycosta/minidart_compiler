@@ -88,6 +88,9 @@ class Lexer {
     'incremente': TokenType.increment_, // Loop FOR - incremento positivo
     'decremente': TokenType.decrement_, // Loop FOR - incremento negativo
     'constante': TokenType.constante, // Declaração de constante
+    // Sistema de imports
+    'importar': TokenType.import_, // Declaração de import
+    'como': TokenType.as_, // Alias em import
     // Tipos de dados
     'inteiro': TokenType.inteiro, // Tipo de dados inteiro
     'real': TokenType.real, // Tipo de dados real/float

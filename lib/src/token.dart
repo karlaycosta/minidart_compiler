@@ -69,6 +69,10 @@ enum TokenType {
   
   // Declaração de constante
   constante,   // 'constante'
+  
+  // Sistema de imports
+  import_,     // 'importar'
+  as_,         // 'como'
 
   eof,
 }
@@ -175,6 +179,8 @@ extension TokenTypeExtension on TokenType {
       TokenType.logico => 'Tipo Lógico',
       TokenType.vazio => 'Tipo Vazio',
       TokenType.constante => 'Declaração de Constante',
+      TokenType.import_ => 'Importar',
+      TokenType.as_ => 'Como',
       // ========================================================================
       // ESPECIAIS
       // ========================================================================
@@ -248,6 +254,9 @@ extension TokenTypeExtension on TokenType {
       TokenType.logico => 'logico',
       TokenType.vazio => 'vazio',
       TokenType.constante => 'constante',
+      // Sistema de imports
+      TokenType.import_ => 'importar',
+      TokenType.as_ => 'como',
       // Especiais
       TokenType.eof => '<EOF>',
     };

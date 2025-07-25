@@ -1,0 +1,10 @@
+
+// Função soma
+inteiro soma(inteiro a) {
+    retorne a * 2;
+}
+
+inteiro a = 10;
+imprima a;
+
+imprima soma(10) > 30 ? "Sim" : "Não";
