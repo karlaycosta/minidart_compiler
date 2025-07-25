@@ -107,6 +107,19 @@ class ASTGraphvizGenerator implements AstVisitor<String> {
   }
 
   @override
+  String visitConstDeclStmt(ConstDeclStmt stmt) {
+    final nodeId = _nextId();
+    final constName = _escapeLabel(stmt.name.lexeme);
+    final typeName = _escapeLabel(stmt.type.name);
+    _buffer.writeln('  $nodeId [label="🔒 constante $typeName $constName", fillcolor=lightcoral];');
+    
+    final initId = stmt.initializer.accept(this);
+    _buffer.writeln('  $nodeId -> $initId [label="valor"];');
+    
+    return nodeId;
+  }
+
+  @override
   String visitIfStmt(IfStmt stmt) {
     final nodeId = _nextId();
     _buffer.writeln('  $nodeId [label="🔀 se", fillcolor=orange, shape=diamond];');
@@ -143,6 +156,22 @@ class ASTGraphvizGenerator implements AstVisitor<String> {
     
     return nodeId;
   }
+
+  @override
+  String visitDoWhileStmt(DoWhileStmt stmt) {
+    final nodeId = _nextId();
+    _buffer.writeln('  $nodeId [label="🔄 faca-enquanto", fillcolor=orange, shape=diamond];');
+    
+    // Corpo (executa primeiro)
+    final bodyId = stmt.body.accept(this);
+    _buffer.writeln('  $nodeId -> $bodyId [label="corpo"];');
+    
+    // Condição (verificada depois)
+    final condId = stmt.condition.accept(this);
+    _buffer.writeln('  $nodeId -> $condId [label="condição"];');
+    
+    return nodeId;
+  }
   
   @override
   String visitForStmt(ForStmt stmt) {
@@ -171,7 +200,8 @@ class ASTGraphvizGenerator implements AstVisitor<String> {
   @override
   String visitForStepStmt(ForStepStmt stmt) {
     final nodeId = _nextId();
-    _buffer.writeln('  $nodeId [label="🔄 para+passo", fillcolor=orange, shape=diamond];');
+    final direction = stmt.isIncrement ? "incremente" : "decremente";
+    _buffer.writeln('  $nodeId [label="🔄 para+$direction", fillcolor=orange, shape=diamond];');
     
     // Variável
     _buffer.writeln('  ${nodeId}_var [label="${stmt.variable.lexeme}", fillcolor=lightgreen];');
@@ -185,13 +215,43 @@ class ASTGraphvizGenerator implements AstVisitor<String> {
     final condId = stmt.condition.accept(this);
     _buffer.writeln('  $nodeId -> $condId [label="até"];');
     
-    // Incremento
+    // Incremento/Decremento
     final stepId = stmt.step.accept(this);
-    _buffer.writeln('  $nodeId -> $stepId [label="passo"];');
+    _buffer.writeln('  $nodeId -> $stepId [label="$direction"];');
     
     // Corpo
     final bodyId = stmt.body.accept(this);
     _buffer.writeln('  $nodeId -> $bodyId [label="faça"];');
+    
+    return nodeId;
+  }
+
+  @override
+  String visitForCStmt(ForCStmt stmt) {
+    final nodeId = _nextId();
+    _buffer.writeln('  $nodeId [label="🔄 para(;;)", fillcolor=darkturquoise, shape=diamond];');
+    
+    // Inicializador (se presente)
+    if (stmt.initializer != null) {
+      final initId = stmt.initializer!.accept(this);
+      _buffer.writeln('  $nodeId -> $initId [label="init"];');
+    }
+    
+    // Condição (se presente)
+    if (stmt.condition != null) {
+      final condId = stmt.condition!.accept(this);
+      _buffer.writeln('  $nodeId -> $condId [label="condição"];');
+    }
+    
+    // Incremento (se presente)
+    if (stmt.increment != null) {
+      final incId = stmt.increment!.accept(this);
+      _buffer.writeln('  $nodeId -> $incId [label="incremento"];');
+    }
+    
+    // Corpo
+    final bodyId = stmt.body.accept(this);
+    _buffer.writeln('  $nodeId -> $bodyId [label="corpo"];');
     
     return nodeId;
   }
@@ -244,6 +304,22 @@ class ASTGraphvizGenerator implements AstVisitor<String> {
     
     _buffer.writeln('  $nodeId -> $leftId [label="esquerda"];');
     _buffer.writeln('  $nodeId -> $rightId [label="direita"];');
+    
+    return nodeId;
+  }
+
+  @override
+  String visitTernaryExpr(TernaryExpr expr) {
+    final nodeId = _nextId();
+    _buffer.writeln('  $nodeId [label="❓ ?:", fillcolor=lightyellow, shape=diamond];');
+    
+    final condId = expr.condition.accept(this);
+    final thenId = expr.thenBranch.accept(this);
+    final elseId = expr.elseBranch.accept(this);
+    
+    _buffer.writeln('  $nodeId -> $condId [label="condição"];');
+    _buffer.writeln('  $nodeId -> $thenId [label="verdadeiro"];');
+    _buffer.writeln('  $nodeId -> $elseId [label="falso"];');
     
     return nodeId;
   }
@@ -311,6 +387,37 @@ class ASTGraphvizGenerator implements AstVisitor<String> {
     final nodeId = _nextId();
     final name = _escapeLabel(expr.name.lexeme);
     _buffer.writeln('  $nodeId [label="🏷️ $name", fillcolor=wheat, shape=ellipse];');
+    
+    return nodeId;
+  }
+
+  @override
+  String visitCompoundAssignExpr(CompoundAssignExpr expr) {
+    final nodeId = _nextId();
+    final name = _escapeLabel(expr.name.lexeme);
+    final op = _escapeLabel(expr.operator.lexeme);
+    _buffer.writeln('  $nodeId [label="🔧 $name $op", fillcolor=lightblue];');
+    
+    final valueId = expr.value.accept(this);
+    _buffer.writeln('  $nodeId -> $valueId [label="valor"];');
+    
+    return nodeId;
+  }
+
+  @override
+  String visitDecrementExpr(DecrementExpr expr) {
+    final nodeId = _nextId();
+    final name = _escapeLabel(expr.name.lexeme);
+    _buffer.writeln('  $nodeId [label="⬇️ $name--", fillcolor=lightpink];');
+    
+    return nodeId;
+  }
+
+  @override
+  String visitIncrementExpr(IncrementExpr expr) {
+    final nodeId = _nextId();
+    final name = _escapeLabel(expr.name.lexeme);
+    _buffer.writeln('  $nodeId [label="⬆️ $name++", fillcolor=lightcoral];');
     
     return nodeId;
   }

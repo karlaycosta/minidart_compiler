@@ -23,6 +23,7 @@ class Parser {
   Stmt _declaration() {
     try {
       if (_match([TokenType.var_])) return _varDeclaration();
+      if (_match([TokenType.constante])) return _constDeclaration();
       
       // Verificar se é uma declaração de função (tipo + identificador + parênteses)
       if (_isTypeToken(_peek()) && 
@@ -87,11 +88,48 @@ class Parser {
     return TypedVarDeclStmt(type, name, initializer);
   }
 
+  /// **Parsing de Declaração de Constante**
+  /// 
+  /// Reconhece e analisa declarações de constantes com tipo explícito.
+  /// Sintaxe: constante <tipo> <nome> = <valor>;
+  /// 
+  /// **Exemplos:**
+  /// - constante inteiro MAXIMO = 100;
+  /// - constante texto VERSAO = "v1.5.0";
+  /// - constante real PI = 3.14159;
+  /// - constante logico DEBUG = verdadeiro;
+  Stmt _constDeclaration() {
+    // Consumir o tipo (obrigatório)
+    if (!_isTypeToken(_peek())) {
+      throw _error(_peek(), "Esperado tipo após 'constante'.");
+    }
+    final typeToken = _advance();
+    final type = TypeInfo(typeToken);
+    
+    // Consumir o nome da constante
+    final name = _consume(TokenType.identifier, "Esperado nome da constante após tipo.");
+    
+    // Inicialização é obrigatória para constantes
+    _consume(TokenType.equal, "Constantes devem ser inicializadas. Esperado '='.");
+    final initializer = _expression();
+    
+    _consume(TokenType.semicolon, "Esperado ';' após a declaração da constante.");
+    return ConstDeclStmt(type, name, initializer);
+  }
+
   Stmt _statement() {
     if (_match([TokenType.if_])) return _ifStatement();
     if (_match([TokenType.print_])) return _printStatement();
     if (_match([TokenType.while_])) return _whileStatement();
-    if (_match([TokenType.for_])) return _forStatement();
+    if (_match([TokenType.do_])) return _doWhileStatement();
+    if (_match([TokenType.for_])) {
+      // Verifica se é loop estilo C (com parênteses) ou tradicional
+      if (_check(TokenType.leftParen)) {
+        return _forCStatement();
+      } else {
+        return _forStatement();
+      }
+    }
     if (_match([TokenType.return_])) return _returnStatement();
     if (_match([TokenType.leftBrace])) return BlockStmt(_block());
     return _expressionStatement();
@@ -118,27 +156,84 @@ class Parser {
     return WhileStmt(condition, body);
   }
   
+  Stmt _doWhileStatement() {
+    final body = _statement();
+    _consume(TokenType.while_, "Esperado 'enquanto' após o corpo do loop 'faca'.");
+    _consume(TokenType.leftParen, "Esperado '(' após 'enquanto'.");
+    final condition = _expression();
+    _consume(TokenType.rightParen, "Esperado ')' após a condição do 'enquanto'.");
+    _consume(TokenType.semicolon, "Esperado ';' após o loop 'faca...enquanto'.");
+    return DoWhileStmt(body, condition);
+  }
+  
   Stmt _forStatement() {
-    // para variavel = inicio ate fim [passo incremento] faca statement
+    // Verificar se é for estilo C: para (init; condition; increment)
+    if (_check(TokenType.leftParen)) {
+      return _forCStatement();
+    }
+    
+    // para variavel = inicio ate fim [incremente/decremente valor] faca statement
     final variable = _consume(TokenType.identifier, "Esperado nome da variável após 'para'.");
     _consume(TokenType.equal, "Esperado '=' após o nome da variável.");
     final initializer = _expression();
     _consume(TokenType.to_, "Esperado 'ate' após o valor inicial.");
     final condition = _expression();
     
-    // Verifica se há incremento personalizado
-    if (_match([TokenType.step_])) {
-      // Sintaxe: para variavel = inicio ate fim passo incremento faca statement
+    // Verifica se há incremento/decremento personalizado
+    if (_match([TokenType.increment_])) {
+      // Sintaxe: para variavel = inicio ate fim incremente valor faca statement
       final step = _expression();
-      _consume(TokenType.do_, "Esperado 'faca' após o incremento.");
+      _consume(TokenType.do_, "Esperado 'faca' após o valor de incremento.");
       final body = _statement();
-      return ForStepStmt(variable, initializer, condition, step, body);
+      return ForStepStmt(variable, initializer, condition, step, true, body);
+    } else if (_match([TokenType.decrement_])) {
+      // Sintaxe: para variavel = inicio ate fim decremente valor faca statement
+      final step = _expression();
+      _consume(TokenType.do_, "Esperado 'faca' após o valor de decremento.");
+      final body = _statement();
+      return ForStepStmt(variable, initializer, condition, step, false, body);
     } else {
       // Sintaxe: para variavel = inicio ate fim faca statement (incremento = 1)
       _consume(TokenType.do_, "Esperado 'faca' após o valor final.");
       final body = _statement();
       return ForStmt(variable, initializer, condition, body);
     }
+  }
+
+  /// Parse um loop for estilo C: para (init; condition; increment) { body }
+  Stmt _forCStatement() {
+    _consume(TokenType.leftParen, "Esperado '(' após 'para'.");
+    
+    // Inicialização (pode ser null para ;;)
+    Stmt? initializer;
+    if (_match([TokenType.semicolon])) {
+      initializer = null;
+    } else if (_match([TokenType.var_])) {
+      initializer = _varDeclaration();
+    } else if (_isTypeToken(_peek())) {
+      initializer = _typedVarDeclaration();
+    } else {
+      initializer = _expressionStatement();
+    }
+    
+    // Condição (pode ser null para ;)
+    Expr? condition;
+    if (!_check(TokenType.semicolon)) {
+      condition = _expression();
+    }
+    _consume(TokenType.semicolon, "Esperado ';' após condição do for.");
+    
+    // Incremento (pode ser null para )
+    Expr? increment;
+    if (!_check(TokenType.rightParen)) {
+      increment = _expression();
+    }
+    _consume(TokenType.rightParen, "Esperado ')' após incremento do for.");
+    
+    // Corpo do loop
+    final body = _statement();
+    
+    return ForCStmt(initializer, condition, increment, body);
   }
 
   List<Stmt> _block() {
@@ -167,7 +262,7 @@ class Parser {
   }
   
   Expr _assignment() {
-    final expr = _or();
+    final expr = _ternary();
     if (_match([TokenType.equal])) {
       final equals = _previous();
       final value = _assignment();
@@ -175,7 +270,27 @@ class Parser {
         return AssignExpr(expr.name, value);
       }
       _error(equals, "Alvo de atribuição inválido.");
+    } else if (_match([TokenType.plusEqual, TokenType.minusEqual, TokenType.starEqual, TokenType.slashEqual, TokenType.percentEqual])) {
+      final operator = _previous();
+      final value = _assignment();
+      if (expr is VariableExpr) {
+        return CompoundAssignExpr(expr.name, operator, value);
+      }
+      _error(operator, "Alvo de atribuição composta inválido.");
     }
+    return expr;
+  }
+  
+  Expr _ternary() {
+    final expr = _or();
+    
+    if (_match([TokenType.question])) {
+      final thenBranch = _expression();
+      _consume(TokenType.colon, "Esperado ':' após expressão verdadeira do operador ternário.");
+      final elseBranch = _ternary(); // Associatividade à direita
+      return TernaryExpr(expr, thenBranch, elseBranch);
+    }
+    
     return expr;
   }
   
@@ -184,13 +299,31 @@ class Parser {
   Expr _equality() => _binary(next: _comparison, types: [TokenType.bangEqual, TokenType.equalEqual]);
   Expr _comparison() => _binary(next: _term, types: [TokenType.greater, TokenType.greaterEqual, TokenType.less, TokenType.lessEqual]);
   Expr _term() => _binary(next: _factor, types: [TokenType.minus, TokenType.plus]);
-  Expr _factor() => _binary(next: _unary, types: [TokenType.slash, TokenType.star]);
+  Expr _factor() => _binary(next: _unary, types: [TokenType.slash, TokenType.star, TokenType.percent]);
 
   Expr _unary() {
     if (_match([TokenType.bang, TokenType.minus])) {
       final operator = _previous();
       final right = _unary();
       return UnaryExpr(operator, right);
+    }
+    if (_match([TokenType.minusMinus])) {
+      // Suporte a decremento pré-fixo: --variable
+      final expr = _call(); // Usar _call() em vez de _unary() para evitar recursão infinita
+      if (expr is VariableExpr) {
+        return DecrementExpr(expr.name, isPrefix: true);
+      } else {
+        throw _error(_previous(), "Operador '--' só pode ser aplicado a variáveis.");
+      }
+    }
+    if (_match([TokenType.plusPlus])) {
+      // Suporte a incremento pré-fixo: ++variable
+      final expr = _call();
+      if (expr is VariableExpr) {
+        return IncrementExpr(expr.name, isPrefix: true);
+      } else {
+        throw _error(_previous(), "Operador '++' só pode ser aplicado a variáveis.");
+      }
     }
     return _call();
   }
@@ -201,6 +334,20 @@ class Parser {
     while (true) {
       if (_match([TokenType.leftParen])) {
         expr = _finishCall(expr);
+      } else if (_match([TokenType.plusPlus])) {
+        // Suporte a incremento pós-fixo: variavel++
+        if (expr is VariableExpr) {
+          expr = IncrementExpr(expr.name, isPrefix: false);
+        } else {
+          throw _error(_previous(), "Operador '++' só pode ser aplicado a variáveis.");
+        }
+      } else if (_match([TokenType.minusMinus])) {
+        // Suporte a decremento pós-fixo: variavel--
+        if (expr is VariableExpr) {
+          expr = DecrementExpr(expr.name, isPrefix: false);
+        } else {
+          throw _error(_previous(), "Operador '--' só pode ser aplicado a variáveis.");
+        }
       } else {
         break;
       }
@@ -299,7 +446,7 @@ class Parser {
     return FunctionStmt(returnType, name, parameters, body);
   }
 
-  /// Analisa comando de retorno: retornar [expressão];
+  /// Analisa comando de retorno: retorne [expressão];
   Stmt _returnStatement() {
     final keyword = _previous();
     Expr? value;

@@ -16,6 +16,7 @@ enum OpCode {
   subtract,
   multiply,
   divide,
+  modulo,
   negate,
   not,
 

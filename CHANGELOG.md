@@ -5,17 +5,354 @@ Todas as alterações notáveis deste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [1.12.3] - 2025-01-XX
+
+### 📝 Alterado
+- **🔄 Palavra-Chave Void**: Reversão de `nada` para `vazio` para funções sem retorno
+  - **🔤 Palavra-Chave**: `vazio` volta a ser a palavra reservada para funções void
+  - **Sintaxe**: `vazio nome_funcao() { ... }` para funções que não retornam valores
+  - **Tokens Atualizados**: Representação atualizada para "Tipo Vazio"
+  - **Arquivos de Teste**: Atualizados todos os exemplos para usar `vazio`
+
+## [1.12.2] - 2025-01-XX
+
+### ✨ Adicionado
+- **🚫 Suporte a Funções Void**: Implementação da palavra-chave `nada` para funções sem retorno
+  - **🔤 Palavra-Chave**: `nada` substitui `vazio` para melhor compreensão
+  - **Sintaxe**: `nada nome_funcao() { ... }` para funções que não retornam valores
+  - **Exemplos**: Funções de relatório, impressão, e procedimentos gerais
+  - **Tokens Atualizados**: Representação atualizada para "Tipo Nada"
+
+### 📝 Alterado
+- **Arquivos de Teste**: Atualizados `teste_simples.mdart` e `teste_complexo.mdart` com exemplos de funções void
+- **Documentação**: Comentários e mensagens atualizadas para refletir `nada` em vez de `vazio`
+
+## [1.12.1] - 2025-01-XX
+
+### 🗑️ Removido
+- **Compatibilidade com Sintaxe Antiga**: Remoção completa da compatibilidade com palavras-chave antigas
+  - **❌ `imprimir`**: Removido suporte para sintaxe antiga, usar apenas `imprima`
+  - **❌ `retornar`**: Removido suporte para sintaxe antiga, usar apenas `retorne`
+  - **Sintaxe Modernizada**: Apenas as novas palavras-chave mais concisas são aceitas
+  - **Breaking Change**: Códigos usando sintaxe antiga não compilarão mais
+
+## [1.12.0] - 2025-01-XX
+
+### ✨ Adicionado
+- **🔄 Modernização de Palavras-Chave**: Substituição de comandos por versões mais concisas
+  - **📝 `imprima`**: Substituição de `imprimir` por forma mais curta e direta
+  - **↩️ `retorne`**: Substituição de `retornar` por forma mais imperativa
+  - **Compatibilidade Temporária**: Ambas as sintaxes funcionam durante transição (removida em v1.12.1)
+- **Tokens Atualizados**: Representação string atualizada para novos comandos
+- **Parser Modernizado**: Documentação e comentários atualizados para refletir nova sintaxe
+
+## [1.11.0] - 2025-01-XX
+
+### ✨ Adicionado
+- **🔄 Sintaxe Aprimorada para Loops For**: Substituição da palavra-chave `passo` por direcionais mais expressivos
+  - **🔼 `incremente`**: Para incrementar a variável de controle do loop
+  - **🔽 `decremente`**: Para decrementar a variável de controle do loop
+  - **Sintaxe bidirecional**: Loops podem agora contar para cima ou para baixo explicitamente
+  - **Lógica inteligente**: Operadores de comparação automáticos baseados na direção (`>` para incremento, `<` para decremento)
+- **Novos Tokens**: `TokenType.increment_` e `TokenType.decrement_` substituindo `TokenType.step_`
+- **AST Expandida**: Campo `bool isIncrement` na classe `ForStepStmt` para controle de direção
+- **Geração de Código Inteligente**: Operações aritméticas automáticas (`add` para incremento, `subtract` para decremento)
+- **Visualização AST Aprimorada**: Labels dinâmicos "para+incremente" ou "para+decremente" no gerador de gráficos
+
+### 🔧 Melhorado
+- **Parser**: Detecção condicional de `incremente` vs `decremente` para determinação automática da direção
+- **Lexer**: Reconhecimento das novas palavras-chave portuguesas mais intuitivas
+- **Code Generator**: Lógica de comparação e operação baseada na direção do loop
+  - Incremento: `variavel > limite` (sai quando ultrapassar) + operação `add`
+  - Decremento: `variavel < limite` (sai quando ficar abaixo) + operação `subtract`
+- **Semantic Analyzer**: Análise apropriada para ambas as direções de loop
+
+### 📝 Exemplos de Uso
+```dart
+// ✅ INCREMENTO - Contagem crescente
+para i = 0 ate 10 incremente 2 faca {
+    imprimir i; // Saída: 0, 2, 4, 6, 8, 10
+}
+
+// ✅ DECREMENTO - Contagem decrescente  
+para j = 10 ate 0 decremente 2 faca {
+    imprimir j; // Saída: 10, 8, 6, 4, 2, 0
+}
+
+// ✅ INCREMENTOS PERSONALIZADOS
+para k = 1 ate 15 incremente 3 faca {
+    imprimir k; // Saída: 1, 4, 7, 10, 13
+}
+
+// ✅ DECREMENTOS PERSONALIZADOS
+para m = 25 ate 0 decremente 5 faca {
+    imprimir m; // Saída: 25, 20, 15, 10, 5, 0
+}
+```
+
+### 🚨 Breaking Changes
+- **❌ Palavra-chave `passo` removida**: Não é mais suportada
+- **✅ Migração necessária**: 
+  - `para x = 0 ate 10 passo 2 faca` → `para x = 0 ate 10 incremente 2 faca`
+  - Para loops decrescentes: usar `decremente` com lógica de limite apropriada
+
+### 🎯 Benefícios da Nova Sintaxe
+- **Clareza semântica**: Diferenciação explícita entre incremento e decremento
+- **Intuitividade**: Palavras-chave que expressam claramente a intenção
+- **Flexibilidade**: Suporte nativo a loops bidirecionais sem ambiguidade
+- **Robustez**: Lógica de comparação automática evita erros de loop infinito
+
+### 🚀 Compatibilidade
+- **Retrocompatível**: Loops básicos (`para x = 1 ate 5 faca`) continuam funcionando
+- **Coexistência**: Incremento, decremento e loops básicos podem ser usados no mesmo programa
+- **Migração simples**: Substituição direta de `passo` por `incremente` na maioria dos casos
+
+## [1.10.0] - 2025-01-XX
+
+### ✨ Adicionado
+- **🔄 Loop Do-While (faca...enquanto)**: Implementação completa do loop que executa pelo menos uma vez
+  - **Sintaxe**: `faca { statements } enquanto (condição);`
+  - **Semântica**: Executa o corpo primeiro, depois verifica a condição (diferente do while)
+  - **Garantia de execução**: O corpo sempre executa pelo menos uma vez, mesmo com condição inicial falsa
+  - **Casos de uso**: Ideal para menus interativos, validação de entrada, loops que precisam executar ao menos uma iteração
+- **Novo Token**: `TokenType.dowhile_` para reconhecimento do construto
+- **Nova AST**: Classe `DoWhileStmt` com visitor pattern completo
+- **Sintaxe Portuguesa**: Mantém a consistência com `faca` e `enquanto` da linguagem
+- **Geração de Bytecode**: Controle de fluxo otimizado com verificação da condição após execução do corpo
+- **Visualização AST**: Suporte ao loop do-while no gerador de gráficos com ícone 🔄 e cor diferenciada
+
+### 🔧 Melhorado
+- **Parser**: Detecção automática de loops do-while vs while tradicional
+- **Lexer**: Reutilização da palavra-chave `faca` já existente no sistema
+- **Code Generator**: Geração eficiente de bytecode com `jumpIfFalse` e `_emitLoop`
+- **Semantic Analyzer**: Análise do corpo primeiro, depois da condição (ordem correta para do-while)
+- **Visitors**: Todos os visitors atualizados (`LineVisitor`, `LocationVisitor`, `ASTGraphvizGenerator`)
+
+### 📝 Exemplos de Uso
+```dart
+// Execução garantida (pelo menos uma vez)
+inteiro contador = 10;
+faca {
+    imprimir "Executa mesmo com condição falsa";
+    contador = contador + 1;
+} enquanto (contador < 5);
+
+// Menu interativo
+inteiro opcao = 0;
+faca {
+    imprimir "Menu - opcao: " + opcao;
+    opcao = opcao + 1;
+} enquanto (opcao < 3);
+
+// Validação de entrada
+inteiro valor = -1;
+faca {
+    valor = valor + 2;
+    imprimir "Tentativa: " + valor;
+} enquanto (valor < 5);
+```
+
+### 🎯 Diferenças entre While e Do-While
+- **While**: `enquanto (condição) { corpo }` - testa condição **antes** de executar
+- **Do-While**: `faca { corpo } enquanto (condição);` - testa condição **depois** de executar
+- **Garantia**: Do-while sempre executa o corpo pelo menos uma vez
+
+### 🚀 Compatibilidade
+- **Retrocompatível**: Todos os loops `enquanto` existentes continuam funcionando
+- **Coexistência**: While e do-while podem ser usados no mesmo programa
+- **Sintaxe consistente**: Usa palavras-chave portuguesas já estabelecidas
+
+## [1.9.0] - 2024-01-XX
+
+### ✨ Adicionado
+- **Operador Ternário (? :)**: Implementação completa do operador condicional ternário
+  - Sintaxe: `condição ? valor_verdadeiro : valor_falso`
+  - Suporte a aninhamento: `x > 15 ? "grande" : x > 5 ? "médio" : "pequeno"`
+  - Associatividade à direita para múltiplos ternários
+- **Novos Tokens**: `TokenType.question` (?) e `TokenType.colon` (:)
+- **Nova AST**: Classe `TernaryExpr` com visitor pattern completo
+- **Precedência Correta**: Ternário entre atribuição e operadores lógicos
+- **Geração de Bytecode**: Controle de fluxo eficiente com saltos condicionais
+- **Visualização AST**: Suporte ao operador ternário no gerador de gráficos
+
+### 🔧 Melhorado
+- **Parser**: Hierarquia de precedência atualizada para incluir expressões ternárias
+- **Lexer**: Reconhecimento de caracteres `?` e `:` como tokens individuais
+- **Code Generator**: Geração otimizada de saltos condicionais para ternário
+- **Semantic Analyzer**: Análise de todas as três expressões do ternário
+
+### 📝 Exemplos de Uso
+```dart
+// Básico
+var status = idade >= 18 ? "adulto" : "menor";
+
+// Aninhado
+var categoria = nota >= 90 ? "A" : nota >= 80 ? "B" : "C";
+
+// Com expressões
+var resultado = (x + y) > 10 ? x * y : x - y;
+```
+
+## [1.8.0] - 2024-01-XX
+
+### ✨ Adicionado
+- **Operador Módulo (%)**: Implementação completa do operador módulo para operações matemáticas
+- **Operadores de Atribuição Composta**: Implementação de `+=`, `-=`, `*=`, `/=`, `%=`
+- **Operador de Decremento**: Implementação completa de `--` (pré-fixo e pós-fixo)
+- **Melhorias no Lexer**: Reconhecimento aprimorado de operadores compostos
+- **Melhorias no Parser**: Precedência correta para novos operadores
+- **Melhorias na AST**: Novas classes `CompoundAssignExpr` e `DecrementExpr` com suporte a pré/pós-fixo
+- **Melhorias no Code Generator**: Geração de bytecode para todos os novos operadores
+- **Melhorias na VM**: Suporte completo para operações módulo
+
+### 🔧 Corrigido
+- **Recursão infinita**: Corrigido bug em `LineVisitor.visitGroupingExpr` que causava stack overflow
+- **Operadores pós-fixo**: Corrigida implementação de incremento/decremento pós-fixo para retornar valor original
+- **Palavras reservadas**: Evitado conflito com palavra reservada 'e' (operador lógico AND)
+
+### 📝 Atualizado
+- **Testes abrangentes**: Novos arquivos de teste para todos os operadores implementados
+- **Documentação**: Atualizada documentação da AST com novos tipos de expressão
+
 ## 🚀 Resumo das Principais Funcionalidades
 
 **MiniDart Compiler** é um compilador completo para uma linguagem de programação em português, com:
 
 - 🏗️ **Pipeline completo**: Lexer → Parser → Análise Semântica → Geração de Código → VM
-- 🇧🇷 **Sintaxe em português**: `var`, `se`, `senao`, `enquanto`, `para`, `imprimir`, `funcao`
-- 🔄 **Loops avançados**: Loop `para` com incremento automático e personalizado
-- � **Funções completas**: Declaração, chamada, parâmetros e valores de retorno
-- �🎨 **Extensão VS Code**: Suporte completo com syntax highlighting e snippets
+- 🇧🇷 **Sintaxe em português**: `var`, `se`, `senao`, `enquanto`, `faca`, `para`, `imprimir`, `funcao`, `constante`
+- 🔒 **Constantes tipadas**: Declaração de valores imutáveis com proteção contra reatribuição
+- 🔄 **Loops avançados**: While (`enquanto`), do-while (`faca...enquanto`), for tradicional, for estilo C, e for com `incremente`/`decremente`
+- 🎯 **Operador ternário**: Expressões condicionais (`condição ? verdadeiro : falso`)
+- 🎭 **Funções completas**: Declaração, chamada, parâmetros e valores de retorno
+- 🧮 **Operadores completos**: Aritméticos (+, -, *, /, %), atribuição composta (+=, -=, *=, /=, %=), incremento/decremento (++, --)
+- 🎨 **Extensão VS Code**: Suporte completo com syntax highlighting e snippets
 - 📊 **Visualização AST**: Geração automática de gráficos da árvore sintática
 - ⚡ **VM Stack-based**: Execução eficiente de bytecode com call stack
+
+---
+
+## [1.7.0] - 2025-07-25
+
+### ✨ Adicionado
+- **🔄 Loop Para Estilo C**: Nova sintaxe de loop mais flexível inspirada em linguagens como C/Java
+  - **Sintaxe**: `para (inicialização; condição; incremento) { corpo }`
+  - **Partes opcionais**: Qualquer das três partes pode ser omitida (`para (;;)` para loop infinito)
+  - **Exemplos**:
+    - `para (inteiro i = 0; i < 10; i++) { imprimir i; }`
+    - `para (; j < 5; j++) { ... }` (sem inicialização)
+    - `para (inteiro k = 0; k < 3; ) { k++; ... }` (sem incremento automático)
+- **⬆️ Operador de Incremento Pós-fixo**: Novo operador `++` para incrementar variáveis
+  - **Sintaxe**: `variavel++` (incrementa e retorna valor original)
+  - **Funcionamento**: Equivalente a `variavel = variavel + 1` mas como expressão
+  - **Uso**: Pode ser usado em expressões (`imprimir i++`) ou statements (`i++;`)
+- **🏗️ Expansão da AST**:
+  - `ForCStmt`: Nova classe para loops estilo C com inicialização, condição e incremento opcionais
+  - `IncrementExpr`: Nova classe para expressões de incremento pós-fixo
+  - Métodos `visitForCStmt` e `visitIncrementExpr` em todos os visitadores
+- **🔧 Melhorias no Parser**:
+  - Detecção automática entre loop tradicional (`para x = 1 ate 10 faca`) e estilo C (`para (;;)`)
+  - Parse de operadores pós-fixos na hierarquia de precedência
+  - Suporte a partes opcionais no loop for estilo C
+- **📊 Visualização AST Atualizada**:
+  - Ícone distintivo "🔄 para(;;)" para loops estilo C (cor darkturquoise)
+  - Ícone "⬆️ variavel++" para operadores de incremento (cor lightcoral)
+
+### 🚀 Melhorado
+- **Pipeline do compilador** expandida para suportar novos construtos
+- **Análise semântica** com validação de incremento em constantes
+- **Geração de código** otimizada para operadores pós-fixos
+- **Máquina virtual** compatível com novos opcodes
+
+### 📝 Exemplos Adicionados
+- `exemplo_for_c.mdart`: Demonstração básica do loop estilo C
+- `exemplo_for_c_simples.mdart`: Casos de uso variados incluindo loops aninhados
+- `exemplo_for_c_completo.mdart`: Teste completo de todas as variações
+
+### 🎯 Compatibilidade
+- **Retrocompatível**: Loops tradicionais `para x = 1 ate 10 faca` continuam funcionando
+- **Coexistência**: Ambos os estilos podem ser usados no mesmo programa
+- **Sintaxe familiar**: Operador `++` funciona como esperado por programadores de outras linguagens
+
+---
+
+## [1.6.0] - 2025-07-24
+
+### ✨ Adicionado
+- **🔒 Suporte Completo a Constantes Tipadas**: Nova funcionalidade para declaração de valores imutáveis
+  - **Sintaxe de constantes**: `constante tipo nome = valor;` (ex: `constante inteiro MAXIMO = 100;`)
+  - **Tipos suportados**: `inteiro`, `real`, `texto`, `logico`, `vazio`
+  - **Inicialização obrigatória**: Constantes devem sempre ser inicializadas na declaração
+  - **Proteção contra reatribuição**: Tentativas de modificar constantes geram erro semântico
+  - **Integração completa**: Suporte em toda a pipeline do compilador (lexer, parser, semantic analyzer, code generator, VM)
+- **Nova palavra-chave**: `constante` adicionada ao conjunto de tokens reconhecidos
+- **Classes AST expandidas**:
+  - `ConstDeclStmt`: Nova classe para declarações de constantes
+  - Método `visitConstDeclStmt` adicionado à interface `AstVisitor`
+  - Visualização diferenciada na AST com ícone 🔒 e cor coral
+- **Análise semântica aprimorada**:
+  - Rastreamento de constantes declaradas para proteção contra reatribuição
+  - Verificação de redeclaração no mesmo escopo
+  - Validação específica para sintaxe de constantes
+- **Parser expandido**:
+  - Método `_constDeclaration()` para parsing da sintaxe `constante tipo nome = valor;`
+  - Detecção automática de declarações de constantes
+  - Validação de inicialização obrigatória
+- **Geração de código**:
+  - Tratamento de constantes como variáveis globais imutáveis
+  - Compilação para bytecode compatível com VM existente
+  - Integração com todos os visitadores auxiliares
+
+### 🛡️ Segurança e Proteção
+- **Imutabilidade garantida**: Constantes não podem ser reatribuídas após declaração
+- **Erro semântico claro**: `"Não é possível atribuir valor à constante 'NOME'"`
+- **Validação em tempo de compilação**: Problemas detectados antes da execução
+- **Compatibilidade total**: Constantes funcionam junto com variáveis `var` e tipadas
+
+### ✅ Funcionalidades Validadas
+- **Declaração**: `constante inteiro VALOR = 42;` → Compila e executa perfeitamente
+- **Leitura**: `imprimir VALOR;` → Acesso normal a constantes
+- **Uso em expressões**: `var resultado = VALOR * 2;` → Integração total com operadores
+- **Proteção**: `VALOR = 100;` → Erro: "Não é possível atribuir valor à constante"
+- **Múltiplos tipos**: `constante real PI = 3.14159; constante texto VERSAO = "v1.6.0";`
+- **Visualização AST**: Constantes aparecem com ícone distintivo na árvore sintática
+
+### 🚀 Exemplos de Uso
+```dart
+// Declarações de constantes
+constante inteiro MAXIMO = 100;
+constante real PI = 3.14159;
+constante texto MENSAGEM = "Olá, mundo das constantes!";
+constante logico DEBUG = verdadeiro;
+
+// Uso em expressões (permitido)
+var resultado = MAXIMO * 2;
+var area = PI * 25.0;
+imprimir MENSAGEM;
+
+// Tentativa de reatribuição (PROIBIDO)
+// MAXIMO = 200;  // ❌ Erro semântico
+```
+
+### 🔧 Arquitetura Expandida
+- **Lexer**: Palavra-chave `constante` reconhecida e tokenizada
+- **AST**: Nova classe `ConstDeclStmt` representando declarações de constantes
+- **Parser**: Parsing específico para sintaxe de constantes com validação
+- **Semantic Analyzer**: 
+  - Conjunto `_constants` para rastrear nomes de constantes
+  - Validação em `visitAssignExpr` para prevenir reatribuição
+  - Verificação de redeclaração no escopo atual
+- **Code Generator**: Geração de bytecode tratando constantes como variáveis imutáveis
+- **Visitadores atualizados**:
+  - `LineVisitor`: Extração de linha para debugging
+  - `LocationVisitor`: Informações de localização precisas
+  - `ASTGraphvizGenerator`: Visualização com cor coral e ícone 🔒
+
+### 🎯 Impacto
+- **Linguagem mais robusta**: Constantes adicionam segurança de tipos e imutabilidade
+- **Desenvolvimento facilitado**: Valores que não devem mudar são protegidos automaticamente
+- **Melhor legibilidade**: Diferenciação clara entre valores mutáveis e imutáveis
+- **Compatibilidade mantida**: Todas as funcionalidades anteriores continuam funcionando
+- **Base para melhorias futuras**: Infraestrutura preparada para verificações de tipos mais avançadas
 
 ---
 

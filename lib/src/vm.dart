@@ -106,6 +106,9 @@ class VM {
         case OpCode.divide:
           _binaryOp((a, b) => a / b);
           break;
+        case OpCode.modulo:
+          _binaryOp((a, b) => a % b);
+          break;
         case OpCode.negate:
           final value = _pop();
           if (value is num) {
@@ -357,6 +360,9 @@ class VM {
         break;
       case OpCode.divide:
         _binaryOp((a, b) => a / b);
+        break;
+      case OpCode.modulo:
+        _binaryOp((a, b) => a % b);
         break;
       case OpCode.negate:
         final a = _pop();

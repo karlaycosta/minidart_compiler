@@ -1,4 +1,11 @@
-# 🚀 **MiniDart Compiler v1.5.0**
+# 🚀 **MiniDart Compiler v1.6.0**
+
+Um compilador completo para a linguagem **MiniDart** - uma linguagem de programação educacional com sintaxe em português, implementado em Dart.
+
+![Dart](https://img.shields.io/badge/Dart-3.8.1-blue)
+![Version](https://img.shields.io/badge/Version-v1.6.0-brightgreen)
+![License](https://img.shields.io/badge/License-MIT-green)
+![Status](https://img.shields.io/badge/Status-Stable-brightgreen)iniDart Compiler v1.5.0**
 
 Um compilador completo para a linguagem **MiniDart** - uma linguagem de programação educacional com sintaxe em português, implementado em Dart.
 
@@ -32,7 +39,8 @@ O **MiniDart Compiler** é um projeto educacional que implementa um compilador c
 
 ### **🌟 Principais Características**
 
-- 🇧🇷 **Sintaxe em Português**: Keywords como `se`, `senao`, `enquanto`, `para`, `funcao`, `retornar`, `imprimir`
+- 🇧🇷 **Sintaxe em Português**: Keywords como `se`, `senao`, `enquanto`, `para`, `funcao`, `retornar`, `imprimir`, `constante`
+- 🔒 **Constantes Tipadas**: Declaração de valores imutáveis com proteção contra reatribuição
 - � **Declarações Tipadas**: Suporte completo a tipos explícitos (`inteiro`, `real`, `texto`, `logico`, `vazio`)
 - �🏗️ **Arquitetura Modular**: Lexer → Parser → Semantic Analyzer → Code Generator → VM
 - 🎯 **Padrão Visitor**: Design patterns modernos para processamento da AST
@@ -51,11 +59,15 @@ O **MiniDart Compiler** é um projeto educacional que implementa um compilador c
 
 ### **🔧 Funcionalidades Implementadas**
 
+- ✅ **Constantes Tipadas**: `constante inteiro MAXIMO = 100;` - Valores imutáveis com proteção contra reatribuição
 - ✅ **Declarações Tipadas**: `inteiro a = 10;`, `real altura = 1.75;`, `texto nome = "João";`, `logico ativo = verdadeiro;`
 - ✅ **Valores Padrão Automáticos**: Variáveis sem inicialização recebem valores baseados no tipo
 - ✅ **Variáveis Tradicionais**: Declaração e atribuição (`var nome = "João";`)
 - ✅ **Tipos de Dados**: Números, strings, booleanos, nulo
-- ✅ **Operadores Aritméticos**: `+`, `-`, `*`, `/`
+- ✅ **Operadores Aritméticos**: `+`, `-`, `*`, `/`, `%` (módulo)
+- ✅ **Operadores de Atribuição**: `=`, `+=`, `-=`, `*=`, `/=`, `%=`
+- ✅ **Operadores de Incremento/Decremento**: `++`, `--` (pré-fixo e pós-fixo)
+- ✅ **Operador Ternário**: `condição ? verdadeiro : falso` (com suporte a aninhamento)
 - ✅ **Operadores Comparação**: `>`, `>=`, `<`, `<=`, `==`, `!=`
 - ✅ **Operadores Lógicos**: `e` (AND), `ou` (OR), `!` (NOT)
 - ✅ **Estruturas Condicionais**: `se`/`senao` (incluindo dentro de funções)
@@ -64,7 +76,7 @@ O **MiniDart Compiler** é um projeto educacional que implementa um compilador c
 - ✅ **Blocos de Código**: `{ ... }`
 - ✅ **Impressão**: `imprimir valor;`
 - ✅ **Expressões Complexas**: Precedência, parênteses e chamadas aninhadas
-- ✅ **Visualização AST**: Geração automática com Graphviz (incluindo tipos)
+- ✅ **Visualização AST**: Geração automática com Graphviz (incluindo tipos e constantes)
 - ✅ **Extensão VS Code**: Syntax highlighting e comandos integrados
 
 ### **🚧 Futuras Implementações**
@@ -328,6 +340,7 @@ code --install-extension minidart-1.2.0.vsix
 | Português | Função |
 |-----------|---------|
 | `var` | Declaração de variável tradicional |
+| `constante` | Declaração de constante imutável |
 | `inteiro` | Tipo inteiro |
 | `real` | Tipo ponto flutuante |
 | `texto` | Tipo string |
@@ -352,6 +365,12 @@ code --install-extension minidart-1.2.0.vsix
 ### **🎯 Tipos de Dados**
 
 ```dart
+// ===== CONSTANTES TIPADAS (v1.6.0) =====
+constante inteiro MAXIMO = 100;        // Constante inteira
+constante real PI = 3.14159;           // Constante real
+constante texto VERSAO = "v1.6.0";     // Constante string
+constante logico DEBUG = verdadeiro;   // Constante booleana
+
 // ===== DECLARAÇÕES TIPADAS (v1.5.0) =====
 inteiro idade = 25;           // Inteiro
 real altura = 1.75;           // Ponto flutuante
@@ -377,6 +396,28 @@ var vazio = nulo;             // Null
 // Aritméticos
 var soma = 10 + 5;        // 15
 var mult = 3 * 4;         // 12
+var resto = 17 % 5;       // 2 (módulo)
+
+// Atribuição e operadores compostos
+var x = 10;
+x += 5;                   // x = 15
+x -= 3;                   // x = 12
+x *= 2;                   // x = 24
+x /= 4;                   // x = 6
+x %= 5;                   // x = 1
+
+// Incremento e decremento
+var contador = 5;
+imprimir(contador++);     // 5 (pós-fixo: imprime e depois incrementa)
+imprimir(contador);       // 6
+imprimir(++contador);     // 7 (pré-fixo: incrementa e depois imprime)
+imprimir(contador--);     // 7 (pós-fixo: imprime e depois decrementa)
+imprimir(--contador);     // 5 (pré-fixo: decrementa e depois imprime)
+
+// Operador Ternário
+var status = idade >= 18 ? "adulto" : "menor";
+var categoria = nota >= 90 ? "A" : nota >= 80 ? "B" : "C";  // aninhado
+var resultado = (x + y) > 10 ? x * y : x - y;              // com expressões
 
 // Comparação
 var maior = 10 > 5;       // verdadeiro
@@ -555,6 +596,21 @@ Este exemplo inclui:
 - ✅ **Operadores** relacionais e lógicos
 - ✅ **Reassignação** de variáveis
 - ✅ **Demonstração integrativa** final
+
+### **🔒 Exemplo de Constantes (v1.6.0)**
+
+Execute o exemplo demonstrando o novo suporte a constantes:
+
+```bash
+dart run bin/compile.dart exemplos/exemplo_constantes.mdart
+```
+
+Este exemplo demonstra:
+- ✅ **Constantes tipadas** com todos os tipos
+- ✅ **Proteção contra reatribuição** 
+- ✅ **Uso em expressões** e cálculos
+- ✅ **Integração** com variáveis normais
+- ✅ **Erro semântico** ao tentar modificar constantes
 } senao {
     imprimir "Reprovado";
     imprimir "Nota insuficiente: ";
@@ -684,11 +740,12 @@ minidart_compiler/
 │   ├── snippets/minidart.json    # Snippets de código
 │   └── README.md                 # Documentação da extensão
 ├── 📁 exemplos/
-│   ├── exemplo_basico.mdart      # Exemplo básico
-│   ├── exemplo_completo.mdart    # Funcionalidades completas
-│   ├── calculadora_notas.mdart   # Calculadora de notas
-│   ├── exemplo_funcional.mdart   # Programação funcional
-│   └── teste.mdart               # Casos de teste
+│   ├── exemplo_ast_basico.mdart     # Exemplo básico com AST
+│   ├── exemplo_completo_v1.5.0.mdart # Todas as funcionalidades v1.5.0
+│   ├── exemplo_constantes.mdart     # Demonstração de constantes v1.6.0
+│   ├── constante_simples.mdart      # Exemplo simples de constante
+│   ├── calculadora_notas.mdart      # Calculadora de notas
+│   └── exemplo_funcional.mdart      # Programação funcional
 ├── 📁 test/
 │   └── minidart_compiler_test.dart
 ├── 📄 README.md                  # Este arquivo
@@ -753,6 +810,41 @@ xdot minidart_ast.dot
 - Bytecode no terminal - Código intermediário (apenas com `-b`)
 - Saída da execução - Resultado do programa MiniDart
 - **Erro reporting** - Localização precisa `[linha X, coluna Y]`
+
+---
+
+## 🆕 **Novidades v1.6.0 (24/07/2025)**
+
+### **🔒 Constantes Tipadas - Nova Funcionalidade Principal**
+
+- **✨ Nova sintaxe**: `constante inteiro MAXIMO = 100;`, `constante real PI = 3.14159;`
+- **🛡️ Proteção completa**: Constantes não podem ser reatribuídas após declaração
+- **🎯 Tipos suportados**: `inteiro`, `real`, `texto`, `logico`, `vazio`
+- **⚡ Inicialização obrigatória**: Constantes devem sempre ser inicializadas
+- **🔍 Erro semântico claro**: `"Não é possível atribuir valor à constante 'NOME'"`
+
+### **🏗️ Implementação Completa na Pipeline**
+
+- **📝 Lexer**: Nova palavra-chave `constante` reconhecida
+- **🌳 AST**: Classe `ConstDeclStmt` para representar declarações de constantes
+- **📋 Parser**: Método específico `_constDeclaration()` com validação
+- **🧠 Semantic Analyzer**: Rastreamento e proteção contra reatribuição
+- **⚙️ Code Generator**: Compilação para bytecode compatível
+- **🎨 Visualização**: Constantes na AST com ícone 🔒 e cor coral distintiva
+
+### **✅ Funcionalidades Validadas**
+
+- **📊 Exemplo completo**: `exemplo_constantes.mdart` demonstra todos os tipos
+- **🛡️ Proteção testada**: Tentativas de reatribuição geram erro semântico
+- **🔗 Integração total**: Constantes funcionam em expressões e com variáveis
+- **🎯 Compatibilidade**: Funciona junto com `var` e declarações tipadas
+
+### **🚀 Impacto na Linguagem**
+
+- **🔒 Maior segurança**: Valores que não devem mudar são protegidos
+- **📖 Melhor legibilidade**: Diferenciação clara entre mutáveis e imutáveis
+- **🎯 Robustez**: Base sólida para verificações de tipos mais avançadas
+- **🔧 Compatibilidade total**: Todas as funcionalidades anteriores mantidas
 
 ---
 

@@ -8,15 +8,25 @@ enum TokenType {
   dot,
   minus,
   plus,
+  plusPlus,
+  minusMinus,
+  percent,
   semicolon,
   slash,
   star,
+  question, // ?
+  colon,    // :
 
   // Tokens de um ou dois caracteres
   bang,
   bangEqual,
   equal,
   equalEqual,
+  plusEqual,
+  minusEqual,
+  starEqual,
+  slashEqual,
+  percentEqual,
   greater,
   greaterEqual,
   less,
@@ -44,7 +54,11 @@ enum TokenType {
   // Novos tokens para loop for
   to_,         // 'ate'
   do_,         // 'faca'
-  step_,       // 'passo'
+  increment_,  // 'incremente'
+  decrement_,  // 'decremente'
+  
+  // Token para do-while
+  dowhile_,    // 'faca' (usado em do-while)
   
   // Tipos de dados
   inteiro,     // 'inteiro'
@@ -52,6 +66,9 @@ enum TokenType {
   texto,       // 'texto'
   logico,      // 'logico'
   vazio,       // 'vazio'
+  
+  // Declaração de constante
+  constante,   // 'constante'
 
   eof,
 }
@@ -99,9 +116,14 @@ extension TokenTypeExtension on TokenType {
       TokenType.dot => 'Ponto',
       TokenType.minus => 'Subtração',
       TokenType.plus => 'Adição',
+      TokenType.plusPlus => 'Incremento',
+      TokenType.minusMinus => 'Decremento',
+      TokenType.percent => 'Módulo',
       TokenType.semicolon => 'Ponto e Vírgula',
       TokenType.slash => 'Divisão',
       TokenType.star => 'Multiplicação',
+      TokenType.question => 'Interrogação',
+      TokenType.colon => 'Dois Pontos',
       // ========================================================================
       // SÍMBOLOS DE UM OU DOIS CARACTERES
       // ========================================================================
@@ -109,6 +131,11 @@ extension TokenTypeExtension on TokenType {
       TokenType.bangEqual => 'Diferente',
       TokenType.equal => 'Atribuição',
       TokenType.equalEqual => 'Igualdade',
+      TokenType.plusEqual => 'Adição e Atribuição',
+      TokenType.minusEqual => 'Subtração e Atribuição',
+      TokenType.starEqual => 'Multiplicação e Atribuição',
+      TokenType.slashEqual => 'Divisão e Atribuição',
+      TokenType.percentEqual => 'Módulo e Atribuição',
       TokenType.greater => 'Maior',
       TokenType.greaterEqual => 'Maior ou Igual',
       TokenType.less => 'Menor',
@@ -129,14 +156,16 @@ extension TokenTypeExtension on TokenType {
       TokenType.if_ => 'Se (condicional)',
       TokenType.nil => 'Nulo',
       TokenType.or => 'Ou (operador lógico)',
-      TokenType.print_ => 'Imprimir',
-      TokenType.return_ => 'Retornar',
+      TokenType.print_ => 'Imprima',
+      TokenType.return_ => 'Retorne',
       TokenType.true_ => 'Verdadeiro',
       TokenType.var_ => 'Variável',
       TokenType.while_ => 'Enquanto (loop)',
       TokenType.to_ => 'Até (loop for)',
       TokenType.do_ => 'Faça (loop)',
-      TokenType.step_ => 'Passo (incremento)',
+      TokenType.increment_ => 'Incremente (incremento)',
+      TokenType.decrement_ => 'Decremente (decremento)',
+      TokenType.dowhile_ => 'Faça-Enquanto (loop)',
       // ========================================================================
       // TIPOS DE DADOS
       // ========================================================================
@@ -145,6 +174,7 @@ extension TokenTypeExtension on TokenType {
       TokenType.texto => 'Tipo Texto',
       TokenType.logico => 'Tipo Lógico',
       TokenType.vazio => 'Tipo Vazio',
+      TokenType.constante => 'Declaração de Constante',
       // ========================================================================
       // ESPECIAIS
       // ========================================================================
@@ -167,14 +197,24 @@ extension TokenTypeExtension on TokenType {
       TokenType.dot => '.',
       TokenType.minus => '-',
       TokenType.plus => '+',
+      TokenType.plusPlus => '++',
+      TokenType.minusMinus => '--',
+      TokenType.percent => '%',
       TokenType.semicolon => ',',
       TokenType.slash => '/',
       TokenType.star => '*',
+      TokenType.question => '?',
+      TokenType.colon => ':',
       // Símbolos de dois caracteres
       TokenType.bang => '!',
       TokenType.bangEqual => '!=',
       TokenType.equal => '=',
       TokenType.equalEqual => '==',
+      TokenType.plusEqual => '+=',
+      TokenType.minusEqual => '-=',
+      TokenType.starEqual => '*=',
+      TokenType.slashEqual => '/=',
+      TokenType.percentEqual => '%=',
       TokenType.greater => '>',
       TokenType.greaterEqual => '>=',
       TokenType.less => '<',
@@ -191,20 +231,23 @@ extension TokenTypeExtension on TokenType {
       TokenType.if_ => 'se',
       TokenType.nil => 'nulo',
       TokenType.or => 'ou',
-      TokenType.print_ => 'imprimir',
-      TokenType.return_ => 'retorna',
+      TokenType.print_ => 'imprima',
+      TokenType.return_ => 'retorne',
       TokenType.true_ => 'verdadeiro',
       TokenType.var_ => 'var',
       TokenType.while_ => 'enquanto',
       TokenType.to_ => 'ate',
       TokenType.do_ => 'faca',
-      TokenType.step_ => 'passo',
+      TokenType.increment_ => 'incremente',
+      TokenType.decrement_ => 'decremente',
+      TokenType.dowhile_ => 'faca-enquanto',
       // Tipos de dados
       TokenType.inteiro => 'inteiro',
       TokenType.real => 'real',
       TokenType.texto => 'texto',
       TokenType.logico => 'logico',
       TokenType.vazio => 'vazio',
+      TokenType.constante => 'constante',
       // Especiais
       TokenType.eof => '<EOF>',
     };

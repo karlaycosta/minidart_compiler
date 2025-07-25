@@ -68,7 +68,7 @@ class Lexer {
   /// - **Declarações**: var, classe, fun
   /// - **Operadores lógicos**: e, ou
   /// - **Literais**: verdadeiro, falso, nulo
-  /// - **Comandos**: imprimir, retornar
+  /// - **Comandos**: imprima, retorne
   /// - **Orientação a objetos**: isto, super
   static final Map<String, TokenType> _keywords = {
     'e': TokenType.and, // Operador lógico AND
@@ -78,14 +78,16 @@ class Lexer {
     'se': TokenType.if_, // Estrutura condicional IF
     'nulo': TokenType.nil, // Literal valor nulo
     'ou': TokenType.or, // Operador lógico OR
-    'imprimir': TokenType.print_, // Comando de impressão
-    'retornar': TokenType.return_, // Comando de retorno de função
+    'imprima': TokenType.print_, // Comando de impressão
+    'retorne': TokenType.return_, // Comando de retorno de função
     'verdadeiro': TokenType.true_, // Literal booleano true
     'var': TokenType.var_, // Declaração de variável
     'enquanto': TokenType.while_, // Loop WHILE
     'ate': TokenType.to_, // Loop FOR - até
     'faca': TokenType.do_, // Loop FOR - faça
-    'passo': TokenType.step_, // Loop FOR - incremento
+    'incremente': TokenType.increment_, // Loop FOR - incremento positivo
+    'decremente': TokenType.decrement_, // Loop FOR - incremento negativo
+    'constante': TokenType.constante, // Declaração de constante
     // Tipos de dados
     'inteiro': TokenType.inteiro, // Tipo de dados inteiro
     'real': TokenType.real, // Tipo de dados real/float
@@ -173,14 +175,36 @@ class Lexer {
         _addToken(TokenType.comma); // Vírgula
       case '.':
         _addToken(TokenType.dot); // Ponto
+      case '?':
+        _addToken(TokenType.question); // Interrogação
+      case ':':
+        _addToken(TokenType.colon); // Dois pontos
       case '-':
-        _addToken(TokenType.minus); // Subtração/negação
+        if (_match('-')) {
+          _addToken(TokenType.minusMinus);
+        } else if (_match('=')) {
+          _addToken(TokenType.minusEqual);
+        } else {
+          _addToken(TokenType.minus);
+        } // --, -= ou -
       case '+':
-        _addToken(TokenType.plus); // Adição
+        if (_match('+')) {
+          _addToken(TokenType.plusPlus);
+        } else if (_match('=')) {
+          _addToken(TokenType.plusEqual);
+        } else {
+          _addToken(TokenType.plus);
+        } // ++, += ou +
       case ';':
         _addToken(TokenType.semicolon); // Ponto e vírgula
       case '*':
-        _addToken(TokenType.star); // Multiplicação
+        _addToken(
+          _match('=') ? TokenType.starEqual : TokenType.star,
+        ); // *= ou *
+      case '%':
+        _addToken(
+          _match('=') ? TokenType.percentEqual : TokenType.percent,
+        ); // %= ou %
 
       // === Operadores que podem ser compostos ===
       case '!':
@@ -207,6 +231,8 @@ class Lexer {
           while (_peek() != '\n' && _isNotEnd) {
             _advance();
           }
+        } else if (_match('=')) {
+          _addToken(TokenType.slashEqual); // /=
         } else {
           _addToken(TokenType.slash); // Operador de divisão
         }

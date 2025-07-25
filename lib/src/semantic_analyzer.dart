@@ -8,6 +8,9 @@ import 'token.dart';
 class SemanticAnalyzer implements AstVisitor<void> {
   final ErrorReporter _errorReporter;
   SymbolTable _currentScope = SymbolTable();
+  
+  // Conjunto para rastrear nomes de constantes (não podem ser reatribuídas)
+  final Set<String> _constants = <String>{};
 
   SemanticAnalyzer(this._errorReporter);
 
@@ -66,9 +69,40 @@ class SemanticAnalyzer implements AstVisitor<void> {
   }
 
   @override
+  void visitConstDeclStmt(ConstDeclStmt stmt) {
+    // Verificar se já existe uma variável/constante com este nome
+    if (_currentScope.get(stmt.name) != null) {
+      _errorReporter.error(stmt.name.line, 
+          "Constante '${stmt.name.lexeme}' já foi declarada neste escopo.");
+      return;
+    }
+    
+    // Declara a constante no escopo atual
+    _declare(stmt.name);
+    
+    // Resolve o inicializador (obrigatório para constantes)
+    _resolveExpr(stmt.initializer);
+    
+    // Registra como constante (não pode ser reatribuída)
+    _constants.add(stmt.name.lexeme);
+    
+    // Define a constante como inicializada
+    _define(stmt.name);
+    
+    // TODO: Futuramente, adicionar verificação de compatibilidade de tipos
+    // e verificar se o inicializador é uma expressão constante
+  }
+
+  @override
   void visitWhileStmt(WhileStmt stmt) {
     _resolveExpr(stmt.condition);
     _resolveStmt(stmt.body);
+  }
+  
+  @override
+  void visitDoWhileStmt(DoWhileStmt stmt) {
+    _resolveStmt(stmt.body);
+    _resolveExpr(stmt.condition);
   }
   
   @override
@@ -111,6 +145,33 @@ class SemanticAnalyzer implements AstVisitor<void> {
   }
 
   @override
+  void visitForCStmt(ForCStmt stmt) {
+    // Cria um escopo para o loop (inicialização pode declarar variáveis)
+    _beginScope();
+    
+    // Resolve inicialização (se presente)
+    if (stmt.initializer != null) {
+      _resolveStmt(stmt.initializer!);
+    }
+    
+    // Resolve condição (se presente)
+    if (stmt.condition != null) {
+      _resolveExpr(stmt.condition!);
+    }
+    
+    // Resolve incremento (se presente)
+    if (stmt.increment != null) {
+      _resolveExpr(stmt.increment!);
+    }
+    
+    // Resolve o corpo dentro do escopo
+    _resolveStmt(stmt.body);
+    
+    // Encerra o escopo
+    _endScope();
+  }
+
+  @override
   void visitIfStmt(IfStmt stmt) {
     _resolveExpr(stmt.condition);
     _resolveStmt(stmt.thenBranch);
@@ -141,7 +202,63 @@ class SemanticAnalyzer implements AstVisitor<void> {
   }
 
   @override
+  void visitCompoundAssignExpr(CompoundAssignExpr expr) {
+    // Verificar se é tentativa de atribuição composta a uma constante
+    if (_constants.contains(expr.name.lexeme)) {
+      _errorReporter.error(expr.name.line,
+          "Não é possível aplicar operação '${expr.operator.lexeme}' à constante '${expr.name.lexeme}'.");
+      return;
+    }
+    
+    // Resolve o valor que está sendo aplicado
+    _resolveExpr(expr.value);
+    // Verifica se a variável de destino existe
+    if (!_currentScope.assign(expr.name)) {
+      _errorReporter.error(expr.name.line, "Tentativa de operação '${expr.operator.lexeme}' em variável '${expr.name.lexeme}' não declarada.");
+    }
+  }
+
+  @override
+  void visitDecrementExpr(DecrementExpr expr) {
+    // Verificar se é tentativa de decrementar uma constante
+    if (_constants.contains(expr.name.lexeme)) {
+      _errorReporter.error(expr.name.line,
+          "Não é possível decrementar constante '${expr.name.lexeme}'.");
+      return;
+    }
+    
+    // Verifica se a variável existe
+    if (!_currentScope.assign(expr.name)) {
+      _errorReporter.error(expr.name.line, 
+          "Tentativa de decrementar variável '${expr.name.lexeme}' não declarada.");
+    }
+  }
+
+  @override
+  void visitIncrementExpr(IncrementExpr expr) {
+    // Verificar se é tentativa de incrementar uma constante
+    if (_constants.contains(expr.name.lexeme)) {
+      _errorReporter.error(expr.name.line,
+          "Não é possível incrementar constante '${expr.name.lexeme}'.");
+      return;
+    }
+    
+    // Verifica se a variável existe
+    if (!_currentScope.assign(expr.name)) {
+      _errorReporter.error(expr.name.line, 
+          "Tentativa de incrementar variável '${expr.name.lexeme}' não declarada.");
+    }
+  }
+
+  @override
   void visitAssignExpr(AssignExpr expr) {
+    // Verificar se é tentativa de atribuição a uma constante
+    if (_constants.contains(expr.name.lexeme)) {
+      _errorReporter.error(expr.name.line,
+          "Não é possível atribuir valor à constante '${expr.name.lexeme}'.");
+      return;
+    }
+    
     // Resolve o valor que está sendo atribuído.
     _resolveExpr(expr.value);
     // Verifica se a variável de destino existe.
@@ -160,6 +277,13 @@ class SemanticAnalyzer implements AstVisitor<void> {
   void visitLogicalExpr(LogicalExpr expr) {
     _resolveExpr(expr.left);
     _resolveExpr(expr.right);
+  }
+
+  @override
+  void visitTernaryExpr(TernaryExpr expr) {
+    _resolveExpr(expr.condition);
+    _resolveExpr(expr.thenBranch);
+    _resolveExpr(expr.elseBranch);
   }
 
   @override

@@ -46,13 +46,22 @@ abstract interface class AstVisitor<T> {
   /// Visita uma declaração de variável tipada (tipo nome = valor;)
   T visitTypedVarDeclStmt(TypedVarDeclStmt stmt);
   
+  /// Visita uma declaração de constante (constante tipo nome = valor;)
+  T visitConstDeclStmt(ConstDeclStmt stmt);
+  
   /// Visita um loop while (enquanto)
   T visitWhileStmt(WhileStmt stmt);
+  
+  /// Visita um loop do-while (faca...enquanto)
+  T visitDoWhileStmt(DoWhileStmt stmt);
   
   /// Visita um loop for (para)
   T visitForStmt(ForStmt stmt);
   
-  /// Visita um loop for com incremento personalizado (para...passo)
+  /// Visita um loop for estilo C (para (init; condition; increment))
+  T visitForCStmt(ForCStmt stmt);
+  
+  /// Visita um loop for com incremento personalizado (para...incremente/decremente)
   T visitForStepStmt(ForStepStmt stmt);
   
   /// Visita uma declaração de função
@@ -66,11 +75,23 @@ abstract interface class AstVisitor<T> {
   /// Visita uma atribuição de valor a variável (nome = valor)
   T visitAssignExpr(AssignExpr expr);
   
+  /// Visita uma atribuição composta (nome += valor, nome -= valor, etc.)
+  T visitCompoundAssignExpr(CompoundAssignExpr expr);
+  
+  /// Visita uma expressão de incremento (variavel++)
+  T visitIncrementExpr(IncrementExpr expr);
+  
+  /// Visita uma expressão de decremento (variavel--)
+  T visitDecrementExpr(DecrementExpr expr);
+  
   /// Visita uma operação binária (a + b, x > y, etc.)
   T visitBinaryExpr(BinaryExpr expr);
   
   /// Visita uma expressão agrupada por parênteses ((expressão))
   T visitGroupingExpr(GroupingExpr expr);
+  
+  /// Visita uma expressão ternária (condição ? verdadeiro : falso)
+  T visitTernaryExpr(TernaryExpr expr);
   
   /// Visita um valor literal (números, strings, booleanos, nulo)
   T visitLiteralExpr(LiteralExpr expr);
@@ -224,6 +245,31 @@ final class TypedVarDeclStmt extends Stmt {
   @override T accept<T>(AstVisitor<T> visitor) => visitor.visitTypedVarDeclStmt(this);
 }
 
+/// **Statement de Declaração de Constante: constante tipo nome = valor;**
+/// 
+/// Declara uma constante com tipo explícito que não pode ser alterada
+/// após sua inicialização. Todas as constantes DEVEM ser inicializadas.
+/// 
+/// **Exemplos:** 
+/// - `constante inteiro MAXIMO = 100;`
+/// - `constante texto VERSAO = "v1.5.0";`
+/// - `constante real PI = 3.14159;`
+/// - `constante logico DEBUG = verdadeiro;`
+final class ConstDeclStmt extends Stmt {
+  /// Informação sobre o tipo da constante
+  final TypeInfo type;
+  
+  /// Token que representa o nome da constante
+  final Token name;
+  
+  /// Expressão para calcular o valor inicial (obrigatório)
+  final Expr initializer;
+  
+  ConstDeclStmt(this.type, this.name, this.initializer);
+  
+  @override T accept<T>(AstVisitor<T> visitor) => visitor.visitConstDeclStmt(this);
+}
+
 /// **Statement de Loop While: enquanto (condição) statement**
 /// 
 /// Implementa loops condicionais na linguagem MiniDart.
@@ -240,6 +286,25 @@ final class WhileStmt extends Stmt {
   WhileStmt(this.condition, this.body);
   
   @override T accept<T>(AstVisitor<T> visitor) => visitor.visitWhileStmt(this);
+}
+
+/// **Statement de Loop Do-While: faca statement enquanto (condição);**
+/// 
+/// Implementa loops do-while na linguagem MiniDart.
+/// Executa o corpo pelo menos uma vez, depois repete enquanto a condição for verdadeira.
+/// A diferença para o while é que a condição é testada após a execução do corpo.
+/// 
+/// **Exemplo:** `faca { contador = contador + 1; } enquanto (contador < 10);`
+final class DoWhileStmt extends Stmt {
+  /// Statement executado repetidamente
+  final Stmt body;
+  
+  /// Expressão avaliada após cada iteração
+  final Expr condition;
+  
+  DoWhileStmt(this.body, this.condition);
+  
+  @override T accept<T>(AstVisitor<T> visitor) => visitor.visitDoWhileStmt(this);
 }
 
 /// **Statement de Loop For: para variavel = inicio ate fim faca statement**
@@ -266,12 +331,14 @@ final class ForStmt extends Stmt {
   @override T accept<T>(AstVisitor<T> visitor) => visitor.visitForStmt(this);
 }
 
-/// **Statement de Loop For com Incremento: para variavel = inicio ate fim passo incremento faca statement**
+/// **Statement de Loop For com Incremento/Decremento: para variavel = inicio ate fim incremente/decremente valor faca statement**
 /// 
-/// Implementa loops com contador e incremento personalizável na linguagem MiniDart.
-/// Permite especificar quanto a variável deve ser incrementada a cada iteração.
+/// Implementa loops com contador e incremento/decremento personalizável na linguagem MiniDart.
+/// Permite especificar quanto a variável deve ser incrementada ou decrementada a cada iteração.
 /// 
-/// **Exemplo:** `para i = 0 ate 10 passo 2 faca { imprimir i; }` (0, 2, 4, 6, 8, 10)
+/// **Exemplos:** 
+/// - `para i = 0 ate 10 incremente 2 faca { imprimir i; }` (0, 2, 4, 6, 8, 10)
+/// - `para i = 10 ate 0 decremente 2 faca { imprimir i; }` (10, 8, 6, 4, 2, 0)
 final class ForStepStmt extends Stmt {
   /// Nome da variável de controle
   final Token variable;
@@ -285,12 +352,45 @@ final class ForStepStmt extends Stmt {
   /// Expressão para incremento por iteração
   final Expr step;
   
+  /// Indica se é incremento (true) ou decremento (false)
+  final bool isIncrement;
+  
   /// Statement executado repetidamente
   final Stmt body;
   
-  ForStepStmt(this.variable, this.initializer, this.condition, this.step, this.body);
+  ForStepStmt(this.variable, this.initializer, this.condition, this.step, this.isIncrement, this.body);
   
   @override T accept<T>(AstVisitor<T> visitor) => visitor.visitForStepStmt(this);
+}
+
+/// **Loop For Estilo C**
+/// 
+/// Representa um loop for com sintaxe estilo C: `para (init; condition; increment)`.
+/// Mais flexível que o ForStmt tradicional, permitindo qualquer tipo de inicialização
+/// e incremento.
+/// 
+/// **Exemplo:**
+/// ```dart
+/// para (inteiro i = 0; i < 10; i++) {
+///   imprimir i;
+/// }
+/// ```
+final class ForCStmt extends Stmt {
+  /// Declaração de inicialização (pode ser null)
+  final Stmt? initializer;
+  
+  /// Condição de continuação do loop (pode ser null)
+  final Expr? condition;
+  
+  /// Expressão de incremento (pode ser null)
+  final Expr? increment;
+  
+  /// Corpo do loop
+  final Stmt body;
+  
+  ForCStmt(this.initializer, this.condition, this.increment, this.body);
+  
+  @override T accept<T>(AstVisitor<T> visitor) => visitor.visitForCStmt(this);
 }
 
 // ============================================================================
@@ -410,6 +510,85 @@ final class AssignExpr extends Expr {
   @override T accept<T>(AstVisitor<T> visitor) => visitor.visitAssignExpr(this);
 }
 
+/// **Expressão de Atribuição Composta: variavel operador= valor**
+/// 
+/// Representa atribuições que combinam uma operação com atribuição:
+/// - `+=`: soma e atribui
+/// - `-=`: subtrai e atribui  
+/// - `*=`: multiplica e atribui
+/// - `/=`: divide e atribui
+/// 
+/// **Exemplos:**
+/// ```dart
+/// inteiro x = 10;
+/// x += 5;  // equivale a x = x + 5 (x vira 15)
+/// x *= 2;  // equivale a x = x * 2 (x vira 30)
+/// ```
+final class CompoundAssignExpr extends Expr {
+  /// Token que identifica a variável de destino
+  final Token name;
+  
+  /// Operador de atribuição composta (+=, -=, *=, /=)
+  final Token operator;
+  
+  /// Expressão que calcula o valor a ser aplicado
+  final Expr value;
+  
+  CompoundAssignExpr(this.name, this.operator, this.value);
+  
+  @override T accept<T>(AstVisitor<T> visitor) => visitor.visitCompoundAssignExpr(this);
+}
+
+/// **Expressão de Incremento: ++variavel ou variavel++**
+/// 
+/// Representa o operador de incremento que aumenta o valor 
+/// de uma variável numérica em 1:
+/// - Pré-fixo: ++variavel (incrementa e retorna novo valor)
+/// - Pós-fixo: variavel++ (retorna valor original e incrementa)
+/// 
+/// **Exemplo:**
+/// ```dart
+/// inteiro i = 5;
+/// inteiro antigo = i++;  // antigo = 5, i = 6
+/// inteiro novo = ++i;    // novo = 7, i = 7
+/// ```
+final class IncrementExpr extends Expr {
+  /// Token que identifica a variável a ser incrementada
+  final Token name;
+  
+  /// Se true, é pré-fixo (++var); se false, é pós-fixo (var++)
+  final bool isPrefix;
+  
+  IncrementExpr(this.name, {this.isPrefix = false});
+  
+  @override T accept<T>(AstVisitor<T> visitor) => visitor.visitIncrementExpr(this);
+}
+
+/// **Expressão de Decremento: --variavel ou variavel--**
+/// 
+/// Representa o operador de decremento que diminui o valor 
+/// de uma variável numérica em 1:
+/// - Pré-fixo: --variavel (decrementa e retorna novo valor)
+/// - Pós-fixo: variavel-- (retorna valor original e decrementa)
+/// 
+/// **Exemplo:**
+/// ```dart
+/// inteiro i = 5;
+/// inteiro antigo = i--;  // antigo = 5, i = 4
+/// inteiro novo = --i;    // novo = 3, i = 3
+/// ```
+final class DecrementExpr extends Expr {
+  /// Token que identifica a variável a ser decrementada
+  final Token name;
+  
+  /// Se true, é pré-fixo (--var); se false, é pós-fixo (var--)
+  final bool isPrefix;
+  
+  DecrementExpr(this.name, {this.isPrefix = false});
+  
+  @override T accept<T>(AstVisitor<T> visitor) => visitor.visitDecrementExpr(this);
+}
+
 /// **Expressão Binária: esquerda operador direita**
 /// 
 /// Representa operações que envolvem dois operandos:
@@ -450,6 +629,36 @@ final class GroupingExpr extends Expr {
   GroupingExpr(this.expression);
   
   @override T accept<T>(AstVisitor<T> visitor) => visitor.visitGroupingExpr(this);
+}
+
+/// **Expressão Ternária: condição ? valor_se_verdadeiro : valor_se_falso**
+/// 
+/// Representa uma expressão condicional que avalia uma condição
+/// e retorna um de dois valores dependendo do resultado.
+/// 
+/// **Sintaxe:**
+/// ```
+/// condição ? valor_verdadeiro : valor_falso
+/// ```
+/// 
+/// **Exemplos:**
+/// ```dart
+/// var status = idade >= 18 ? "maior" : "menor";
+/// var sinal = x > 0 ? "positivo" : x < 0 ? "negativo" : "zero";
+/// ```
+final class TernaryExpr extends Expr {
+  /// A condição a ser avaliada
+  final Expr condition;
+  
+  /// Valor retornado se a condição for verdadeira
+  final Expr thenBranch;
+  
+  /// Valor retornado se a condição for falsa
+  final Expr elseBranch;
+  
+  TernaryExpr(this.condition, this.thenBranch, this.elseBranch);
+  
+  @override T accept<T>(AstVisitor<T> visitor) => visitor.visitTernaryExpr(this);
 }
 
 /// **Expressão Literal: valores constantes**

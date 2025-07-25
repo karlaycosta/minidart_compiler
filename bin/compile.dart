@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:args/args.dart';
 import 'package:minidart_compiler/src/lexer.dart';
 import 'package:minidart_compiler/src/parser.dart';
 import 'package:minidart_compiler/src/error.dart';
@@ -10,40 +11,75 @@ import 'package:minidart_compiler/src/ast_graphviz_generator.dart';
 // Cria uma instância única do reporter de erros para todo o compilador.
 final errorReporter = ErrorReporter();
 
-void main(List<String> args) {
+void main(List<String> arguments) {
+  final parser = ArgParser()
+    ..addFlag(
+      'version',
+      abbr: 'v',
+      negatable: false,
+      help: 'Mostra a versão do compilador',
+    )
+    ..addFlag(
+      'ast-only',
+      abbr: 'a',
+      negatable: false,
+      help: 'Gera apenas a AST em Graphviz (não executa o código)',
+    )
+    ..addFlag(
+      'bytecode',
+      abbr: 'b',
+      negatable: false,
+      help: 'Mostra o bytecode gerado durante a compilação',
+    );
+
+  ArgResults argResults;
+  try {
+    argResults = parser.parse(arguments);
+  } on FormatException catch (e) {
+    stderr.writeln('Erro ao analisar os argumentos: ${e.message}');
+    stderr.writeln(getUsage(parser));
+    exit(64);
+  }
+
   // Verifica se é pedido para mostrar a versão
-  if (args.contains('--version') || args.contains('-v')) {
-    print('MiniDart Compiler v1.4.1');
+  if (argResults['version']) {
+    print('MiniDart Compiler v1.12.3');
     print('Copyright (c) 2025 Deriks Karlay Dias Costa');
     print('Linguagem de programação educacional em português');
     exit(0);
   }
 
-  if (args.isEmpty) {
-    print('Uso: dart bin/compile.dart <caminho_para_arquivo.mdart> [opções]');
-    print('');
-    print('Opções:');
-    print(
-      '  --ast-only, -a   Gera apenas a AST em Graphviz (não executa o código)',
-    );
-    print('  --bytecode, -b   Mostra o bytecode gerado durante a compilação');
-    print('  --version,  -v   Mostra a versão do compilador');
-    print('');
-    print('Exemplos:');
-    print('  dart bin/compile.dart exemplos/exemplo_basico.mdart');
-    print('  dart bin/compile.dart exemplos/exemplo_ast.mdart --ast-only');
-    print('  dart bin/compile.dart exemplos/teste.mdart --bytecode');
-    print('  dart bin/compile.dart exemplos/teste.mdart -b');
-    print('  dart bin/compile.dart --version');
+  if (argResults.rest.isEmpty) {
+    print('Erro: Nenhum arquivo de entrada fornecido.\n');
+    print(getUsage(parser));
     exit(64); // Código de erro para uso incorreto.
   }
 
-  final filePath = args.first;
-  final astOnly = args.contains('--ast-only') || args.contains('-a');
-  final showBytecode = args.contains('--bytecode') || args.contains('-b');
-  final source = File(filePath).readAsStringSync();
+  final filePath = argResults.rest.first;
+  final astOnly = argResults['ast-only'] as bool;
+  final showBytecode = argResults['bytecode'] as bool;
 
-  run(source, astOnly: astOnly, showBytecode: showBytecode);
+  try {
+    final source = File(filePath).readAsStringSync();
+    run(source, astOnly: astOnly, showBytecode: showBytecode);
+  } on FileSystemException {
+    print('Erro: Não foi possível encontrar o arquivo "$filePath"');
+    exit(66); // Código de erro para arquivo de entrada não encontrado.
+  }
+}
+
+String getUsage(ArgParser parser) {
+  return '''
+Uso: dart bin/compile.dart <caminho_para_arquivo.mdart> [opções]
+
+Opções:
+${parser.usage}
+
+Exemplos:
+  dart bin/compile.dart exemplos/teste_simples.mdart
+  dart bin/compile.dart exemplos/teste_complexo.mdart --bytecode
+  dart bin/compile.dart exemplos/teste_simples.mdart --ast-only
+''';
 }
 
 void run(String source, {bool astOnly = false, bool showBytecode = false}) {
@@ -53,7 +89,7 @@ void run(String source, {bool astOnly = false, bool showBytecode = false}) {
   final lexer = Lexer(source, errorReporter);
   final tokens = lexer.scanTokens();
   if (errorReporter.hadError) {
-    stderr.writeln('Erros encontrados durante a análise léxica. Compilação abortada.');
+    print('Erros encontrados durante a análise léxica. Compilação abortada.');
     return;
   }
 
@@ -61,7 +97,7 @@ void run(String source, {bool astOnly = false, bool showBytecode = false}) {
   final parser = Parser(tokens, errorReporter);
   final statements = parser.parse();
   if (errorReporter.hadError) {
-    stderr.writeln(
+    print(
       'Erros encontrados durante a análise sintática. Compilação abortada.',
     );
     return;
@@ -83,7 +119,7 @@ void run(String source, {bool astOnly = false, bool showBytecode = false}) {
   final semanticAnalyzer = SemanticAnalyzer(errorReporter);
   semanticAnalyzer.analyze(statements);
   if (errorReporter.hadError) {
-    stderr.writeln(
+    print(
       'Erros encontrados durante a análise semântica. Compilação abortada.',
     );
     return;
@@ -102,8 +138,7 @@ void run(String source, {bool astOnly = false, bool showBytecode = false}) {
 
   // --- Fase 5: Execução na VM ---
   final vm = VM();
-  vm.setFunctions(
-    codeGenerator.functions,
-  ); // Passa as funções compiladas para a VM
+  vm.setFunctions(codeGenerator.functions);
+  // Passa as funções compiladas para a VM
   vm.interpret(chunk);
 }

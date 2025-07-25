@@ -102,6 +102,14 @@ class CodeGenerator implements AstVisitor<void> {
   }
   
   @override
+  void visitConstDeclStmt(ConstDeclStmt stmt) {
+    // Constantes sempre têm um inicializador
+    _generateExpr(stmt.initializer);
+    final globalIndex = _chunk.addConstant(stmt.name.lexeme);
+    _chunk.write(OpCode.defineGlobal, stmt.name.line, globalIndex);
+  }
+  
+  @override
   void visitWhileStmt(WhileStmt stmt) {
     final loopStart = _chunk.code.length;
     _generateExpr(stmt.condition);
@@ -110,6 +118,23 @@ class CodeGenerator implements AstVisitor<void> {
     _generateStmt(stmt.body);
     _emitLoop(loopStart);
 
+    _patchJump(exitJump);
+  }
+  
+  @override
+  void visitDoWhileStmt(DoWhileStmt stmt) {
+    final loopStart = _chunk.code.length;
+    
+    // Executa o corpo primeiro (sempre executa pelo menos uma vez)
+    _generateStmt(stmt.body);
+    
+    // Avalia a condição
+    _generateExpr(stmt.condition);
+    
+    // Se verdadeiro, volta para o início do loop; se falso, sai
+    final exitJump = _emitJump(OpCode.jumpIfFalse);
+    _emitLoop(loopStart);
+    
     _patchJump(exitJump);
   }
   
@@ -159,24 +184,39 @@ class CodeGenerator implements AstVisitor<void> {
     // Loop principal
     final loopStart = _chunk.code.length;
     
-    // Carrega variável atual e valor final para comparação (variavel > limite?)
+    // Carrega variável atual e valor final para comparação
     _chunk.write(OpCode.getGlobal, stmt.variable.line, varIndex);
     _generateExpr(stmt.condition);
-    _chunk.write(OpCode.greater, stmt.variable.line);
     
-    // Se variavel > limite, sai do loop
+    // Usa operador de comparação apropriado baseado na direção
+    if (stmt.isIncrement) {
+      // Para incremento: variavel > limite? (sai se ultrapassar)
+      _chunk.write(OpCode.greater, stmt.variable.line);
+    } else {
+      // Para decremento: variavel < limite? (sai se ficar abaixo)
+      _chunk.write(OpCode.less, stmt.variable.line);
+    }
+    
+    // Se condição de saída for verdadeira, sai do loop
     final exitJump = _emitJump(OpCode.jumpIfFalse);
     final realExitJump = _emitJump(OpCode.jump); // pula para fora
     
-    _patchJump(exitJump); // se variavel <= limite, continua aqui
+    _patchJump(exitJump); // se deve continuar, continua aqui
     
     // Executa o corpo do loop
     _generateStmt(stmt.body);
     
-    // Incrementa a variável: variavel = variavel + step
+    // Atualiza a variável: variavel = variavel +/- step
     _chunk.write(OpCode.getGlobal, stmt.variable.line, varIndex);
-    _generateExpr(stmt.step); // usa incremento personalizado
-    _chunk.write(OpCode.add, stmt.variable.line);
+    _generateExpr(stmt.step);
+    
+    // Usa operação apropriada baseada na direção
+    if (stmt.isIncrement) {
+      _chunk.write(OpCode.add, stmt.variable.line); // incremento
+    } else {
+      _chunk.write(OpCode.subtract, stmt.variable.line); // decremento
+    }
+    
     _chunk.write(OpCode.setGlobal, stmt.variable.line, varIndex);
     
     // Volta para o início do loop
@@ -185,7 +225,129 @@ class CodeGenerator implements AstVisitor<void> {
     _patchJump(realExitJump);
   }
 
+  @override
+  void visitForCStmt(ForCStmt stmt) {
+    // Executar inicialização (se presente)
+    if (stmt.initializer != null) {
+      _generateStmt(stmt.initializer!);
+    }
+    
+    final loopStart = _chunk.code.length;
+    
+    // Avaliar condição (se presente), senão assume verdadeiro
+    int? exitJump;
+    if (stmt.condition != null) {
+      _generateExpr(stmt.condition!);
+      exitJump = _emitJump(OpCode.jumpIfFalse);
+    }
+    
+    // Executar corpo do loop
+    _generateStmt(stmt.body);
+    
+    // Executar incremento (se presente)
+    if (stmt.increment != null) {
+      _generateExpr(stmt.increment!);
+      _chunk.write(OpCode.pop, 0); // remove resultado do incremento da pilha
+    }
+    
+    // Volta para avaliação da condição
+    _emitLoop(loopStart);
+    
+    // Sair do loop se condição for falsa
+    if (exitJump != null) {
+      _patchJump(exitJump);
+    }
+  }
+
   // --- Visitantes para Expressions ---
+
+  @override
+  void visitCompoundAssignExpr(CompoundAssignExpr expr) {
+    // Para x += y, equivale a x = x + y
+    final globalIndex = _chunk.addConstant(expr.name.lexeme);
+    
+    // Carrega valor atual da variável (lado esquerdo)
+    _chunk.write(OpCode.getGlobal, expr.name.line, globalIndex);
+    
+    // Calcula valor do lado direito
+    _generateExpr(expr.value);
+    
+    // Aplica operação
+    final location = SourceLocation(expr.operator.line, expr.operator.column);
+    switch (expr.operator.type) {
+      case TokenType.plusEqual:     _chunk.writeWithLocation(OpCode.add, location); break;
+      case TokenType.minusEqual:    _chunk.writeWithLocation(OpCode.subtract, location); break;
+      case TokenType.starEqual:     _chunk.writeWithLocation(OpCode.multiply, location); break;
+      case TokenType.slashEqual:    _chunk.writeWithLocation(OpCode.divide, location); break;
+      case TokenType.percentEqual:  _chunk.writeWithLocation(OpCode.modulo, location); break;
+      default: break;
+    }
+    
+    // Armazena resultado de volta na variável
+    _chunk.write(OpCode.setGlobal, expr.name.line, globalIndex);
+  }
+
+  @override
+  void visitDecrementExpr(DecrementExpr expr) {
+    final globalIndex = _chunk.addConstant(expr.name.lexeme);
+    
+    if (expr.isPrefix) {
+      // Decremento pré-fixo (--i): decrementa primeiro, depois retorna o novo valor
+      _chunk.write(OpCode.getGlobal, expr.name.line, globalIndex);
+      _emitConstant(1, expr.name.line);
+      _chunk.write(OpCode.subtract, expr.name.line);
+      
+      // Armazena o novo valor na variável e carrega novamente para retornar
+      _chunk.write(OpCode.setGlobal, expr.name.line, globalIndex);
+      _chunk.write(OpCode.getGlobal, expr.name.line, globalIndex);
+    } else {
+      // Decremento pós-fixo (i--): retorna valor original, depois decrementa
+      // Carrega o valor atual da variável (este será o valor retornado)
+      _chunk.write(OpCode.getGlobal, expr.name.line, globalIndex);
+      
+      // Carrega o valor novamente para calcular o decremento
+      _chunk.write(OpCode.getGlobal, expr.name.line, globalIndex);
+      _emitConstant(1, expr.name.line);
+      _chunk.write(OpCode.subtract, expr.name.line);
+      
+      // Armazena o novo valor na variável (o valor original ainda está na pilha)
+      _chunk.write(OpCode.setGlobal, expr.name.line, globalIndex);
+      
+      // Remove o valor decrementado da pilha, deixando apenas o valor original
+      _chunk.write(OpCode.pop, expr.name.line);
+    }
+  }
+
+  @override
+  void visitIncrementExpr(IncrementExpr expr) {
+    final globalIndex = _chunk.addConstant(expr.name.lexeme);
+    
+    if (expr.isPrefix) {
+      // Incremento pré-fixo (++i): incrementa primeiro, depois retorna o novo valor
+      _chunk.write(OpCode.getGlobal, expr.name.line, globalIndex);
+      _emitConstant(1, expr.name.line);
+      _chunk.write(OpCode.add, expr.name.line);
+      
+      // Armazena o novo valor na variável e carrega novamente para retornar
+      _chunk.write(OpCode.setGlobal, expr.name.line, globalIndex);
+      _chunk.write(OpCode.getGlobal, expr.name.line, globalIndex);
+    } else {
+      // Incremento pós-fixo (i++): retorna valor original, depois incrementa
+      // Carrega o valor atual da variável (este será o valor retornado)
+      _chunk.write(OpCode.getGlobal, expr.name.line, globalIndex);
+      
+      // Carrega o valor novamente para calcular o incremento
+      _chunk.write(OpCode.getGlobal, expr.name.line, globalIndex);
+      _emitConstant(1, expr.name.line);
+      _chunk.write(OpCode.add, expr.name.line);
+      
+      // Armazena o novo valor na variável (o valor original ainda está na pilha)
+      _chunk.write(OpCode.setGlobal, expr.name.line, globalIndex);
+      
+      // Remove o valor incrementado da pilha, deixando apenas o valor original
+      _chunk.write(OpCode.pop, expr.name.line);
+    }
+  }
 
   @override
   void visitAssignExpr(AssignExpr expr) {
@@ -204,6 +366,7 @@ class CodeGenerator implements AstVisitor<void> {
       case TokenType.minus:        _chunk.writeWithLocation(OpCode.subtract, location); break;
       case TokenType.star:         _chunk.writeWithLocation(OpCode.multiply, location); break;
       case TokenType.slash:        _chunk.writeWithLocation(OpCode.divide, location); break;
+      case TokenType.percent:      _chunk.writeWithLocation(OpCode.modulo, location); break;
       case TokenType.equalEqual:   _chunk.writeWithLocation(OpCode.equal, location); break;
       case TokenType.bangEqual:    _chunk.writeWithLocation(OpCode.equal, location); _chunk.writeWithLocation(OpCode.not, location); break;
       case TokenType.greater:      _chunk.writeWithLocation(OpCode.greater, location); break;
@@ -240,6 +403,30 @@ class CodeGenerator implements AstVisitor<void> {
       case TokenType.bang:  _chunk.write(OpCode.not, expr.operator.line); break;
       default: break; // Inalcançável
     }
+  }
+
+  @override
+  void visitTernaryExpr(TernaryExpr expr) {
+    // Gera código para a condição
+    _generateExpr(expr.condition);
+    
+    // Se falso, pula para o else (jumpIfFalse consome a condição da pilha)
+    final elseJump = _emitJump(OpCode.jumpIfFalse);
+    
+    // Gera código para o branch verdadeiro
+    _generateExpr(expr.thenBranch);
+    
+    // Pula o branch falso
+    final endJump = _emitJump(OpCode.jump);
+    
+    // Patch do salto para o else
+    _patchJump(elseJump);
+    
+    // Gera código para o branch falso
+    _generateExpr(expr.elseBranch);
+    
+    // Patch do salto final
+    _patchJump(endJump);
   }
 
   @override
@@ -342,8 +529,12 @@ class CodeGenerator implements AstVisitor<void> {
 /// Um visitor simples para extrair o número da linha de uma expressão.
 class LineVisitor implements AstVisitor<int> {
   @override int visitAssignExpr(AssignExpr expr) => expr.name.line;
+  @override int visitCompoundAssignExpr(CompoundAssignExpr expr) => expr.name.line;
+  @override int visitIncrementExpr(IncrementExpr expr) => expr.name.line;
+  @override int visitDecrementExpr(DecrementExpr expr) => expr.name.line;
   @override int visitBinaryExpr(BinaryExpr expr) => expr.operator.line;
-  @override int visitGroupingExpr(GroupingExpr expr) => expr.accept(this);
+  @override int visitGroupingExpr(GroupingExpr expr) => expr.expression.accept(this);
+  @override int visitTernaryExpr(TernaryExpr expr) => expr.condition.accept(this);
   @override int visitLiteralExpr(LiteralExpr expr) => -1; // Não tem linha específica
   @override int visitLogicalExpr(LogicalExpr expr) => expr.operator.line;
   @override int visitUnaryExpr(UnaryExpr expr) => expr.operator.line;
@@ -356,8 +547,11 @@ class LineVisitor implements AstVisitor<int> {
   @override int visitPrintStmt(PrintStmt stmt) => stmt.expression.accept(this);
   @override int visitVarDeclStmt(VarDeclStmt stmt) => stmt.name.line;
   @override int visitTypedVarDeclStmt(TypedVarDeclStmt stmt) => stmt.name.line;
+  @override int visitConstDeclStmt(ConstDeclStmt stmt) => stmt.name.line;
   @override int visitWhileStmt(WhileStmt stmt) => -1;
+  @override int visitDoWhileStmt(DoWhileStmt stmt) => -1;
   @override int visitForStmt(ForStmt stmt) => stmt.variable.line;
+  @override int visitForCStmt(ForCStmt stmt) => -1; // Pode não ter linha específica
   @override int visitForStepStmt(ForStepStmt stmt) => stmt.variable.line;
   @override int visitFunctionStmt(FunctionStmt stmt) => stmt.name.line;
   @override int visitReturnStmt(ReturnStmt stmt) => stmt.keyword.line;
@@ -367,8 +561,12 @@ class LineVisitor implements AstVisitor<int> {
 /// Visitor que extrai informações de localização completa (linha e coluna) dos nós da AST
 class LocationVisitor implements AstVisitor<SourceLocation> {
   @override SourceLocation visitAssignExpr(AssignExpr expr) => SourceLocation(expr.name.line, expr.name.column);
+  @override SourceLocation visitCompoundAssignExpr(CompoundAssignExpr expr) => SourceLocation(expr.name.line, expr.name.column);
+  @override SourceLocation visitIncrementExpr(IncrementExpr expr) => SourceLocation(expr.name.line, expr.name.column);
+  @override SourceLocation visitDecrementExpr(DecrementExpr expr) => SourceLocation(expr.name.line, expr.name.column);
   @override SourceLocation visitBinaryExpr(BinaryExpr expr) => SourceLocation(expr.operator.line, expr.operator.column);
-  @override SourceLocation visitGroupingExpr(GroupingExpr expr) => expr.accept(this);
+  @override SourceLocation visitGroupingExpr(GroupingExpr expr) => expr.expression.accept(this);
+  @override SourceLocation visitTernaryExpr(TernaryExpr expr) => expr.condition.accept(this);
   @override SourceLocation visitLiteralExpr(LiteralExpr expr) => SourceLocation(-1, -1); // Não tem localização específica
   @override SourceLocation visitLogicalExpr(LogicalExpr expr) => SourceLocation(expr.operator.line, expr.operator.column);
   @override SourceLocation visitUnaryExpr(UnaryExpr expr) => SourceLocation(expr.operator.line, expr.operator.column);
@@ -381,8 +579,11 @@ class LocationVisitor implements AstVisitor<SourceLocation> {
   @override SourceLocation visitPrintStmt(PrintStmt stmt) => stmt.expression.accept(this);
   @override SourceLocation visitVarDeclStmt(VarDeclStmt stmt) => SourceLocation(stmt.name.line, stmt.name.column);
   @override SourceLocation visitTypedVarDeclStmt(TypedVarDeclStmt stmt) => SourceLocation(stmt.name.line, stmt.name.column);
+  @override SourceLocation visitConstDeclStmt(ConstDeclStmt stmt) => SourceLocation(stmt.name.line, stmt.name.column);
   @override SourceLocation visitWhileStmt(WhileStmt stmt) => SourceLocation(-1, -1);
+  @override SourceLocation visitDoWhileStmt(DoWhileStmt stmt) => SourceLocation(-1, -1);
   @override SourceLocation visitForStmt(ForStmt stmt) => SourceLocation(stmt.variable.line, stmt.variable.column);
+  @override SourceLocation visitForCStmt(ForCStmt stmt) => SourceLocation(-1, -1); // Pode não ter localização específica
   @override SourceLocation visitForStepStmt(ForStepStmt stmt) => SourceLocation(stmt.variable.line, stmt.variable.column);
   @override SourceLocation visitFunctionStmt(FunctionStmt stmt) => SourceLocation(stmt.name.line, stmt.name.column);
   @override SourceLocation visitReturnStmt(ReturnStmt stmt) => SourceLocation(stmt.keyword.line, stmt.keyword.column);
