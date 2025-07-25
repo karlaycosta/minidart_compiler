@@ -26,7 +26,8 @@
   <li>
     <a href="#visao-geral">Visão Geral</a>
     <ul>
-      <li><a href="#titulo-e-descricao">Descrição</a></li
+      <li><a href="#titulo-e-descricao">Descrição</a></li>
+            <li><a href="#titulo-e-descricao">Descrição</a></li>
     </ul>
   </li>
 
@@ -35,8 +36,6 @@
     <a href="#documentacao">Documentação</a>
     <ul>
       <li><a href="#documentacao-arquivos-wiki">Documentação (arquivos, wiki)</a></li>
-      <li><a href="#documentacao-da-api">Documentação da API (se tiver)</a></li>
-      <li><a href="#documentacao-de-cores-ui">Documentação de Cores (UI)</a></li>
     </ul>
   </li>
 
@@ -45,40 +44,15 @@
     <a href="#instalacao-e-uso">Instalação e Uso</a>
     <ul>
       <li><a href="#instalacao">Instalação</a></li>
-      <li><a href="#Arquitetura"> Arquitetura</a></li>
-       <li><a href="#Estrutura-do-Projeto"> Estrutura do Projeto</a></li>
-       <li><a href="#-sintaxe-minidart"> Sintaxe MiniDart</a></li>        
-      <li><a href="#-extensão-vs-code"> Extensão VS Code</a></li>
-      <li><a href="#uso-exemplos-de-codigo">Uso / Exemplos de código</a></li>
-       <li><a href="#rodando-localmente">Rodando localmente</a></li>
-      <li><a href="#rodando-os-testes">Rodando os testes</a></li>
-      <li><a href="#variaveis-de-ambiente">Variáveis de Ambiente </a></li>
       <li><a href="#deploy">Deploy</a></li>
     </ul>
   </li>
 
-  <!-- Relevância e Evolução -->
-  <li>
-    <a href="#relevancia-e-evolucao">Relevância e Evolução</a>
-    <ul>
-      <li><a href="#aprendizados">Aprendizados</a></li>
-      <li><a href="#melhorias">Melhorias</a></li>
-      <li><a href="#roadmap">Roadmap</a></li>
-      <li><a href="#suporte">Suporte</a></li>
-      <li><a href="#feedback">Feedback</a></li>
-      <li><a href="#faq">FAQ</a></li>
-    </ul>
-  </li>
 
   <!-- Comunidade e Credibilidade -->
   <li>
     <a href="#comunidade-e-credibilidade">Comunidade e Credibilidade</a>
     <ul>
-      <li><a href="#contribuindo">Contribuindo</a></li>
-      <li><a href="#usado-por">Usado por</a></li>
-      <li><a href="#referencia">Referência</a></li>
-      <li><a href="#relacionados">Relacionados</a></li>
-      <li><a href="#etiquetas-tags">Etiquetas / Tags</a></li>
       <li><a href="#licenca">Licença</a></li>
       <li><a href="#autor">Autor</a></li>
       <li><a href="#colaboradores">Colaboradores para projetos</a></li>
