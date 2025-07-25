@@ -1,20 +1,6 @@
 // Teste das bibliotecas padrão já implementadas
 imprima "=== TESTANDO BIBLIOTECAS PADRÃO IMPLEMENTADAS ===";
 
-// Testando Math
-imprima "=== Biblioteca Math ===";
-imprima "sqrt(16) =";
-imprima math.sqrt(16);
-
-imprima "pow(2, 3) =";
-imprima math.pow(2, 3);
-
-imprima "abs(-5) ="; 
-imprima math.abs(-5);
-
-imprima "PI =";
-imprima math.PI();
-
 // Testando String
 imprima "=== Biblioteca String ===";
 constante var texto = "MiniDart";
