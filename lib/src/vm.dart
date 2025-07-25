@@ -78,10 +78,14 @@ class VM {
           break;
         case OpCode.getGlobal:
           final name = _chunk.constants[instruction.operand!] as String;
-          if (!_globals.containsKey(name)) {
+          if (_globals.containsKey(name)) {
+            _push(_globals[name]);
+          } else if (_standardLibrary.hasFunction(name)) {
+            // É uma função nativa, coloca o nome na pilha para posterior chamada
+            _push(name);
+          } else {
             _runtimeError("Variável global indefinida '$name'.");
           }
-          _push(_globals[name]);
           break;
         case OpCode.setGlobal:
           final name = _chunk.constants[instruction.operand!] as String;

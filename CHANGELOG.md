@@ -5,6 +5,85 @@ Todas as alterações notáveis deste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [1.12.10] - 2025-07-25
+
+### ✨ Adicionado
+- **Função Nativa `tipo()`**: Introspecção de tipos em tempo de execução (similar ao `runtimeType` do Dart)
+  - **Funcionalidade**: Função que retorna o tipo de uma variável em tempo de execução
+  - **Sintaxe**: `tipo(variavel)` retorna string com nome do tipo em português
+  - **Tipos suportados**:
+    - `inteiro` - para valores `int` (ex: `42`)
+    - `real` - para valores `double` (ex: `3.14`)
+    - `texto` - para valores `String` (ex: `"MiniDart"`)
+    - `logico` - para valores `bool` (ex: `verdadeiro`)
+    - `nulo` - para valores `null`
+    - `desconhecido` - fallback para tipos não reconhecidos
+  - **Exemplos de uso**:
+    - `var x = 42; imprima tipo(x);` → imprime `"inteiro"`
+    - `var y = 3.14; imprima tipo(y);` → imprime `"real"`
+    - `var z = "teste"; imprima tipo(z);` → imprime `"texto"`
+
+### 🔧 Melhorado
+- **StandardLibrary**: Adicionado método `_registerTypeLibrary()` com função `tipo()`
+- **SemanticAnalyzer**: Modificado `visitVariableExpr()` para reconhecer funções nativas
+- **VM (Virtual Machine)**: 
+  - Atualizado `getGlobal` para tratar funções nativas corretamente
+  - Funções nativas agora são resolvidas durante execução sem conflitar com variáveis globais
+- **Type System**: Melhor integração entre análise estática e runtime para debugging
+
+### 🧪 Adicionado
+- **Arquivo de teste**: `exemplos/teste_tipo_debug.mdart`
+  - Demonstra uso básico da função `tipo()`
+  - Valida funcionamento com diferentes tipos de dados
+
+## [1.12.9] - 2025-07-25
+
+### ✨ Adicionado
+- **Validação de Tipo de Retorno de Função**: Implementação completa de verificação semântica
+  - **Funcionalidade**: Sistema agora valida se funções retornam valores compatíveis com tipos declarados
+  - **Detecção de erros**: Identifica quando função declara retornar um tipo mas tenta retornar outro
+  - **Mensagens precisas**: Erros reportam linha exata e explicam conflito de tipos
+  - **Exemplos de validação**:
+    - `inteiro teste() { retorne 2.5; }` → ERRO: "Tipo de retorno incompatível. Esperado 'inteiro', mas encontrado 'real'"
+    - `inteiro teste(inteiro a) { retorne a + 2.5; }` → ERRO: Operação resulta em real
+    - `inteiro teste(inteiro a) { retorne a; }` → OK: Parâmetro mantém seu tipo
+
+### 🔧 Melhorado
+- **Symbol Table**: Adicionado suporte a tipos tipados com método `defineTyped()`
+- **Semantic Analyzer**: 
+  - Implementada validação de retorno em `visitReturnStmt()`
+  - Melhorada `_inferExpressionType()` para consultar tabela de símbolos
+  - Parâmetros de função agora mantêm tipos corretos e são marcados como inicializados
+- **Type Inference**: Variáveis agora consultam tabela de símbolos para determinar tipo real
+- **Error Reporting**: Números de linha agora são reportados corretamente usando token `keyword`
+
+### 🧪 Adicionado
+- **Arquivos de teste**:
+  - `exemplos/teste_tipo_retorno.mdart` - Teste básico de erro de tipo
+  - `exemplos/teste_retorno_literal.mdart` - Teste com valores literais
+  - `exemplos/teste_completo_retorno.mdart` - Suite completa de validação
+- **Casos testados**: Validação robusta para funções com diferentes tipos de retorno
+
+## [1.12.8] - 2025-07-25
+
+### 🐛 Corrigido
+- **Crítico: Inferência de Tipos Incorreta**: Correção da inferência automática de tipos para constantes
+  - **Problema**: Números inteiros (ex: `16`) eram inferidos como `real` (16.0) em vez de `inteiro` (16)
+  - **Causa identificada**: Lexer sempre convertia números para `double`, independente de ter casas decimais
+  - **Solução implementada**: 
+    - Lexer agora diferencia números inteiros (`int`) de números reais (`double`)
+    - Números sem ponto decimal (ex: `16`) → armazenados como `int`
+    - Números com ponto decimal (ex: `1.75`) → armazenados como `double`
+    - Inferência de tipos agora funciona corretamente
+  - **Resultado**: `var idade = 16;` agora imprime `16` em vez de `16.0`
+  - **Teste**: Arquivo `teste_inferencia_tipos.mdart` criado para validação
+
+### 🧪 Adicionado
+- **Arquivo de teste**: `exemplos/teste_inferencia_tipos.mdart`
+  - Valida inferência para inteiros, reais, texto e lógicos
+  - Testa tanto variáveis (`var`) quanto constantes (`constante var`)
+  - Confirma correção aplicada com sucesso
+
 ## [1.12.7] - 2025-07-25
 
 ### ✨ Adicionado

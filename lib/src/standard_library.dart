@@ -30,6 +30,7 @@ class StandardLibrary {
     _registerStringLibrary();
     _registerIOLibrary();
     _registerDataLibrary();
+    _registerTypeLibrary();
   }
   
   /// Registra uma função nativa
@@ -376,6 +377,23 @@ class StandardLibrary {
       final timestamp = _toInt(args[0]);
       final data = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
       return data.toString().split(' ')[0];
+    });
+  }
+
+  /// Registra as funções da biblioteca de tipos
+  void _registerTypeLibrary() {
+    // Função para obter o tipo de uma variável (similar ao runtimeType do Dart)
+    register('tipo', 1, (args) {
+      final value = args[0];
+      
+      if (value == null) return 'nulo';
+      if (value is int) return 'inteiro';
+      if (value is double) return 'real';
+      if (value is String) return 'texto';
+      if (value is bool) return 'logico';
+      
+      // Fallback para tipos não reconhecidos
+      return 'desconhecido';
     });
   }
 }

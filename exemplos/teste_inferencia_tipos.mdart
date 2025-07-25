@@ -1,0 +1,39 @@
+// Teste de inferência de tipos corrigida
+var idade = 16;        // Deve ser inteiro
+var altura = 1.75;     // Deve ser real
+var nome = "João";     // Deve ser texto
+var ativo = verdadeiro; // Deve ser lógico
+
+imprima "=== TESTE DE INFERÊNCIA DE TIPOS ===";
+imprima "Idade (inteiro):";
+imprima idade;
+
+imprima "Altura (real):";
+imprima altura;
+
+imprima "Nome (texto):";
+imprima nome;
+
+imprima "Ativo (lógico):";
+imprima ativo;
+
+// Teste com constantes também
+constante var pi = 3.14159;
+constante var maximo = 100;
+constante var titulo = "Sistema MiniDart";
+constante var debug = falso;
+
+imprima "=== CONSTANTES COM INFERÊNCIA ===";
+imprima "PI (real):";
+imprima pi;
+
+imprima "Máximo (inteiro):";
+imprima maximo;
+
+imprima "Título (texto):";
+imprima titulo;
+
+imprima "Debug (lógico):";
+imprima debug;
+
+imprima "=== CORREÇÃO APLICADA COM SUCESSO ===";

@@ -3,9 +3,10 @@ import 'token.dart';
 /// Armazena informações sobre um símbolo (variável) declarado.
 class Symbol {
   final Token declaration;
+  final TokenType? type; // Tipo da variável (se conhecido)
   bool isInitialized = false;
 
-  Symbol(this.declaration);
+  Symbol(this.declaration, {this.type});
 }
 
 /// Gerencia os escopos e os símbolos declarados dentro deles.
@@ -23,6 +24,11 @@ class SymbolTable {
       // Aqui, permitimos sombreamento (shadowing).
     }
     _symbols[name.lexeme] = Symbol(name);
+  }
+
+  /// Define um novo símbolo tipado no escopo atual.
+  void defineTyped(Token name, TokenType type) {
+    _symbols[name.lexeme] = Symbol(name, type: type);
   }
 
   /// Atribui um valor a um símbolo existente, marcando-o como inicializado.

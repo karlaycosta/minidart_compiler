@@ -2,12 +2,104 @@ import 'ast.dart';
 import 'error.dart';
 import 'symbol_table.dart';
 import 'token.dart';
+import 'standard_library.dart';
+
+// Visitor para obter linha de uma expressão
+class LineVisitor implements AstVisitor<int> {
+  @override
+  int visitLiteralExpr(LiteralExpr expr) => 1; // Fallback
+  
+  @override
+  int visitVariableExpr(VariableExpr expr) => expr.name.line;
+  
+  @override
+  int visitBinaryExpr(BinaryExpr expr) => expr.operator.line;
+  
+  @override
+  int visitUnaryExpr(UnaryExpr expr) => expr.operator.line;
+  
+  @override
+  int visitGroupingExpr(GroupingExpr expr) => expr.expression.accept(this);
+  
+  @override
+  int visitLogicalExpr(LogicalExpr expr) => expr.operator.line;
+  
+  @override
+  int visitTernaryExpr(TernaryExpr expr) => expr.condition.accept(this);
+  
+  @override
+  int visitCallExpr(CallExpr expr) => expr.callee.accept(this);
+  
+  @override
+  int visitAssignExpr(AssignExpr expr) => expr.name.line;
+  
+  @override
+  int visitCompoundAssignExpr(CompoundAssignExpr expr) => expr.name.line;
+  
+  @override
+  int visitIncrementExpr(IncrementExpr expr) => expr.name.line;
+  
+  @override
+  int visitDecrementExpr(DecrementExpr expr) => expr.name.line;
+  
+  @override
+  int visitMemberAccessExpr(MemberAccessExpr expr) => expr.dot.line;
+  
+  // Métodos para statements
+  @override
+  int visitExpressionStmt(ExpressionStmt stmt) => 1;
+  
+  @override
+  int visitPrintStmt(PrintStmt stmt) => 1;
+  
+  @override
+  int visitVarDeclStmt(VarDeclStmt stmt) => 1;
+  
+  @override
+  int visitTypedVarDeclStmt(TypedVarDeclStmt stmt) => 1;
+  
+  @override
+  int visitConstDeclStmt(ConstDeclStmt stmt) => 1;
+  
+  @override
+  int visitBlockStmt(BlockStmt stmt) => 1;
+  
+  @override
+  int visitIfStmt(IfStmt stmt) => 1;
+  
+  @override
+  int visitWhileStmt(WhileStmt stmt) => 1;
+  
+  @override
+  int visitDoWhileStmt(DoWhileStmt stmt) => 1;
+  
+  @override
+  int visitForStmt(ForStmt stmt) => 1;
+  
+  @override
+  int visitForStepStmt(ForStepStmt stmt) => 1;
+  
+  @override
+  int visitForCStmt(ForCStmt stmt) => 1;
+  
+  @override
+  int visitFunctionStmt(FunctionStmt stmt) => 1;
+  
+  @override
+  int visitReturnStmt(ReturnStmt stmt) => 1;
+  
+  @override
+  int visitImportStmt(ImportStmt stmt) => 1;
+}
 
 /// O Analisador Semântico percorre a AST para verificar erros de tipo,
 /// declarações de variáveis e gerenciamento de escopo.
 class SemanticAnalyzer implements AstVisitor<void> {
   final ErrorReporter _errorReporter;
   SymbolTable _currentScope = SymbolTable();
+  
+  // Biblioteca padrão para verificar funções nativas
+  final StandardLibrary _standardLibrary = StandardLibrary();
   
   // Conjunto para rastrear nomes de constantes (não podem ser reatribuídas)
   final Set<String> _constants = <String>{};
@@ -16,6 +108,9 @@ class SemanticAnalyzer implements AstVisitor<void> {
   // Chave: nome usado no código (alias ou nome original)
   // Valor: nome da biblioteca original
   final Map<String, String> _importedLibraries = <String, String>{};
+  
+  // Tipo de retorno da função atual (para validação de return)
+  TypeInfo? _currentFunctionReturnType;
 
   SemanticAnalyzer(this._errorReporter);
 
@@ -207,6 +302,12 @@ class SemanticAnalyzer implements AstVisitor<void> {
       return;
     }
     
+    // Verificar se é uma função nativa
+    if (_standardLibrary.hasFunction(expr.name.lexeme)) {
+      // É uma função nativa, sempre válida
+      return;
+    }
+    
     if (symbol == null) {
       _errorReporter.error(expr.name.line, "Variável '${expr.name.lexeme}' não declarada.");
     } else if (!symbol.isInitialized) {
@@ -322,13 +423,19 @@ class SemanticAnalyzer implements AstVisitor<void> {
     _declare(stmt.name);
     _define(stmt.name);
     
+    // Salva o tipo de retorno atual e define o novo
+    final previousReturnType = _currentFunctionReturnType;
+    _currentFunctionReturnType = stmt.returnType;
+    
     // Cria um novo escopo para a função
     _beginScope();
     
     // Declara os parâmetros no escopo da função
     for (final param in stmt.params) {
       _declare(param.name);
-      _define(param.name);
+      _currentScope.defineTyped(param.name, param.type.type.type);
+      // Marca o parâmetro como inicializado (parâmetros sempre são válidos)
+      _currentScope.assign(param.name);
     }
     
     // Resolve o corpo da função
@@ -336,6 +443,9 @@ class SemanticAnalyzer implements AstVisitor<void> {
     
     // Encerra o escopo da função
     _endScope();
+    
+    // Restaura o tipo de retorno anterior
+    _currentFunctionReturnType = previousReturnType;
   }
   
   @override
@@ -343,6 +453,19 @@ class SemanticAnalyzer implements AstVisitor<void> {
     // Se há um valor de retorno, resolve a expressão
     if (stmt.value != null) {
       _resolveExpr(stmt.value!);
+      
+      // Validar tipo de retorno se estamos em uma função
+      if (_currentFunctionReturnType != null) {
+        final returnExprType = _inferExpressionType(stmt.value!);
+        final expectedType = _currentFunctionReturnType!.type.type;
+        
+        if (!_areTypesCompatible(returnExprType, expectedType)) {
+          _errorReporter.error(
+            stmt.keyword.line,
+            "Tipo de retorno incompatível. Esperado '${_tokenTypeToString(expectedType)}', mas encontrado '${_tokenTypeToString(returnExprType)}'."
+          );
+        }
+      }
     }
   }
   
@@ -424,6 +547,84 @@ class SemanticAnalyzer implements AstVisitor<void> {
   }
 
   // ===== FIM DOS NOVOS VISITANTES =====
+  
+  // ===== MÉTODOS AUXILIARES PARA VALIDAÇÃO DE TIPOS =====
+  
+  /// Infere o tipo de uma expressão
+  TokenType _inferExpressionType(Expr expr) {
+    if (expr is LiteralExpr) {
+      final value = expr.value;
+      if (value is int) return TokenType.inteiro;
+      if (value is double) return TokenType.real;
+      if (value is String) return TokenType.texto;
+      if (value is bool) return TokenType.logico;
+      return TokenType.real; // fallback
+    } else if (expr is BinaryExpr) {
+      final leftType = _inferExpressionType(expr.left);
+      final rightType = _inferExpressionType(expr.right);
+      
+      // Para operações aritméticas
+      if (expr.operator.type == TokenType.plus ||
+          expr.operator.type == TokenType.minus ||
+          expr.operator.type == TokenType.star ||
+          expr.operator.type == TokenType.slash) {
+        // Se qualquer operando é real, resultado é real
+        if (leftType == TokenType.real || rightType == TokenType.real) {
+          return TokenType.real;
+        }
+        // Se ambos são inteiros, resultado é inteiro
+        return TokenType.inteiro;
+      }
+      
+      // Para comparações
+      if (expr.operator.type == TokenType.greater ||
+          expr.operator.type == TokenType.greaterEqual ||
+          expr.operator.type == TokenType.less ||
+          expr.operator.type == TokenType.lessEqual ||
+          expr.operator.type == TokenType.bangEqual ||
+          expr.operator.type == TokenType.equalEqual) {
+        return TokenType.logico;
+      }
+    } else if (expr is VariableExpr) {
+      // Consulta o tipo da variável na tabela de símbolos
+      final symbol = _currentScope.get(expr.name);
+      if (symbol != null && symbol.type != null) {
+        return symbol.type!;
+      }
+      // Fallback para real se não encontrar o símbolo
+      return TokenType.real;
+    }
+    
+    return TokenType.real; // fallback
+  }
+  
+  /// Verifica se dois tipos são compatíveis
+  bool _areTypesCompatible(TokenType actual, TokenType expected) {
+    // Tipos exatamente iguais
+    if (actual == expected) return true;
+    
+    // Inteiro pode ser promovido para real em alguns contextos
+    // Mas para validação de retorno, vamos ser restritivo
+    return false;
+  }
+  
+  /// Converte TokenType para string legível
+  String _tokenTypeToString(TokenType type) {
+    switch (type) {
+      case TokenType.inteiro:
+        return 'inteiro';
+      case TokenType.real:
+        return 'real';
+      case TokenType.texto:
+        return 'texto';
+      case TokenType.logico:
+        return 'lógico';
+      case TokenType.vazio:
+        return 'vazio';
+      default:
+        return type.toString();
+    }
+  }
 
   // Funções auxiliares para declaração e definição de variáveis
   void _declare(Token name) {

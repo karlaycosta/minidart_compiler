@@ -327,8 +327,11 @@ class Lexer {
       _advance();
     }
 
+    bool hasDecimal = false;
+    
     // Verifica se há parte decimal
     if (_peek() == '.' && _isDigit(_peekNext())) {
+      hasDecimal = true;
       _advance(); // Consome o ponto decimal
 
       // Consome a parte fracionária
@@ -337,9 +340,18 @@ class Lexer {
       }
     }
 
-    // Converte para double e cria o token
-    final value = double.parse(_source.substring(_start, _current));
-    _addToken(TokenType.number, value);
+    // Converte para o tipo apropriado
+    final valueStr = _source.substring(_start, _current);
+    
+    if (hasDecimal) {
+      // É um número real (com ponto decimal)
+      final value = double.parse(valueStr);
+      _addToken(TokenType.number, value);
+    } else {
+      // É um número inteiro (sem ponto decimal)
+      final value = int.parse(valueStr);
+      _addToken(TokenType.number, value);
+    }
   }
 
   /// **Processamento de Strings Literais**
