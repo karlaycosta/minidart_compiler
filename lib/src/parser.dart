@@ -122,9 +122,7 @@ class Parser {
     final initializer = _expression();
     
     // Se tipo não foi especificado, inferir do valor inicial
-    if (type == null) {
-      type = _inferTypeFromExpression(initializer);
-    }
+    type ??= _inferTypeFromExpression(initializer);
     
     _consume(TokenType.semicolon, "Esperado ';' após a declaração da constante.");
     return ConstDeclStmt(type, name, initializer);

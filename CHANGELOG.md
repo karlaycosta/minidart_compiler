@@ -35,6 +35,21 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
   - Números com casa decimal inferidos como `real`
   - Fallback seguro para tipo `real` quando inferência falha
 
+### 📚 Adicionado
+- **📋 Documentação de Recursividade**: Documentação completa das capacidades recursivas já existentes
+  - **Análise técnica**: Sistema de call stack com `CallFrame` e pilha `_frames`
+  - **Arquitetura robusta**: Backup e restauração automática de contexto de execução
+  - **Algoritmos clássicos**: Fatorial, Fibonacci, MDC, Torre de Hanói, Ackermann
+  - **Exemplos funcionais**: `exemplo_recursividade.mdart` e `exemplo_recursividade_avancada.mdart`
+  - **Capacidades validadas**:
+    - ✅ Recursão simples: `fatorial(5)` → `120`
+    - ✅ Recursão múltipla: `fibonacci(8)` → `21`
+    - ✅ Recursão com parâmetros: `mdc(48, 18)` → `6`
+    - ✅ Recursão de cauda: `contagemRegressiva(5)`
+    - ✅ Recursão extrema: `ackermann(2, 2)` → `7`
+  - **Arquivo de documentação**: `recursividade.md` com análise completa
+  - **Descoberta importante**: Recursividade já estava completamente implementada na VM
+
 ## [1.12.4] - 2025-01-XX
 
 ### 🐛 Corrigido
