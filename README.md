@@ -5,7 +5,12 @@
 </h1>
 
 <p align="center">
-  <img src="https://img.shields.io/static/v1?label=linguagem&message=Dart&color=blue&style=for-the-badge&logo=dart" />
+<!-- Badges de Linguagens -->
+<img src="https://img.shields.io/static/v1?label=linguagem&message=Dart&color=blue&style=for-the-badge&logo=dart" />
+<img src="https://img.shields.io/static/v1?label=linguagem&message=HTML&color=orange&style=for-the-badge&logo=html5" />
+<img src="https://img.shields.io/static/v1?label=linguagem&message=CSS&color=blueviolet&style=for-the-badge&logo=css3" />
+<img src="https://img.shields.io/static/v1?label=linguagem&message=JavaScript&color=yellow&style=for-the-badge&logo=javascript&logoColor=black" />
+
   <img src="https://img.shields.io/static/v1?label=versao&message=1.6.0&color=brightgreen&style=for-the-badge" />
   <img src="https://img.shields.io/static/v1?label=licenca&message=MIT&color=green&style=for-the-badge" />
   <img src="https://img.shields.io/static/v1?label=status&message=estavel&color=success&style=for-the-badge" />
@@ -19,12 +24,7 @@
   <li>
     <a href="#identificacao-e-visao-geral">Identificação e Visão Geral</a>
     <ul>
-      <li><a href="#titulo-e-descricao">Descrição</a></li>
-      <li><a href="#demonstracao">Demonstração</a></li>
-      <li><a href="#screenshots">Screenshots</a></li>
-      <li><a href="#funcionalidades">Funcionalidades</a></li>
-      <li><a href="#caracteristica"> Características</a></li>
-      <li><a href="#stack-utilizada">Stack utilizada</a></li>
+      <li><a href="#titulo-e-descricao">Descrição</a></li
     </ul>
   </li>
 
@@ -91,15 +91,11 @@
   Um compilador educacional completo desenvolvido em Dart que interpreta a linguagem  <b> MiniDart </b>  — uma linguagem de programação com sintaxe em português, projetada para facilitar o ensino de algoritmos e estruturas de linguagem.O MiniDart percorre todas as etapas de um compilador real: análise léxica, sintática, semântica, geração de bytecode e execução em máquina virtual.
 </p>
 
-
-<h3 id="demonstracao">Demonstração</h3>
+<h3 id="screenshots">Stack utilizada</h3>
 <p></p>
 
-<h3 id="screenshots">screenshots</h3>
-<p></p>
 
-<h3 id="funcionalidades">Funcionalidades</h3>
-<p></p>
+
 
 <h3 id="caracteristica">caracteristica</h3>
 <p></p>
