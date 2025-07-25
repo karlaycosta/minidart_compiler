@@ -5,6 +5,36 @@ Todas as alterações notáveis deste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [1.12.5] - 2025-01-XX
+
+### ✨ Adicionado
+- **🔍 Inferência de Tipos para Constantes**: Nova sintaxe com inferência automática de tipos
+  - **Nova sintaxe**: `constante var nome = valor;` - inferência automática baseada no valor inicial
+  - **Sintaxe explícita mantida**: `constante tipo nome = valor;` - continua funcionando normalmente
+  - **Inferência inteligente**:
+    - Números inteiros (16) → inferidos como `inteiro` → imprimem `16`
+    - Números reais (1.75) → inferidos como `real` → imprimem `1.75`
+    - Strings ("texto") → inferidos como `texto`
+    - Booleanos (verdadeiro/falso) → inferidos como `logico`
+  - **Método `_inferTypeFromExpression()`**: Análise automática do valor para determinar tipo correto
+  - **Tokens artificiais**: Criação de tokens de tipo com localização correta para debugging
+  - **Compatibilidade total**: Ambas as sintaxes podem ser usadas no mesmo arquivo
+  - **Exemplos funcionais**:
+    - `constante var idade = 16;` → tipo `inteiro`, imprime `16`
+    - `constante var altura = 1.75;` → tipo `real`, imprime `1.75`
+    - `constante var nome = "João";` → tipo `texto`
+    - `constante var ativo = verdadeiro;` → tipo `logico`
+
+### 🔧 Melhorado
+- **Parser expandido**: Método `_constDeclaration()` atualizado para suportar inferência
+  - Detecção automática entre sintaxe explícita e inferência
+  - Validação aprimorada de tipos inferidos
+  - Mensagens de erro mais claras: "Esperado tipo ou 'var' após 'constante'"
+- **Sistema de tipos aprimorado**: Lógica inteligente para preservar identidade de tipos
+  - Números sem casa decimal inferidos como `inteiro`
+  - Números com casa decimal inferidos como `real`
+  - Fallback seguro para tipo `real` quando inferência falha
+
 ## [1.12.4] - 2025-01-XX
 
 ### 🐛 Corrigido
