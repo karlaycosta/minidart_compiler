@@ -92,6 +92,11 @@ class CodeGenerator implements AstVisitor<void> {
   void visitTypedVarDeclStmt(TypedVarDeclStmt stmt) {
     if (stmt.initializer != null) {
       _generateExpr(stmt.initializer!);
+      
+      // Se é uma variável tipada de tipo inteiro e o valor é numérico, converter para int
+      if (stmt.type.type.type == TokenType.inteiro) {
+        _chunk.write(OpCode.toInt, stmt.name.line);
+      }
     } else {
       // Valor padrão baseado no tipo
       final defaultValue = _getDefaultValueForType(stmt.type);
@@ -105,6 +110,13 @@ class CodeGenerator implements AstVisitor<void> {
   void visitConstDeclStmt(ConstDeclStmt stmt) {
     // Constantes sempre têm um inicializador
     _generateExpr(stmt.initializer);
+    
+    // Se é uma constante de tipo inteiro e o valor é numérico, converter para int
+    if (stmt.type.type.type == TokenType.inteiro) {
+      // Emitir bytecode para converter para inteiro se necessário
+      _chunk.write(OpCode.toInt, stmt.name.line);
+    }
+    
     final globalIndex = _chunk.addConstant(stmt.name.lexeme);
     _chunk.write(OpCode.defineGlobal, stmt.name.line, globalIndex);
   }

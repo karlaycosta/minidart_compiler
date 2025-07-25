@@ -121,6 +121,14 @@ class VM {
         case OpCode.not:
           _push(!_isTruthy(_pop()));
           break;
+        case OpCode.toInt:
+          final value = _pop();
+          if (value is double) {
+            _push(value.toInt());
+          } else {
+            _push(value); // Se já é int ou outro tipo, mantém
+          }
+          break;
         case OpCode.equal:
           final b = _pop();
           final a = _pop();
@@ -387,7 +395,13 @@ class VM {
         _binaryOp((a, b) => a < b);
         break;
       case OpCode.print:
-        print(_pop());
+        final value = _pop();
+        // Se é um número e é inteiro, imprimir como inteiro
+        if (value is double && value == value.truncate()) {
+          print(value.toInt());
+        } else {
+          print(value);
+        }
         break;
       case OpCode.jump:
         _ip += instruction.operand!;
