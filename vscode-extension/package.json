@@ -2,7 +2,7 @@
   "name": "minidart",
   "displayName": "MiniDart Language Support",
   "description": "Suporte completo para a linguagem MiniDart v1.12.3 com funções void, concatenação de strings, operadores compostos e syntax highlighting avançado",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "publisher": "deriks-karlay",
   "author": "Deriks Karlay Dias Costa <karlay@example.com>",
   "repository": {

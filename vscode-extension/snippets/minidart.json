@@ -5,7 +5,7 @@
       "// Programa MiniDart",
       "var ${1:nome} = \"${2:valor}\";",
       "",
-      "imprimir ${1:nome};",
+      "imprima ${1:nome};",
       "$0"
     ],
     "description": "Template básico de programa MiniDart"
@@ -15,7 +15,7 @@
     "body": [
       "funcao ${1:nome}(${2:parametros}) {",
       "\t$0",
-      "\tretornar ${3:valor};",
+      "\tretorne ${3:valor};",
       "}"
     ],
     "description": "Template de função MiniDart"
@@ -24,11 +24,11 @@
     "prefix": "funcaosimples",
     "body": [
       "funcao ${1:quadrado}(${2:x}) {",
-      "\tretornar ${2:x} * ${2:x};",
+      "\tretorne ${2:x} * ${2:x};",
       "}",
       "",
       "var ${3:resultado} = ${1:quadrado}(${4:5});",
-      "imprimir ${3:resultado};"
+      "imprima ${3:resultado};"
     ],
     "description": "Exemplo de função simples"
   },
@@ -36,11 +36,11 @@
     "prefix": "funcaomultipla",
     "body": [
       "funcao ${1:somar}(${2:a}, ${3:b}) {",
-      "\tretornar ${2:a} + ${3:b};",
+      "\tretorne ${2:a} + ${3:b};",
       "}",
       "",
       "var ${4:resultado} = ${1:somar}(${5:10}, ${6:20});",
-      "imprimir ${4:resultado};"
+      "imprima ${4:resultado};"
     ],
     "description": "Função com múltiplos parâmetros"
   },
@@ -69,7 +69,7 @@
     "body": [
       "var ${1:contador} = ${2:0};",
       "enquanto (${1:contador} < ${3:10}) {",
-      "\timprimir ${1:contador};",
+      "\timprima ${1:contador};",
       "\t${1:contador} = ${1:contador} + 1;",
       "\t$0",
       "}"
@@ -80,7 +80,7 @@
     "prefix": "para",
     "body": [
       "para ${1:i} = ${2:1} ate ${3:10} faca {",
-      "\timprimir ${1:i};",
+      "\timprima ${1:i};",
       "\t$0",
       "}"
     ],
@@ -90,7 +90,7 @@
     "prefix": "parapasso",
     "body": [
       "para ${1:x} = ${2:0} ate ${3:20} passo ${4:2} faca {",
-      "\timprimir ${1:x};",
+      "\timprima ${1:x};",
       "\t$0",
       "}"
     ],
@@ -103,19 +103,19 @@
     ],
     "description": "Declaração de variável"
   },
-  "Imprimir": {
-    "prefix": "imprimir",
+  "imprima": {
+    "prefix": "imprima",
     "body": [
-      "imprimir ${1:valor};"
+      "imprima ${1:valor};"
     ],
-    "description": "Comando imprimir"
+    "description": "Comando imprima"
   },
-  "Retornar": {
-    "prefix": "retornar",
+  "retorne": {
+    "prefix": "retorne",
     "body": [
-      "retornar ${1:valor};"
+      "retorne ${1:valor};"
     ],
-    "description": "Comando retornar"
+    "description": "Comando retorne"
   },
   "Comentário de linha": {
     "prefix": "//",
@@ -149,11 +149,11 @@
     "prefix": "calculadora",
     "body": [
       "funcao somar(a, b) {",
-      "\tretornar a + b;",
+      "\tretorne a + b;",
       "}",
       "",
       "funcao multiplicar(x, y) {",
-      "\tretornar x * y;",
+      "\tretorne x * y;",
       "}",
       "",
       "var resultado1 = somar(${1:10}, ${2:20});",

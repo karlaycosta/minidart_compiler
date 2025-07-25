@@ -95,7 +95,7 @@ async function runFile() {
     // Salvar arquivo antes de executar
     await editor.document.save();
     const terminal = vscode.window.createTerminal('MiniDart Runner');
-    terminal.sendText(`dart "${fullCompilerPath}" "${filePath}" --run`);
+    terminal.sendText(`dart "${fullCompilerPath}" "${filePath}"`);
     terminal.show();
     vscode.window.showInformationMessage('▶️ Executando arquivo MiniDart...');
 }
