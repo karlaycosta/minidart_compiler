@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:convert';
 import 'bytecode.dart';
+import 'standard_library.dart';
 
 enum InterpretResult { ok, compileError, runtimeError }
 
@@ -32,10 +33,13 @@ class VM {
   final Map<String, Object?> _globals = {};
   final List<CallFrame> _frames = [];
   Map<String, CompiledFunction> _functions = {};
+  late StandardLibrary _standardLibrary;
 
   VM() {
     // Configura stdout para UTF-8
     stdout.encoding = utf8;
+    // Inicializa a biblioteca padrão
+    _standardLibrary = StandardLibrary();
   }
 
   InterpretResult interpret(BytecodeChunk chunk) {
@@ -214,7 +218,13 @@ class VM {
   /// Chama um valor (que deve ser uma função)
   bool _callValue(Object? callee, int argCount) {
     if (callee is String) {
-      // Resolve o nome da função para a função compilada
+      // Primeiro verifica se é uma função nativa
+      final nativeFunction = _standardLibrary.getFunction(callee);
+      if (nativeFunction != null) {
+        return _callNative(nativeFunction, argCount);
+      }
+      
+      // Se não é nativa, verifica se é uma função compilada
       final function = _functions[callee];
       if (function != null) {
         return _call(function, argCount);
@@ -226,6 +236,36 @@ class VM {
       return _call(callee, argCount);
     } else {
       _runtimeError("Só é possível chamar funções. Recebido: ${callee.runtimeType}");
+      return false;
+    }
+  }
+
+  /// Executa uma chamada de função nativa
+  bool _callNative(NativeFunction nativeFunction, int argCount) {
+    if (argCount != nativeFunction.arity) {
+      _runtimeError("Esperado ${nativeFunction.arity} argumentos mas recebeu $argCount.");
+      return false;
+    }
+
+    // Remove a função que está no topo
+    _pop(); // Remove o nome da função da pilha
+    
+    // Coleta os argumentos da pilha
+    final args = <Object?>[];
+    for (int i = 0; i < argCount; i++) {
+      args.insert(0, _pop()); // Remove argumentos na ordem reversa
+    }
+    
+    try {
+      // Executa a função nativa
+      final result = nativeFunction.call(args);
+      
+      // Coloca o resultado na pilha (mesmo que seja null)
+      _push(result);
+      
+      return true;
+    } catch (e) {
+      _runtimeError("Erro na função nativa ${nativeFunction.name}: $e");
       return false;
     }
   }

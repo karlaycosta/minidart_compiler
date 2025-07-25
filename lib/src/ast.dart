@@ -69,6 +69,9 @@ abstract interface class AstVisitor<T> {
   
   /// Visita um comando de retorno
   T visitReturnStmt(ReturnStmt stmt);
+  
+  /// Visita uma declaração de import
+  T visitImportStmt(ImportStmt stmt);
 
   // === Visitantes para Expressions (Expressões) ===
   
@@ -107,6 +110,9 @@ abstract interface class AstVisitor<T> {
   
   /// Visita uma chamada de função
   T visitCallExpr(CallExpr expr);
+  
+  /// Visita um acesso a membro (objeto.propriedade)
+  T visitMemberAccessExpr(MemberAccessExpr expr);
 }
 
 // ============================================================================
@@ -472,6 +478,32 @@ final class ReturnStmt extends Stmt {
   @override T accept<T>(AstVisitor<T> visitor) => visitor.visitReturnStmt(this);
 }
 
+/// **Declaração de Import**
+/// 
+/// Representa a importação de uma biblioteca padrão, com suporte opcional a alias.
+/// 
+/// **Sintaxe:** `importar biblioteca [como alias];`
+/// 
+/// **Exemplos:**
+/// ```dart
+/// importar math;              // import simples
+/// importar string como texto; // import com alias
+/// ```
+final class ImportStmt extends Stmt {
+  /// Token do comando 'importar'
+  final Token keyword;
+  
+  /// Nome da biblioteca sendo importada
+  final Token library;
+  
+  /// Alias opcional (se usar 'como')
+  final Token? alias;
+  
+  ImportStmt(this.keyword, this.library, this.alias);
+  
+  @override T accept<T>(AstVisitor<T> visitor) => visitor.visitImportStmt(this);
+}
+
 // ============================================================================
 // HIERARQUIA DE EXPRESSIONS (EXPRESSÕES)
 // ============================================================================
@@ -773,6 +805,33 @@ final class CallExpr extends Expr {
   @override T accept<T>(AstVisitor<T> visitor) => visitor.visitCallExpr(this);
 }
 
+/// **Expressão de Acesso a Membro**
+/// 
+/// Representa o acesso a uma propriedade ou método de um objeto através
+/// do operador ponto (.).
+/// 
+/// **Sintaxe:** `objeto.propriedade` ou `biblioteca.funcao`
+/// 
+/// **Exemplos:**
+/// ```dart
+/// math.sin(x)      // Função de biblioteca
+/// string.tamanho(s) // Método de string
+/// ```
+final class MemberAccessExpr extends Expr {
+  /// Expressão que representa o objeto/biblioteca
+  final Expr object;
+  
+  /// Token do ponto (para localização de erros)
+  final Token dot;
+  
+  /// Nome da propriedade/método sendo acessado
+  final Token property;
+  
+  MemberAccessExpr(this.object, this.dot, this.property);
+  
+  @override T accept<T>(AstVisitor<T> visitor) => visitor.visitMemberAccessExpr(this);
+}
+
 // ============================================================================
 // GUIA DE USO DA AST
 // ============================================================================
@@ -816,7 +875,8 @@ final class CallExpr extends Expr {
 /// │   ├── ForStmt
 /// │   ├── ForStepStmt
 /// │   ├── FunctionStmt
-/// │   └── ReturnStmt
+/// │   ├── ReturnStmt
+/// │   └── ImportStmt
 /// └── Expr (Expressions)
 ///     ├── AssignExpr
 ///     ├── BinaryExpr
@@ -825,5 +885,6 @@ final class CallExpr extends Expr {
 ///     ├── LogicalExpr
 ///     ├── UnaryExpr
 ///     ├── VariableExpr
-///     └── CallExpr
+///     ├── CallExpr
+///     └── MemberAccessExpr
 /// ```

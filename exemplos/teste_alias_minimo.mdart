@@ -1,0 +1,2 @@
+importar math como m;
+imprima m.sqrt(16);

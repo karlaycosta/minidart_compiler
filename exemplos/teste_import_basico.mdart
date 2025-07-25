@@ -1,0 +1,6 @@
+// Teste de import simples sem alias
+
+importar math;
+
+imprima "Testando import simples";
+imprima math.sqrt(16);

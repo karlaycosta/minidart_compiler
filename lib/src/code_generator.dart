@@ -7,6 +7,11 @@ import 'token.dart';
 class CodeGenerator implements AstVisitor<void> {
   final BytecodeChunk _chunk = BytecodeChunk();
   final Map<String, CompiledFunction> _functions = {};
+  
+  // Mapa para rastrear aliases de bibliotecas importadas
+  // Chave: nome usado no código (alias ou nome original)
+  // Valor: nome da biblioteca original
+  final Map<String, String> _libraryAliases = <String, String>{};
 
   BytecodeChunk compile(List<Stmt> statements) {
     for (final stmt in statements) {
@@ -501,6 +506,18 @@ class CodeGenerator implements AstVisitor<void> {
   }
   
   @override
+  void visitImportStmt(ImportStmt stmt) {
+    // Registrar o alias/nome no mapeamento
+    final usedName = stmt.alias?.lexeme ?? stmt.library.lexeme;
+    final libraryName = stmt.library.lexeme;
+    
+    _libraryAliases[usedName] = libraryName;
+    
+    // Imports não geram bytecode - apenas registram bibliotecas disponíveis
+    // As chamadas reais acontecem via MemberAccessExpr
+  }
+  
+  @override
   void visitCallExpr(CallExpr expr) {
     // Gera argumentos na pilha (ordem reversa para facilitar na VM)
     for (final argument in expr.arguments) {
@@ -512,6 +529,25 @@ class CodeGenerator implements AstVisitor<void> {
     
     // Emite instrução de chamada com número de argumentos
     _chunk.write(OpCode.call, expr.paren.line, expr.arguments.length);
+  }
+
+  @override
+  void visitMemberAccessExpr(MemberAccessExpr expr) {
+    // Para acesso a membro (objeto.propriedade), geramos uma string
+    // que representa o nome completo da função nativa
+    if (expr.object is VariableExpr) {
+      final objectName = (expr.object as VariableExpr).name.lexeme;
+      final propertyName = expr.property.lexeme;
+      
+      // Resolver alias para nome real da biblioteca
+      final realLibraryName = _libraryAliases[objectName] ?? objectName;
+      final fullName = '$realLibraryName.$propertyName';
+      
+      // Emite uma constante string com o nome completo
+      _emitConstant(fullName, expr.dot.line);
+    } else {
+      throw Exception('Acesso a membro só é suportado em identificadores simples');
+    }
   }
 
   // ===== FIM DOS NOVOS VISITANTES =====
@@ -567,7 +603,9 @@ class LineVisitor implements AstVisitor<int> {
   @override int visitForStepStmt(ForStepStmt stmt) => stmt.variable.line;
   @override int visitFunctionStmt(FunctionStmt stmt) => stmt.name.line;
   @override int visitReturnStmt(ReturnStmt stmt) => stmt.keyword.line;
+  @override int visitImportStmt(ImportStmt stmt) => stmt.keyword.line;
   @override int visitCallExpr(CallExpr expr) => expr.paren.line;
+  @override int visitMemberAccessExpr(MemberAccessExpr expr) => expr.dot.line;
 }
 
 /// Visitor que extrai informações de localização completa (linha e coluna) dos nós da AST
@@ -599,5 +637,7 @@ class LocationVisitor implements AstVisitor<SourceLocation> {
   @override SourceLocation visitForStepStmt(ForStepStmt stmt) => SourceLocation(stmt.variable.line, stmt.variable.column);
   @override SourceLocation visitFunctionStmt(FunctionStmt stmt) => SourceLocation(stmt.name.line, stmt.name.column);
   @override SourceLocation visitReturnStmt(ReturnStmt stmt) => SourceLocation(stmt.keyword.line, stmt.keyword.column);
+  @override SourceLocation visitImportStmt(ImportStmt stmt) => SourceLocation(stmt.keyword.line, stmt.keyword.column);
   @override SourceLocation visitCallExpr(CallExpr expr) => SourceLocation(expr.paren.line, expr.paren.column);
+  @override SourceLocation visitMemberAccessExpr(MemberAccessExpr expr) => SourceLocation(expr.dot.line, expr.dot.column);
 }

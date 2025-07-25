@@ -5,6 +5,69 @@ Todas as alterações notáveis deste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [1.12.7] - 2025-07-25
+
+### ✨ Adicionado
+- **📅 Biblioteca Data/Tempo Implementada**: Nova biblioteca 'data' com 12 funções completas
+  - **Funções básicas**: `hoje()`, `horaAtual()` - data/hora atual
+  - **Cálculos**: `diferenca()`, `adicionarDias()` - operações matemáticas com datas
+  - **Validação**: `ehBissexto()`, `ehDataValida()` - verificações de validade
+  - **Formatação**: `formatar()`, `nomeMes()`, `nomeDiaSemana()` - conversões de exibição
+  - **Informações**: `diaSemana()` - extração de dados de datas
+  - **Timestamp**: `timestamp()`, `deTimestamp()` - conversões Unix
+  - **Compatibilidade**: Funciona com sistema de imports (`importar data;` ou `importar data como dt;`)
+  - **Validação integrada**: Biblioteca reconhecida pelo semantic analyzer
+  - **Arquivos de teste**: 4 exemplos práticos incluídos
+
+### 🧪 Exemplos Criados
+- **`demo_biblioteca_data.mdart`** - Demonstração básica da biblioteca
+- **`teste_completo_data.mdart`** - Teste de todas as 12 funções
+- **`teste_validacao_data.mdart`** - Testes específicos de validação
+- **`teste_biblioteca_data.mdart`** - Exemplo com alias
+
+### 🔧 Melhorado
+- **StandardLibrary**: Método `_registerDataLibrary()` com 12 funções implementadas
+- **Semantic Analyzer**: Biblioteca 'data' adicionada à lista de bibliotecas válidas
+- **Sistema de imports**: Suporte completo para `importar data` e `importar data como alias`
+
+## [1.12.6] - 2025-07-25
+
+### ✨ Adicionado
+- **📦 Sistema de Imports com Alias**: Implementação completa do sistema de importação de bibliotecas
+  - **Import básico**: `importar math;` - importação direta da biblioteca
+  - **Import com alias**: `importar math como calc;` - importação com apelido personalizado
+  - **Múltiplas bibliotecas**: Suporte a importar math, string, io simultaneamente
+  - **Sintaxe portuguesa**: Palavras-chave `importar` e `como` integradas ao lexer
+  - **Prevenção de conflitos**: Sistema detecta e previne alias duplicados
+  - **31+ funções disponíveis**: Todas as funções das bibliotecas padrão acessíveis via imports
+  - **Exemplos funcionais**:
+    - `importar math; math.sqrt(16);` → `4.0`
+    - `importar math como calc; calc.sqrt(16);` → `4.0`
+    - `importar string como str; str.maiuscula("texto");` → `"TEXTO"`
+    - `importar io como saida; saida.imprimir("Olá!");` → output direto
+
+### 🏗️ Arquitetura do Sistema de Imports
+- **Novos tokens**: `TokenType.import_` e `TokenType.as_` com suporte completo
+- **AST expandida**: Classe `ImportStmt` para representar declarações de import
+- **Parser inteligente**: Método `_importStatement()` com parsing de alias opcional
+- **Análise semântica robusta**:
+  - Validação de bibliotecas existentes (`math`, `string`, `io`)
+  - Detecção de conflitos de alias: `"Alias 'x' já está em uso"`
+  - Rastreamento de imports com mapeamento `_importedLibraries`
+  - Verificação de redeclaração de alias no mesmo escopo
+- **Geração de código otimizada**:
+  - Resolução automática de alias para nomes reais de biblioteca
+  - Mapeamento `_libraryAliases` para tradução durante compilação
+  - Suporte completo a `MemberAccessExpr` com alias
+- **VM atualizada**: Execução perfeita de chamadas de função via alias
+
+### 🚀 Funcionalidades Validadas
+- **Bibliotecas padrão completas**: math, string, io totalmente funcionais
+- **Sintaxe flexível**: Import direto e com alias funcionam simultaneamente
+- **Integração total**: Alias funcionam em qualquer contexto (expressões, loops, condicionais)
+- **Compatibilidade**: Sistema funciona junto com todas as funcionalidades existentes
+- **Performance**: Resolução de alias em tempo de compilação (zero overhead runtime)
+
 ## [1.12.5] - 2025-01-XX
 
 ### ✨ Adicionado

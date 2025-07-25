@@ -1,0 +1,26 @@
+// Teste do sistema de imports com alias
+
+importar math como matematica;
+importar string como texto;
+
+imprima "=== Testando Imports com Alias ===";
+
+// Usando alias 'matematica'
+imprima "sqrt(16) com alias =";
+imprima matematica.sqrt(16);
+
+imprima "pow(2, 3) com alias =";
+imprima matematica.pow(2, 3);
+
+// Usando alias 'texto'
+var palavra = "MiniDart";
+imprima "Palavra:";
+imprima palavra;
+
+imprima "Tamanho com alias:";
+imprima texto.tamanho(palavra);
+
+imprima "Maiúscula com alias:";
+imprima texto.maiuscula(palavra);
+
+imprima "=== Imports com Alias Funcionando! ===";

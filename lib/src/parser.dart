@@ -129,6 +129,7 @@ class Parser {
   }
 
   Stmt _statement() {
+    if (_match([TokenType.import_])) return _importStatement();
     if (_match([TokenType.if_])) return _ifStatement();
     if (_match([TokenType.print_])) return _printStatement();
     if (_match([TokenType.while_])) return _whileStatement();
@@ -157,6 +158,22 @@ class Parser {
       elseBranch = _statement();
     }
     return IfStmt(condition, thenBranch, elseBranch);
+  }
+  
+  Stmt _importStatement() {
+    final keyword = _previous(); // Token 'importar'
+    
+    // Nome da biblioteca a ser importada
+    final library = _consume(TokenType.identifier, "Esperado nome da biblioteca após 'importar'.");
+    
+    // Verificar se há alias (palavra 'como')
+    Token? alias;
+    if (_match([TokenType.as_])) {
+      alias = _consume(TokenType.identifier, "Esperado nome do alias após 'como'.");
+    }
+    
+    _consume(TokenType.semicolon, "Esperado ';' após declaração de import.");
+    return ImportStmt(keyword, library, alias);
   }
   
   Stmt _whileStatement() {
@@ -345,6 +362,11 @@ class Parser {
     while (true) {
       if (_match([TokenType.leftParen])) {
         expr = _finishCall(expr);
+      } else if (_match([TokenType.dot])) {
+        // Suporte a acesso de membro: objeto.propriedade
+        final dot = _previous();
+        final property = _consume(TokenType.identifier, "Esperado nome da propriedade após '.'.");
+        expr = MemberAccessExpr(expr, dot, property);
       } else if (_match([TokenType.plusPlus])) {
         // Suporte a incremento pós-fixo: variavel++
         if (expr is VariableExpr) {
