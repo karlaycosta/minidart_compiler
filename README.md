@@ -1,59 +1,207 @@
-
-
 <h1 align="center" id="topo">
-  MiniDart Compiler: Uma Linguagem de Programação Educacional em Português
+  🚀 MiniDart Compiler: Uma Linguagem de Programação Educacional em Português
 </h1>
 
 <p align="center">
-<!-- Badges de Linguagens -->
-<img src="https://img.shields.io/static/v1?label=linguagem&message=Dart&color=blue&style=for-the-badge&logo=dart" />
-<img src="https://img.shields.io/static/v1?label=linguagem&message=HTML&color=orange&style=for-the-badge&logo=html5" />
-<img src="https://img.shields.io/static/v1?label=linguagem&message=CSS&color=blueviolet&style=for-the-badge&logo=css3" />
-<img src="https://img.shields.io/static/v1?label=linguagem&message=JavaScript&color=yellow&style=for-the-badge&logo=javascript&logoColor=black" />
+  <!-- Linguagens utilizadas no projeto -->
+  <img src="https://img.shields.io/static/v1?label=Linguagem&message=Dart&color=0175C2&style=for-the-badge&logo=dart&logoColor=white" />
+  <img src="https://img.shields.io/static/v1?label=Linguagem&message=HTML&color=E34F26&style=for-the-badge&logo=html5&logoColor=white" />
+  <img src="https://img.shields.io/static/v1?label=Linguagem&message=CSS&color=1572B6&style=for-the-badge&logo=css3&logoColor=white" />
+  <img src="https://img.shields.io/static/v1?label=Linguagem&message=JavaScript&color=F7DF1E&style=for-the-badge&logo=javascript&logoColor=black" />
 
-  <img src="https://img.shields.io/static/v1?label=versao&message=1.6.0&color=brightgreen&style=for-the-badge" />
-  <img src="https://img.shields.io/static/v1?label=licenca&message=MIT&color=green&style=for-the-badge" />
-  <img src="https://img.shields.io/static/v1?label=status&message=estavel&color=success&style=for-the-badge" />
-  <img src="https://img.shields.io/static/v1?label=educacional&message=compiladores&color=purple&style=for-the-badge" />
+  <!-- Informacoes adicionais sobre o projeto -->
+  <img src="https://img.shields.io/static/v1?label=Vers%C3%A3o&message=1.6.0&color=brightgreen&style=for-the-badge" />
+  <img src="https://img.shields.io/static/v1?label=Licen%C3%A7a&message=MIT&color=green&style=for-the-badge" />
+  <img src="https://img.shields.io/static/v1?label=Status&message=Est%C3%A1vel&color=success&style=for-the-badge" />
+
+  <!-- Propósito do projeto -->
+  <img src="https://img.shields.io/static/v1?label=Prop%C3%B3sito&message=Educacional%20-%20Compiladores&color=purple&style=for-the-badge" />
 </p>
 
----
+<hr>
 
-<!-- Sumário -->
-<h3>⭐ Sumário</h3>
+<!-- Sumário com links para seções do README -->
+<h2>📚 Sumário</h2>
 <ul>
-  <!-- Identificação e Visão Geral -->
-  <li>
-    <strong>Identificação e Visão Geral</strong>
+  <li><a href="#titulo-e-descricao">📖 Descrição</a></li>
+  <li><a href="#objetivos">🎯 Objetivos</a></li>
+  <li><a href="#documentacao-arquivos">🗂️ Documentação</a></li>
+  <li><a href="#funcionalidades-principais">⚙️ Funcionalidades Principais</a></li>
+  <li><a href="#instalacao">📦 Instalação</a></li>
+  <li><a href="#deploy">🚀 Deploy</a></li>
+  <li><a href="#licenca">📝 Licença</a></li>
+  <li><a href="#autor">👤 Autor</a></li>
+  <li><a href="#colaboradores">🤝 Colaboradores</a></li>
+</ul>
+
+<hr>
+
+<h2 id="titulo-e-descricao">📖 Descrição</h2>
+<p>
+  Um compilador educacional completo desenvolvido em <strong>Dart</strong>, que interpreta a linguagem <strong>MiniDart</strong> — uma linguagem de programação com sintaxe em português, projetada para facilitar o ensino de algoritmos e estruturas de linguagem. O MiniDart percorre todas as etapas de um compilador real: análise léxica, sintática, semântica, geração de bytecode e execução em máquina virtual.
+</p>
+
+<hr>
+
+<h2 id="objetivos">🎯 Objetivos</h2>
+<p>
+  Apresentar o funcionamento, estrutura e modo de uso de um compilador educacional que interpreta uma linguagem de programação simplificada com sintaxe em português. O projeto visa facilitar o ensino de lógica de programação e estruturas de linguagem para iniciantes, eliminando barreiras linguísticas.
+</p>
+
+<hr>
+
+<h2 id="documentacao-arquivos">🗂️ Documentação</h2>
+
+<hr>
+
+<h2 id="funcionalidades-principais">⚙️ Funcionalidades Principais</h2>
+
+<h4>📋 Análise Semântica</h4>
+<ul>
+  <li> Verifica o <strong>significado</strong> do código</li>
+  <li> Verifica se variáveis são <strong>declaradas antes de usar</strong></li>
+  <li> Garante <strong>tipagem correta</strong> e compatibilidade entre operações</li>
+  <li> Detecta <strong>erros semânticos</strong> como:
     <ul>
-      <li><a href="#titulo-e-descricao">Descrição</a></li>
-      <li><a href="#objetivos">Objetivos</a></li>
-      <li><a href="#requisitos">Requisitos</a></li>
-      <li><a href="#funcionalidades-principais"> Funcionalidades Principais</a></li>
-      <li><a href="#observacao"> Observação</a></li>
-      <li><a href="#documentacao-arquivos-wiki">Documentação (arquivos, wiki)</a></li>
-      <li><a href="#instalacao">Instalação</a></li>
-      <li><a href="#deploy">Deploy</a></li>
-      <li><a href="#comunidade-e-credibilidade">Comunidade e Credibilidade</a></li>
-      <li><a href="#licenca">Licença</a></li>
-      <li><a href="#autor">Autor</a></li>
-      <li><a href="#colaboradores">Colaboradores para projetos</a></li>
+      <li>Uso de variáveis não declaradas</li>
+      <li>Atribuições inválidas</li>
     </ul>
   </li>
 </ul>
 
+<h4>🛠️ Geração de Código Intermediário / Bytecode</h4>
+<ul>
+  <li> Traduz o código em português para uma <strong>representação intermediária</strong></li>
+  <li> Representação como <strong>bytecode</strong> ou <strong>árvore de instruções</strong></li>
+  <li>⚙ Pode ser interpretado por uma <strong>máquina virtual personalizada</strong></li>
+</ul>
+
+<h4>🧾 Entrada e Saída de Dados</h4>
+<ul>
+  <li> <strong>leia</strong> (input): leitura do usuário</li>
+  <li> <strong>escreva</strong> (print): exibição no terminal</li>
+  <li> Suporte a entrada via <strong>terminal ou interface gráfica (opcional)</strong></li>
+</ul>
+
+<h4>📝 Suporte a Algoritmos Básicos</h4>
+<ul>
+  <li> <strong>Variáveis</strong> e <strong>expressões</strong></li>
+  <li> Estruturas de controle:
+    <ul>
+      <li><code>se</code>, <code>senao</code></li>
+      <li><code>enquanto</code>, <code>para</code></li>
+    </ul>
+  </li>
+  <li> Suporte a <strong>funções</strong> (se implementado)</li>
+</ul>
+
+<h4>🌐 Sintaxe em Português</h4>
+<p>Exemplo de código:</p>
+
+```dart
+inteiro x
+x = 10
+se (x > 5) {
+  escreva("Maior que 5")
+}
+
+```
+
+<hr>
+
+<h2 id="instalacao">📦 Instalação</h2>
+
+<ul>
+  <li>✅ Requer: <a href="https://dart.dev/get-dart" target="_blank">Dart SDK</a> <strong>3.8.1</strong> ou superior</li>
+</ul>
+
+<h4>🔧 Clone e Setup</h4>
+
+<pre><code># Clone o repositório
+git clone https://github.com/seu-usuario/minidart_compiler.git
+cd minidart_compiler
+
+# Instale as dependências
+dart pub get
+
+# Compile o projeto (opcional)
+dart compile exe bin/compile.dart -o minidart
+</code></pre>
 
 ---
 
-<h2 id="identificacao-e-visao-geral">Identificação e Visão Geral</h2>
+<h3 id="uso">⚡ Uso Rápido</h3>
 
-<h3 id="titulo-e-descricao">Descrição</h3>
+<h4>1️⃣ Crie um arquivo MiniDart</h4>
 
-<p>
-  Um compilador educacional completo desenvolvido em Dart que interpreta a linguagem  <b> MiniDart </b>  — uma linguagem de programação com sintaxe em português, projetada para facilitar o ensino de algoritmos e estruturas de linguagem.O MiniDart percorre todas as etapas de um compilador real: análise léxica, sintática, semântica, geração de bytecode e execução em máquina virtual.
-</p>
+<pre><code>// exemplo.mdart
+var nome = "Mundo";
+var numero = 42;
+
+se (numero > 10) {
+    imprimir "Número grande: ";
+    imprimir numero;
+} senao {
+    imprimir "Número pequeno";
+}
+
+imprimir "Olá, ";
+imprimir nome;
+</code></pre>
+
+<h4>2️⃣ Execute o compilador</h4>
+
+<pre><code># Rodar diretamente via Dart
+dart run bin/compile.dart exemplos/exemplo.mdart
+
+# Ou use o executável gerado
+./minidart exemplos/exemplo.mdart
+
+# 🔍 Com opções:
+dart run bin/compile.dart exemplos/exemplo.mdart --ast-only    # ou -a
+dart run bin/compile.dart exemplos/exemplo.mdart --bytecode    # ou -b
+dart run bin/compile.dart --version                            # ou -v
+</code></pre>
+
+<h4>3️⃣ Saída esperada</h4>
+
+<pre><code>Número grande: 
+42
+Olá, 
+Mundo
+</code></pre>
+
+---
+
+<h3>🎯 Sistema de Erros Avançado</h3>
+
+<p>O compilador exibe mensagens de erro com alta precisão:</p>
+
+<pre><code># Exemplo com erro intencional
+echo 'imprimir "texto" + 123;' > erro_exemplo.mdart
+dart run bin/compile.dart erro_exemplo.mdart
+</code></pre>
+
+<details>
+<summary>💥 Exemplo de erro:</summary>
+
+<pre><code>Erro de Execução: Operandos devem ser dois números ou duas strings.
+[linha 1, coluna 18]
+</code></pre>
+</details>
 
 
+<hr>
+
+<h2 id="deploy"> 🚀 De deploy</h2>
+
+<hr>
+
+<h2 id="licenca"> 📝 Licença</h2>
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para detalhes.
+
+<hr>
 <h2 id="autor">Autor</h2>
  
 <table>
@@ -168,8 +316,5 @@
     <td colspan="3"></td>
   </tr>
 </table>
----
 
-
-
-
+<hr>
