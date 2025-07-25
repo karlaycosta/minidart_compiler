@@ -30,11 +30,11 @@
       "patterns": [
         {
           "name": "keyword.control.minidart",
-          "match": "\\b(algoritmo|inicio|fim|se|senao|enquanto|para|faca|ate|passo|retornar|pare|continue)\\b"
+          "match": "\\b(se|senao|enquanto|para|faca|ate|incremente|decremente|retorne|e|ou)\\b"
         },
         {
           "name": "keyword.declaration.minidart",
-          "match": "\\b(funcao|procedimento|var|const)\\b"
+          "match": "\\b(var|constante|vazio)\\b"
         },
         {
           "name": "storage.type.minidart",
@@ -46,7 +46,7 @@
         },
         {
           "name": "keyword.other.minidart",
-          "match": "\\b(leia|escreva|imprimir)\\b"
+          "match": "\\b(imprima)\\b"
         }
       ]
     },
@@ -116,7 +116,7 @@
       "patterns": [
         {
           "name": "keyword.operator.arithmetic.minidart",
-          "match": "\\+|\\-|\\*|/|%"
+          "match": "\\+\\+|\\-\\-|\\+|\\-|\\*|/|%"
         },
         {
           "name": "keyword.operator.comparison.minidart",
@@ -124,11 +124,15 @@
         },
         {
           "name": "keyword.operator.logical.minidart",
-          "match": "\\b(e|ou|nao)\\b"
+          "match": "\\b(e|ou)\\b|!"
         },
         {
           "name": "keyword.operator.assignment.minidart",
-          "match": "="
+          "match": "\\+=|\\-=|\\*=|/=|%=|="
+        },
+        {
+          "name": "keyword.operator.ternary.minidart",
+          "match": "\\?|:"
         }
       ]
     },

@@ -1,6 +1,6 @@
-# MiniDart VS Code Extension
+# MiniDart VS Code Extension v1.5.0
 
-Extensão oficial para suporte à linguagem MiniDart no Visual Studio Code com suporte completo a funções.
+Extensão oficial para suporte à linguagem MiniDart v1.12.3 no Visual Studio Code com suporte completo a funções void, concatenação de strings e operadores compostos.
 
 ## 🚀 Funcionalidades
 
@@ -8,7 +8,9 @@ Extensão oficial para suporte à linguagem MiniDart no Visual Studio Code com s
 - Destaque de sintaxe completo para arquivos `.mdart`
 - Cores específicas para palavras-chave em português
 - Suporte para strings, números, comentários e operadores
-- Highlighting para palavras-chave de função (`funcao`, `retornar`)
+- Highlighting para palavras-chave de função (`vazio`, `retorne`)
+- Destaque para operadores compostos (`+=`, `-=`, `*=`, `/=`, `%=`)
+- Highlighting para operadores de incremento/decremento (`++`, `--`)
 
 ### 🛠️ Comandos Integrados
 - **Compilar** (`Ctrl+Shift+B`): Compila o arquivo MiniDart atual
@@ -18,9 +20,12 @@ Extensão oficial para suporte à linguagem MiniDart no Visual Studio Code com s
 - **Novo Arquivo**: Cria um novo arquivo MiniDart com template
 
 ### 📝 Snippets e AutoComplete
-- Templates para funções (`funcao`, `funcaosimples`, `funcaomultipla`)
-- Snippets para estruturas de controle (`se`, `enquanto`, `para`)
-- Templates para programas completos (`calculadora`)
+- Templates para funções void (`funcaovoid`) e tipadas (`funcaotipada`)
+- Snippets para concatenação de strings (`concat`)
+- Templates para operadores compostos (`compostos`) e incremento (`incrdecr`)
+- Snippets para loops for com incremento/decremento (`forincremento`, `fordecremento`)
+- Snippets para tipos explícitos (`tipos`)
+- Templates para estruturas de controle (`se`, `enquanto`, `para`)
 - Autocomplete para palavras-chave da linguagem
 
 ### ⚙️ Configurações
@@ -147,48 +152,138 @@ para contador = 5 ate 25 passo 5 faca {
 }
 ```
 
-### 🎯 Recursos de Função - ✨ NOVO em v1.4.0!
+### 🎯 Recursos de Função - ✨ ATUALIZADO em v1.5.0!
 
-#### Declaração de Funções
+#### Funções Void (Sem Retorno)
 ```minidart
-funcao nome_da_funcao(parametro1, parametro2) {
-    // código da função
-    retornar valor;
+vazio mostrarMensagem() {
+    imprima "Esta função não retorna valor";
+}
+
+vazio cumprimentar(texto nome) {
+    imprima "Olá, " + nome + "!";
+}
+
+// Chamando funções void
+mostrarMensagem();
+cumprimentar("Maria");
+```
+
+#### Funções com Tipos Explícitos
+```minidart
+// Função que retorna inteiro
+inteiro somar(inteiro a, inteiro b) {
+    retorne a + b;
+}
+
+// Função que retorna texto
+texto formatarNome(texto nome, texto sobrenome) {
+    retorne nome + " " + sobrenome;
+}
+
+// Função que retorna real
+real calcularMedia(real nota1, real nota2) {
+    retorne (nota1 + nota2) / 2;
 }
 ```
 
-#### Chamadas de Função
+### 🔗 Concatenação de Strings - ✨ NOVO em v1.5.0!
+
+#### Concatenação Básica
 ```minidart
-var resultado = nome_da_funcao(argumento1, argumento2);
+texto nome = "João";
+texto sobrenome = "Silva";
+texto completo = nome + " " + sobrenome;
+imprima completo;  // João Silva
 ```
 
-#### Exemplos Práticos
+#### Concatenação com Literais
 ```minidart
-// Função com um parâmetro
-funcao quadrado(x) {
-    retornar x * x;
-}
-
-// Função com múltiplos parâmetros
-funcao somar(a, b) {
-    retornar a + b;
-}
-
-// Usando as funções
-var num = 5;
-var quad_resultado = quadrado(num);    // 25
-var soma_resultado = somar(10, 20);    // 30
-
-// Chamadas aninhadas
-var complexo = quadrado(somar(3, 4));  // 49
+texto saudacao = "Olá, " + nome + "!";
+imprima saudacao;  // Olá, João!
 ```
 
-**Características das Funções:**
-- **Parâmetros múltiplos**: Suporte a funções com qualquer número de parâmetros
-- **Valores de retorno**: Use `retornar valor;` para retornar resultados
-- **Chamadas aninhadas**: Funções podem ser chamadas dentro de expressões
-- **Escopo isolado**: Cada função tem seu próprio contexto de execução
-- **Integração completa**: Funciona perfeitamente com loops, condicionais e expressões
+#### Concatenação em Loops
+```minidart
+texto lista = "";
+para i = 1 ate 3 faca {
+    lista = lista + "Item " + i + " ";
+}
+imprima lista;  // Item 1 Item 2 Item 3
+```
+
+### 📊 Operadores Compostos - ✨ NOVO em v1.5.0!
+
+#### Operadores de Atribuição
+```minidart
+var x = 10;
+x += 5;   // x = 15 (equivale a: x = x + 5)
+x -= 3;   // x = 12 (equivale a: x = x - 3)
+x *= 2;   // x = 24 (equivale a: x = x * 2)
+x /= 4;   // x = 6  (equivale a: x = x / 4)
+x %= 4;   // x = 2  (equivale a: x = x % 4)
+```
+
+#### Incremento e Decremento
+```minidart
+var y = 5;
+imprima y++;  // 5 (pós-incremento: usa depois incrementa)
+imprima y;    // 6
+
+imprima ++y;  // 7 (pré-incremento: incrementa depois usa)
+imprima y--;  // 7 (pós-decremento: usa depois decrementa)
+imprima y;    // 6
+```
+
+### 🔄 Recursos de Loop Avançados - ✨ ATUALIZADO em v1.5.0!
+
+#### 1. Loop For com Incremento Personalizado
+```minidart
+para i = 0 ate 20 incremente 2 faca {
+    imprima i;  // 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20
+}
+```
+
+#### 2. Loop For com Decremento
+```minidart
+para i = 10 ate 0 decremente 2 faca {
+    imprima i;  // 10, 8, 6, 4, 2, 0
+}
+```
+
+#### 3. Do-While
+```minidart
+var contador = 5;
+faca {
+    imprima contador;
+    contador = contador - 1;
+} enquanto (contador > 3);
+```
+
+### 🎨 Tipos Explícitos - ✨ NOVO em v1.5.0!
+
+#### Declaração com Tipos
+```minidart
+inteiro numero = 42;
+real decimal = 3.14159;
+texto mensagem = "Olá mundo";
+logico ativo = verdadeiro;
+```
+
+#### Operador Ternário
+```minidart
+var idade = 20;
+var status = idade >= 18 ? "adulto" : "jovem";
+imprima status;  // adulto
+```
+
+**Características das Novas Funcionalidades:**
+- **Funções Void**: Funções que não retornam valor com palavra-chave `vazio`
+- **Tipos Explícitos**: Declaração de variáveis e funções com tipos específicos
+- **Concatenação Segura**: Sistema robusto de concatenação com verificação de tipos
+- **Operadores Modernos**: Suporte completo a operadores compostos e incremento/decremento
+- **Loops Avançados**: For com incremento/decremento personalizado e do-while
+- **Expressões Ternárias**: Operador condicional `? :` para expressões condicionais
 
 ## 🐛 Reportar Problemas
 
