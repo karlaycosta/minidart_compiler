@@ -1,0 +1,36 @@
+// Teste mais completo das bibliotecas padrão
+imprima "=== BIBLIOTECAS PADRÃO FUNCIONANDO! ===";
+
+// Testando Math
+imprima "Biblioteca Math:";
+imprima "sqrt(16) =";
+imprima math.sqrt(16);
+imprima "pow(2, 3) =";
+imprima math.pow(2, 3);
+imprima "abs(-5) =";
+imprima math.abs(-5);
+imprima "PI =";
+imprima math.PI();
+imprima "sin(0) =";
+imprima math.sin(0);
+
+// Testando String
+imprima "Biblioteca String:";
+var texto = "MiniDart";
+imprima "Texto:";
+imprima texto;
+imprima "Tamanho:";
+imprima string.tamanho(texto);
+imprima "Maiúscula:";
+imprima string.maiuscula(texto);
+imprima "Contém 'Dart':";
+imprima string.contem(texto, "Dart");
+
+// Testando IO
+imprima "Biblioteca IO:";
+io.imprimir("Esta linha vem da biblioteca IO!");
+io.escrever("Escrevendo sem quebra... ");
+io.escrever("continuando!");
+io.novaLinha();
+
+imprima "=== TODAS AS BIBLIOTECAS FUNCIONANDO! ===";

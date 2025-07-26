@@ -1,0 +1,54 @@
+// Demonstração completa de recursividade no MiniDart
+
+// === 1. FATORIAL ===
+inteiro fatorial(inteiro n) {
+    se (n <= 1) {
+        retorne 1;
+    } senao {
+        retorne n * fatorial(n - 1);
+    }
+}
+
+// === 2. FIBONACCI ===
+inteiro fibonacci(inteiro n) {
+    se (n <= 1) {
+        retorne n;
+    } senao {
+        retorne fibonacci(n - 1) + fibonacci(n - 2);
+    }
+}
+
+// === 3. POTÊNCIA ===
+inteiro potencia(inteiro base, inteiro exp) {
+    se (exp == 0) {
+        retorne 1;
+    } senao {
+        retorne base * potencia(base, exp - 1);
+    }
+}
+
+// === 4. CONTAGEM REGRESSIVA ===
+vazio contagemRegressiva(inteiro n) {
+    se (n >= 0) {
+        imprima n;
+        contagemRegressiva(n - 1);
+    }
+}
+
+// === TESTES ===
+imprima "=== FATORIAL ===";
+imprima fatorial(5);  // 120
+imprima fatorial(6);  // 720
+
+imprima "=== FIBONACCI ===";
+imprima fibonacci(0);  // 0
+imprima fibonacci(1);  // 1
+imprima fibonacci(5);  // 5
+imprima fibonacci(8);  // 21
+
+imprima "=== POTÊNCIA ===";
+imprima potencia(2, 3);  // 8
+imprima potencia(3, 4);  // 81
+
+imprima "=== CONTAGEM REGRESSIVA ===";
+contagemRegressiva(5);

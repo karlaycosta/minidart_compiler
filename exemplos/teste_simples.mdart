@@ -1,0 +1,144 @@
+// =======================================================
+// TESTE SIMPLES DE TODAS AS FUNCIONALIDADES MINIDART
+// Versão: v1.12.1 (sintaxe moderna)
+// =======================================================
+
+// 1. DECLARAÇÕES DE VARIÁVEIS
+imprima "=== 1. DECLARAÇÕES ===";
+var nome = "João";
+inteiro idade = 25;
+real altura = 1.75;
+logico ativo = verdadeiro;
+
+imprima nome;
+imprima idade;
+imprima altura;
+imprima ativo;
+
+// 2. OPERAÇÕES BÁSICAS
+imprima "=== 2. OPERAÇÕES ===";
+var soma = idade + 5;
+var produto = altura * 2;
+var texto_completo = nome + " Silva";
+var maior = idade >= 18;
+
+imprima soma;
+imprima produto;
+imprima texto_completo;
+imprima maior;
+
+// 3. ESTRUTURAS CONDICIONAIS
+imprima "=== 3. CONDICIONAIS ===";
+se (idade >= 18) {
+    imprima "Maior de idade";
+} senao {
+    imprima "Menor de idade";
+}
+
+// 4. FUNÇÕES
+imprima "=== 4. FUNÇÕES ===";
+
+// Função void
+vazio mostrar_info() {
+    imprima "Função que não retorna nada";
+}
+
+// Função com retorno
+inteiro dobrar(inteiro numero) {
+    retorne numero * 2;
+}
+
+mostrar_info();
+var resultado = dobrar(10);
+imprima "Dobro de 10:";
+imprima resultado;
+
+// 5. LOOP WHILE
+imprima "=== 5. LOOP WHILE ===";
+var contador = 1;
+enquanto (contador <= 3) {
+    imprima contador;
+    contador = contador + 1;
+}
+
+// 6. LOOP FOR BÁSICO
+imprima "=== 6. LOOP FOR ===";
+para i = 1 ate 3 faca {
+    imprima i;
+}
+
+// 7. LOOP FOR COM INCREMENTO
+imprima "=== 7. FOR INCREMENTE ===";
+para j = 0 ate 6 incremente 2 faca {
+    imprima j;
+}
+
+// 8. LOOP FOR COM DECREMENTO
+imprima "=== 8. FOR DECREMENTE ===";
+para k = 10 ate 6 decremente 2 faca {
+    imprima k;
+}
+
+// 9. DO-WHILE
+imprima "=== 9. DO-WHILE ===";
+var num = 5;
+faca {
+    imprima num;
+    num = num - 1;
+} enquanto (num > 3);
+
+// 10. OPERADORES COMPOSTOS
+imprima "=== 10. OPERADORES COMPOSTOS ===";
+var x = 10;
+x += 5;
+imprima x; // 15
+
+x -= 3;
+imprima x; // 12
+
+x *= 2;
+imprima x; // 24
+
+x /= 4;
+imprima x; // 6
+
+x %= 4;
+imprima x; // 2
+
+// 11. INCREMENTO E DECREMENTO
+imprima "=== 11. INCREMENTO/DECREMENTO ===";
+var y = 5;
+imprima y++; // 5 (pós-incremento)
+imprima y;   // 6
+
+imprima ++y; // 7 (pré-incremento)
+imprima y--; // 7 (pós-decremento)
+imprima y;   // 6
+
+// 12. OPERADOR TERNÁRIO
+imprima "=== 12. OPERADOR TERNÁRIO ===";
+var status = idade >= 18 ? "adulto" : "jovem";
+imprima status;
+
+// 13. TIPOS TIPADOS
+imprima "=== 13. TIPOS TIPADOS ===";
+inteiro numero_inteiro = 42;
+real numero_real = 3.14;
+texto mensagem = "Olá mundo";
+logico verdade = verdadeiro;
+
+imprima numero_inteiro;
+imprima numero_real;
+imprima mensagem;
+imprima verdade;
+
+// 14. BLOCOS E ESCOPO
+imprima "=== 14. ESCOPO ===";
+var global = "variável global";
+{
+    var local = "variável local";
+    imprima global;
+    imprima local;
+}
+
+imprima "=== FIM DO TESTE SIMPLES ===";

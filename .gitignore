@@ -1,0 +1,37 @@
+# https://dart.dev/guides/libraries/private-files
+# Created by `dart pub`
+.dart_tool/
+
+# Node.js (VS Code Extension)
+vscode-extension/node_modules/
+vscode-extension/out/
+*.vsix
+
+# Dart packages
+*.packages
+.pub/
+pubspec.lock
+
+# AST files gerados
+minidart_ast.dot
+minidart_ast.png
+minidart_ast.svg
+minidart_ast.pdf
+
+# Arquivos temporários e de análise
+*.tmp
+*.temp
+ANALYSIS_RESULTADO.md
+
+# WebAssembly gerado
+web/
+
+# IDEs
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

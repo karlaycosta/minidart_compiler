@@ -1,0 +1,53 @@
+// Teste específico da validação de data
+importar data como dt;
+importar io como saida;
+
+saida.imprimir("=== TESTE DE VALIDAÇÃO DE DATA ===");
+
+// Datas válidas
+var data1 = "2024-07-25";
+var data2 = "2023-02-28";
+var data3 = "2024-02-29"; // Ano bissexto
+
+saida.escrever("Data ");
+saida.escrever(data1);
+saida.escrever(" é válida: ");
+saida.escrever(dt.ehDataValida(data1));
+saida.novaLinha();
+
+saida.escrever("Data ");
+saida.escrever(data2);
+saida.escrever(" é válida: ");
+saida.escrever(dt.ehDataValida(data2));
+saida.novaLinha();
+
+saida.escrever("Data ");
+saida.escrever(data3);
+saida.escrever(" é válida: ");
+saida.escrever(dt.ehDataValida(data3));
+saida.novaLinha();
+
+// Datas inválidas
+var dataInv1 = "2024-13-45";
+var dataInv2 = "2023-02-29"; // Não é bissexto
+var dataInv3 = "abc-def-ghi";
+
+saida.escrever("Data ");
+saida.escrever(dataInv1);
+saida.escrever(" é válida: ");
+saida.escrever(dt.ehDataValida(dataInv1));
+saida.novaLinha();
+
+saida.escrever("Data ");
+saida.escrever(dataInv2);
+saida.escrever(" é válida: ");
+saida.escrever(dt.ehDataValida(dataInv2));
+saida.novaLinha();
+
+saida.escrever("Data ");
+saida.escrever(dataInv3);
+saida.escrever(" é válida: ");
+saida.escrever(dt.ehDataValida(dataInv3));
+saida.novaLinha();
+
+saida.imprimir("=== TESTE CONCLUÍDO ===");

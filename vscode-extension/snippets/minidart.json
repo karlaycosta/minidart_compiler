@@ -1,0 +1,250 @@
+{
+  "Programa básico MiniDart": {
+    "prefix": "minidart",
+    "body": [
+      "// Programa MiniDart",
+      "var ${1:nome} = \"${2:valor}\";",
+      "",
+      "imprima ${1:nome};",
+      "$0"
+    ],
+    "description": "Template básico de programa MiniDart"
+  },
+  "Função MiniDart": {
+    "prefix": "funcao",
+    "body": [
+      "funcao ${1:nome}(${2:parametros}) {",
+      "\t$0",
+      "\tretorne ${3:valor};",
+      "}"
+    ],
+    "description": "Template de função MiniDart"
+  },
+  "Função simples": {
+    "prefix": "funcaosimples",
+    "body": [
+      "funcao ${1:quadrado}(${2:x}) {",
+      "\tretorne ${2:x} * ${2:x};",
+      "}",
+      "",
+      "var ${3:resultado} = ${1:quadrado}(${4:5});",
+      "imprima ${3:resultado};"
+    ],
+    "description": "Exemplo de função simples"
+  },
+  "Função com múltiplos parâmetros": {
+    "prefix": "funcaomultipla",
+    "body": [
+      "funcao ${1:somar}(${2:a}, ${3:b}) {",
+      "\tretorne ${2:a} + ${3:b};",
+      "}",
+      "",
+      "var ${4:resultado} = ${1:somar}(${5:10}, ${6:20});",
+      "imprima ${4:resultado};"
+    ],
+    "description": "Função com múltiplos parâmetros"
+  },
+  "Estrutura condicional se": {
+    "prefix": "se",
+    "body": [
+      "se (${1:condicao}) {",
+      "\t$0",
+      "}"
+    ],
+    "description": "Estrutura condicional se"
+  },
+  "Estrutura condicional se-senao": {
+    "prefix": "sesenao",
+    "body": [
+      "se (${1:condicao}) {",
+      "\t${2:// código verdadeiro}",
+      "} senao {",
+      "\t${3:// código falso}",
+      "}"
+    ],
+    "description": "Estrutura condicional se-senao"
+  },
+  "Laço enquanto": {
+    "prefix": "enquanto",
+    "body": [
+      "var ${1:contador} = ${2:0};",
+      "enquanto (${1:contador} < ${3:10}) {",
+      "\timprima ${1:contador};",
+      "\t${1:contador} = ${1:contador} + 1;",
+      "\t$0",
+      "}"
+    ],
+    "description": "Laço enquanto"
+  },
+  "Laço para": {
+    "prefix": "para",
+    "body": [
+      "para ${1:i} = ${2:1} ate ${3:10} faca {",
+      "\timprima ${1:i};",
+      "\t$0",
+      "}"
+    ],
+    "description": "Laço para básico"
+  },
+  "Laço para com incremento": {
+    "prefix": "parapasso",
+    "body": [
+      "para ${1:x} = ${2:0} ate ${3:20} passo ${4:2} faca {",
+      "\timprima ${1:x};",
+      "\t$0",
+      "}"
+    ],
+    "description": "Laço para com incremento personalizado"
+  },
+  "Declaração de variável": {
+    "prefix": "var",
+    "body": [
+      "var ${1:nome} = ${2:valor};"
+    ],
+    "description": "Declaração de variável"
+  },
+  "imprima": {
+    "prefix": "imprima",
+    "body": [
+      "imprima ${1:valor};"
+    ],
+    "description": "Comando imprima"
+  },
+  "retorne": {
+    "prefix": "retorne",
+    "body": [
+      "retorne ${1:valor};"
+    ],
+    "description": "Comando retorne"
+  },
+  "Comentário de linha": {
+    "prefix": "//",
+    "body": [
+      "// ${1:comentário}"
+    ],
+    "description": "Comentário de linha"
+  },
+  "Verdadeiro": {
+    "prefix": "verdadeiro",
+    "body": [
+      "verdadeiro"
+    ],
+    "description": "Valor lógico verdadeiro"
+  },
+  "Falso": {
+    "prefix": "falso",
+    "body": [
+      "falso"
+    ],
+    "description": "Valor lógico falso"
+  },
+  "Nulo": {
+    "prefix": "nulo",
+    "body": [
+      "nulo"
+    ],
+    "description": "Valor nulo"
+  },
+  "Calculadora com funções": {
+    "prefix": "calculadora",
+    "body": [
+      "funcao somar(a, b) {",
+      "\tretorne a + b;",
+      "}",
+      "",
+      "funcao multiplicar(x, y) {",
+      "\tretorne x * y;",
+      "}",
+      "",
+      "var resultado1 = somar(${1:10}, ${2:20});",
+      "var resultado2 = multiplicar(${3:5}, ${4:6});",
+      "",
+      "imprima \"Soma: \";",
+      "imprima resultado1;",
+      "imprima \"Multiplicação: \";",
+      "imprima resultado2;"
+    ],
+    "description": "Exemplo de calculadora com funções"
+  },
+  "Função void": {
+    "prefix": "funcaovoid",
+    "body": [
+      "vazio ${1:mostrarInfo}() {",
+      "\timprima \"${2:Informação importante}\";",
+      "\t$0",
+      "}"
+    ],
+    "description": "Função void (sem retorno)"
+  },
+  "Função tipada": {
+    "prefix": "funcaotipada",
+    "body": [
+      "${1:inteiro} ${2:calcular}(${3:inteiro} ${4:a}, ${5:inteiro} ${6:b}) {",
+      "\tretorne ${4:a} ${7:+} ${6:b};",
+      "}"
+    ],
+    "description": "Função com tipos explícitos"
+  },
+  "Concatenação de strings": {
+    "prefix": "concat",
+    "body": [
+      "texto ${1:nome} = \"${2:João}\";",
+      "texto ${3:sobrenome} = \"${4:Silva}\";",
+      "texto ${5:completo} = ${1:nome} + \" \" + ${3:sobrenome};",
+      "imprima ${5:completo};"
+    ],
+    "description": "Concatenação de strings"
+  },
+  "Operadores compostos": {
+    "prefix": "compostos",
+    "body": [
+      "var ${1:x} = ${2:10};",
+      "${1:x} += ${3:5};  // ${1:x} = ${1:x} + ${3:5}",
+      "${1:x} -= ${4:2};  // ${1:x} = ${1:x} - ${4:2}",
+      "${1:x} *= ${5:3};  // ${1:x} = ${1:x} * ${5:3}",
+      "imprima ${1:x};"
+    ],
+    "description": "Operadores de atribuição compostos"
+  },
+  "Incremento e decremento": {
+    "prefix": "incrdecr",
+    "body": [
+      "var ${1:contador} = ${2:5};",
+      "imprima ${1:contador}++;  // ${3:pós-incremento}",
+      "imprima ++${1:contador}; // ${4:pré-incremento}",
+      "imprima ${1:contador}--; // ${5:pós-decremento}",
+      "imprima --${1:contador}; // ${6:pré-decremento}"
+    ],
+    "description": "Operadores de incremento e decremento"
+  },
+  "For com incremento": {
+    "prefix": "forincremento",
+    "body": [
+      "para ${1:i} = ${2:0} ate ${3:10} incremente ${4:2} faca {",
+      "\timprima ${1:i};",
+      "\t$0",
+      "}"
+    ],
+    "description": "Loop for com incremento personalizado"
+  },
+  "For com decremento": {
+    "prefix": "fordecremento",
+    "body": [
+      "para ${1:i} = ${2:10} ate ${3:0} decremente ${4:2} faca {",
+      "\timprima ${1:i};",
+      "\t$0",
+      "}"
+    ],
+    "description": "Loop for com decremento personalizado"
+  },
+  "Tipos explícitos": {
+    "prefix": "tipos",
+    "body": [
+      "inteiro ${1:numero} = ${2:42};",
+      "real ${3:decimal} = ${4:3.14};",
+      "texto ${5:mensagem} = \"${6:Olá mundo}\";",
+      "logico ${7:ativo} = ${8:verdadeiro};"
+    ],
+    "description": "Declaração de variáveis com tipos explícitos"
+  }
+}

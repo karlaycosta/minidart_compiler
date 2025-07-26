@@ -1,0 +1,61 @@
+// Sistema de Imports com Alias - Exemplo Funcional Simplificado
+
+importar math como calc;
+importar string como str;
+importar io como saida;
+
+saida.imprimir("=== SISTEMA DE IMPORTS COM ALIAS FUNCIONANDO! ===");
+
+// Matemática com alias 'calc'
+saida.imprimir("Testando biblioteca Math com alias 'calc':");
+saida.escrever("sqrt(25) = ");
+saida.escrever(calc.sqrt(25));
+saida.novaLinha();
+
+saida.escrever("pow(3, 4) = ");
+saida.escrever(calc.pow(3, 4));
+saida.novaLinha();
+
+saida.escrever("PI = ");
+saida.escrever(calc.PI());
+saida.novaLinha();
+
+// Strings com alias 'str'
+saida.imprimir("Testando biblioteca String com alias 'str':");
+saida.escrever("Tamanho de 'MiniDart': ");
+saida.escrever(str.tamanho("MiniDart"));
+saida.novaLinha();
+
+saida.escrever("Maiuscula de 'imports': ");
+saida.escrever(str.maiuscula("imports"));
+saida.novaLinha();
+
+saida.escrever("Contem 'mini' em 'MiniDart': ");
+saida.escrever(str.contem("MiniDart", "mini"));
+saida.novaLinha();
+
+// Funções trigonométricas
+saida.imprimir("Funcoes trigonometricas:");
+saida.escrever("sin(0) = ");
+saida.escrever(calc.sin(0));
+saida.novaLinha();
+
+saida.escrever("cos(0) = ");
+saida.escrever(calc.cos(0));
+saida.novaLinha();
+
+// Números aleatórios e matemática avançada
+saida.imprimir("Matematica avancada:");
+saida.escrever("abs(-42) = ");
+saida.escrever(calc.abs(-42));
+saida.novaLinha();
+
+saida.escrever("max(15, 7) = ");
+saida.escrever(calc.max(15, 7));
+saida.novaLinha();
+
+saida.escrever("ceil(3.2) = ");
+saida.escrever(calc.ceil(3.2));
+saida.novaLinha();
+
+saida.imprimir("=== IMPLEMENTACAO COMPLETA E FUNCIONAL! ===");

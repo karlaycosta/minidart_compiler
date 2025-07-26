@@ -1,0 +1,3 @@
+// Teste simples das bibliotecas
+imprima "Testando biblioteca Math";
+imprima math.sqrt(16);

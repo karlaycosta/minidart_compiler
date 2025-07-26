@@ -1,0 +1,70 @@
+// Exemplo de sintaxe com imports explícitos
+
+// Imports no início do arquivo
+importar math;
+importar string;
+importar io;
+
+// Programa principal
+programa calculadora_avancada {
+    
+    função calcularAreaCirculo(raio) {
+        constante var pi = math.PI();
+        retorne pi * math.pow(raio, 2);
+    }
+    
+    função formatarTexto(nome) {
+        var limpo = string.limpar(nome);
+        var formatado = string.maiuscula(string.fatiar(limpo, 0, 1)) + 
+                       string.minuscula(string.fatiar(limpo, 1, string.tamanho(limpo)));
+        retorne formatado;
+    }
+    
+    função principal() {
+        io.imprimir("=== Calculadora Avançada ===");
+        
+        // Testando funções matemáticas
+        var raio = 5;
+        var area = calcularAreaCirculo(raio);
+        
+        io.escrever("Área do círculo (raio=");
+        io.escrever(raio);
+        io.escrever("): ");
+        io.escrever(math.round(area));
+        io.novaLinha();
+        
+        // Testando funções de string
+        var nomes = ["  joão silva  ", "MARIA santos", "pedro OLIVEIRA"];
+        
+        io.imprimir("Nomes formatados:");
+        para (var i = 0; i < 3; i = i + 1) {
+            // Simulação de array access (seria implementado futuramente)
+            var nome = "";
+            se (i == 0) { nome = "  joão silva  "; }
+            se (i == 1) { nome = "MARIA santos"; }
+            se (i == 2) { nome = "pedro OLIVEIRA"; }
+            
+            var formatado = formatarTexto(nome);
+            io.imprimir(formatado);
+        }
+        
+        // Testando funções trigonométricas
+        io.imprimir("Valores trigonométricos:");
+        constante var angulos = [0, 1.5708, 3.14159]; // 0°, 90°, 180°
+        
+        para (var i = 0; i < 3; i = i + 1) {
+            var angulo = 0;
+            se (i == 0) { angulo = 0; }
+            se (i == 1) { angulo = 1.5708; }
+            se (i == 2) { angulo = 3.14159; }
+            
+            io.escrever("sin(");
+            io.escrever(angulo);
+            io.escrever(") = ");
+            io.escrever(math.round(math.sin(angulo) * 1000) / 1000); // 3 decimais
+            io.novaLinha();
+        }
+        
+        io.imprimir("=== Cálculos Concluídos! ===");
+    }
+}

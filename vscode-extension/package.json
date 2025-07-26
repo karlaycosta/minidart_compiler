@@ -1,0 +1,181 @@
+{
+  "name": "minidart",
+  "displayName": "MiniDart Language Support",
+  "description": "Suporte completo para a linguagem MiniDart v1.12.3 com funções void, concatenação de strings, operadores compostos e syntax highlighting avançado",
+  "version": "1.5.1",
+  "publisher": "deriks-karlay",
+  "author": "Deriks Karlay Dias Costa <karlay@example.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/karlaycosta/minidart_compiler.git"
+  },
+  "engines": {
+    "vscode": "^1.102.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Other"
+  ],
+  "keywords": [
+    "minidart",
+    "dart",
+    "português",
+    "compilador",
+    "ast"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onLanguage:minidart"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "minidart",
+        "aliases": [
+          "MiniDart",
+          "minidart"
+        ],
+        "extensions": [
+          ".mdart"
+        ],
+        "configuration": "./language/minidart-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "minidart",
+        "scopeName": "source.minidart",
+        "path": "./syntaxes/minidart.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "minidart",
+        "path": "./snippets/minidart.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "minidart.compile",
+        "title": "🚀 Compilar MiniDart",
+        "category": "MiniDart",
+        "icon": "$(play)"
+      },
+      {
+        "command": "minidart.run",
+        "title": "▶️ Executar MiniDart",
+        "category": "MiniDart",
+        "icon": "$(run)"
+      },
+      {
+        "command": "minidart.generateAST",
+        "title": "🌳 Gerar AST",
+        "category": "MiniDart",
+        "icon": "$(graph)"
+      },
+      {
+        "command": "minidart.openAST",
+        "title": "👁️ Visualizar AST",
+        "category": "MiniDart",
+        "icon": "$(eye)"
+      },
+      {
+        "command": "minidart.newFile",
+        "title": "📄 Novo Arquivo MiniDart",
+        "category": "MiniDart",
+        "icon": "$(new-file)"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "minidart.run",
+        "key": "ctrl+f5",
+        "when": "resourceExtname == .mdart"
+      },
+      {
+        "command": "minidart.compile",
+        "key": "ctrl+shift+b",
+        "when": "resourceExtname == .mdart"
+      },
+      {
+        "command": "minidart.generateAST",
+        "key": "ctrl+shift+a",
+        "when": "resourceExtname == .mdart"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "minidart.run",
+          "when": "resourceExtname == .mdart",
+          "group": "navigation@1"
+        },
+        {
+          "command": "minidart.compile",
+          "when": "resourceExtname == .mdart",
+          "group": "navigation@2"
+        },
+        {
+          "command": "minidart.generateAST",
+          "when": "resourceExtname == .mdart",
+          "group": "navigation@3"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "minidart.run",
+          "when": "resourceExtname == .mdart",
+          "group": "navigation@1"
+        },
+        {
+          "command": "minidart.generateAST",
+          "when": "resourceExtname == .mdart",
+          "group": "navigation@2"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "minidart.newFile",
+          "when": "explorerResourceIsFolder",
+          "group": "navigation"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "MiniDart",
+      "properties": {
+        "minidart.compilerPath": {
+          "type": "string",
+          "default": "bin/compile.dart",
+          "description": "Caminho para o compilador MiniDart"
+        },
+        "minidart.autoCompile": {
+          "type": "boolean",
+          "default": false,
+          "description": "Compilar automaticamente ao salvar"
+        },
+        "minidart.showAST": {
+          "type": "boolean",
+          "default": false,
+          "description": "Gerar AST automaticamente"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/node": "^16.18.126",
+    "@types/vscode": "^1.102.0",
+    "typescript": "^4.9.5"
+  },
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/karlaycosta/minidart_compiler/issues"
+  },
+  "homepage": "https://github.com/karlaycosta/minidart_compiler#readme"
+}
