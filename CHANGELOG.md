@@ -5,6 +5,47 @@ Todas as alterações notáveis deste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [1.14.0] - 2025-07-25
+
+### 🎨 Adicionado
+- **🖥️ Debug Visual no VS Code**: Integração completa com Debug Adapter Protocol (DAP)
+  - **Breakpoints Visuais**: Clique na margem para criar/remover breakpoints
+  - **Controles de Debug**: Botões visuais para Step Over, Step Into, Continue, etc.
+  - **Painel de Variáveis**: Visualização em tempo real de variáveis locais e globais
+  - **Call Stack Visual**: Navegação visual pela pilha de chamadas
+  - **Debug Console**: Console integrado para output e comandos
+  - **Watch Expressions**: Monitoramento de expressões customizadas
+- **🔧 Extensão VS Code Atualizada** (v1.6.0):
+  - Configuração de debugger tipo "minidart"
+  - Launch configurations para diferentes cenários
+  - Integração com Debug Adapter Protocol
+  - Suporte a debugging F5 nativo no VS Code
+
+### 🛠️ Implementado
+- **Debug Adapter** (`vscode-extension/src/debugAdapter.ts`):
+  - Classe `MiniDartDebugSession` extendendo `DebugSession`
+  - Implementação completa do DAP (Debug Adapter Protocol)
+  - Comunicação bidirecional entre VS Code e MiniDart debugger
+  - Parse automático de output do debugger interativo
+  - Mapeamento de comandos visuais para comandos do terminal
+- **Configurações de Launch**:
+  - Templates prontos para diferentes tipos de debug
+  - Configuração automática de paths e argumentos
+  - Suporte a `stopOnEntry` e configurações customizadas
+
+### 📚 Documentação
+- **DEBUG_VSCODE.md**: Guia completo do debug visual
+  - Configuração inicial e instalação
+  - Tutorial passo a passo com exemplos práticos
+  - Troubleshooting e dicas avançadas
+  - Workflow recomendado para debug eficiente
+- **Launch Configurations**: Exemplos prontos em `.vscode/launch.json`
+
+### 🔧 Técnico
+- **Dependencies**: Adicionado `@vscode/debugadapter` e `@vscode/debugprotocol`
+- **Build System**: Compilação TypeScript para debug adapter
+- **Architecture**: Bridge entre terminal debugger e VS Code UI
+
 ## [1.13.0] - 2025-07-25
 
 ### ✨ Adicionado

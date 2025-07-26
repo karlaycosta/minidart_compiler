@@ -1,8 +1,8 @@
 {
   "name": "minidart",
   "displayName": "MiniDart Language Support",
-  "description": "Suporte completo para a linguagem MiniDart v1.12.3 com funções void, concatenação de strings, operadores compostos e syntax highlighting avançado",
-  "version": "1.5.1",
+  "description": "Suporte completo para a linguagem MiniDart v1.14.0 com debugger visual no VS Code, breakpoints interativos e debug adapter protocol",
+  "version": "1.6.0",
   "publisher": "deriks-karlay",
   "author": "Deriks Karlay Dias Costa <karlay@example.com>",
   "repository": {
@@ -141,6 +141,70 @@
         }
       ]
     },
+    "debuggers": [
+      {
+        "type": "minidart",
+        "label": "MiniDart Debug",
+        "program": "./out/debugMain.js",
+        "runtime": "node",
+        "configurationAttributes": {
+          "launch": {
+            "required": [
+              "program"
+            ],
+            "properties": {
+              "program": {
+                "type": "string",
+                "description": "Arquivo MiniDart para executar",
+                "default": "${workspaceFolder}/main.mdart"
+              },
+              "args": {
+                "type": "array",
+                "description": "Argumentos da linha de comando",
+                "default": []
+              },
+              "cwd": {
+                "type": "string",
+                "description": "Diretório de trabalho",
+                "default": "${workspaceFolder}"
+              },
+              "compilerPath": {
+                "type": "string",
+                "description": "Caminho para o compilador MiniDart",
+                "default": "bin/compile.dart"
+              },
+              "stopOnEntry": {
+                "type": "boolean",
+                "description": "Parar automaticamente no início do programa",
+                "default": true
+              }
+            }
+          }
+        },
+        "initialConfigurations": [
+          {
+            "name": "Debug MiniDart",
+            "type": "minidart",
+            "request": "launch",
+            "program": "${file}",
+            "stopOnEntry": true
+          }
+        ],
+        "configurationSnippets": [
+          {
+            "label": "MiniDart: Debug File",
+            "description": "Debug arquivo MiniDart atual",
+            "body": {
+              "name": "Debug MiniDart",
+              "type": "minidart",
+              "request": "launch",
+              "program": "^\"\\${file}\"",
+              "stopOnEntry": true
+            }
+          }
+        ]
+      }
+    ],
     "configuration": {
       "title": "MiniDart",
       "properties": {
@@ -166,6 +230,10 @@
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./"
+  },
+  "dependencies": {
+    "@vscode/debugadapter": "^1.68.0",
+    "@vscode/debugprotocol": "^1.68.0"
   },
   "devDependencies": {
     "@types/node": "^16.18.126",

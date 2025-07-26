@@ -50,7 +50,7 @@ void main(List<String> arguments) {
 
   // Verifica se é pedido para mostrar a versão
   if (argResults['version']) {
-    print('MiniDart Compiler v1.13.0');
+      print('🚀 MiniDart Compiler v1.14.0');
     print('Copyright (c) 2025 Deriks Karlay Dias Costa');
     print('Linguagem de programação educacional em português');
     exit(0);
