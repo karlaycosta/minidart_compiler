@@ -61,7 +61,7 @@ class CompiledFunction {
   });
   
   @override
-  String toString() => 'Function($name/${arity})';
+  String toString() => 'Function($name/$arity)';
 }
 
 /// Representa uma única instrução de bytecode.

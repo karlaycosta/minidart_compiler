@@ -1,0 +1,4 @@
+// Teste simples de debug
+var x = 42;
+imprima debug(x);
+imprima tipo(x);

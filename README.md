@@ -1,18 +1,13 @@
-# 🚀 **MiniDart Compiler v1.6.0**
+# 🚀 **MiniDart Compiler v1.13.0**
 
 Um compilador completo para a linguagem **MiniDart** - uma linguagem de programação educacional com sintaxe em português, implementado em Dart.
 
 ![Dart](https://img.shields.io/badge/Dart-3.8.1-blue)
-![Version](https://img.shields.io/badge/Version-v1.6.0-brightgreen)
-![License](https://img.shields.io/badge/License-MIT-green)
-![Status](https://img.shields.io/badge/Status-Stable-brightgreen)iniDart Compiler v1.5.0**
-
-Um compilador completo para a linguagem **MiniDart** - uma linguagem de programação educacional com sintaxe em português, implementado em Dart.
-
-![Dart](https://img.shields.io/badge/Dart-3.8.1-blue)
-![Version](https://img.shields.io/badge/Version-v1.5.0-brightgreen)
+![Version](https://img.shields.io/badge/Version-v1.13.0-brightgreen)
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Status](https://img.shields.io/badge/Status-Stable-brightgreen)
+![Debug](https://img.shields.io/badge/Debug-Sistema_Completo-orange)
+![Debugger](https://img.shields.io/badge/Debugger-Interativo-red)
 
 ---
 
@@ -23,6 +18,7 @@ Um compilador completo para a linguagem **MiniDart** - uma linguagem de programa
 - [Arquitetura](#️-arquitetura)
 - [Instalação](#-instalação)
 - [Uso Rápido](#-uso-rápido)
+- [Sistema de Debug](#-sistema-de-debug)
 - [Extensão VS Code](#️-extensão-vs-code)
 - [Sintaxe MiniDart](#-sintaxe-minidart)
 - [Exemplos](#-exemplos)
@@ -41,8 +37,10 @@ O **MiniDart Compiler** é um projeto educacional que implementa um compilador c
 
 - 🇧🇷 **Sintaxe em Português**: Keywords como `se`, `senao`, `enquanto`, `para`, `funcao`, `retornar`, `imprimir`, `constante`
 - 🔒 **Constantes Tipadas**: Declaração de valores imutáveis com proteção contra reatribuição
-- � **Declarações Tipadas**: Suporte completo a tipos explícitos (`inteiro`, `real`, `texto`, `logico`, `vazio`)
-- �🏗️ **Arquitetura Modular**: Lexer → Parser → Semantic Analyzer → Code Generator → VM
+- 📊 **Declarações Tipadas**: Suporte completo a tipos explícitos (`inteiro`, `real`, `texto`, `logico`, `vazio`)
+- 🔍 **Sistema de Debug Completo**: Flags de compilador, funções nativas e VM em tempo real
+- 🛠️ **Debugger Interativo**: Breakpoints, step-by-step, watch variables e call stack
+- 🏗️ **Arquitetura Modular**: Lexer → Parser → Semantic Analyzer → Code Generator → VM
 - 🎯 **Padrão Visitor**: Design patterns modernos para processamento da AST
 - ⚡ **Máquina Virtual**: Execução via bytecode em VM stack-based com call stack completo
 - 🔍 **Análise Completa**: Verificação de escopo, tipos e erros semânticos
@@ -205,6 +203,104 @@ Número grande:
 Olá, 
 Mundo
 ```
+
+---
+
+## 🔍 **Sistema de Debug**
+
+O MiniDart v1.12.11 inclui um **sistema de debug completo** com múltiplas ferramentas:
+
+### **🚩 Flags de Debug do Compilador**
+
+```bash
+# Debug completo - todos os modos
+dart run bin/compile.dart arquivo.mdart --debug-all
+
+# Debug específico por fase
+dart run bin/compile.dart arquivo.mdart --debug-tokens    # Lexer
+dart run bin/compile.dart arquivo.mdart --debug-parser    # Parser  
+dart run bin/compile.dart arquivo.mdart --debug-semantic  # Semântico
+dart run bin/compile.dart arquivo.mdart --debug-vm        # VM
+```
+
+### **📝 Funções Nativas de Debug**
+
+```minidart
+// Inspeção de valores (não invasiva)
+var x = debug(42);        // 🔍 DEBUG: valor=42, tipo=inteiro
+
+// Verificação de tipos em runtime
+imprima tipo(x);          // "inteiro"
+
+// Informações do sistema
+info_debug();             // Mostra versão e estado do debug
+```
+
+### **📖 Documentação Completa**
+
+Para documentação detalhada sobre o sistema de debug, consulte:
+- **[DEBUG.md](DEBUG.md)** - Guia completo do sistema de debug
+- **[DEBUGGER_INTERATIVO.md](DEBUGGER_INTERATIVO.md)** - **Debugger Interativo com breakpoints**
+- **[exemplos/](exemplos/)** - Arquivos de exemplo com debug
+
+---
+
+## 🛠️ **Debugger Interativo**
+
+O MiniDart v1.13.0 inclui um **debugger interativo avançado** com recursos profissionais:
+
+### **🔍 Recursos do Debugger**
+
+- **🛑 Breakpoints**: Pausar execução em linhas específicas
+- **👣 Step-by-Step**: Executar linha por linha com controle total
+- **👁️ Watch Variables**: Monitorar valores de variáveis em tempo real
+- **📚 Call Stack**: Visualizar pilha de chamadas de função
+- **🎮 Interface Interativa**: Comandos intuitivos no terminal
+
+### **🚀 Como Usar**
+
+```bash
+# Inicia o debugger interativo
+dart run bin/compile.dart arquivo.mdart --debug-interactive
+
+# Comandos principais:
+(minidart-debug) break 5        # Breakpoint na linha 5
+(minidart-debug) watch contador # Monitora variável
+(minidart-debug) step          # Ativa step-by-step
+(minidart-debug) continue      # Continua execução
+(minidart-debug) stack         # Mostra call stack
+(minidart-debug) help          # Lista todos comandos
+```
+
+### **💡 Exemplo Prático**
+
+```minidart
+var contador = 0;           // <- break 1
+enquanto (contador < 3) {   // <- break 2
+    imprima contador;       // <- break 3
+    contador = contador + 1;
+}
+```
+
+**Sessão de debugging:**
+```bash
+dart run bin/compile.dart exemplo.mdart -i
+
+(minidart-debug) break 2
+(minidart-debug) watch contador
+(minidart-debug) continue
+
+🛑 BREAKPOINT atingido na linha 2
+👁️ Variáveis monitoradas:
+   contador = 0
+
+(minidart-debug) step
+(minidart-debug) continue
+```
+
+Para documentação completa: **[DEBUGGER_INTERATIVO.md](DEBUGGER_INTERATIVO.md)**
+
+---
 
 ### **🎯 Erro Reporting Avançado**
 
@@ -690,6 +786,8 @@ dot -Tpng minidart_ast.dot -o ast_exemplo.png
 
 ### **📖 Documentos Detalhados**
 
+- **[DEBUGGER_INTERATIVO.md](DEBUGGER_INTERATIVO.md)** - **Debugger Interativo com breakpoints, step-by-step e watch**
+- **[DEBUG.md](DEBUG.md)** - **Sistema de Debug Completo** com guias e exemplos
 - **[parser.md](parser.md)** - Análise completa do parser de descida recursiva
 - **AST Documentation** - Padrão Visitor e estrutura da árvore sintática
 - **Lexer Guide** - Análise léxica e tokenização
@@ -727,12 +825,14 @@ minidart_compiler/
 │   ├── bytecode.dart             # Definições de bytecode
 │   ├── code_generator.dart       # Gerador de código
 │   ├── error.dart                # Sistema de relatório de erros
+│   ├── interactive_debugger.dart # **Debugger Interativo**
 │   ├── lexer.dart                # Analisador léxico
 │   ├── parser.dart               # Analisador sintático
 │   ├── semantic_analyzer.dart    # Analisador semântico
+│   ├── standard_library.dart     # Biblioteca padrão com funções nativas
 │   ├── symbol_table.dart         # Tabela de símbolos
 │   ├── token.dart                # Definições de tokens
-│   └── vm.dart                   # Máquina virtual
+│   └── vm.dart                   # Máquina virtual com callbacks debug
 ├── 📁 vscode-extension/
 │   ├── package.json              # Manifest da extensão VS Code
 │   ├── src/extension.ts          # Código principal da extensão
@@ -745,10 +845,19 @@ minidart_compiler/
 │   ├── exemplo_constantes.mdart     # Demonstração de constantes v1.6.0
 │   ├── constante_simples.mdart      # Exemplo simples de constante
 │   ├── calculadora_notas.mdart      # Calculadora de notas
-│   └── exemplo_funcional.mdart      # Programação funcional
+│   ├── exemplo_funcional.mdart      # Programação funcional
+│   ├── debug_completo_exemplo.mdart # Sistema de debug completo
+│   ├── exemplo_debug_basico.mdart   # Debug básico
+│   ├── exemplo_debug_funcao.mdart   # Debug com funções
+│   ├── exemplo_debug_controle.mdart # Debug estruturas de controle
+│   ├── demo_debug_completo.mdart    # Demonstração debug completa
+│   ├── teste_debugger_interativo.mdart # **Teste Debugger Interativo**
+│   └── debug_simples.mdart          # Exemplo simples para debugger
 ├── 📁 test/
 │   └── minidart_compiler_test.dart
 ├── 📄 README.md                  # Este arquivo
+├── 📄 DEBUG.md                   # **Documentação Sistema de Debug**
+├── 📄 DEBUGGER_INTERATIVO.md     # **Documentação Debugger Interativo**
 ├── 📄 parser.md                  # Documentação do parser
 ├── 📄 pubspec.yaml               # Configuração do projeto
 └── 📄 analysis_options.yaml      # Opções de análise

@@ -5,6 +5,137 @@ Todas as alterações notáveis deste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [1.13.0] - 2025-07-25
+
+### ✨ Adicionado
+- **🔍 Debugger Interativo Completo**: Sistema avançado de debugging com interface interativa
+  - **Breakpoints**: Pausar execução em linhas específicas
+    - `break <linha>` - Adiciona breakpoint
+    - `clear <linha>` - Remove breakpoint  
+    - `list` - Lista breakpoints ativos
+  - **Execução Step-by-Step**: Controle total da execução
+    - `step` / `s` - Ativa modo passo a passo
+    - `next` / `n` - Executa próxima instrução
+    - `continue` / `c` - Continua execução normal
+  - **Watch Variables**: Monitoramento de variáveis em tempo real
+    - `watch <var>` - Monitora variável
+    - `unwatch <var>` - Para de monitorar
+    - Atualização automática de valores a cada instrução
+  - **Call Stack Visualization**: Visualização da pilha de chamadas
+    - `stack` / `st` - Mostra call stack completa
+    - Rastreamento de chamadas de função aninhadas
+    - Informações de linha e argumentos
+  - **Interface Interativa Completa**:
+    - `vars` / `v` - Mostra todas as variáveis
+    - `state` - Estado atual completo
+    - `help` / `h` - Lista de comandos
+    - `quit` / `q` - Sair do debugger
+
+### 🔧 Melhorado
+- **VM (Virtual Machine)**:
+  - Adicionado `interpretStep()` para execução passo a passo
+  - Callbacks para debugger: `onInstructionExecute`, `onFunctionCall`, `onFunctionReturn`
+  - Métodos de acesso: `getGlobalValue()`, `getAllGlobals()`, `getStackValues()`
+  - Verificação de fim de programa: `isAtEnd()`
+- **Compilador Principal** (`bin/compile.dart`):
+  - Nova flag `--debug-interactive` / `-i`
+  - Integração automática com debugger interativo
+  - Atualizada versão para v1.13.0
+
+### 🧪 Adicionado
+- **Arquivos de teste e exemplo**:
+  - `exemplos/teste_debugger_interativo.mdart` - Exemplo abrangente com loops e funções
+  - `exemplos/debug_simples.mdart` - Exemplo básico para testes
+  - `DEBUGGER_INTERATIVO.md` - Documentação completa do debugger
+- **Casos de uso validados**:
+  - Breakpoints funcionais em múltiplas linhas
+  - Watch variables com atualização em tempo real
+  - Call stack com funções aninhadas
+  - Step-by-step execution com controle fino
+
+### 📖 Exemplos de Uso
+```bash
+# Inicia debugger interativo
+dart run bin/compile.dart arquivo.mdart --debug-interactive
+
+# Comandos no debugger:
+(minidart-debug) break 5        # Breakpoint na linha 5
+(minidart-debug) watch contador # Monitora variável
+(minidart-debug) step          # Modo step-by-step
+(minidart-debug) stack         # Mostra call stack
+(minidart-debug) continue      # Continua execução
+```
+
+```minidart
+// No código MiniDart - funciona naturalmente
+var x = 42;
+funcao inteiro dobrar(inteiro n) {
+    retornar n * 2;  // Breakpoint aqui
+}
+var resultado = dobrar(x);
+```
+
+## [1.12.11] - 2025-07-25
+
+### ✨ Adicionado
+- **Sistema de Debug Completo**: Implementação abrangente de funcionalidades de debugging
+  - **Flags de Debug do Compilador**:
+    - `--debug-tokens` - Mostra todos os tokens gerados pelo lexer com índices e linhas
+    - `--debug-parser` - Mostra processo de parsing e estrutura da AST gerada
+    - `--debug-semantic` - Mostra análise semântica detalhada e detecção de erros
+    - `--debug-vm` - Mostra execução da VM instrução por instrução com estado da pilha
+    - `--debug-all` / `-d` - Ativa todos os modos de debug simultaneamente
+  - **Funções Nativas de Debug**:
+    - `debug(valor)` - Inspeciona valor e tipo, retorna valor original para não interromper fluxo
+    - `info_debug()` - Mostra informações do sistema e versão do compilador
+  - **Debug da VM em Tempo Real**:
+    - **IP (Instruction Pointer)** - Posição atual da execução
+    - **Stack State** - Estado completo da pilha de execução
+    - **Global Variables** - Variáveis globais disponíveis no escopo
+    - **Current Instruction** - OpCode e operandos da instrução sendo executada
+
+### 🔧 Melhorado
+- **Compilador Principal** (`bin/compile.dart`):
+  - Adicionado suporte completo a flags de debug
+  - Integração entre todas as fases de compilação com debug
+  - Atualizada versão exibida para v1.12.11
+- **VM (Virtual Machine)**:
+  - Adicionado modo debug com método `setDebugMode()`
+  - Implementado `_debugInstruction()` para rastreamento detalhado
+  - Visualização em tempo real do estado da máquina virtual
+- **StandardLibrary**: Expandida biblioteca de tipos com funções de debug
+- **Error Reporting**: Melhor integração com sistema de debug
+
+### 🧪 Adicionado
+- **Arquivos de demonstração**:
+  - `exemplos/demo_debug_completo.mdart` - Demonstração completa do sistema
+  - `exemplos/teste_debug.mdart` - Teste abrangente com funções
+  - `exemplos/teste_debug_simples.mdart` - Exemplo básico de uso
+- **Casos de uso validados**:
+  - Debug de tokens mostra 62+ tokens com detalhes precisos
+  - Debug de parser identifica tipos de statements corretamente
+  - Debug de VM rastreia 40+ instruções com estado completo
+
+### 📖 Exemplos de Uso
+```bash
+# Debug completo
+dart run bin/compile.dart exemplo.mdart --debug-all
+
+# Debug específico da VM
+dart run bin/compile.dart exemplo.mdart --debug-vm
+
+# Debug apenas de tokens
+dart run bin/compile.dart exemplo.mdart --debug-tokens
+```
+
+```minidart
+// No código MiniDart
+var x = 42;
+imprima debug(x);  // 🔍 DEBUG: valor=42, tipo=inteiro
+imprima tipo(x);   // inteiro
+info_debug();      // Mostra informações do sistema
+```
+
 ## [1.12.10] - 2025-07-25
 
 ### ✨ Adicionado

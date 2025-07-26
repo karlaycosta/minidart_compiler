@@ -1,0 +1,12 @@
+// exemplo_debug_funcao.mdart
+funcao inteiro calcular(inteiro a, inteiro b) {
+    var soma = debug(a + b);
+    imprima "Tipo da soma: " + tipo(soma);
+    retornar soma;
+}
+
+var x = debug(10);
+var y = debug(20);
+var resultado = calcular(x, y);
+
+imprima "Resultado final: " + debug(resultado);

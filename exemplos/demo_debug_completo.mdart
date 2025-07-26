@@ -1,0 +1,23 @@
+// Demonstração completa do sistema de debug
+
+imprima "=== SISTEMA DE DEBUG MINIDART ===";
+
+// Variáveis de teste  
+var numero = 25;
+var decimal = 3.14;
+var nome = "Debug";
+
+// Usando função debug para inspecionar valores
+imprima debug(numero);
+imprima debug(decimal);  
+imprima debug(nome);
+
+// Usando função tipo para verificar tipos
+imprima "Tipos:";
+imprima "numero: " + tipo(numero);
+imprima "decimal: " + tipo(decimal);
+imprima "nome: " + tipo(nome);
+
+// Teste de operações com debug
+var soma = debug(numero + 15);
+imprima "Soma final: " + soma;

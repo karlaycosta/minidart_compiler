@@ -89,9 +89,6 @@ saida.escrever(dataDeTimestamp);
 saida.novaLinha();
 
 saida.imprimir("=== BIBLIOTECA DATA FUNCIONANDO PERFEITAMENTE! ===");
-} senao {
-    saida.imprimir(" não é bissexto");
-}
 
 // Formatar data
 var dataFormatada = dt.formatar("2024-07-25", "dd/MM/yyyy");

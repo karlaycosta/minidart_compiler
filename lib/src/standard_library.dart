@@ -395,5 +395,27 @@ class StandardLibrary {
       // Fallback para tipos não reconhecidos
       return 'desconhecido';
     });
+    
+    // Função de debug para inspecionar valores
+    register('debug', 1, (args) {
+      final value = args[0];
+      final tipo = value == null ? 'nulo' :
+                   value is int ? 'inteiro' :
+                   value is double ? 'real' :
+                   value is String ? 'texto' :
+                   value is bool ? 'logico' : 'desconhecido';
+      
+      print('🔍 DEBUG: valor=$value, tipo=$tipo');
+      return value; // Retorna o valor original para não interromper o fluxo
+    });
+    
+    // Função para mostrar informações de debug (sem argumentos)
+    register('info_debug', 0, (args) {
+      print('🔍 MiniDart Debug Info:');
+      print('  • Compilador: v1.12.10');
+      print('  • Sistema de tipos: dinâmico com inferência');
+      print('  • Funções nativas disponíveis: ${_functions.length}');
+      return null;
+    });
   }
 }

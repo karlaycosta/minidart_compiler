@@ -1,0 +1,16 @@
+// exemplo_debug_basico.mdart
+var numero = 25;
+var decimal = 3.14;
+var nome = "Debug";
+
+imprima "=== TESTE BÁSICO ===";
+imprima debug(numero);
+imprima debug(decimal);
+imprima debug(nome);
+
+imprima "Tipos:";
+imprima "numero: " + tipo(numero);
+imprima "decimal: " + tipo(decimal);
+imprima "nome: " + tipo(nome);
+
+info_debug();

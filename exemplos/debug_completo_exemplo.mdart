@@ -1,0 +1,34 @@
+// Debug completo - todos os recursos
+imprima "=== SISTEMA DE DEBUG MINIDART ===";
+info_debug();
+
+// Variáveis com debug
+var numero = debug(42);
+var decimal = debug(3.14);
+var texto = debug("MiniDart");
+
+// Verificação de tipos
+imprima "Tipos detectados:";
+imprima "numero: " + tipo(numero);
+imprima "decimal: " + tipo(decimal);
+imprima "texto: " + tipo(texto);
+
+// Função com debug
+funcao inteiro somar(inteiro a, inteiro b) {
+    var resultado = debug(a + b);
+    imprima "Soma calculada: " + tipo(resultado);
+    retornar resultado;
+}
+
+// Teste da função
+var soma = somar(debug(numero), debug(10));
+imprima "Resultado final: " + debug(soma);
+
+// Estrutura de controle com debug
+se (debug(soma > 50)) {
+    imprima "Soma maior que 50!";
+} senao {
+    imprima "Soma menor ou igual a 50";
+}
+
+imprima "=== FIM DO DEBUG ===";

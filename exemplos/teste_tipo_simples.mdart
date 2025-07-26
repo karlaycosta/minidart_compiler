@@ -1,0 +1,9 @@
+// Teste simples da função tipo()
+
+var numero = 42;
+imprima numero;
+imprima tipo(numero);
+
+var texto = "teste";
+imprima texto;
+imprima tipo(texto);

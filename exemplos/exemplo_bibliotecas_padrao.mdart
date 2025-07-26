@@ -25,80 +25,80 @@ importar io;
         io.escrever("Número aleatório: " + math.random());
     }
     
-    // // Função que demonstra o uso da biblioteca String
-    // vazio testarStrings() {
-    //     io.escrever("\n=== Testando Biblioteca String ===");
+    // Função que demonstra o uso da biblioteca String
+    vazio testarStrings() {
+        io.escrever("\n=== Testando Biblioteca String ===");
         
-    //     constante var texto1 = "MiniDart é Fantástico";
+        constante var texto1 = "MiniDart é Fantástico";
         
-    //     io.escrever("Texto original: " + texto1);
-    //     io.escrever("Tamanho: " + string.tamanho(texto1));
-    //     io.escrever("Maiúscula: " + string.maiuscula(texto1));
-    //     io.escrever("Minúscula: " + string.minuscula(texto1));
-    //     io.escrever("Invertido: " + string.inverter(texto1));
+        io.escrever("Texto original: " + texto1);
+        io.escrever("Tamanho: " + string.tamanho(texto1));
+        io.escrever("Maiúscula: " + string.maiuscula(texto1));
+        io.escrever("Minúscula: " + string.minuscula(texto1));
+        io.escrever("Invertido: " + string.inverter(texto1));
         
-    //     // Verificações
-    //     se (string.contem(texto1, "Dart")) {
-    //         io.escrever("✓ Contém 'Dart'");
-    //     }
+        // Verificações
+        se (string.contem(texto1, "Dart")) {
+            io.escrever("✓ Contém 'Dart'");
+        }
         
-    //     se (string.comecaCom(texto1, "Mini")) {
-    //         io.escrever("✓ Começa com 'Mini'");
-    //     }
+        se (string.comecaCom(texto1, "Mini")) {
+            io.escrever("✓ Começa com 'Mini'");
+        }
         
-    //     se (string.terminaCom(texto1, "Fantástico")) {
-    //         io.escrever("✓ Termina com 'Fantástico'");
-    //     }
+        se (string.terminaCom(texto1, "Fantástico")) {
+            io.escrever("✓ Termina com 'Fantástico'");
+        }
         
-    //     // Manipulação
-    //     var posicao = string.encontrar(texto1, "Dart");
-    //     io.escrever("Posição de 'Dart': " + posicao);
+        // Manipulação
+        var posicao = string.encontrar(texto1, "Dart");
+        io.escrever("Posição de 'Dart': " + posicao);
         
-    //     var novo = string.substituir(texto1, "MiniDart", "SuperDart");
-    //     io.escrever("Texto modificado: " + novo);
+        var novo = string.substituir(texto1, "MiniDart", "SuperDart");
+        io.escrever("Texto modificado: " + novo);
         
-    //     var fatia = string.fatiar(texto1, 0, 8);
-    //     io.escrever("Fatia [0:8]: " + fatia);
+        var fatia = string.fatiar(texto1, 0, 8);
+        io.escrever("Fatia [0:8]: " + fatia);
         
-    //     var repetido = string.repetir("🎉", 5);
-    //     io.escrever("Repetição: " + repetido);
-    // }
+        var repetido = string.repetir("🎉", 5);
+        io.escrever("Repetição: " + repetido);
+    }
     
-    // // Função que demonstra entrada/saída
-    // vazio testarIO() {
-    //     io.escrever("\n=== Testando Biblioteca IO ===");
+    // Função que demonstra entrada/saída
+    vazio testarIO() {
+        io.escrever("\n=== Testando Biblioteca IO ===");
         
-    //     io.imprimir("Esta é uma linha completa!");
-    //     io.io.escrever("Texto sem quebra... ");
-    //     io.io.escrever("continuando na mesma linha!\n");
+        io.imprimir("Esta é uma linha completa!");
+        io.escrever("Texto sem quebra... ");
+        io.escrever("continuando na mesma linha!\n");
         
-    //     io.escrever("Digite algo (simulado):");
-    //     var entrada = io.lerTexto();
-    //     io.escrever("Você digitou: " + entrada);
-    // }
+        io.escrever("Digite algo (simulado):");
+        var entrada = io.lerTexto();
+        io.escrever("Você digitou: " + entrada);
+    }
     
-    // // Função que calcula área de círculo usando bibliotecas
-    // real calcularAreaCirculo(real raio) {
-    //     constante var pi = math.PI();
-    //     var area = pi * math.pow(raio, 2);
-    //     retorne area;
-    // }
+    // Função que calcula área de círculo usando bibliotecas
+    real calcularAreaCirculo(real raio) {
+        constante var pi = math.PI();
+        var area = pi * math.pow(raio, 2);
+        retorne area;
+    }
     
-    // // Função que formata nome usando strings
-    // texto formatarNome(texto nome, texto sobrenome) {
-    //     var nomeCompleto = nome + " " + sobrenome;
-    //     var formatado = string.maiuscula(string.fatiar(nomeCompleto, 0, 1)) + 
-    //                    string.minuscula(string.fatiar(nomeCompleto, 1, string.tamanho(nomeCompleto)));
-    //     retorne formatado;
-    // }
+    // Função que formata nome usando strings
+    texto formatarNome(texto nome, texto sobrenome) {
+        var nomeCompleto = nome + " " + sobrenome;
+        var formatado = string.maiuscula(string.fatiar(nomeCompleto, 0, 1)) + 
+                       string.minuscula(string.fatiar(nomeCompleto, 1, string.tamanho(nomeCompleto)));
+        retorne formatado;
+    }
     
 
     io.escrever("🚀 Demonstração das Bibliotecas Padrão MiniDart\n");
         
         // Testando bibliotecas básicas
-    testarMath();
+    // testarMath();
     // testarStrings();
-    // testarIO();
+    testarIO();
         
     //     // Exemplos práticos
     // io.escrever("\n=== Exemplos Práticos ===");

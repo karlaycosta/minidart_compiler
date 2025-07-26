@@ -6,5 +6,5 @@ inteiro soma(inteiro a) {
 
 inteiro a = 10;
 imprima a;
-
+imprima soma(10);
 imprima soma(10) > 30 ? "Sim" : "Não";

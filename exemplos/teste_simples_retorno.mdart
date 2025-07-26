@@ -1,0 +1,9 @@
+// Teste simples de retorno de inteiro
+
+inteiro teste_simples(inteiro a) {
+    retorne a; // Simples retorno da variável
+}
+
+imprima "Testando retorno simples...";
+var resultado = teste_simples(10);
+imprima "Resultado: " + resultado;

@@ -34,12 +34,23 @@ class VM {
   final List<CallFrame> _frames = [];
   Map<String, CompiledFunction> _functions = {};
   late StandardLibrary _standardLibrary;
+  bool _debugMode = false; // Modo debug da VM
+  
+  // Callbacks para debugger interativo
+  Function(int ip, OpCode opCode, List<dynamic> stack, Map<String, dynamic> globals)? onInstructionExecute;
+  Function(String functionName, List<dynamic> args)? onFunctionCall;
+  Function(String functionName, dynamic returnValue)? onFunctionReturn;
 
   VM() {
     // Configura stdout para UTF-8
     stdout.encoding = utf8;
     // Inicializa a biblioteca padrão
     _standardLibrary = StandardLibrary();
+  }
+
+  /// Ativa ou desativa o modo debug da VM
+  void setDebugMode(bool enabled) {
+    _debugMode = enabled;
   }
 
   InterpretResult interpret(BytecodeChunk chunk) {
@@ -65,6 +76,17 @@ class VM {
   InterpretResult _run() {
     while (true) {
       final instruction = _chunk.code[_ip++];
+      
+      // Debug: mostra instrução atual
+      if (_debugMode) {
+        _debugInstruction(instruction);
+      }
+      
+      // Callback para debugger interativo
+      if (onInstructionExecute != null) {
+        onInstructionExecute!(_ip - 1, instruction.opcode, List.from(_stack), Map.from(_globals));
+      }
+      
       switch (instruction.opcode) {
         case OpCode.pushConst:
           _push(_chunk.constants[instruction.operand!]);
@@ -290,6 +312,11 @@ class VM {
       args.insert(0, _pop()); // Remove argumentos na ordem reversa
     }
     
+    // Callback para debugger
+    if (onFunctionCall != null) {
+      onFunctionCall!(function.name, args);
+    }
+    
     // Salva as variáveis globais que podem ser sobrescritas pelos parâmetros
     final savedGlobals = <String, Object?>{};
     for (int i = 0; i < function.paramNames.length; i++) {
@@ -344,6 +371,11 @@ class VM {
             
             // Resultado já está no topo da pilha
             final result = _pop();
+            
+            // Callback para debugger
+            if (onFunctionReturn != null) {
+              onFunctionReturn!(frame.function.name, result);
+            }
             
             // Restaura contexto anterior
             _chunk = oldChunk;
@@ -476,6 +508,126 @@ class VM {
     if (value == null) return true;
     if (value is bool) return !value;
     return false;
+  }
+
+  /// Debug: mostra informações da instrução atual
+  void _debugInstruction(Instruction instruction) {
+    // Mostra posição atual e instrução
+    print('🔍 [VM] IP: ${_ip - 1} | ${instruction.opcode}${instruction.operand != null ? ' ${instruction.operand}' : ''}');
+    
+    // Mostra pilha atual
+    stdout.write('    Stack: [');
+    for (int i = 0; i < _stack.length; i++) {
+      if (i > 0) stdout.write(', ');
+      final value = _stack[i];
+      if (value is String) {
+        stdout.write('"$value"');
+      } else {
+        stdout.write('$value');
+      }
+    }
+    print(']');
+    
+    // Mostra globals relevantes (apenas se não vazio)
+    if (_globals.isNotEmpty && _globals.length <= 5) {
+      stdout.write('    Globals: {');
+      final entries = _globals.entries.toList();
+      for (int i = 0; i < entries.length; i++) {
+        if (i > 0) stdout.write(', ');
+        final entry = entries[i];
+        stdout.write('${entry.key}: ${entry.value}');
+      }
+      print('}');
+    }
+    print('');
+  }
+
+  // ===== MÉTODOS PARA DEBUGGER INTERATIVO =====
+
+  /// Executa uma única instrução (para step-by-step)
+  InterpretResult interpretStep(BytecodeChunk chunk) {
+    // Inicializa se necessário
+    try {
+      if (_chunk != chunk) {
+        _chunk = chunk;
+        _ip = 0;
+        _stack.clear();
+        _globals.clear();
+        _frames.clear();
+      }
+    } catch (e) {
+      // Se _chunk não foi inicializada ainda
+      _chunk = chunk;
+      _ip = 0;
+      _stack.clear();
+      _globals.clear();
+      _frames.clear();
+    }
+    
+    if (_ip >= chunk.code.length) {
+      return InterpretResult.ok;
+    }
+    
+    final instruction = chunk.code[_ip++];
+    
+    if (_debugMode) {
+      _debugInstruction(instruction);
+    }
+    
+    if (onInstructionExecute != null) {
+      onInstructionExecute!(_ip - 1, instruction.opcode, List.from(_stack), Map.from(_globals));
+    }
+    
+    try {
+      _executeInstruction(instruction);
+      return InterpretResult.ok;
+    } on VmRuntimeError catch (e) {
+      stderr.writeln('Erro de Execução: ${e.message}');
+      return InterpretResult.runtimeError;
+    }
+  }
+
+  /// Verifica se chegou ao fim do programa
+  bool isAtEnd() {
+    return _ip >= _chunk.code.length;
+  }
+
+  /// Obtém valor de uma variável global
+  Object? getGlobalValue(String name) {
+    if (_globals.containsKey(name)) {
+      return _globals[name];
+    }
+    throw VmRuntimeError("Variável '$name' não encontrada");
+  }
+
+  /// Obtém todas as variáveis globais
+  Map<String, Object?> getAllGlobals() {
+    return Map.from(_globals);
+  }
+
+  /// Obtém valores da pilha
+  List<Object?> getStackValues() {
+    return List.from(_stack);
+  }
+
+  /// Obtém call stack atual
+  List<CallFrame> getCallStack() {
+    return List.from(_frames);
+  }
+
+  /// Define callback para execução de instrução
+  void setOnInstructionExecute(Function(int ip, OpCode opCode, List<dynamic> stack, Map<String, dynamic> globals) callback) {
+    onInstructionExecute = callback;
+  }
+
+  /// Define callback para chamada de função
+  void setOnFunctionCall(Function(String functionName, List<dynamic> args) callback) {
+    onFunctionCall = callback;
+  }
+
+  /// Define callback para retorno de função
+  void setOnFunctionReturn(Function(String functionName, dynamic returnValue) callback) {
+    onFunctionReturn = callback;
   }
 
 }

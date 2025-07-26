@@ -1,0 +1,16 @@
+// Teste do sistema de debug completo
+
+var x = 10;
+var y = 5;
+var resultado = x + y;
+
+imprima "Resultado: " + resultado;
+imprima "Tipo do resultado: " + tipo(resultado);
+
+// Teste de função
+inteiro somar(inteiro a, inteiro b) {
+    retorne a + b;
+}
+
+var soma = somar(3, 7);
+imprima "Soma: " + soma;

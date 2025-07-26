@@ -7,6 +7,7 @@ import 'package:minidart_compiler/src/semantic_analyzer.dart';
 import 'package:minidart_compiler/src/code_generator.dart';
 import 'package:minidart_compiler/src/vm.dart';
 import 'package:minidart_compiler/src/ast_graphviz_generator.dart';
+import 'package:minidart_compiler/src/interactive_debugger.dart';
 
 // Cria uma instância única do reporter de erros para todo o compilador.
 final errorReporter = ErrorReporter();
@@ -30,6 +31,12 @@ void main(List<String> arguments) {
       abbr: 'b',
       negatable: false,
       help: 'Mostra o bytecode gerado durante a compilação',
+    )
+    ..addFlag(
+      'debug-interactive',
+      abbr: 'i',
+      negatable: false,
+      help: 'Inicia o debugger interativo com breakpoints e step-by-step',
     );
 
   ArgResults argResults;
@@ -43,7 +50,7 @@ void main(List<String> arguments) {
 
   // Verifica se é pedido para mostrar a versão
   if (argResults['version']) {
-    print('MiniDart Compiler v1.12.7');
+    print('MiniDart Compiler v1.13.0');
     print('Copyright (c) 2025 Deriks Karlay Dias Costa');
     print('Linguagem de programação educacional em português');
     exit(0);
@@ -58,10 +65,11 @@ void main(List<String> arguments) {
   final filePath = argResults.rest.first;
   final astOnly = argResults['ast-only'] as bool;
   final showBytecode = argResults['bytecode'] as bool;
+  final debugInteractive = argResults['debug-interactive'] as bool;
 
   try {
     final source = File(filePath).readAsStringSync();
-    run(source, astOnly: astOnly, showBytecode: showBytecode);
+    run(source, astOnly: astOnly, showBytecode: showBytecode, debugInteractive: debugInteractive);
   } on FileSystemException {
     print('Erro: Não foi possível encontrar o arquivo "$filePath"');
     exit(66); // Código de erro para arquivo de entrada não encontrado.
@@ -79,10 +87,11 @@ Exemplos:
   dart bin/compile.dart exemplos/teste_simples.mdart
   dart bin/compile.dart exemplos/teste_complexo.mdart --bytecode
   dart bin/compile.dart exemplos/teste_simples.mdart --ast-only
+  dart bin/compile.dart exemplos/teste_debug.mdart --debug-interactive
 ''';
 }
 
-void run(String source, {bool astOnly = false, bool showBytecode = false}) {
+void run(String source, {bool astOnly = false, bool showBytecode = false, bool debugInteractive = false}) {
   errorReporter.reset();
 
   // --- Fase 1: Análise Léxica (Scanner) ---
@@ -139,6 +148,14 @@ void run(String source, {bool astOnly = false, bool showBytecode = false}) {
   // --- Fase 5: Execução na VM ---
   final vm = VM();
   vm.setFunctions(codeGenerator.functions);
-  // Passa as funções compiladas para a VM
-  vm.interpret(chunk);
+  
+  // Verifica se deve usar debugger interativo
+  if (debugInteractive) {
+    print('🔍 Iniciando Debugger Interativo...\n');
+    final debugger = InteractiveDebugger(vm);
+    debugger.start(chunk, source);
+  } else {
+    // Passa as funções compiladas para a VM
+    vm.interpret(chunk);
+  }
 }
