@@ -1,5 +1,0 @@
-// Exemplo simples para debugger
-var x = 42;
-var y = 10;
-var soma = x + y;
-imprima "Resultado: " + soma;

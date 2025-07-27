@@ -3,7 +3,7 @@ import 'bytecode.dart';
 import 'vm.dart';
 
 /// **Debugger Interativo do MiniDart**
-/// 
+///
 /// Sistema completo de debugging com:
 /// - Breakpoints em linhas específicas
 /// - Execução step-by-step (passo a passo)
@@ -16,7 +16,7 @@ class InteractiveDebugger {
   final Set<int> _breakpoints = <int>{};
   final Map<String, dynamic> _watchVariables = <String, dynamic>{};
   final List<DebugCallFrame> _callStack = <DebugCallFrame>[];
-  
+
   bool _isRunning = false;
   bool _stepMode = false;
   bool _isPaused = false;
@@ -33,11 +33,11 @@ class InteractiveDebugger {
     print('🔍 ═══════════════════════════════════════════════════════════════');
     print('🔍 Digite "help" para ver comandos disponíveis');
     print('🔍 ═══════════════════════════════════════════════════════════════');
-    
+
     _parseSourceLines(source);
     _setupDebugHooks();
     _isRunning = true;
-    
+
     _showCurrentState();
     _interactiveLoop(chunk);
   }
@@ -59,10 +59,15 @@ class InteractiveDebugger {
   }
 
   /// Callback executado a cada instrução
-  void _onInstructionExecute(int ip, OpCode opCode, List<dynamic> stack, Map<String, dynamic> globals) {
+  void _onInstructionExecute(
+    int ip,
+    OpCode opCode,
+    List<dynamic> stack,
+    Map<String, dynamic> globals,
+  ) {
     _currentIP = ip;
     _updateCurrentLine(ip);
-    
+
     // Verifica breakpoints
     if (_breakpoints.contains(_currentLine)) {
       _isPaused = true;
@@ -71,7 +76,7 @@ class InteractiveDebugger {
       _interactivePrompt();
       return;
     }
-    
+
     // Modo step-by-step
     if (_stepMode) {
       _isPaused = true;
@@ -85,7 +90,7 @@ class InteractiveDebugger {
     final frame = DebugCallFrame(functionName, args, _currentLine);
     _callStack.add(frame);
     _currentFunction = functionName;
-    
+
     if (_stepMode) {
       print('📞 CALL: $functionName(${args.join(', ')})');
     }
@@ -96,8 +101,10 @@ class InteractiveDebugger {
     if (_callStack.isNotEmpty) {
       _callStack.removeLast();
     }
-    _currentFunction = _callStack.isNotEmpty ? _callStack.last.functionName : 'main';
-    
+    _currentFunction = _callStack.isNotEmpty
+        ? _callStack.last.functionName
+        : 'main';
+
     if (_stepMode) {
       print('↩️  RETURN: $functionName → $returnValue');
     }
@@ -112,6 +119,14 @@ class InteractiveDebugger {
 
   /// Loop interativo principal
   void _interactiveLoop(BytecodeChunk chunk) {
+    // Pausa automaticamente no início para modo interativo
+    _isPaused = true;
+    print('🔍 ═══ PROGRAMA INICIADO - PAUSADO ═══');
+    print('💡 Digite "help" para ver comandos disponíveis');
+    print('💡 Digite "step" ou "s" para executar passo a passo');
+    print('💡 Digite "continue" ou "c" para continuar execução');
+    _showCurrentState();
+    
     while (_isRunning) {
       if (!_isPaused) {
         // Executa próxima instrução
@@ -129,7 +144,7 @@ class InteractiveDebugger {
         _interactivePrompt();
       }
     }
-    
+
     print('🔍 Debugger finalizado');
   }
 
@@ -138,7 +153,7 @@ class InteractiveDebugger {
     while (_isPaused && _isRunning) {
       stdout.write('(minidart-debug) ');
       final input = stdin.readLineSync()?.trim() ?? '';
-      
+
       if (!_processCommand(input)) {
         break; // Sair do prompt
       }
@@ -149,29 +164,29 @@ class InteractiveDebugger {
   bool _processCommand(String command) {
     final parts = command.split(' ');
     final cmd = parts[0].toLowerCase();
-    
+
     switch (cmd) {
       case 'help' || 'h':
         _showHelp();
         break;
-        
+
       case 'continue' || 'c':
         _isPaused = false;
         _stepMode = false;
         print('▶️  Continuando execução...');
         return false;
-        
+
       case 'step' || 's':
         _stepMode = true;
         _isPaused = false;
         print('👣 Modo step-by-step ativado');
         return false;
-        
+
       case 'next' || 'n':
         _isPaused = false;
         print('⏭️  Próxima instrução...');
         return false;
-        
+
       case 'break' || 'b':
         if (parts.length > 1) {
           _setBreakpoint(parts[1]);
@@ -179,7 +194,7 @@ class InteractiveDebugger {
           print('❌ Uso: break <linha>');
         }
         break;
-        
+
       case 'clear':
         if (parts.length > 1) {
           _clearBreakpoint(parts[1]);
@@ -187,11 +202,11 @@ class InteractiveDebugger {
           _clearAllBreakpoints();
         }
         break;
-        
+
       case 'list' || 'l':
         _listBreakpoints();
         break;
-        
+
       case 'watch' || 'w':
         if (parts.length > 1) {
           _addWatch(parts[1]);
@@ -199,7 +214,7 @@ class InteractiveDebugger {
           _showWatches();
         }
         break;
-        
+
       case 'unwatch':
         if (parts.length > 1) {
           _removeWatch(parts[1]);
@@ -207,30 +222,30 @@ class InteractiveDebugger {
           print('❌ Uso: unwatch <variável>');
         }
         break;
-        
+
       case 'stack' || 'st':
         _showCallStack();
         break;
-        
+
       case 'vars' || 'v':
         _showVariables();
         break;
-        
+
       case 'state':
         _showCurrentState();
         break;
-        
+
       case 'quit' || 'q':
         _isRunning = false;
         print('👋 Saindo do debugger...');
         return false;
-        
+
       default:
         print('❌ Comando desconhecido: $command');
         print('💡 Digite "help" para ver comandos disponíveis');
         break;
     }
-    
+
     return true;
   }
 
@@ -276,7 +291,7 @@ class InteractiveDebugger {
       print('📋 Nenhum breakpoint definido');
       return;
     }
-    
+
     print('📋 Breakpoints ativos:');
     for (final line in _breakpoints.toList()..sort()) {
       print('   🛑 Linha $line');
@@ -315,7 +330,7 @@ class InteractiveDebugger {
       print('👁️  Nenhuma variável sendo monitorada');
       return;
     }
-    
+
     print('👁️  Variáveis monitoradas:');
     for (final entry in _watchVariables.entries) {
       _updateWatchValue(entry.key);
@@ -329,20 +344,22 @@ class InteractiveDebugger {
       print('📚 Call Stack: [main]');
       return;
     }
-    
+
     print('📚 Call Stack:');
     print('   🏠 main');
     for (int i = 0; i < _callStack.length; i++) {
       final frame = _callStack[i];
       final indent = '   ${'  ' * (i + 1)}';
-      print('$indent📞 ${frame.functionName}(${frame.arguments.join(', ')}) [linha ${frame.line}]');
+      print(
+        '$indent📞 ${frame.functionName}(${frame.arguments.join(', ')}) [linha ${frame.line}]',
+      );
     }
   }
 
   /// Mostra todas as variáveis
   void _showVariables() {
     print('📊 Estado das Variáveis:');
-    
+
     // Variáveis globais
     final globals = _vm.getAllGlobals();
     if (globals.isNotEmpty) {
@@ -351,7 +368,7 @@ class InteractiveDebugger {
         print('     ${entry.key} = ${entry.value}');
       }
     }
-    
+
     // Stack atual
     final stack = _vm.getStackValues();
     if (stack.isNotEmpty) {
@@ -369,13 +386,13 @@ class InteractiveDebugger {
     print('📍 Linha: $_currentLine');
     print('🎯 IP: $_currentIP');
     print('🏷️  Função: ${_currentFunction ?? 'main'}');
-    
+
     // Mostra watches se existirem
     if (_watchVariables.isNotEmpty) {
       print('');
       _showWatches();
     }
-    
+
     print('🔍 ═══════════════════');
   }
 
@@ -417,9 +434,9 @@ class DebugCallFrame {
   final String functionName;
   final List<dynamic> arguments;
   final int line;
-  
+
   DebugCallFrame(this.functionName, this.arguments, this.line);
-  
+
   @override
   String toString() => '$functionName(${arguments.join(', ')}) [linha $line]';
 }

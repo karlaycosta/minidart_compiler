@@ -1,8 +1,0 @@
-// Teste simples para breakpoints
-imprima "Início do programa";
-var x = 10;
-var y = 20;
-var resultado = x + y;
-imprima "Resultado: ";
-imprima resultado;
-imprima "Fim do programa";

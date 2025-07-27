@@ -1,3 +1,0 @@
-// Teste simples para debug
-var x = 5;
-imprima x;

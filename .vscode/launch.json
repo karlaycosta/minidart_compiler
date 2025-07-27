@@ -2,16 +2,16 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug MiniDart",
+            "name": "Debug MiniDart (Arquivo Atual)",
             "type": "minidart",
             "request": "launch",
-            "program": "${workspaceFolder}/exemplos/exemplo_basico.mdart",
-            "stopOnEntry": true,
-            "compilerPath": "${workspaceFolder}/bin/compile.dart",
+            "program": "${file}",
+            "stopOnEntry": false,
+            "compilerPath": "bin/compile.dart",
             "cwd": "${workspaceFolder}"
         },
         {
-            "name": "Debug MiniDart (Arquivo Atual)",
+            "name": "Debug com Stop na Entrada",
             "type": "minidart",
             "request": "launch",
             "program": "${file}",
@@ -20,10 +20,10 @@
             "cwd": "${workspaceFolder}"
         },
         {
-            "name": "Debug Calculadora de Notas",
+            "name": "Debug Teste Validação Data",
             "type": "minidart",
             "request": "launch",
-            "program": "${workspaceFolder}/exemplos/calculadora_notas.mdart",
+            "program": "${workspaceFolder}/exemplos/teste_validacao_data.mdart",
             "stopOnEntry": false,
             "compilerPath": "${workspaceFolder}/bin/compile.dart",
             "cwd": "${workspaceFolder}"

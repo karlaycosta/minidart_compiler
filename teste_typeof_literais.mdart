@@ -1,6 +1,0 @@
-imprima "Teste typeof:";
-imprima tipode 42;
-imprima tipode 3.14;
-imprima tipode "texto";
-imprima tipode verdadeiro;
-imprima tipode nulo;

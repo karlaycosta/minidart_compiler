@@ -1,7 +1,0 @@
-// Teste básico de função
-inteiro teste() {
-    retorne 42;
-}
-
-var valor = teste();
-imprima valor;

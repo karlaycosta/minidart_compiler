@@ -1,3 +1,0 @@
-// Teste mínimo da função tipo()
-var x = 5;
-imprima tipo(x);

@@ -1,9 +1,0 @@
-// Teste switch ultra simples
-inteiro num = 1;
-
-escolha (num) {
-    caso 1:
-        imprima "Um";
-}
-
-imprima "Fim.";

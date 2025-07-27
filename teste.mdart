@@ -2,23 +2,23 @@ constante real a = 5 + 2.0;
 imprima a;
 
 // Testando a nova função tipo()
-var numero_int = 42;
-var numero_real = 3.14;
-var texto_teste = "MiniDart";
-var valor_bool = verdadeiro;
+// var numero_int = 42;
+// var numero_real = 3.14;
+// var texto_teste = "MiniDart";
+// var valor_bool = verdadeiro;
 
-imprima "=== TESTE DA FUNÇÃO tipo() ===";
-imprima numero_int;
-imprima tipo(numero_int);
+// imprima "=== TESTE DA FUNÇÃO tipo() ===";
+// imprima numero_int;
+// imprima tipo(numero_int);
 
-imprima numero_real;
-imprima tipo(numero_real);
+// imprima numero_real;
+// imprima tipo(numero_real);
 
-imprima texto_teste;
-imprima tipo(texto_teste);
+// imprima texto_teste;
+// imprima tipo(texto_teste);
 
-imprima valor_bool;
-imprima tipo(valor_bool);
+// imprima valor_bool;
+// imprima tipo(valor_bool);
 
 // inteiro teste(real a) {
 //     retorne a + 2;
