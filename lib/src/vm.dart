@@ -151,6 +151,10 @@ class VM {
         case OpCode.not:
           _push(!_isTruthy(_pop()));
           break;
+        case OpCode.typeof_:
+          final value = _pop();
+          _push(_getTypeName(value));
+          break;
         case OpCode.toInt:
           final value = _pop();
           if (value is double) {
@@ -631,6 +635,17 @@ class VM {
   /// Obtém call stack atual
   List<CallFrame> getCallStack() {
     return List.from(_frames);
+  }
+
+  /// Retorna o nome do tipo de um valor para o operador typeof
+  String _getTypeName(dynamic value) {
+    if (value == null) return 'nulo';
+    if (value is bool) return 'logico';
+    if (value is int) return 'inteiro';
+    if (value is double) return 'real';
+    if (value is String) return 'texto';
+    if (value is CompiledFunction) return 'funcao';
+    return 'desconhecido';
   }
 
   /// Define callback para execução de instrução

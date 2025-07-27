@@ -657,6 +657,9 @@ class CodeGenerator implements AstVisitor<void> {
       case TokenType.bang:
         _chunk.write(OpCode.not, expr.operator.line);
         break;
+      case TokenType.typeof_:
+        _chunk.write(OpCode.typeof_, expr.operator.line);
+        break;
       default:
         break; // Inalcançável
     }

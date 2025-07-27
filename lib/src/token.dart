@@ -82,6 +82,9 @@ enum TokenType {
   // Sistema de imports
   import_,     // 'importar'
   as_,         // 'como'
+  
+  // Operador typeof
+  typeof_,     // 'tipode'
 
   eof,
 }
@@ -195,6 +198,7 @@ extension TokenTypeExtension on TokenType {
       TokenType.constante => 'Declaração de Constante',
       TokenType.import_ => 'Importar',
       TokenType.as_ => 'Como',
+      TokenType.typeof_ => 'Operador TipoDe',
       // ========================================================================
       // ESPECIAIS
       // ========================================================================
@@ -276,6 +280,7 @@ extension TokenTypeExtension on TokenType {
       // Sistema de imports
       TokenType.import_ => 'importar',
       TokenType.as_ => 'como',
+      TokenType.typeof_ => 'tipode',
       // Especiais
       TokenType.eof => '<EOF>',
     };

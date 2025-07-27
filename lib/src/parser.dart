@@ -333,7 +333,7 @@ class Parser {
   Expr _factor() => _binary(next: _unary, types: [TokenType.slash, TokenType.star, TokenType.percent]);
 
   Expr _unary() {
-    if (_match([TokenType.bang, TokenType.minus])) {
+    if (_match([TokenType.bang, TokenType.minus, TokenType.typeof_])) {
       final operator = _previous();
       final right = _unary();
       return UnaryExpr(operator, right);
