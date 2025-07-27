@@ -1,0 +1,57 @@
+// Teste completo do operador typeof
+imprima "=== TESTE COMPLETO DO OPERADOR TYPEOF ===";
+
+// Tipos básicos com literais
+imprima "=== Literais ===";
+imprima "tipode 42 = " + tipode 42;
+imprima "tipode 3.14 = " + tipode 3.14;
+imprima "tipode MiniDart = " + tipode "MiniDart";
+imprima "tipode verdadeiro = " + tipode verdadeiro;
+imprima "tipode falso = " + tipode falso;
+imprima "tipode nulo = " + tipode nulo;
+
+// Variáveis
+imprima "";
+imprima "=== Variáveis ===";
+var intVar = 100;
+var realVar = 2.71;
+var textoVar = "Linguagem";
+var logicoVar = falso;
+
+imprima "tipode intVar (100) = " + tipode intVar;
+imprima "tipode realVar (2.71) = " + tipode realVar;
+imprima "tipode textoVar = " + tipode textoVar;
+imprima "tipode logicoVar = " + tipode logicoVar;
+
+// Expressões aritméticas
+imprima "";
+imprima "=== Expressões Aritméticas ===";
+imprima "tipode (10 + 5) = " + tipode (10 + 5);
+imprima "tipode (20 - 8) = " + tipode (20 - 8);
+imprima "tipode (6 * 7) = " + tipode (6 * 7);
+imprima "tipode (15 / 3) = " + tipode (15 / 3);
+imprima "tipode (3.0 * 2.5) = " + tipode (3.0 * 2.5);
+
+// Expressões lógicas
+imprima "";
+imprima "=== Expressões Lógicas ===";
+// imprima "tipode (verdadeiro e falso) = " + tipode (verdadeiro e falso);
+// imprima "tipode (verdadeiro ou falso) = " + tipode (verdadeiro ou falso);
+imprima "tipode (!verdadeiro) = " + tipode (!verdadeiro);
+
+// Expressões de comparação
+imprima "";
+imprima "=== Expressões de Comparação ===";
+imprima "tipode (10 > 5) = " + tipode (10 > 5);
+imprima "tipode (3 == 3) = " + tipode (3 == 3);
+imprima "tipode (a != b) = " + tipode ("a" != "b");
+
+// Casos especiais
+imprima "";
+imprima "=== Casos Especiais ===";
+imprima "tipode (tipode 42) = " + tipode (tipode 42);
+imprima "tipode (-10) = " + tipode (-10);
+imprima "tipode (10 % 3) = " + tipode (10 % 3);
+
+imprima "";
+imprima "=== TESTE CONCLUÍDO ===";
