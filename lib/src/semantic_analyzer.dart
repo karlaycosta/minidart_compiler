@@ -176,11 +176,20 @@ class SemanticAnalyzer implements AstVisitor<void> {
     // Se houver um inicializador, resolve-o.
     if (stmt.initializer != null) {
       _resolveExpr(stmt.initializer!);
+      
+      // Verificar compatibilidade de tipos
+      final initializerType = _inferExpressionType(stmt.initializer!);
+      final declaredType = stmt.type.type.type;
+      
+      if (!_areTypesCompatible(initializerType, declaredType)) {
+        _errorReporter.error(
+          stmt.name.line,
+          "Tipo incompatível na inicialização. Variável '${stmt.name.lexeme}' do tipo '${_tokenTypeToString(declaredType)}' não pode receber valor do tipo '${_tokenTypeToString(initializerType)}'.",
+        );
+      }
     }
     // Define a variável como inicializada.
     _define(stmt.name);
-    // TODO: Futuramente, adicionar verificação de compatibilidade de tipos
-    // entre o tipo declarado (stmt.type) e o tipo do inicializador
   }
 
   @override
@@ -700,14 +709,18 @@ class SemanticAnalyzer implements AstVisitor<void> {
       // Para operações aritméticas
       if (expr.operator.type == TokenType.plus ||
           expr.operator.type == TokenType.minus ||
-          expr.operator.type == TokenType.star ||
-          expr.operator.type == TokenType.slash) {
+          expr.operator.type == TokenType.star) {
         // Se qualquer operando é real, resultado é real
         if (leftType == TokenType.real || rightType == TokenType.real) {
           return TokenType.real;
         }
         // Se ambos são inteiros, resultado é inteiro
         return TokenType.inteiro;
+      }
+
+      // Divisão sempre retorna real
+      if (expr.operator.type == TokenType.slash) {
+        return TokenType.real;
       }
 
       // Para comparações
@@ -737,8 +750,12 @@ class SemanticAnalyzer implements AstVisitor<void> {
     // Tipos exatamente iguais
     if (actual == expected) return true;
 
-    // Inteiro pode ser promovido para real em alguns contextos
-    // Mas para validação de retorno, vamos ser restritivo
+    // Conversão implícita: inteiro pode ser convertido para real
+    if (actual == TokenType.inteiro && expected == TokenType.real) {
+      return true;
+    }
+
+    // Real NÃO pode ser convertido implicitamente para inteiro
     return false;
   }
 
