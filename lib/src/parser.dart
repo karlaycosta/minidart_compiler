@@ -91,7 +91,7 @@ class Parser {
   /// **Parsing de Declaração de Constante**
   /// 
   /// Reconhece e analisa declarações de constantes com tipo explícito.
-  /// Sintaxe: constante <tipo> <nome> = <valor>;
+  /// Sintaxe: constante `<tipo>` `<nome>` = `<valor>`;
   /// 
   /// **Exemplos:**
   /// - constante inteiro MAXIMO = 100;
@@ -143,6 +143,9 @@ class Parser {
       }
     }
     if (_match([TokenType.return_])) return _returnStatement();
+    if (_match([TokenType.break_])) return _breakStatement();
+    if (_match([TokenType.continue_])) return _continueStatement();
+    if (_match([TokenType.switch_])) return _switchStatement();
     if (_match([TokenType.leftBrace])) return BlockStmt(_block());
     return _expressionStatement();
   }
@@ -490,6 +493,61 @@ class Parser {
     
     _consume(TokenType.semicolon, "Esperado ';' após valor de retorno.");
     return ReturnStmt(keyword, value);
+  }
+
+  /// Analisa comando break: parar;
+  Stmt _breakStatement() {
+    final keyword = _previous();
+    _consume(TokenType.semicolon, "Esperado ';' após 'parar'.");
+    return BreakStmt(keyword);
+  }
+
+  /// Analisa comando continue: continuar;
+  Stmt _continueStatement() {
+    final keyword = _previous();
+    _consume(TokenType.semicolon, "Esperado ';' após 'continuar'.");
+    return ContinueStmt(keyword);
+  }
+
+  /// Analisa estrutura switch: escolha (expr) { caso valor: statements parar; caso contrario: statements }
+  Stmt _switchStatement() {
+    final keyword = _previous();
+    _consume(TokenType.leftParen, "Esperado '(' após 'escolha'.");
+    final expression = _expression();
+    _consume(TokenType.rightParen, "Esperado ')' após expressão do switch.");
+    _consume(TokenType.leftBrace, "Esperado '{' após expressão do switch.");
+    
+    final cases = <CaseStmt>[];
+    
+    while (!_check(TokenType.rightBrace) && !_isAtEnd()) {
+      if (_match([TokenType.case_])) {
+        final caseKeyword = _previous();
+        final value = _expression();
+        _consume(TokenType.colon, "Esperado ':' após valor do caso.");
+        
+        final statements = <Stmt>[];
+        while (!_check(TokenType.case_) && !_check(TokenType.default_) && !_check(TokenType.rightBrace) && !_isAtEnd()) {
+          statements.add(_statement());
+        }
+        
+        cases.add(CaseStmt(caseKeyword, value, statements));
+      } else if (_match([TokenType.default_])) {
+        final defaultKeyword = _previous();
+        _consume(TokenType.colon, "Esperado ':' após 'contrario'.");
+        
+        final statements = <Stmt>[];
+        while (!_check(TokenType.case_) && !_check(TokenType.default_) && !_check(TokenType.rightBrace) && !_isAtEnd()) {
+          statements.add(_statement());
+        }
+        
+        cases.add(CaseStmt(defaultKeyword, null, statements));
+      } else {
+        throw _error(_peek(), "Esperado 'caso' ou 'contrario' dentro do switch.");
+      }
+    }
+    
+    _consume(TokenType.rightBrace, "Esperado '}' após casos do switch.");
+    return SwitchStmt(keyword, expression, cases);
   }
 
   /// Finaliza uma chamada de função processando os argumentos

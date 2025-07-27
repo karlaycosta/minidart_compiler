@@ -1,0 +1,15 @@
+// Teste switch com break
+inteiro num = 2;
+
+escolha (num) {
+    caso 1:
+        imprima "Um";
+        parar;
+    caso 2:
+        imprima "Dois";
+        parar;
+    caso contrario:
+        imprima "Outro";
+}
+
+imprima "Fim.";

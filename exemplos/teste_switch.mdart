@@ -1,0 +1,64 @@
+// Exemplo testando switch/case (escolha/caso)
+imprima "Testando switch/case:";
+
+inteiro numero = 2;
+
+imprima "Teste 1 - switch básico:";
+escolha (numero) {
+    caso 1:
+        imprima "É um";
+        parar;
+    
+    caso 2:
+        imprima "É dois";
+        parar;
+    
+    caso 3:
+        imprima "É três";
+        parar;
+    
+    caso contrario:
+        imprima "É outro número";
+}
+
+imprima "Teste 2 - switch com string:";
+texto cor = "azul";
+escolha (cor) {
+    caso "vermelho":
+        imprima "Cor quente";
+        parar;
+    
+    caso "azul":
+        imprima "Cor fria";
+        parar;
+    
+    caso "verde":
+        imprima "Cor da natureza";
+        parar;
+    
+    caso contrario:
+        imprima "Cor desconhecida";
+}
+
+imprima "Teste 3 - switch com valores diferentes:";
+para (inteiro i = 1; i <= 5; i = i + 1) {
+    escolha (i) {
+        caso 1:
+            imprima "Primeiro";
+            parar;
+        
+        caso 2:
+        caso 3:
+            imprima "Segundo ou terceiro";
+            parar;
+        
+        caso 4:
+            imprima "Quarto";
+            parar;
+        
+        caso contrario:
+            imprima "Outro";
+    }
+}
+
+imprima "Fim dos testes.";

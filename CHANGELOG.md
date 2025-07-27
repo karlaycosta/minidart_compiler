@@ -5,6 +5,144 @@ Todas as alterações notáveis deste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [1.16.1] - 2025-07-26
+
+### 🔧 Corrigido
+- **🛠️ Sistema de Debug Restaurado**: Restauradas flags de debug que estavam documentadas mas ausentes
+  - **`--debug-tokens`**: Mostra todos os tokens identificados durante a análise léxica
+  - **`--debug-parser`**: Exibe detalhes da construção da AST durante o parsing
+  - **`--debug-semantic`**: Mostra informações da análise semântica e validação de escopo
+  - **`--debug-vm`**: Exibe execução passo-a-passo da VM com stack e instruções
+  - **`--debug-all`**: Ativa todos os modos de debug simultaneamente
+- **📚 Documentação Sincronizada**: DEBUG.md agora corresponde às funcionalidades realmente implementadas
+- **🎯 Compilador Completo**: Todas as flags de debug documentadas agora funcionam corretamente
+
+### 📝 Detalhes da Correção
+- **Problema**: Flags de debug estavam documentadas em DEBUG.md mas não implementadas no compilador
+- **Causa**: Divergência entre documentação e código após refatorações
+- **Solução**: Implementação completa das flags com saída formatada e informativa
+- **Impacto**: Sistema de debug profissional totalmente funcional para desenvolvimento e ensino
+
+## [1.16.0] - 2025-07-26
+
+### 🎯 Adicionado
+- **🔀 Estrutura de Controle Switch/Case**: Implementação completa de switch statements
+  - **Comando `escolha`**: Estrutura de controle para múltiplas condições (equivalente ao `switch`)
+  - **Comando `caso`**: Define casos específicos dentro do switch (equivalente ao `case`)
+  - **Comando `contrario`**: Caso padrão quando nenhum caso específico é atendido (equivalente ao `default`)
+  - **Suporte a Break**: Comando `parar` funciona dentro de switches para sair imediatamente
+  - **Break Automático**: Cada caso automaticamente sai do switch (sem fall-through por padrão)
+  - **Múltiplos Tipos**: Suporte a valores inteiros, strings e outros tipos literais
+  - **Sintaxe Portuguesa**: Palavras-chave em português para melhor acessibilidade
+
+### 🛠️ Implementado
+- **Tokens e Lexer**:
+  - Novos tokens `TokenType.switch_`, `TokenType.case_` e `TokenType.default_`
+  - Mapeamento de palavras-chave: "escolha" → switch, "caso" → case, "contrario" → default
+- **AST (Abstract Syntax Tree)**:
+  - Classes `SwitchStmt` e `CaseStmt` com métodos visitor
+  - `SwitchStmt`: expressão + lista de casos
+  - `CaseStmt`: valor opcional (null para default) + statements
+  - Integração completa com todos os visitors do sistema
+- **Parser**:
+  - Método `_switchStatement()` para parsing completo de switches
+  - Reconhecimento automático da sintaxe `escolha (expr) { caso valor: ... contrario: ... }`
+  - Suporte a múltiplos casos e caso padrão opcional
+- **Análise Semântica**:
+  - Validação de casos duplicados
+  - Verificação de valores literais constantes
+  - Validação de caso padrão único
+  - Contexto de switch com `_switchNestingLevel` para break statements
+- **Geração de Código**:
+  - Classe `SwitchContext` para rastrear breaks em switches
+  - Implementação via cadeia if-else para simplicidade
+  - Suporte completo a break statements em switches
+  - Stack de switches `_switchStack` para contexto aninhado
+
+### 📝 Sintaxe
+```minidart
+escolha (variavel) {
+    caso 1:
+        imprima "Um";
+        parar;
+    caso 2:
+        imprima "Dois";
+        parar;
+    contrario:
+        imprima "Outro valor";
+}
+```
+
+## [1.15.0] - 2025-07-26
+
+### 🎨 Adicionado
+- **🔄 Controle de Fluxo em Loops**: Implementação completa de break e continue
+  - **Comando `parar`**: Sai imediatamente do loop atual (equivalente ao `break`)
+  - **Comando `continuar`**: Pula para a próxima iteração do loop (equivalente ao `continue`)
+  - **Suporte Universal**: Funciona em todos os tipos de loops (while, do-while, for, for-step, for-c)
+  - **Validação Semântica**: Verificação de contexto - break/continue só podem ser usados dentro de loops
+  - **Sintaxe Portuguesa**: Palavras-chave em português para melhor acessibilidade
+
+### 🛠️ Implementado
+- **Tokens e Lexer**:
+  - Novos tokens `TokenType.break_` e `TokenType.continue_`
+  - Mapeamento de palavras-chave: "parar" → break, "continuar" → continue
+- **AST (Abstract Syntax Tree)**:
+  - Classes `BreakStmt` e `ContinueStmt` com métodos visitor
+  - Integração completa com todos os visitors do sistema
+- **Parser**:
+  - Métodos `_breakStatement()` e `_continueStatement()`
+  - Reconhecimento automático da sintaxe `parar;` e `continuar;`
+- **Análise Semântica**:
+  - Validação de contexto com `_loopNestingLevel`
+  - Erro semântico quando break/continue são usados fora de loops
+- **Geração de Código**:
+  - Classe `LoopContext` para rastreamento de jumps
+  - Lógica específica por tipo de loop:
+    - **While/Do-While**: continue volta ao início da condição
+    - **For/ForStep**: continue pula para o incremento da variável
+    - **ForC**: continue pula para a seção de incremento
+  - Break sempre sai do loop mais interno
+- **Máquina Virtual**:
+  - Cases para `OpCode.break_` e `OpCode.continue_` no switch principal
+  - Tratamento de erros para instruções inválidas
+- **Visitors Auxiliares**:
+  - Atualização de `LineVisitor`, `LocationVisitor` e `ASTGraphvizGenerator`
+  - Suporte completo para depuração e visualização
+
+### 🧪 Testado
+- **Casos de Teste Criados**:
+  - `teste_break_continue.mdart`: Exemplo completo com todos os cenários
+  - `teste_break_simples.mdart`: Teste isolado do comando break
+  - `teste_continue_simples.mdart`: Teste isolado do comando continue
+- **Cenários Validados**:
+  - Break em while loops ✅
+  - Continue em while loops (pula números pares) ✅
+  - Break em for loops ✅
+  - Continue em for loops (pula múltiplos de 3) ✅
+  - Validação semântica de contexto ✅
+  - Loops aninhados com break/continue ✅
+
+### 📚 Exemplos
+```minidart
+// Break em loop while
+enquanto (i <= 10) {
+    se (i == 5) {
+        parar;  // Sai do loop
+    }
+    imprima i;
+    i = i + 1;
+}
+
+// Continue em loop for
+para (inteiro k = 1; k <= 10; k = k + 1) {
+    se (k % 3 == 0) {
+        continuar;  // Pula múltiplos de 3
+    }
+    imprima k;  // Imprime: 1, 2, 4, 5, 7, 8, 10
+}
+```
+
 ## [1.14.0] - 2025-07-25
 
 ### 🎨 Adicionado

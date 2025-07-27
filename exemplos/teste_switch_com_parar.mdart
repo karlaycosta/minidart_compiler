@@ -1,0 +1,14 @@
+inteiro numero = 2;
+
+escolha (numero) {
+    caso 1:
+        imprima "Um";
+        parar;
+    caso 2:
+        imprima "Dois";
+        parar;
+    contrario:
+        imprima "Outro";
+}
+
+imprima "Fim.";

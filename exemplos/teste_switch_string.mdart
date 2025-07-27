@@ -1,0 +1,17 @@
+texto opcao = "b";
+
+escolha (opcao) {
+    caso "a":
+        imprima "Opcao A";
+        parar;
+    caso "b":
+        imprima "Opcao B";
+        parar;
+    caso "c":
+        imprima "Opcao C";
+        parar;
+    contrario:
+        imprima "Opcao invalida";
+}
+
+imprima "Programa encerrado.";

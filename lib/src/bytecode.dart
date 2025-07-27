@@ -19,8 +19,7 @@ enum OpCode {
   modulo,
   negate,
   not,
-  toInt,        // Converte para inteiro
-
+  toInt, // Converte para inteiro
   // --- Operações Relacionais ---
   equal,
   greater,
@@ -30,11 +29,11 @@ enum OpCode {
   jump,
   jumpIfFalse,
   loop, // Salto para trás
-
+  break_, // Sai do loop atual
+  continue_, // Pula para próxima iteração
   // --- Operações de Função ---
-  call,         // Chama uma função
-  return_,      // Retorna de uma função
-
+  call, // Chama uma função
+  return_, // Retorna de uma função
   // --- Outras Operações ---
   print,
 }
@@ -43,23 +42,23 @@ enum OpCode {
 class CompiledFunction {
   /// Nome da função
   final String name;
-  
+
   /// Número de parâmetros que a função espera
   final int arity;
-  
+
   /// Bytecode da função
   final BytecodeChunk chunk;
-  
+
   /// Nomes dos parâmetros para debugging
   final List<String> paramNames;
-  
+
   CompiledFunction({
     required this.name,
     required this.arity,
     required this.chunk,
     required this.paramNames,
   });
-  
+
   @override
   String toString() => 'Function($name/$arity)';
 }
@@ -81,9 +80,9 @@ class Instruction {
 class SourceLocation {
   final int line;
   final int column;
-  
+
   SourceLocation(this.line, this.column);
-  
+
   @override
   String toString() => 'linha $line, coluna $column';
 }
@@ -92,18 +91,26 @@ class SourceLocation {
 class BytecodeChunk {
   final List<Instruction> code = [];
   final List<Object?> constants = [];
-  final List<int> lines = []; // Mapeia cada instrução à sua linha no código fonte
-  final List<SourceLocation> locations = []; // Mapeia cada instrução à sua localização completa
+  final List<int> lines =
+      []; // Mapeia cada instrução à sua linha no código fonte
+  final List<SourceLocation> locations =
+      []; // Mapeia cada instrução à sua localização completa
 
   /// Adiciona uma instrução ao chunk, associando-a a uma linha.
   void write(OpCode opcode, int line, [int? operand]) {
     code.add(Instruction(opcode, operand));
     lines.add(line);
-    locations.add(SourceLocation(line, 1)); // Coluna padrão 1 para compatibilidade
+    locations.add(
+      SourceLocation(line, 1),
+    ); // Coluna padrão 1 para compatibilidade
   }
 
   /// Adiciona uma instrução ao chunk com localização completa (linha e coluna)
-  void writeWithLocation(OpCode opcode, SourceLocation location, [int? operand]) {
+  void writeWithLocation(
+    OpCode opcode,
+    SourceLocation location, [
+    int? operand,
+  ]) {
     code.add(Instruction(opcode, operand));
     lines.add(location.line);
     locations.add(location);
@@ -144,11 +151,15 @@ class BytecodeChunk {
     final offsetStr = offset.toString().padLeft(4, '0');
     final lineStr = lines[offset].toString().padLeft(4, ' ');
     final opName = instruction.opcode.name.padRight(16);
-    
+
     String operandStr = '';
     if (instruction.operand != null) {
       operandStr = instruction.operand.toString().padLeft(4, '0');
-      if (instruction.opcode == OpCode.pushConst || instruction.opcode == OpCode.getGlobal || instruction.opcode == OpCode.setGlobal || instruction.opcode == OpCode.defineGlobal || instruction.opcode == OpCode.call) {
+      if (instruction.opcode == OpCode.pushConst ||
+          instruction.opcode == OpCode.getGlobal ||
+          instruction.opcode == OpCode.setGlobal ||
+          instruction.opcode == OpCode.defineGlobal ||
+          instruction.opcode == OpCode.call) {
         operandStr += ' (${constants[instruction.operand!]})';
       }
     }

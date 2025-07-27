@@ -192,6 +192,14 @@ class VM {
             return InterpretResult.runtimeError;
           }
           break;
+        case OpCode.break_:
+          // break_ é tratado durante a compilação com jumps - não deveria chegar aqui
+          _runtimeError("Instrução 'break' inválida.");
+          break;
+        case OpCode.continue_:
+          // continue_ é tratado durante a compilação com jumps - não deveria chegar aqui
+          _runtimeError("Instrução 'continue' inválida.");
+          break;
         case OpCode.return_:
           return InterpretResult.ok;
       }
@@ -495,6 +503,16 @@ class VM {
         final argCount = instruction.operand!;
         if (!_callValue(_peek(0), argCount)) {
           _runtimeError("Erro na chamada de função.");
+        }
+        break;
+      case OpCode.return_:
+        // No contexto principal (sem frames), return_ marca fim do programa
+        if (_frames.isEmpty) {
+          // Programa principal terminando - isso é normal
+          return;
+        } else {
+          // Retorno de função - isso deve ser tratado pelo callFunction
+          _runtimeError("Return inesperado fora de contexto de função.");
         }
         break;
       default:

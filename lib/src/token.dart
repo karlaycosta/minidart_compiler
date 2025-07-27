@@ -51,6 +51,15 @@ enum TokenType {
   var_,
   while_,
   
+  // Controle de loops
+  break_,      // 'parar'
+  continue_,   // 'continuar'
+  
+  // Switch/Case
+  switch_,     // 'escolha'
+  case_,       // 'caso'
+  default_,    // 'contrario'
+  
   // Novos tokens para loop for
   to_,         // 'ate'
   do_,         // 'faca'
@@ -165,6 +174,11 @@ extension TokenTypeExtension on TokenType {
       TokenType.true_ => 'Verdadeiro',
       TokenType.var_ => 'Variável',
       TokenType.while_ => 'Enquanto (loop)',
+      TokenType.break_ => 'Parar (loop)',
+      TokenType.continue_ => 'Continuar (loop)',
+      TokenType.switch_ => 'Escolha (switch)',
+      TokenType.case_ => 'Caso (case)',
+      TokenType.default_ => 'Contrário (default)',
       TokenType.to_ => 'Até (loop for)',
       TokenType.do_ => 'Faça (loop)',
       TokenType.increment_ => 'Incremente (incremento)',
@@ -242,6 +256,11 @@ extension TokenTypeExtension on TokenType {
       TokenType.true_ => 'verdadeiro',
       TokenType.var_ => 'var',
       TokenType.while_ => 'enquanto',
+      TokenType.break_ => 'parar',
+      TokenType.continue_ => 'continuar',
+      TokenType.switch_ => 'escolha',
+      TokenType.case_ => 'caso',
+      TokenType.default_ => 'contrario',
       TokenType.to_ => 'ate',
       TokenType.do_ => 'faca',
       TokenType.increment_ => 'incremente',

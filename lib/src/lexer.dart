@@ -69,7 +69,6 @@ class Lexer {
   /// - **Operadores lógicos**: e, ou
   /// - **Literais**: verdadeiro, falso, nulo
   /// - **Comandos**: imprima, retorne
-  /// - **Orientação a objetos**: isto, super
   static final Map<String, TokenType> _keywords = {
     'e': TokenType.and, // Operador lógico AND
     'senao': TokenType.else_, // Estrutura condicional ELSE
@@ -83,6 +82,11 @@ class Lexer {
     'verdadeiro': TokenType.true_, // Literal booleano true
     'var': TokenType.var_, // Declaração de variável
     'enquanto': TokenType.while_, // Loop WHILE
+    'parar': TokenType.break_, // Comando break para loops
+    'continuar': TokenType.continue_, // Comando continue para loops
+    'escolha': TokenType.switch_, // Switch statement
+    'caso': TokenType.case_, // Case em switch
+    'contrario': TokenType.default_, // Default case em switch
     'ate': TokenType.to_, // Loop FOR - até
     'faca': TokenType.do_, // Loop FOR - faça
     'incremente': TokenType.increment_, // Loop FOR - incremento positivo

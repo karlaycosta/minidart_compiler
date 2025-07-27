@@ -8,6 +8,7 @@ import 'package:minidart_compiler/src/code_generator.dart';
 import 'package:minidart_compiler/src/vm.dart';
 import 'package:minidart_compiler/src/ast_graphviz_generator.dart';
 import 'package:minidart_compiler/src/interactive_debugger.dart';
+import 'package:minidart_compiler/src/dap_debugger.dart';
 
 // Cria uma instância única do reporter de erros para todo o compilador.
 final errorReporter = ErrorReporter();
@@ -37,6 +38,36 @@ void main(List<String> arguments) {
       abbr: 'i',
       negatable: false,
       help: 'Inicia o debugger interativo com breakpoints e step-by-step',
+    )
+    ..addFlag(
+      'debug-dap',
+      negatable: false,
+      help: 'Inicia o modo DAP (Debug Adapter Protocol) para integração VS Code',
+    )
+    ..addFlag(
+      'debug-tokens',
+      negatable: false,
+      help: 'Mostra todos os tokens identificados durante a análise léxica',
+    )
+    ..addFlag(
+      'debug-parser',
+      negatable: false,
+      help: 'Mostra detalhes da construção da AST durante o parsing',
+    )
+    ..addFlag(
+      'debug-semantic',
+      negatable: false,
+      help: 'Exibe informações detalhadas da análise semântica e escopo',
+    )
+    ..addFlag(
+      'debug-vm',
+      negatable: false,
+      help: 'Mostra execução passo-a-passo da VM com stack e instruções',
+    )
+    ..addFlag(
+      'debug-all',
+      negatable: false,
+      help: 'Ativa todos os modos de debug (tokens + parser + semantic + vm)',
     );
 
   ArgResults argResults;
@@ -50,7 +81,7 @@ void main(List<String> arguments) {
 
   // Verifica se é pedido para mostrar a versão
   if (argResults['version']) {
-      print('🚀 MiniDart Compiler v1.14.0');
+    print('🚀 MiniDart Compiler v1.14.0');
     print('Copyright (c) 2025 Deriks Karlay Dias Costa');
     print('Linguagem de programação educacional em português');
     exit(0);
@@ -66,10 +97,26 @@ void main(List<String> arguments) {
   final astOnly = argResults['ast-only'] as bool;
   final showBytecode = argResults['bytecode'] as bool;
   final debugInteractive = argResults['debug-interactive'] as bool;
+  final debugDAP = argResults['debug-dap'] as bool;
+  final debugTokens = argResults['debug-tokens'] as bool;
+  final debugParser = argResults['debug-parser'] as bool;
+  final debugSemantic = argResults['debug-semantic'] as bool;
+  final debugVM = argResults['debug-vm'] as bool;
+  final debugAll = argResults['debug-all'] as bool;
 
   try {
     final source = File(filePath).readAsStringSync();
-    run(source, astOnly: astOnly, showBytecode: showBytecode, debugInteractive: debugInteractive);
+    run(
+      source,
+      astOnly: astOnly,
+      showBytecode: showBytecode,
+      debugInteractive: debugInteractive,
+      debugDAP: debugDAP,
+      debugTokens: debugTokens || debugAll,
+      debugParser: debugParser || debugAll,
+      debugSemantic: debugSemantic || debugAll,
+      debugVM: debugVM || debugAll,
+    );
   } on FileSystemException {
     print('Erro: Não foi possível encontrar o arquivo "$filePath"');
     exit(66); // Código de erro para arquivo de entrada não encontrado.
@@ -88,15 +135,44 @@ Exemplos:
   dart bin/compile.dart exemplos/teste_complexo.mdart --bytecode
   dart bin/compile.dart exemplos/teste_simples.mdart --ast-only
   dart bin/compile.dart exemplos/teste_debug.mdart --debug-interactive
+  dart bin/compile.dart exemplos/teste_debug.mdart --debug-tokens
+  dart bin/compile.dart exemplos/teste_debug.mdart --debug-parser
+  dart bin/compile.dart exemplos/teste_debug.mdart --debug-semantic
+  dart bin/compile.dart exemplos/teste_debug.mdart --debug-vm
+  dart bin/compile.dart exemplos/teste_debug.mdart --debug-all
 ''';
 }
 
-void run(String source, {bool astOnly = false, bool showBytecode = false, bool debugInteractive = false}) {
+void run(
+  String source, {
+  bool astOnly = false,
+  bool showBytecode = false,
+  bool debugInteractive = false,
+  bool debugDAP = false,
+  bool debugTokens = false,
+  bool debugParser = false,
+  bool debugSemantic = false,
+  bool debugVM = false,
+}) {
   errorReporter.reset();
 
   // --- Fase 1: Análise Léxica (Scanner) ---
   final lexer = Lexer(source, errorReporter);
   final tokens = lexer.scanTokens();
+  
+  if (debugTokens) {
+    print('🔍 === DEBUG: TOKENS ENCONTRADOS ===');
+    for (int i = 0; i < tokens.length; i++) {
+      final token = tokens[i];
+      final index = '${i + 1}'.padLeft(3);
+      final type = token.type.toString().padRight(20);
+      final lexeme = token.lexeme.isEmpty ? '<vazio>' : token.lexeme;
+      final literal = token.literal != null ? '(${token.literal})' : '';
+      print('  $index. $type | $lexeme $literal');
+    }
+    print('✅ Total: ${tokens.length} tokens identificados\n');
+  }
+  
   if (errorReporter.hadError) {
     print('Erros encontrados durante a análise léxica. Compilação abortada.');
     return;
@@ -104,7 +180,23 @@ void run(String source, {bool astOnly = false, bool showBytecode = false, bool d
 
   // --- Fase 2: Análise Sintática (Parser) ---
   final parser = Parser(tokens, errorReporter);
+  
+  if (debugParser) {
+    print('🌳 === DEBUG: ANÁLISE SINTÁTICA (PARSER) ===');
+    print('🔍 Iniciando construção da AST...');
+  }
+  
   final statements = parser.parse();
+  
+  if (debugParser) {
+    print('📊 AST construída com ${statements.length} statement(s):');
+    for (int i = 0; i < statements.length; i++) {
+      final stmt = statements[i];
+      print('  ${i + 1}. ${stmt.runtimeType} - ${stmt.toString()}');
+    }
+    print('✅ Parser finalizado com sucesso\n');
+  }
+  
   if (errorReporter.hadError) {
     print(
       'Erros encontrados durante a análise sintática. Compilação abortada.',
@@ -126,7 +218,19 @@ void run(String source, {bool astOnly = false, bool showBytecode = false, bool d
 
   // --- Fase 3: Análise Semântica ---
   final semanticAnalyzer = SemanticAnalyzer(errorReporter);
+  
+  if (debugSemantic) {
+    print('🔬 === DEBUG: ANÁLISE SEMÂNTICA ===');
+    print('🔍 Verificando tipos, escopos e declarações...');
+  }
+  
   semanticAnalyzer.analyze(statements);
+  
+  if (debugSemantic) {
+    print('✅ Análise semântica finalizada');
+    print('📊 Programa validado semanticamente\n');
+  }
+  
   if (errorReporter.hadError) {
     print(
       'Erros encontrados durante a análise semântica. Compilação abortada.',
@@ -148,9 +252,21 @@ void run(String source, {bool astOnly = false, bool showBytecode = false, bool d
   // --- Fase 5: Execução na VM ---
   final vm = VM();
   vm.setFunctions(codeGenerator.functions);
-  
-  // Verifica se deve usar debugger interativo
-  if (debugInteractive) {
+
+  // Configurar debug da VM se solicitado
+  if (debugVM) {
+    print('🤖 === DEBUG: VIRTUAL MACHINE ===');
+    print('🔍 Ativando modo debug da VM...');
+    vm.setDebugMode(true);
+    print('✅ VM configurada para execução step-by-step\n');
+  }
+
+  // Verifica o modo de debug
+  if (debugDAP) {
+    print('🎯 Iniciando modo DAP (Debug Adapter Protocol)...\n');
+    final dapDebugger = DAPDebugger(vm);
+    dapDebugger.start(chunk, source);
+  } else if (debugInteractive) {
     print('🔍 Iniciando Debugger Interativo...\n');
     final debugger = InteractiveDebugger(vm);
     debugger.start(chunk, source);
