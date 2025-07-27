@@ -91,6 +91,8 @@ class Lexer {
     // Sistema de imports
     'importar': TokenType.import_, // Declaração de import
     'como': TokenType.as_, // Alias em import
+    // Operador typeof
+    'tipode': TokenType.typeof_, // Operador typeof
     // Tipos de dados
     'inteiro': TokenType.inteiro, // Tipo de dados inteiro
     'real': TokenType.real, // Tipo de dados real/float

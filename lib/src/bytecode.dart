@@ -19,6 +19,7 @@ enum OpCode {
   modulo,
   negate,
   not,
+  typeof_,      // Operador typeof
   toInt,        // Converte para inteiro
 
   // --- Operações Relacionais ---

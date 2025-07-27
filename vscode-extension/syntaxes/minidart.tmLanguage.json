@@ -46,7 +46,7 @@
         },
         {
           "name": "keyword.other.minidart",
-          "match": "\\b(imprima)\\b"
+          "match": "\\b(imprima|tipode)\\b"
         }
       ]
     },
