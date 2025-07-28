@@ -1,29 +1,32 @@
 // Demonstração completa de recursividade no MiniDart
 
 // === 1. FATORIAL ===
-real fatorial(real n) {
+// Agora usando inteiro para n, aproveitando conversão automática para real no retorno
+real fatorial(inteiro n) {
     se (n <= 1) {
-        retorne 1.0;
+        retorne 1;  // inteiro 1 é automaticamente convertido para real
     } senao {
-        retorne n * fatorial(n - 1);
+        retorne n * fatorial(n - 1);  // conversão automática
     }
 }
 
 // === 2. FIBONACCI ===
-real fibonacci(real n) {
+// Melhorado para usar inteiro na entrada
+real fibonacci(inteiro n) {
     se (n <= 1) {
-        retorne n;
+        retorne n;  // inteiro convertido automaticamente para real
     } senao {
         retorne fibonacci(n - 1) + fibonacci(n - 2);
     }
 }
 
 // === 3. POTÊNCIA ===
+// Mantém real no retorno mas agora mais consistente
 real potencia(inteiro base, inteiro exp) {
     se (exp == 0) {
-        retorne 1.0;
+        retorne 1;  // inteiro 1 convertido para real automaticamente
     } senao {
-        retorne base * potencia(base, exp - 1);
+        retorne base * potencia(base, exp - 1);  // conversão automática de inteiro para real
     }
 }
 
@@ -37,18 +40,18 @@ vazio contagemRegressiva(inteiro n) {
 
 // === TESTES ===
 imprima "=== FATORIAL ===";
-imprima fatorial(5);  // 120
-imprima fatorial(6);  // 720
+imprima fatorial(5);  // 120.0
+imprima fatorial(6);  // 720.0
 
 imprima "=== FIBONACCI ===";
-imprima fibonacci(0);  // 0
-imprima fibonacci(1);  // 1
-imprima fibonacci(5);  // 5
-imprima fibonacci(8);  // 21
+imprima fibonacci(0);  // 0.0
+imprima fibonacci(1);  // 1.0
+imprima fibonacci(5);  // 5.0
+imprima fibonacci(8);  // 21.0
 
 imprima "=== POTÊNCIA ===";
-imprima potencia(2, 3);  // 8
-imprima potencia(3, 4);  // 81
+imprima potencia(2, 3);  // 8.0
+imprima potencia(3, 4);  // 81.0
 
 imprima "=== CONTAGEM REGRESSIVA ===";
 contagemRegressiva(5);

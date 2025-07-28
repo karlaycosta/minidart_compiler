@@ -176,11 +176,20 @@ class SemanticAnalyzer implements AstVisitor<void> {
     // Se houver um inicializador, resolve-o.
     if (stmt.initializer != null) {
       _resolveExpr(stmt.initializer!);
+      
+      // Verificação de compatibilidade de tipos
+      final expectedType = stmt.type.type.type;
+      final actualType = _inferExpressionType(stmt.initializer!);
+      
+      if (!_areTypesCompatible(actualType, expectedType)) {
+        _errorReporter.error(
+          stmt.name.line,
+          "Tipo incompatível na declaração. Variável '${stmt.name.lexeme}' é do tipo '${_tokenTypeToString(expectedType)}', mas inicializador é do tipo '${_tokenTypeToString(actualType)}'.",
+        );
+      }
     }
     // Define a variável como inicializada.
     _define(stmt.name);
-    // TODO: Futuramente, adicionar verificação de compatibilidade de tipos
-    // entre o tipo declarado (stmt.type) e o tipo do inicializador
   }
 
   @override
@@ -200,14 +209,22 @@ class SemanticAnalyzer implements AstVisitor<void> {
     // Resolve o inicializador (obrigatório para constantes)
     _resolveExpr(stmt.initializer);
 
+    // Verificação de compatibilidade de tipos
+    final expectedType = stmt.type.type.type;
+    final actualType = _inferExpressionType(stmt.initializer);
+    
+    if (!_areTypesCompatible(actualType, expectedType)) {
+      _errorReporter.error(
+        stmt.name.line,
+        "Tipo incompatível na declaração da constante. '${stmt.name.lexeme}' é do tipo '${_tokenTypeToString(expectedType)}', mas inicializador é do tipo '${_tokenTypeToString(actualType)}'.",
+      );
+    }
+
     // Registra como constante (não pode ser reatribuída)
     _constants.add(stmt.name.lexeme);
 
     // Define a constante como inicializada
     _define(stmt.name);
-
-    // TODO: Futuramente, adicionar verificação de compatibilidade de tipos
-    // e verificar se o inicializador é uma expressão constante
   }
 
   @override
@@ -425,12 +442,28 @@ class SemanticAnalyzer implements AstVisitor<void> {
 
     // Resolve o valor que está sendo atribuído.
     _resolveExpr(expr.value);
+    
     // Verifica se a variável de destino existe.
     if (!_currentScope.assign(expr.name)) {
       _errorReporter.error(
         expr.name.line,
         "Tentativa de atribuir a uma variável '${expr.name.lexeme}' não declarada.",
       );
+      return;
+    }
+
+    // Verificação de compatibilidade de tipos
+    final symbol = _currentScope.get(expr.name);
+    if (symbol != null && symbol.type != null) {
+      final expectedType = symbol.type!;
+      final actualType = _inferExpressionType(expr.value);
+      
+      if (!_areTypesCompatible(actualType, expectedType)) {
+        _errorReporter.error(
+          expr.name.line,
+          "Tipo incompatível na atribuição. Variável '${expr.name.lexeme}' é do tipo '${_tokenTypeToString(expectedType)}', mas valor é do tipo '${_tokenTypeToString(actualType)}'.",
+        );
+      }
     }
   }
 
@@ -737,8 +770,14 @@ class SemanticAnalyzer implements AstVisitor<void> {
     // Tipos exatamente iguais
     if (actual == expected) return true;
 
-    // Inteiro pode ser promovido para real em alguns contextos
-    // Mas para validação de retorno, vamos ser restritivo
+    // NOVA REGRA: Inteiro pode ser convertido implicitamente para real
+    // (widening conversion - sempre segura)
+    if (actual == TokenType.inteiro && expected == TokenType.real) {
+      return true;
+    }
+
+    // Real NÃO pode ser convertido implicitamente para inteiro
+    // (narrowing conversion - deve ser explícita)
     return false;
   }
 
