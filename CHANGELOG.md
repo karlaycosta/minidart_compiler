@@ -15,11 +15,18 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
   - **Caso Padrão**: Suporte a `caso contrario` para valores não correspondentes
   - **Integração Completa**: Implementado em todas as fases do compilador (lexer, parser, semântica, codegen, VM)
 
+- **🔄 Conversão Implícita de Tipos**: Sistema robusto de conversão automática
+  - **Inteiro → Real**: Conversão automática e segura (widening conversion)
+  - **Proteção Real → Inteiro**: Narrowing conversion requer conversão explícita
+  - **Validação Completa**: Verificação em atribuições, declarações e constantes
+  - **Mensagens Claras**: Erros específicos para incompatibilidade de tipos
+
 ### 🔧 Melhorado
 - **📁 Organização do Projeto**: Removidos arquivos temporários e exemplos duplicados
 - **🔍 Exemplos de Recursividade**: Corrigidos tipos em funções recursivas avançadas
 - **📚 Sistema de Imports**: Melhorias no sistema de imports complexo
 - **🎯 Análise Semântica**: Melhor validação de tipos para operações matemáticas
+- **📝 Verificação de Tipos**: Implementada validação completa em atribuições e declarações
 
 ### 🛠️ Corrigido
 - **➗ Divisão Inteira**: Corrigida divisão que retornava real em vez de inteiro
