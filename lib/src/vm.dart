@@ -163,6 +163,14 @@ class VM {
             _push(value); // Se já é int ou outro tipo, mantém
           }
           break;
+        case OpCode.toDouble:
+          final value = _pop();
+          if (value is int) {
+            _push(value.toDouble());
+          } else {
+            _push(value); // Se já é double ou outro tipo, mantém
+          }
+          break;
         case OpCode.equal:
           final b = _pop();
           final a = _pop();
@@ -470,6 +478,26 @@ class VM {
         break;
       case OpCode.not:
         _push(_isFalsey(_pop()));
+        break;
+      case OpCode.typeof_:
+        final value = _pop();
+        _push(_getTypeName(value));
+        break;
+      case OpCode.toInt:
+        final value = _pop();
+        if (value is double) {
+          _push(value.toInt());
+        } else {
+          _push(value); // Se já é int ou outro tipo, mantém
+        }
+        break;
+      case OpCode.toDouble:
+        final value = _pop();
+        if (value is int) {
+          _push(value.toDouble());
+        } else {
+          _push(value); // Se já é double ou outro tipo, mantém
+        }
         break;
       case OpCode.equal:
         final b = _pop();

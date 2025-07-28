@@ -1,6 +1,8 @@
 import 'dart:math' as math;
 import 'dart:io';
 
+import 'version.dart';
+
 /// Representa uma função nativa que pode ser chamada do MiniDart
 class NativeFunction {
   final String name;
@@ -483,7 +485,7 @@ class StandardLibrary {
     // Função para mostrar informações de debug (sem argumentos)
     register('info_debug', 0, (args) {
       print('🔍 MiniDart Debug Info:');
-      print('  • Compilador: v1.12.10');
+      print('  • Compilador: $versionString');
       print('  • Sistema de tipos: dinâmico com inferência');
       print('  • Funções nativas disponíveis: ${_functions.length}');
       return null;

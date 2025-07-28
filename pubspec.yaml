@@ -1,6 +1,6 @@
 name: minidart_compiler
 description: Um compilador completo para a linguagem MiniDart - uma linguagem de programação educacional com sintaxe em português.
-version: 1.13.0
+version: 1.17.0
 repository: https://github.com/karlaycosta/minidart_compiler
 
 environment:

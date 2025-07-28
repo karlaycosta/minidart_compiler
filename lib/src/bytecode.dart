@@ -21,6 +21,7 @@ enum OpCode {
   not,
   typeof_,      // Operador typeof
   toInt,        // Converte para inteiro
+  toDouble,     // Converte para real (double)
   // --- Operações Relacionais ---
   equal,
   greater,

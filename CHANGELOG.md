@@ -5,6 +5,24 @@ Todas as alterações notáveis deste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [1.17.1] - 2025-07-28
+
+### ✅ Conversão Implícita Inteiro → Real
+- **Declarações de variáveis**: `real b = 10;` ✅
+- **Atribuições**: `real x; x = 42;` ✅  
+- **Retornos de função**: `real funcao() { retorne 10; }` ✅
+- **Constantes tipadas**: `const real pi = 3;` ✅
+
+### 🛡️ Proteção Contra Narrowing
+- **Real → Inteiro**: Gera erro de compilação ❌
+- **Detecção clara**: Mensagens específicas de incompatibilidade
+
+### 🔧 Implementação Técnica
+- **OpCode.toDouble**: Novo opcode para conversão
+- **Gerador de código**: Aplica conversões automaticamente
+- **VM**: Executa conversões em todos os contextos
+- **Duplo switch**: Funciona tanto no contexto principal quanto em funções
+
 ## [1.17.0] - 2025-07-28
 
 ### ✨ Novo

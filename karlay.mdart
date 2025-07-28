@@ -1,0 +1,11 @@
+real b = 10;
+
+inteiro teste(inteiro a) {
+    imprima b;
+    retorne a + 10.0;
+}
+
+
+imprima tipode b;
+
+imprima tipode teste(10);

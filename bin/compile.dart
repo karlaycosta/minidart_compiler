@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:args/args.dart';
+import 'package:minidart_compiler/src/token.dart';
+import 'package:minidart_compiler/src/version.dart';
 import 'package:minidart_compiler/src/lexer.dart';
 import 'package:minidart_compiler/src/parser.dart';
 import 'package:minidart_compiler/src/error.dart';
@@ -42,7 +44,8 @@ void main(List<String> arguments) {
     ..addFlag(
       'debug-dap',
       negatable: false,
-      help: 'Inicia o modo DAP (Debug Adapter Protocol) para integração VS Code',
+      help:
+          'Inicia o modo DAP (Debug Adapter Protocol) para integração VS Code',
     )
     ..addFlag(
       'debug-tokens',
@@ -81,7 +84,7 @@ void main(List<String> arguments) {
 
   // Verifica se é pedido para mostrar a versão
   if (argResults['version']) {
-    print('🚀 MiniDart Compiler v1.14.0');
+    print('🚀 $fullVersionString');
     print('Copyright (c) 2025 Deriks Karlay Dias Costa');
     print('Linguagem de programação educacional em português');
     exit(0);
@@ -159,20 +162,23 @@ void run(
   // --- Fase 1: Análise Léxica (Scanner) ---
   final lexer = Lexer(source, errorReporter);
   final tokens = lexer.scanTokens();
-  
+
   if (debugTokens) {
-    print('🔍 === DEBUG: TOKENS ENCONTRADOS ===');
+    print('--- DEBUG: TOKENS ENCONTRADOS ---');
+    print('=================================');
     for (int i = 0; i < tokens.length; i++) {
       final token = tokens[i];
       final index = '${i + 1}'.padLeft(3);
-      final type = token.type.toString().padRight(20);
+      final type = token.type.nome.padRight(20);
       final lexeme = token.lexeme.isEmpty ? '<vazio>' : token.lexeme;
-      final literal = token.literal != null ? '(${token.literal})' : '';
-      print('  $index. $type | $lexeme $literal');
+      // final literal = token.literal != null ? '(${token.literal})' : '';
+      print('  $index. $type | $lexeme');
     }
-    print('✅ Total: ${tokens.length} tokens identificados\n');
+    final token = '${tokens.length}'.padLeft(3);
+    print('=======================================');
+    print('--- Total: $token tokens identificados ---\n');
   }
-  
+
   if (errorReporter.hadError) {
     print('Erros encontrados durante a análise léxica. Compilação abortada.');
     return;
@@ -180,14 +186,14 @@ void run(
 
   // --- Fase 2: Análise Sintática (Parser) ---
   final parser = Parser(tokens, errorReporter);
-  
+
   if (debugParser) {
     print('🌳 === DEBUG: ANÁLISE SINTÁTICA (PARSER) ===');
     print('🔍 Iniciando construção da AST...');
   }
-  
+
   final statements = parser.parse();
-  
+
   if (debugParser) {
     print('📊 AST construída com ${statements.length} statement(s):');
     for (int i = 0; i < statements.length; i++) {
@@ -196,7 +202,7 @@ void run(
     }
     print('✅ Parser finalizado com sucesso\n');
   }
-  
+
   if (errorReporter.hadError) {
     print(
       'Erros encontrados durante a análise sintática. Compilação abortada.',
@@ -218,19 +224,19 @@ void run(
 
   // --- Fase 3: Análise Semântica ---
   final semanticAnalyzer = SemanticAnalyzer(errorReporter);
-  
+
   if (debugSemantic) {
     print('🔬 === DEBUG: ANÁLISE SEMÂNTICA ===');
     print('🔍 Verificando tipos, escopos e declarações...');
   }
-  
+
   semanticAnalyzer.analyze(statements);
-  
+
   if (debugSemantic) {
     print('✅ Análise semântica finalizada');
     print('📊 Programa validado semanticamente\n');
   }
-  
+
   if (errorReporter.hadError) {
     print(
       'Erros encontrados durante a análise semântica. Compilação abortada.',

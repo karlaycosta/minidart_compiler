@@ -39,6 +39,9 @@ class CodeGenerator implements AstVisitor<void> {
   // Pilha para rastrear contexto de switches (para break)
   final List<SwitchContext> _switchStack = [];
 
+  // Tipo de retorno da função atual (para conversões implícitas)
+  TokenType? _currentFunctionReturnType;
+
   BytecodeChunk compile(List<Stmt> statements) {
     for (final stmt in statements) {
       _generateStmt(stmt);
@@ -124,9 +127,13 @@ class CodeGenerator implements AstVisitor<void> {
     if (stmt.initializer != null) {
       _generateExpr(stmt.initializer!);
 
-      // Se é uma variável tipada de tipo inteiro e o valor é numérico, converter para int
+      // Conversões de tipo baseadas na declaração da variável
       if (stmt.type.type.type == TokenType.inteiro) {
+        // Se é uma variável tipada de tipo inteiro e o valor é numérico, converter para int
         _chunk.write(OpCode.toInt, stmt.name.line);
+      } else if (stmt.type.type.type == TokenType.real) {
+        // Se é uma variável tipada de tipo real, converter para double (conversão implícita inteiro→real)
+        _chunk.write(OpCode.toDouble, stmt.name.line);
       }
     } else {
       // Valor padrão baseado no tipo
@@ -711,6 +718,9 @@ class CodeGenerator implements AstVisitor<void> {
   void visitFunctionStmt(FunctionStmt stmt) {
     // Compila o corpo da função em um chunk separado
     final funcGenerator = CodeGenerator();
+    
+    // Define o tipo de retorno para conversões implícitas
+    funcGenerator._currentFunctionReturnType = stmt.returnType?.type.type;
 
     // Compila o corpo da função
     funcGenerator._generateStmt(stmt.body);
@@ -741,6 +751,15 @@ class CodeGenerator implements AstVisitor<void> {
   void visitReturnStmt(ReturnStmt stmt) {
     if (stmt.value != null) {
       _generateExpr(stmt.value!);
+      
+      // Aplicar conversão implícita baseada no tipo de retorno da função
+      if (_currentFunctionReturnType != null) {
+        if (_currentFunctionReturnType == TokenType.inteiro) {
+          _chunk.write(OpCode.toInt, stmt.keyword.line);
+        } else if (_currentFunctionReturnType == TokenType.real) {
+          _chunk.write(OpCode.toDouble, stmt.keyword.line);
+        }
+      }
     } else {
       // Retorno vazio - coloca nil na pilha
       _emitConstant(null, stmt.keyword.line);

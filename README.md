@@ -1,9 +1,9 @@
-# 🚀 **MiniDart Compiler v1.13.0**
+# 🚀 **MiniDart Compiler v1.17.0**
 
 Um compilador completo para a linguagem **MiniDart** - uma linguagem de programação educacional com sintaxe em português, implementado em Dart.
 
 ![Dart](https://img.shields.io/badge/Dart-3.8.1-blue)
-![Version](https://img.shields.io/badge/Version-v1.13.0-brightgreen)
+![Version](https://img.shields.io/badge/Version-v1.17.0-brightgreen)
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Status](https://img.shields.io/badge/Status-Stable-brightgreen)
 ![Debug](https://img.shields.io/badge/Debug-Sistema_Completo-orange)
