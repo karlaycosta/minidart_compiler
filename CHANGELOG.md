@@ -5,6 +5,27 @@ Todas as alterações notáveis deste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [1.17.0] - 2025-07-28
+
+### ✨ Novo
+- **🔀 Estruturas de Controle Switch/Case**: Implementação completa da estrutura `escolha`
+  - **Sintaxe em Português**: `escolha (expressao) { caso valor: ... pare ... caso contrario: ... }`
+  - **Suporte a Múltiplos Tipos**: Funciona com inteiros, strings e outros tipos básicos
+  - **Break Automático**: Comando `pare` previne fallthrough não intencional
+  - **Caso Padrão**: Suporte a `caso contrario` para valores não correspondentes
+  - **Integração Completa**: Implementado em todas as fases do compilador (lexer, parser, semântica, codegen, VM)
+
+### 🔧 Melhorado
+- **📁 Organização do Projeto**: Removidos arquivos temporários e exemplos duplicados
+- **🔍 Exemplos de Recursividade**: Corrigidos tipos em funções recursivas avançadas
+- **📚 Sistema de Imports**: Melhorias no sistema de imports complexo
+- **🎯 Análise Semântica**: Melhor validação de tipos para operações matemáticas
+
+### 🛠️ Corrigido
+- **➗ Divisão Inteira**: Corrigida divisão que retornava real em vez de inteiro
+- **🔧 Tipos de Retorno**: Ajustados tipos de retorno em funções recursivas
+- **📂 Estrutura de Arquivos**: Limpeza de arquivos temporários e organização do workspace
+
 ## [1.16.1] - 2025-07-26
 
 ### 🔧 Corrigido
