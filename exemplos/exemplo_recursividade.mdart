@@ -1,16 +1,16 @@
 // Demonstração completa de recursividade no MiniDart
 
 // === 1. FATORIAL ===
-inteiro fatorial(inteiro n) {
+real fatorial(real n) {
     se (n <= 1) {
-        retorne 1;
+        retorne 1.0;
     } senao {
         retorne n * fatorial(n - 1);
     }
 }
 
 // === 2. FIBONACCI ===
-inteiro fibonacci(inteiro n) {
+real fibonacci(real n) {
     se (n <= 1) {
         retorne n;
     } senao {
@@ -19,9 +19,9 @@ inteiro fibonacci(inteiro n) {
 }
 
 // === 3. POTÊNCIA ===
-inteiro potencia(inteiro base, inteiro exp) {
+real potencia(inteiro base, inteiro exp) {
     se (exp == 0) {
-        retorne 1;
+        retorne 1.0;
     } senao {
         retorne base * potencia(base, exp - 1);
     }

@@ -17,7 +17,7 @@ inteiro buscaBinaria(inteiro valor, inteiro inicio, inteiro fim) {
         retorne -1;  // Não encontrado
     }
     
-    var meio = (inicio + fim) / 2;
+    inteiro meio = (inicio + fim) / 2;
     
     se (meio == valor) {
         retorne meio;  // Encontrado
@@ -43,7 +43,7 @@ logico isPalindromo(inteiro num, inteiro original, inteiro invertido) {
         retorne original == invertido;
     }
     
-    var digito = num % 10;
+    inteiro digito = num % 10;
     invertido = invertido * 10 + digito;
     
     retorne isPalindromo(num / 10, original, invertido);

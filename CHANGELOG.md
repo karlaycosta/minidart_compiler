@@ -5,57 +5,6 @@ Todas as alterações notáveis deste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
-## [1.17.0] - 2025-07-27
-
-### 🎯 Adicionado
-- **🔄 Conversão Implícita de Tipos**: Sistema de coerção automática de tipos implementado
-  - **Inteiro → Real**: Valores inteiros podem ser automaticamente convertidos para reais
-  - **Operações Mistas**: Suporte a operações entre inteiros e reais
-  - **Segurança de Tipos**: Real NÃO pode ser convertido implicitamente para inteiro
-  - **Divisão Sempre Real**: Operação `/` sempre produz resultado real, mesmo com operandos inteiros
-- **🏷️ Operador de Tipo**: Palavra-chave `tipode` para inspeção de tipos em tempo de execução
-  - **Sintaxe**: `tipode expressao` retorna o tipo da expressão como string
-  - **Tipos Suportados**: "inteiro", "real", "texto", "lógico", "vazio"
-  - **Uso**: Útil para debugging e validação de tipos dinâmica
-
-### 🛠️ Implementado
-- **Sistema de Compatibilidade de Tipos**:
-  - Método `_areTypesCompatible()` no analisador semântico
-  - Permite coerção automática inteiro → real
-  - Proíbe coerção automática real → inteiro para manter precisão
-- **Validação de Tipos Melhorada**:
-  - Verificação em declarações tipadas com inicializadores
-  - Validação de tipos de retorno de função com coerção
-  - Mensagens de erro mais específicas e informativas
-- **Operador Typeof**:
-  - Token `TokenType.typeof_` mapeado para palavra-chave "tipode"
-  - Implementação completa no parser, gerador de código e VM
-  - Retorna strings legíveis dos tipos em português
-
-### 📝 Exemplos de Uso
-```minidart
-// Conversão implícita funcionando
-inteiro num = 10;
-real resultado = num;        // ✅ Funciona: 10 vira 10.0
-real divisao = num / 2;      // ✅ Funciona: sempre retorna real (5.0)
-real soma = num + 3.14;      // ✅ Funciona: operação mista
-
-// Operador tipode
-var tipo1 = tipode num;      // "inteiro"
-var tipo2 = tipode resultado; // "real"
-var tipo3 = tipode "texto";  // "texto"
-
-// Isso NÃO funciona (segurança de tipos)
-real valor = 5.7;
-inteiro erro = valor;        // ❌ Erro: real não pode virar inteiro
-```
-
-### 🔧 Comportamento
-- **Flexibilidade Matemática**: Permite uso natural de inteiros em contextos que esperam reais
-- **Precisão Preservada**: Evita perda de dados impedindo conversão real → inteiro
-- **Compatibilidade**: Código existente continua funcionando
-- **Debugging**: Operador `tipode` facilita inspeção de tipos durante desenvolvimento
-
 ## [1.16.1] - 2025-07-26
 
 ### 🔧 Corrigido
