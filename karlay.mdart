@@ -1,11 +1,14 @@
-real b = 10;
+
+// imprima tipode b;
+inteiro b = 10 + 10 + 5;
 
 inteiro teste(inteiro a) {
-    imprima b;
-    retorne a + 10.0;
+    imprima tipode b;
+    imprima tipode a;
+    retorne a;
 }
 
 
-imprima tipode b;
+// imprima tipode teste(5);
 
-imprima tipode teste(10);
+imprima teste(5);
