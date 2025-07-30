@@ -4,9 +4,10 @@ import 'token.dart';
 class Symbol {
   final Token declaration;
   final TokenType? type; // Tipo da variável (se conhecido)
+  final TokenType? elementType; // Tipo dos elementos (para listas)
   bool isInitialized = false;
 
-  Symbol(this.declaration, {this.type});
+  Symbol(this.declaration, {this.type, this.elementType});
 }
 
 /// Gerencia os escopos e os símbolos declarados dentro deles.
@@ -29,6 +30,11 @@ class SymbolTable {
   /// Define um novo símbolo tipado no escopo atual.
   void defineTyped(Token name, TokenType type) {
     _symbols[name.lexeme] = Symbol(name, type: type);
+  }
+
+  /// Define um novo símbolo de lista no escopo atual.
+  void defineList(Token name, TokenType elementType) {
+    _symbols[name.lexeme] = Symbol(name, type: TokenType.lista, elementType: elementType);
   }
 
   /// Atribui um valor a um símbolo existente, marcando-o como inicializado.

@@ -36,6 +36,16 @@ enum OpCode {
   // --- Operações de Função ---
   call, // Chama uma função
   return_, // Retorna de uma função
+  
+  // --- Operações de Lista ---
+  indexAccess, // Acesso por índice: lista[indice]
+  indexAssign, // Atribuição por índice: lista[indice] = valor
+  createList,  // Cria lista com N elementos da pilha
+  listSize,    // Retorna o tamanho da lista
+  listAdd,     // Adiciona elemento ao final da lista
+  listRemove,  // Remove e retorna último elemento da lista
+  listEmpty,   // Verifica se a lista está vazia
+  
   // --- Outras Operações ---
   print,
 }

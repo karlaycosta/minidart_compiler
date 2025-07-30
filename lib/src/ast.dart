@@ -81,6 +81,9 @@ abstract interface class AstVisitor<T> {
 
   /// Visita uma declaração de import
   T visitImportStmt(ImportStmt stmt);
+  
+  /// Visita uma declaração de lista (lista<tipo> nome = [elementos];)
+  T visitListDeclStmt(ListDeclStmt stmt);
 
   // === Visitantes para Expressions (Expressões) ===
 
@@ -122,6 +125,18 @@ abstract interface class AstVisitor<T> {
 
   /// Visita um acesso a membro (objeto.propriedade)
   T visitMemberAccessExpr(MemberAccessExpr expr);
+  
+  /// Visita um literal de lista ([elemento1, elemento2, ...])
+  T visitListLiteralExpr(ListLiteralExpr expr);
+  
+  /// Visita um acesso por índice (lista[indice])
+  T visitIndexAccessExpr(IndexAccessExpr expr);
+  
+  /// Visita uma atribuição por índice (lista[indice] = valor)
+  T visitIndexAssignExpr(IndexAssignExpr expr);
+  
+  /// Visita uma chamada de método (objeto.metodo(argumentos))
+  T visitMethodCallExpr(MethodCallExpr expr);
 }
 
 // ============================================================================
@@ -290,6 +305,33 @@ final class ConstDeclStmt extends Stmt {
 
   @override
   T accept<T>(AstVisitor<T> visitor) => visitor.visitConstDeclStmt(this);
+}
+
+/// **Statement de Declaração de Lista: lista<tipo> nome = [elementos];**
+///
+/// Declara uma lista homogênea com tipo explícito dos elementos.
+/// Todas as listas devem especificar o tipo dos elementos que contêm.
+///
+/// **Exemplos:**
+/// - `lista<inteiro> numeros = [1, 2, 3, 4, 5];`
+/// - `lista<texto> nomes = ["João", "Maria", "Pedro"];`
+/// - `lista<real> valores = [1.5, 2.7, 3.14];`
+/// - `lista<logico> flags = [verdadeiro, falso, verdadeiro];`
+/// - `lista<inteiro> vazia = [];`
+final class ListDeclStmt extends Stmt {
+  /// Tipo dos elementos da lista
+  final TypeInfo elementType;
+
+  /// Token que representa o nome da lista
+  final Token name;
+
+  /// Expressão de inicialização da lista (opcional)
+  final Expr? initializer;
+
+  ListDeclStmt(this.elementType, this.name, this.initializer);
+
+  @override
+  T accept<T>(AstVisitor<T> visitor) => visitor.visitListDeclStmt(this);
 }
 
 /// **Statement de Loop While: enquanto (condição) statement**
@@ -695,6 +737,63 @@ final class CompoundAssignExpr extends Expr {
   T accept<T>(AstVisitor<T> visitor) => visitor.visitCompoundAssignExpr(this);
 }
 
+/// **Expressão de Atribuição por Índice: lista[indice] = valor**
+///
+/// Representa atribuição de valor a um elemento específico de uma lista.
+/// Permite modificar elementos existentes nas listas.
+///
+/// **Exemplos:**
+/// - `numeros[0] = 100;` - atribui 100 ao primeiro elemento
+/// - `nomes[i] = "Novo";` - atribui usando índice variável
+/// - `matriz[2] = valor;` - atribui valor de variável
+final class IndexAssignExpr extends Expr {
+  /// Expressão que representa a lista
+  final Expr object;
+
+  /// Token do colchete esquerdo
+  final Token bracket;
+
+  /// Expressão do índice
+  final Expr index;
+
+  /// Valor a ser atribuído
+  final Expr value;
+
+  IndexAssignExpr(this.object, this.bracket, this.index, this.value);
+
+  @override
+  T accept<T>(AstVisitor<T> visitor) => visitor.visitIndexAssignExpr(this);
+}
+
+/// **Expressão de Chamada de Método: objeto.metodo(argumentos)**
+///
+/// Representa a chamada de métodos integrados de listas e outros objetos.
+/// Suporta diferentes tipos de métodos:
+/// - `lista.tamanho()` - retorna o tamanho da lista
+/// - `lista.adicionar(valor)` - adiciona um elemento ao final
+/// - `lista.remover()` - remove e retorna o último elemento
+final class MethodCallExpr extends Expr {
+  /// Expressão que representa o objeto
+  final Expr object;
+
+  /// Token do ponto
+  final Token dot;
+
+  /// Nome do método
+  final Token name;
+
+  /// Token do parêntese esquerdo
+  final Token paren;
+
+  /// Lista de argumentos do método
+  final List<Expr> arguments;
+
+  MethodCallExpr(this.object, this.dot, this.name, this.paren, this.arguments);
+
+  @override
+  T accept<T>(AstVisitor<T> visitor) => visitor.visitMethodCallExpr(this);
+}
+
 /// **Expressão de Incremento: ++variavel ou variavel++**
 ///
 /// Representa o operador de incremento que aumenta o valor
@@ -773,6 +872,32 @@ final class BinaryExpr extends Expr {
   T accept<T>(AstVisitor<T> visitor) => visitor.visitBinaryExpr(this);
 }
 
+/// **Expressão de Acesso por Índice: expr[index]**
+///
+/// Acessa um elemento específico de uma lista usando um índice inteiro.
+/// O índice deve ser uma expressão que avalia para um valor inteiro.
+///
+/// **Exemplos:**
+/// - `numeros[0]` - primeiro elemento
+/// - `nomes[i]` - elemento no índice i
+/// - `matriz[2]` - terceiro elemento
+/// - `lista[tamanho - 1]` - último elemento
+final class IndexAccessExpr extends Expr {
+  /// Expressão que representa a lista
+  final Expr object;
+
+  /// Token do colchete esquerdo
+  final Token bracket;
+
+  /// Expressão do índice
+  final Expr index;
+
+  IndexAccessExpr(this.object, this.bracket, this.index);
+
+  @override
+  T accept<T>(AstVisitor<T> visitor) => visitor.visitIndexAccessExpr(this);
+}
+
 /// **Expressão de Agrupamento: (expressão)**
 ///
 /// Agrupa uma expressão com parênteses para alterar a precedência
@@ -843,6 +968,33 @@ final class LiteralExpr extends Expr {
 
   @override
   T accept<T>(AstVisitor<T> visitor) => visitor.visitLiteralExpr(this);
+}
+
+/// **Expressão de Lista Literal: [elemento1, elemento2, ...]**
+///
+/// Representa uma lista de elementos literais homogêneos.
+/// Todos os elementos devem ser do mesmo tipo.
+///
+/// **Exemplos:**
+/// - `[1, 2, 3, 4, 5]` - lista de inteiros
+/// - `["João", "Maria", "Pedro"]` - lista de textos
+/// - `[1.5, 2.7, 3.14]` - lista de reais
+/// - `[verdadeiro, falso, verdadeiro]` - lista de lógicos
+/// - `[]` - lista vazia
+final class ListLiteralExpr extends Expr {
+  /// Token do colchete esquerdo
+  final Token leftBracket;
+
+  /// Lista de expressões que representam os elementos
+  final List<Expr> elements;
+
+  /// Token do colchete direito
+  final Token rightBracket;
+
+  ListLiteralExpr(this.leftBracket, this.elements, this.rightBracket);
+
+  @override
+  T accept<T>(AstVisitor<T> visitor) => visitor.visitListLiteralExpr(this);
 }
 
 /// **Expressão Lógica: esquerda operador_lógico direita**

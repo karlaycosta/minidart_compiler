@@ -814,6 +814,89 @@ class CodeGenerator implements AstVisitor<void> {
     }
   }
 
+  @override
+  void visitListDeclStmt(ListDeclStmt stmt) {
+    // Se há inicializador, geramos o código
+    if (stmt.initializer != null) {
+      _generateExpr(stmt.initializer!);
+    } else {
+      // Lista vazia - emite uma lista vazia
+      _emitConstant([], stmt.name.line);
+    }
+
+    // Define a variável global
+    final globalIndex = _chunk.addConstant(stmt.name.lexeme);
+    _chunk.write(OpCode.defineGlobal, stmt.name.line, globalIndex);
+  }
+
+  @override
+  void visitListLiteralExpr(ListLiteralExpr expr) {
+    // Gera código para cada elemento
+    for (final element in expr.elements) {
+      _generateExpr(element);
+    }
+
+    // Emite instrução para criar lista com N elementos
+    _chunk.write(OpCode.createList, expr.leftBracket.line, expr.elements.length);
+  }
+
+  @override
+  void visitIndexAccessExpr(IndexAccessExpr expr) {
+    // Gera código para a lista
+    _generateExpr(expr.object);
+    
+    // Gera código para o índice
+    _generateExpr(expr.index);
+    
+    // Emite instrução de acesso por índice
+    _chunk.write(OpCode.indexAccess, expr.bracket.line);
+  }
+
+  @override
+  void visitIndexAssignExpr(IndexAssignExpr expr) {
+    // Gera código para a lista
+    _generateExpr(expr.object);
+    
+    // Gera código para o índice
+    _generateExpr(expr.index);
+    
+    // Gera código para o valor
+    _generateExpr(expr.value);
+    
+    // Emite instrução de atribuição por índice
+    _chunk.write(OpCode.indexAssign, expr.bracket.line);
+  }
+
+  @override
+  void visitMethodCallExpr(MethodCallExpr expr) {
+    // Gera código para o objeto
+    _generateExpr(expr.object);
+    
+    // Gera código para os argumentos
+    for (final argument in expr.arguments) {
+      _generateExpr(argument);
+    }
+    
+    // Determinar qual instrução emitir baseado no método
+    final methodName = expr.name.lexeme;
+    switch (methodName) {
+      case 'tamanho':
+        _chunk.write(OpCode.listSize, expr.name.line);
+        break;
+      case 'adicionar':
+        _chunk.write(OpCode.listAdd, expr.name.line);
+        break;
+      case 'remover':
+        _chunk.write(OpCode.listRemove, expr.name.line);
+        break;
+      case 'vazio':
+        _chunk.write(OpCode.listEmpty, expr.name.line);
+        break;
+      default:
+        throw Exception("Método '$methodName' não implementado na linha ${expr.name.line}.");
+    }
+  }
+
   // ===== FIM DOS NOVOS VISITANTES =====
 
   // --- Funções de Utilidade ---
@@ -904,6 +987,16 @@ class LineVisitor implements AstVisitor<int> {
   int visitContinueStmt(ContinueStmt stmt) => stmt.keyword.line;
   @override
   int visitSwitchStmt(SwitchStmt stmt) => stmt.keyword.line;
+  @override
+  int visitListDeclStmt(ListDeclStmt stmt) => stmt.name.line;
+  @override
+  int visitListLiteralExpr(ListLiteralExpr expr) => expr.leftBracket.line;
+  @override
+  int visitIndexAccessExpr(IndexAccessExpr expr) => expr.bracket.line;
+  @override
+  int visitIndexAssignExpr(IndexAssignExpr expr) => expr.bracket.line;
+  @override
+  int visitMethodCallExpr(MethodCallExpr expr) => expr.dot.line;
 }
 
 /// Visitor que extrai informações de localização completa (linha e coluna) dos nós da AST
@@ -996,4 +1089,19 @@ class LocationVisitor implements AstVisitor<SourceLocation> {
   @override
   SourceLocation visitSwitchStmt(SwitchStmt stmt) =>
       SourceLocation(stmt.keyword.line, stmt.keyword.column);
+  @override
+  SourceLocation visitListDeclStmt(ListDeclStmt stmt) =>
+      SourceLocation(stmt.name.line, stmt.name.column);
+  @override
+  SourceLocation visitListLiteralExpr(ListLiteralExpr expr) =>
+      SourceLocation(expr.leftBracket.line, expr.leftBracket.column);
+  @override
+  SourceLocation visitIndexAccessExpr(IndexAccessExpr expr) =>
+      SourceLocation(expr.bracket.line, expr.bracket.column);
+  @override
+  SourceLocation visitIndexAssignExpr(IndexAssignExpr expr) =>
+      SourceLocation(expr.bracket.line, expr.bracket.column);
+  @override
+  SourceLocation visitMethodCallExpr(MethodCallExpr expr) =>
+      SourceLocation(expr.dot.line, expr.dot.column);
 }

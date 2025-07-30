@@ -1,19 +1,21 @@
-# 📘 Documentação Sintática da Linguagem MiniDart
+# 📘 Documentação Sintática da Linguagem MiniDart v2.0
 
 ## 📋 Índice
 
 1. [Visão Geral](#visão-geral)
 2. [Estrutura Léxica](#estrutura-léxica)
 3. [Tipos de Dados](#tipos-de-dados)
-4. [Literais](#literais)
-5. [Variáveis e Constantes](#variáveis-e-constantes)
-6. [Operadores](#operadores)
-7. [Estruturas de Controle](#estruturas-de-controle)
-8. [Funções](#funções)
-9. [Sistema de Imports](#sistema-de-imports)
-10. [Comentários](#comentários)
-11. [Gramática Formal](#gramática-formal)
-12. [Exemplos Práticos](#exemplos-práticos)
+4. [Sistema de Listas](#sistema-de-listas)
+5. [Literais](#literais)
+6. [Variáveis e Constantes](#variáveis-e-constantes)
+7. [Operadores](#operadores)
+8. [Estruturas de Controle](#estruturas-de-controle)
+9. [Funções](#funções)
+10. [Sistema de Imports](#sistema-de-imports)
+11. [Biblioteca Padrão](#biblioteca-padrão)
+12. [Comentários](#comentários)
+13. [Gramática Formal](#gramática-formal)
+14. [Exemplos Práticos](#exemplos-práticos)
 
 ---
 
@@ -27,6 +29,8 @@ MiniDart é uma linguagem de programação educacional que utiliza palavras-chav
 - **Tipagem Estática**: Tipos são verificados em tempo de compilação
 - **Inferência de Tipos**: O compilador pode inferir tipos automaticamente
 - **Conversão Automática**: Inteiros são convertidos automaticamente para reais quando necessário
+- **Sistema de Listas**: Listas homogêneas com métodos integrados
+- **Biblioteca Padrão**: Funções nativas para matemática, strings, I/O e mais
 
 ---
 
@@ -78,6 +82,11 @@ identificador: [a-zA-Z_][a-zA-Z0-9_]*
 | `importar` | Import statement |
 | `como` | Alias em import |
 | `tipode` | Operador typeof |
+| `lista` | Tipo de dados lista |
+| `tamanho` | Método de lista |
+| `adicionar` | Método de lista |
+| `remover` | Método de lista |
+| `vazio` | Método de lista |
 
 ### Tipos de Dados
 
@@ -88,6 +97,7 @@ identificador: [a-zA-Z_][a-zA-Z0-9_]*
 | `texto` | `texto` | Strings/texto |
 | `logico` | `logico` | Valores booleanos |
 | `vazio` | `vazio` | Tipo void (retorno de função) |
+| `lista<tipo>` | `lista` | Listas homogêneas |
 
 ---
 
@@ -138,6 +148,114 @@ inteiro numero = 3.14;   // ERRO: real não pode ser convertido para inteiro
 
 ---
 
+## 📋 Sistema de Listas
+
+### Declaração de Listas
+
+#### Lista Homogênea com Tipo Explícito
+```minidart
+lista<inteiro> numeros = [1, 2, 3, 4, 5];
+lista<texto> nomes = ["Ana", "João", "Maria"];
+lista<real> alturas = [1.75, 1.80, 1.65];
+lista<logico> estados = [verdadeiro, falso, verdadeiro];
+```
+
+#### Lista Vazia
+```minidart
+lista<inteiro> vazia = [];
+lista<texto> textos = [];
+```
+
+### Acesso por Índice
+
+```minidart
+lista<inteiro> numeros = [10, 20, 30];
+
+// Acesso a elementos (índice baseado em 0)
+inteiro primeiro = numeros[0];    // 10
+inteiro segundo = numeros[1];     // 20
+inteiro terceiro = numeros[2];    // 30
+```
+
+### Atribuição por Índice
+
+```minidart
+lista<inteiro> numeros = [1, 2, 3];
+
+// Modificar elementos
+numeros[0] = 100;    // lista agora é [100, 2, 3]
+numeros[1] = 200;    // lista agora é [100, 200, 3]
+numeros[2] = 300;    // lista agora é [100, 200, 300]
+```
+
+### Métodos Integrados de Lista
+
+#### `tamanho()` - Retorna o número de elementos
+```minidart
+lista<inteiro> numeros = [1, 2, 3, 4];
+inteiro quantidade = numeros.tamanho();  // 4
+```
+
+#### `vazio()` - Verifica se a lista está vazia
+```minidart
+lista<texto> palavras = [];
+logico esta_vazia = palavras.vazio();    // verdadeiro
+
+palavras.adicionar("olá");
+logico ainda_vazia = palavras.vazio();   // falso
+```
+
+#### `adicionar(elemento)` - Adiciona elemento ao final
+```minidart
+lista<inteiro> numeros = [1, 2];
+numeros.adicionar(3);    // lista agora é [1, 2, 3]
+numeros.adicionar(4);    // lista agora é [1, 2, 3, 4]
+```
+
+#### `remover()` - Remove e retorna o último elemento
+```minidart
+lista<texto> frutas = ["maçã", "banana", "laranja"];
+texto ultima = frutas.remover();    // "laranja"
+// lista agora é ["maçã", "banana"]
+```
+
+### Verificação de Limites
+
+```minidart
+lista<inteiro> numeros = [1, 2, 3];
+
+// Acesso válido
+inteiro valor = numeros[1];    // OK: 2
+
+// Acesso inválido (erro de execução)
+inteiro erro = numeros[5];     // ERRO: índice fora dos limites
+```
+
+### Exemplos Completos com Listas
+
+```minidart
+// Exemplo: Sistema de notas
+lista<real> notas = [8.5, 7.2, 9.1, 6.8];
+
+// Calcular média
+real soma = 0.0;
+para i = 0 ate notas.tamanho() - 1 faca {
+    soma += notas[i];
+}
+real media = soma / notas.tamanho();
+imprima "Média: " + paraTexto(media);
+
+// Adicionar nova nota
+notas.adicionar(9.5);
+imprima "Nova quantidade de notas: " + paraTexto(notas.tamanho());
+
+// Remover última nota
+real removida = notas.remover();
+imprima "Nota removida: " + paraTexto(removida);
+```
+
+---
+
 ## 💫 Literais
 
 ### Números Inteiros
@@ -172,6 +290,14 @@ falso
 ### Nulo
 ```minidart
 nulo
+```
+
+### Listas
+```minidart
+[1, 2, 3, 4]              // lista de inteiros
+["a", "b", "c"]           // lista de strings
+[verdadeiro, falso]       // lista de booleanos
+[]                        // lista vazia
 ```
 
 ---
@@ -602,7 +728,189 @@ var potencia = math.pow(2, 3);
 
 ---
 
-## 💬 Comentários
+## � Biblioteca Padrão
+
+### Funções de Conversão de Tipos
+
+#### `paraTexto(valor)` - Converte qualquer tipo para texto
+```minidart
+inteiro numero = 42;
+texto resultado = paraTexto(numero);     // "42"
+
+real decimal = 3.14;
+texto real_texto = paraTexto(decimal);   // "3.14"
+
+logico verdade = verdadeiro;
+texto bool_texto = paraTexto(verdade);   // "verdadeiro"
+
+lista<inteiro> numeros = [1, 2, 3];
+texto lista_texto = paraTexto(numeros);  // "[1, 2, 3]"
+```
+
+#### `tipo(valor)` - Retorna o tipo de uma variável
+```minidart
+var numero = 42;
+imprima tipo(numero);        // "inteiro"
+imprima tipo(3.14);          // "real"
+imprima tipo("texto");       // "texto"
+imprima tipo(verdadeiro);    // "logico"
+
+lista<inteiro> lista = [1, 2, 3];
+imprima tipo(lista);         // "lista"
+```
+
+### Biblioteca Math
+
+#### Funções Trigonométricas
+```minidart
+importar math;
+
+real angulo = 1.5708;  // 90 graus em radianos
+imprima math.sin(angulo);    // seno
+imprima math.cos(angulo);    // cosseno
+imprima math.tan(angulo);    // tangente
+```
+
+#### Funções Exponenciais e Logarítmicas
+```minidart
+importar math;
+
+imprima math.exp(2);         // e^2
+imprima math.log(10);        // logaritmo natural
+imprima math.log10(100);     // logaritmo base 10
+imprima math.pow(2, 3);      // 2^3 = 8
+imprima math.sqrt(16);       // raiz quadrada = 4
+```
+
+#### Funções de Arredondamento
+```minidart
+importar math;
+
+imprima math.abs(-5);        // valor absoluto = 5
+imprima math.ceil(3.2);      // arredondar para cima = 4
+imprima math.floor(3.8);     // arredondar para baixo = 3
+imprima math.round(3.5);     // arredondar = 4
+```
+
+#### Funções de Comparação
+```minidart
+importar math;
+
+imprima math.max(10, 20);    // máximo = 20
+imprima math.min(10, 20);    // mínimo = 10
+```
+
+#### Constantes Matemáticas
+```minidart
+importar math;
+
+imprima math.PI();           // π = 3.14159...
+imprima math.E();            // e = 2.71828...
+```
+
+### Biblioteca String
+
+#### Propriedades Básicas
+```minidart
+importar string;
+
+texto palavra = "MiniDart";
+imprima string.tamanho(palavra);     // 8
+imprima string.vazio("");           // verdadeiro
+```
+
+#### Transformações
+```minidart
+importar string;
+
+texto nome = "João Silva";
+imprima string.maiuscula(nome);     // "JOÃO SILVA"
+imprima string.minuscula(nome);     // "joão silva"
+imprima string.inverter(nome);      // "avliS oãoJ"
+imprima string.limpar("  texto  "); // "texto"
+```
+
+#### Verificações
+```minidart
+importar string;
+
+texto frase = "Olá mundo";
+imprima string.contem(frase, "mundo");      // verdadeiro
+imprima string.comecaCom(frase, "Olá");     // verdadeiro
+imprima string.terminaCom(frase, "mundo");  // verdadeiro
+```
+
+#### Busca e Manipulação
+```minidart
+importar string;
+
+texto texto = "banana";
+imprima string.encontrar(texto, "na");          // posição da primeira ocorrência
+imprima string.encontrarUltimo(texto, "na");    // posição da última ocorrência
+imprima string.substituir(texto, "na", "XY");   // "baXYXY"
+imprima string.caractereEm(texto, 2);          // "n"
+```
+
+### Biblioteca Data
+
+#### Data e Hora Atual
+```minidart
+importar data;
+
+imprima data.hoje();         // "2025-07-30"
+imprima data.horaAtual();    // "14:30:25"
+```
+
+#### Operações com Datas
+```minidart
+importar data;
+
+inteiro diferenca = data.diferenca("2025-01-01", "2025-12-31");
+imprima diferenca;           // diferença em dias
+
+logico bissexto = data.ehBissexto(2024);
+imprima bissexto;            // verdadeiro
+
+texto formatada = data.formatar("2025-07-30", "dd/MM/yyyy");
+imprima formatada;           // "30/07/2025"
+```
+
+#### Informações de Data
+```minidart
+importar data;
+
+inteiro dia_semana = data.diaSemana("2025-07-30");
+imprima dia_semana;          // 3 (quarta-feira)
+
+texto nome_mes = data.nomeMes(7);
+imprima nome_mes;            // "Julho"
+
+texto nome_dia = data.nomeDiaSemana(3);
+imprima nome_dia;            // "Quarta-feira"
+```
+
+### Biblioteca I/O
+
+#### Saída
+```minidart
+importar io;
+
+io.imprimir("Olá mundo");    // imprime com quebra de linha
+io.escrever("Texto");        // imprime sem quebra de linha
+io.novaLinha();              // imprime quebra de linha
+```
+
+### Funções de Debug
+
+#### Debug e Informações
+```minidart
+debug(42);                   // mostra valor e tipo
+info_debug();               // informações do compilador
+```
+
+---
+
+## �💬 Comentários
 
 ### Comentário de Linha
 
@@ -620,13 +928,15 @@ var x = 10;  // Comentário no final da linha
 ```bnf
 programa        → declaracao* EOF
 
-declaracao      → varDecl | constDecl | funcDecl | statement
+declaracao      → varDecl | constDecl | funcDecl | statement | listDecl
 
 varDecl         → "var" IDENTIFIER ("=" expression)? ";"
                 | TIPO IDENTIFIER ("=" expression)? ";"
 
 constDecl       → "constante" TIPO IDENTIFIER "=" expression ";"
                 | "constante" "var" IDENTIFIER "=" expression ";"
+
+listDecl        → "lista" "<" TIPO ">" IDENTIFIER ("=" listLiteral)? ";"
 
 funcDecl        → TIPO IDENTIFIER "(" parametros? ")" bloco
 
@@ -664,13 +974,14 @@ term            → factor (("-" | "+") factor)*
 factor          → unary (("/" | "*" | "%") unary)*
 unary           → ("!" | "-" | "tipode" | "++" | "--") unary | postfix
 postfix         → call ("++" | "--")*
-call            → primary ("(" arguments? ")" | "." IDENTIFIER)*
+call            → primary ("(" arguments? ")" | "." IDENTIFIER ("(" arguments? ")")? | "[" expression "]")*
 primary         → "verdadeiro" | "falso" | "nulo" | NUMBER | STRING 
-                | IDENTIFIER | "(" expression ")"
+                | IDENTIFIER | "(" expression ")" | listLiteral
 
+listLiteral     → "[" (expression ("," expression)*)? "]"
 arguments       → expression ("," expression)*
 
-TIPO            → "inteiro" | "real" | "texto" | "logico" | "vazio"
+TIPO            → "inteiro" | "real" | "texto" | "logico" | "vazio" | "lista" "<" TIPO ">"
 NUMBER          → DIGIT+ ("." DIGIT+)?
 STRING          → "\"" CHAR* "\""
 IDENTIFIER      → ALPHA (ALPHA | DIGIT)*
@@ -683,156 +994,298 @@ CHAR            → qualquer caractere exceto "\""
 
 ## 🎯 Exemplos Práticos
 
-### Exemplo 1: Programa Básico
-
+### 🏃‍♂️ Exemplo 1: Olá Mundo
 ```minidart
-// Programa simples de calculadora
-var a = 10;
-var b = 5;
-
-imprima "Soma: " + (a + b);
-imprima "Subtração: " + (a - b);
-imprima "Multiplicação: " + (a * b);
-imprima "Divisão: " + (a / b);
+inteiro principal() {
+    imprima "Olá, Mundo!";
+    retorne 0;
+}
 ```
 
-### Exemplo 2: Estruturas de Controle
-
+### 🔢 Exemplo 2: Calculadora Simples
 ```minidart
-inteiro numero = 15;
-
-// Verificar se é par ou ímpar
-se (numero % 2 == 0) {
-    imprima numero + " é par";
-} senao {
-    imprima numero + " é ímpar";
+inteiro somar(inteiro a, inteiro b) {
+    retorne a + b;
 }
 
-// Loop para calcular fatorial
-inteiro fatorial = 1;
-para i = 1 ate numero faca {
-    fatorial *= i;
+inteiro principal() {
+    inteiro x = 10;
+    inteiro y = 20;
+    inteiro resultado = somar(x, y);
+    imprima "Resultado: " + paraTexto(resultado);
+    retorne 0;
 }
-imprima "Fatorial de " + numero + " é " + fatorial;
 ```
 
-### Exemplo 3: Funções
-
+### 🔄 Exemplo 3: Estruturas de Controle
 ```minidart
-// Função para verificar se número é primo
-logico ehPrimo(inteiro num) {
-    se (num <= 1) {
-        retorne falso;
+inteiro principal() {
+    inteiro numero = 15;
+    
+    // Condicional
+    se (numero > 10) {
+        imprima "Número é maior que 10";
+    } senao {
+        imprima "Número é menor ou igual a 10";
     }
     
-    para i = 2 ate num / 2 faca {
-        se (num % i == 0) {
-            retorne falso;
-        }
+    // Loop while
+    inteiro contador = 0;
+    enquanto (contador < 5) {
+        imprima "Contador: " + paraTexto(contador);
+        contador++;
     }
-    retorne verdadeiro;
-}
-
-// Teste da função
-para i = 2 ate 20 faca {
-    se (ehPrimo(i)) {
-        imprima i + " é primo";
+    
+    // Loop for tradicional
+    para (inteiro i = 0; i < 3; i++) {
+        imprima "i = " + paraTexto(i);
     }
+    
+    // Loop for MiniDart
+    para j = 1 ate 3 faca {
+        imprima "j = " + paraTexto(j);
+    }
+    
+    retorne 0;
 }
 ```
 
-### Exemplo 4: Switch/Case
-
+### 📋 Exemplo 4: Trabalhando com Listas
 ```minidart
-inteiro opcao = 2;
-
-escolha (opcao) {
-    caso 1:
-        imprima "Opção 1 selecionada";
-        parar;
-    caso 2:
-        imprima "Opção 2 selecionada";
-        parar;
-    caso 3:
-        imprima "Opção 3 selecionada";
-        parar;
-    contrario:
-        imprima "Opção inválida";
+inteiro principal() {
+    // Declaração e inicialização de listas
+    lista<inteiro> numeros = [1, 2, 3, 4, 5];
+    lista<texto> nomes = ["Ana", "Bruno", "Carlos"];
+    
+    // Lista vazia
+    lista<real> precos;
+    
+    // Acessando elementos
+    imprima "Primeiro número: " + paraTexto(numeros[0]);
+    imprima "Segundo nome: " + nomes[1];
+    
+    // Modificando elementos
+    numeros[0] = 10;
+    nomes[2] = "Carolina";
+    
+    // Usando métodos de lista
+    numeros.adicionar(6);
+    precos.adicionar(29.99);
+    precos.adicionar(15.50);
+    
+    imprima "Tamanho da lista números: " + paraTexto(numeros.tamanho());
+    imprima "Lista de preços vazia? " + paraTexto(precos.vazio());
+    
+    // Removendo elementos
+    numeros.remover(2); // Remove o elemento no índice 2
+    
+    // Iterando sobre listas
+    para i = 0 ate numeros.tamanho() - 1 faca {
+        imprima "Número[" + paraTexto(i) + "] = " + paraTexto(numeros[i]);
+    }
+    
+    retorne 0;
 }
 ```
 
-### Exemplo 5: Sistema de Imports
+### 🏗️ Exemplo 5: Funções e Tipos
+```minidart
+// Função que trabalha com listas
+lista<inteiro> criarSequencia(inteiro inicio, inteiro fim) {
+    lista<inteiro> sequencia;
+    
+    para i = inicio ate fim faca {
+        sequencia.adicionar(i);
+    }
+    
+    retorne sequencia;
+}
 
+// Função que calcula média
+real calcularMedia(lista<inteiro> valores) {
+    se (valores.vazio()) {
+        retorne 0.0;
+    }
+    
+    inteiro soma = 0;
+    para i = 0 ate valores.tamanho() - 1 faca {
+        soma += valores[i];
+    }
+    
+    retorne soma / valores.tamanho();
+}
+
+inteiro principal() {
+    lista<inteiro> numeros = criarSequencia(1, 10);
+    real media = calcularMedia(numeros);
+    
+    imprima "Média da sequência 1-10: " + paraTexto(media);
+    
+    // Usando operador typeof
+    imprima "Tipo da variável media: " + tipode media;
+    imprima "Tipo da lista números: " + tipode numeros;
+    
+    retorne 0;
+}
+```
+
+### 🎯 Exemplo 6: Switch e Operador Ternário
+```minidart
+texto obterNomeDia(inteiro dia) {
+    escolha (dia) {
+        caso 1:
+            retorne "Segunda-feira";
+        caso 2:
+            retorne "Terça-feira";
+        caso 3:
+            retorne "Quarta-feira";
+        caso 4:
+            retorne "Quinta-feira";
+        caso 5:
+            retorne "Sexta-feira";
+        caso 6:
+            retorne "Sábado";
+        caso 7:
+            retorne "Domingo";
+        contrario:
+            retorne "Dia inválido";
+    }
+}
+
+inteiro principal() {
+    inteiro dia = 3;
+    texto nomeDia = obterNomeDia(dia);
+    
+    imprima "Hoje é: " + nomeDia;
+    
+    // Operador ternário
+    texto periodo = (dia >= 6) ? "fim de semana" : "dia útil";
+    imprima "Período: " + periodo;
+    
+    retorne 0;
+}
+```
+
+### 📚 Exemplo 7: Usando Bibliotecas
 ```minidart
 importar math;
-importar io como saida;
+importar string como str;
+importar data;
 
-// Calculadora científica
-real angulo = 1.5708;  // 90 graus em radianos
-
-saida.imprimir("=== Calculadora Científica ===");
-saida.imprimir("Ângulo: " + angulo);
-saida.imprimir("Seno: " + math.sin(angulo));
-saida.imprimir("Cosseno: " + math.cos(angulo));
-saida.imprimir("Raiz quadrada de 16: " + math.sqrt(16));
-saida.imprimir("2 elevado a 3: " + math.pow(2, 3));
+inteiro principal() {
+    // Usando funções matemáticas
+    real numero = 16.0;
+    imprima "Raiz quadrada de 16: " + paraTexto(math.raiz(numero));
+    imprima "Seno de π/2: " + paraTexto(math.seno(math.pi / 2));
+    
+    // Usando funções de string
+    texto frase = "  MiniDart é incrível!  ";
+    imprima "Original: '" + frase + "'";
+    imprima "Maiúscula: '" + str.maiuscula(frase) + "'";
+    imprima "Sem espaços: '" + str.removerEspacos(frase) + "'";
+    
+    // Usando funções de data
+    imprima "Data atual: " + data.dataAtual();
+    imprima "Hora atual: " + data.horaAtual();
+    
+    // Conversões de tipo
+    texto numeroTexto = "42";
+    inteiro numeroConvertido = str.paraInteiro(numeroTexto);
+    imprima "Número convertido: " + paraTexto(numeroConvertido * 2);
+    
+    retorne 0;
+}
 ```
 
-### Exemplo 6: Recursividade
-
+### 🔄 Exemplo 8: Recursividade com Listas
 ```minidart
-// Sequência de Fibonacci
-real fibonacci(inteiro n) {
+// Função recursiva para calcular fatorial
+inteiro fatorial(inteiro n) {
     se (n <= 1) {
-        retorne n;
-    } senao {
-        retorne fibonacci(n - 1) + fibonacci(n - 2);
+        retorne 1;
     }
+    retorne n * fatorial(n - 1);
 }
 
-// Exibir os primeiros 10 números de Fibonacci
-imprima "Sequência de Fibonacci:";
-para i = 0 ate 9 faca {
-    imprima "F(" + i + ") = " + fibonacci(i);
+// Função recursiva para somar elementos de uma lista
+inteiro somarLista(lista<inteiro> nums, inteiro indice) {
+    se (indice >= nums.tamanho()) {
+        retorne 0;
+    }
+    retorne nums[indice] + somarLista(nums, indice + 1);
+}
+
+inteiro principal() {
+    // Testando fatorial
+    imprima "Fatorial de 5: " + paraTexto(fatorial(5));
+    
+    // Testando soma recursiva de lista
+    lista<inteiro> valores = [1, 2, 3, 4, 5];
+    inteiro somaTotal = somarLista(valores, 0);
+    imprima "Soma dos valores: " + paraTexto(somaTotal);
+    
+    retorne 0;
 }
 ```
 
 ---
 
-## 📚 Resumo de Características
+## 📚 Resumo de Características v2.0
 
 ### ✅ Recursos Implementados
 
-- ✅ Tipos básicos: inteiro, real, texto, logico, vazio
-- ✅ Variáveis com tipo explícito e inferência
-- ✅ Constantes tipadas
-- ✅ Operadores aritméticos, lógicos e de comparação
-- ✅ Estruturas condicionais (se/senao)
-- ✅ Loops (enquanto, para, faca-enquanto)
-- ✅ Funções com parâmetros e retorno
-- ✅ Recursividade
-- ✅ Switch/case (escolha/caso)
-- ✅ Break e continue
-- ✅ Sistema de imports com alias
-- ✅ Operador ternário
-- ✅ Operador typeof
-- ✅ Conversão automática inteiro → real
-- ✅ Comentários de linha
+- ✅ **Tipos básicos**: inteiro, real, texto, logico, vazio
+- ✅ **Sistema de Listas**: lista<tipo> com operações completas
+  - Declaração e inicialização: `lista<inteiro> nums = [1, 2, 3];`
+  - Acesso por índice: `nums[0]`
+  - Atribuição por índice: `nums[0] = 10;`
+  - Métodos: `.tamanho()`, `.adicionar()`, `.remover()`, `.vazio()`
+- ✅ **Variáveis**: Declaração com tipo explícito e inferência (var)
+- ✅ **Constantes**: Declaração tipada
+- ✅ **Operadores**: Aritméticos, lógicos, comparação, atribuição
+- ✅ **Estruturas condicionais**: se/senao
+- ✅ **Loops**: enquanto, para (tradicional e MiniDart), faca-enquanto
+- ✅ **Funções**: Com parâmetros e retorno tipado
+- ✅ **Recursividade**: Suporte completo
+- ✅ **Switch/case**: escolha/caso com contrario
+- ✅ **Controle de fluxo**: parar e continuar
+- ✅ **Sistema de imports**: Com alias opcional
+- ✅ **Operador ternário**: condição ? valor1 : valor2
+- ✅ **Operador typeof**: tipode variavel
+- ✅ **Biblioteca padrão**: paraTexto(), tipo(), math, string, data, io
+- ✅ **Conversão automática**: inteiro → real
+- ✅ **Comentários**: De linha (//)
+
+### 🎯 Recursos Avançados v2.0
+
+- ✅ **Listas homogêneas tipadas**: Sistema completo de listas
+- ✅ **Inferência de tipos**: var para listas e variáveis
+- ✅ **Métodos de lista**: Operações integradas na linguagem
+- ✅ **Conversão de tipos**: paraTexto() para qualquer tipo
+- ✅ **Introspecção de tipos**: tipo() para obter tipo como string
+- ✅ **Bibliotecas padrão**: math, string, data, io
 
 ### 🚧 Limitações Atuais
 
-- ❌ Arrays/listas não implementados
-- ❌ Objetos/classes não implementados
-- ❌ Comentários de bloco (`/* */`)
-- ❌ Operadores bitwise
-- ❌ Tratamento de exceções
-- ❌ Escopo de módulo avançado
+- ❌ **Listas multidimensionais**: Arrays bidimensionais
+- ❌ **Objetos/classes**: Programação orientada a objetos
+- ❌ **Comentários de bloco**: `/* */`
+- ❌ **Operadores bitwise**: &, |, ^, <<, >>
+- ✅ **Tratamento de exceções**: Estruturas try/catch
+- ❌ **Escopo de módulo avançado**: Namespaces
 
 ---
 
 ## 🎓 Conclusão
 
-MiniDart é uma linguagem simples e expressiva, ideal para ensino de programação em português. Sua sintaxe familiar e recursos fundamentais proporcionam uma base sólida para aprender conceitos de programação estruturada e funcional.
+MiniDart v2.0 é uma linguagem completa e expressiva, ideal para ensino de programação em português. Com seu sistema de listas homogêneas, biblioteca padrão abrangente e sintaxe familiar, proporciona uma base sólida para aprender conceitos de programação estruturada, funcional e manipulação de dados.
+
+### 🔄 Evoluções da v2.0
+
+1. **Sistema de Listas Completo**: Implementação de listas tipadas com todas as operações fundamentais
+2. **Biblioteca Padrão Expandida**: Funções para conversão de tipos e operações essenciais
+3. **Melhor Inferência de Tipos**: Suporte à palavra-chave `var` para listas
+4. **Documentação Completa**: Cobertura de todos os recursos implementados
 
 A documentação está em constante evolução junto com a linguagem. Para exemplos mais avançados e atualizações, consulte os arquivos na pasta `exemplos/` do projeto.
 

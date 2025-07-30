@@ -99,6 +99,21 @@ class LineVisitor implements AstVisitor<int> {
 
   @override
   int visitImportStmt(ImportStmt stmt) => 1;
+
+  @override
+  int visitListDeclStmt(ListDeclStmt stmt) => stmt.name.line;
+
+  @override
+  int visitListLiteralExpr(ListLiteralExpr expr) => expr.leftBracket.line;
+
+  @override
+  int visitIndexAccessExpr(IndexAccessExpr expr) => expr.bracket.line;
+
+  @override
+  int visitIndexAssignExpr(IndexAssignExpr expr) => expr.bracket.line;
+
+  @override
+  int visitMethodCallExpr(MethodCallExpr expr) => expr.dot.line;
 }
 
 /// O Analisador Semântico percorre a AST para verificar erros de tipo,
@@ -171,8 +186,9 @@ class SemanticAnalyzer implements AstVisitor<void> {
 
   @override
   void visitTypedVarDeclStmt(TypedVarDeclStmt stmt) {
-    // Declara a variável tipada no escopo atual.
-    _declare(stmt.name);
+    // Declara a variável tipada no escopo atual com o tipo especificado
+    _currentScope.defineTyped(stmt.name, stmt.type.type.type);
+    
     // Se houver um inicializador, resolve-o.
     if (stmt.initializer != null) {
       _resolveExpr(stmt.initializer!);
@@ -752,6 +768,26 @@ class SemanticAnalyzer implements AstVisitor<void> {
           expr.operator.type == TokenType.equalEqual) {
         return TokenType.logico;
       }
+
+      // Para operadores lógicos (tratados como BinaryExpr pelo parser)
+      if (expr.operator.type == TokenType.and ||
+          expr.operator.type == TokenType.or) {
+        return TokenType.logico;
+      }
+    } else if (expr is LogicalExpr) {
+      // Para operadores lógicos (e, ou)
+      return TokenType.logico;
+    } else if (expr is UnaryExpr) {
+      // Para operadores unários
+      if (expr.operator.type == TokenType.bang) {
+        return TokenType.logico; // ! sempre retorna lógico
+      } else if (expr.operator.type == TokenType.minus) {
+        // - retorna o mesmo tipo do operando
+        return _inferExpressionType(expr.right);
+      } else if (expr.operator.type == TokenType.typeof_) {
+        return TokenType.texto; // typeof sempre retorna texto
+      }
+      return TokenType.real; // fallback para outros unários
     } else if (expr is VariableExpr) {
       // Consulta o tipo da variável na tabela de símbolos
       final symbol = _currentScope.get(expr.name);
@@ -760,6 +796,43 @@ class SemanticAnalyzer implements AstVisitor<void> {
       }
       // Fallback para real se não encontrar o símbolo
       return TokenType.real;
+    } else if (expr is IndexAccessExpr) {
+      // Para acesso por índice, retorna o tipo dos elementos da lista
+      if (expr.object is VariableExpr) {
+        final listSymbol = _currentScope.get((expr.object as VariableExpr).name);
+        if (listSymbol != null && listSymbol.elementType != null) {
+          return listSymbol.elementType!;
+        }
+      }
+      return TokenType.real; // fallback
+    } else if (expr is ListLiteralExpr) {
+      // Para literal de lista, infere do primeiro elemento se houver
+      if (expr.elements.isNotEmpty) {
+        return _inferExpressionType(expr.elements.first);
+      }
+      return TokenType.real; // fallback para lista vazia
+    } else if (expr is MethodCallExpr) {
+      // Para chamadas de método, infere baseado no método específico
+      final methodName = expr.name.lexeme;
+      switch (methodName) {
+        case 'tamanho':
+          return TokenType.inteiro; // tamanho() retorna inteiro
+        case 'adicionar':
+          return TokenType.nil; // adicionar() não retorna valor
+        case 'remover':
+          // remover() retorna o tipo dos elementos da lista
+          if (expr.object is VariableExpr) {
+            final listSymbol = _currentScope.get((expr.object as VariableExpr).name);
+            if (listSymbol != null && listSymbol.elementType != null) {
+              return listSymbol.elementType!;
+            }
+          }
+          return TokenType.real; // fallback
+        case 'vazio':
+          return TokenType.logico; // vazio() retorna booleano
+        default:
+          return TokenType.real; // fallback para métodos desconhecidos
+      }
     }
 
     return TokenType.real; // fallback
@@ -796,6 +869,91 @@ class SemanticAnalyzer implements AstVisitor<void> {
         return 'vazio';
       default:
         return type.toString();
+    }
+  }
+
+  @override
+  void visitListDeclStmt(ListDeclStmt stmt) {
+    // Declarar a variável da lista com tipo dos elementos
+    _currentScope.defineList(stmt.name, stmt.elementType.type.type);
+
+    // Se há inicializador, resolva a expressão
+    if (stmt.initializer != null) {
+      _resolveExpr(stmt.initializer!);
+    }
+
+    // Definir a variável como inicializada
+    _define(stmt.name);
+  }
+
+  @override
+  void visitListLiteralExpr(ListLiteralExpr expr) {
+    // Resolver todos os elementos da lista
+    for (final element in expr.elements) {
+      _resolveExpr(element);
+    }
+  }
+
+  @override
+  void visitIndexAccessExpr(IndexAccessExpr expr) {
+    // Resolver a expressão que representa a lista
+    _resolveExpr(expr.object);
+    
+    // Resolver a expressão do índice
+    _resolveExpr(expr.index);
+  }
+
+  @override
+  void visitIndexAssignExpr(IndexAssignExpr expr) {
+    // Resolver a expressão que representa a lista
+    _resolveExpr(expr.object);
+    
+    // Resolver a expressão do índice
+    _resolveExpr(expr.index);
+    
+    // Resolver a expressão do valor a ser atribuído
+    _resolveExpr(expr.value);
+  }
+
+  @override
+  void visitMethodCallExpr(MethodCallExpr expr) {
+    // Resolver o objeto sobre o qual o método está sendo chamado
+    _resolveExpr(expr.object);
+    
+    // Resolver todos os argumentos do método
+    for (final argument in expr.arguments) {
+      _resolveExpr(argument);
+    }
+    
+    // Verificar se é um método de lista válido
+    final methodName = expr.name.lexeme;
+    if (!['tamanho', 'adicionar', 'remover', 'vazio'].contains(methodName)) {
+      _errorReporter.error(expr.name.line, "Método '$methodName' não reconhecido.");
+      return;
+    }
+    
+    // Validar número de argumentos para cada método
+    switch (methodName) {
+      case 'tamanho':
+        if (expr.arguments.isNotEmpty) {
+          _errorReporter.error(expr.name.line, "Método 'tamanho' não aceita argumentos.");
+        }
+        break;
+      case 'adicionar':
+        if (expr.arguments.length != 1) {
+          _errorReporter.error(expr.name.line, "Método 'adicionar' requer exatamente um argumento.");
+        }
+        break;
+      case 'remover':
+        if (expr.arguments.isNotEmpty) {
+          _errorReporter.error(expr.name.line, "Método 'remover' não aceita argumentos.");
+        }
+        break;
+      case 'vazio':
+        if (expr.arguments.isNotEmpty) {
+          _errorReporter.error(expr.name.line, "Método 'vazio' não aceita argumentos.");
+        }
+        break;
     }
   }
 

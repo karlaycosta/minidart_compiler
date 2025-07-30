@@ -212,6 +212,93 @@ class VM {
           // continue_ é tratado durante a compilação com jumps - não deveria chegar aqui
           _runtimeError("Instrução 'continue' inválida.");
           break;
+        case OpCode.indexAccess:
+          final index = _pop();
+          final list = _pop();
+          if (list is List && index is int) {
+            if (index >= 0 && index < list.length) {
+              _push(list[index]);
+            } else {
+              _runtimeError("Índice $index fora do alcance da lista (tamanho: ${list.length}).");
+              return InterpretResult.runtimeError;
+            }
+          } else {
+            _runtimeError("Acesso por índice requer uma lista e um índice inteiro.");
+            return InterpretResult.runtimeError;
+          }
+          break;
+        case OpCode.indexAssign:
+          final value = _pop();
+          final index = _pop();
+          final list = _pop();
+          if (list is List && index is int) {
+            if (index >= 0 && index < list.length) {
+              list[index] = value;
+              _push(value); // Retorna o valor atribuído
+            } else {
+              _runtimeError("Índice $index fora do alcance da lista (tamanho: ${list.length}).");
+              return InterpretResult.runtimeError;
+            }
+          } else {
+            _runtimeError("Atribuição por índice requer uma lista e um índice inteiro.");
+            return InterpretResult.runtimeError;
+          }
+          break;
+        case OpCode.listSize:
+          final list = _pop();
+          if (list is List) {
+            _push(list.length);
+          } else {
+            _runtimeError("Método 'tamanho' só pode ser chamado em listas.");
+            return InterpretResult.runtimeError;
+          }
+          break;
+        case OpCode.listAdd:
+          final value = _pop();
+          final list = _pop();
+          if (list is List) {
+            list.add(value);
+            _push(null); // Método não retorna valor
+          } else {
+            _runtimeError("Método 'adicionar' só pode ser chamado em listas.");
+            return InterpretResult.runtimeError;
+          }
+          break;
+        case OpCode.listRemove:
+          final list = _pop();
+          if (list is List) {
+            if (list.isNotEmpty) {
+              final removedValue = list.removeLast();
+              _push(removedValue);
+            } else {
+              _runtimeError("Não é possível remover elemento de lista vazia.");
+              return InterpretResult.runtimeError;
+            }
+          } else {
+            _runtimeError("Método 'remover' só pode ser chamado em listas.");
+            return InterpretResult.runtimeError;
+          }
+          break;
+        case OpCode.listEmpty:
+          final list = _pop();
+          if (list is List) {
+            _push(list.isEmpty);
+          } else {
+            _runtimeError("Método 'vazio' só pode ser chamado em listas.");
+            return InterpretResult.runtimeError;
+          }
+          break;
+        case OpCode.createList:
+          final elementCount = instruction.operand!;
+          final list = <Object?>[];
+          
+          // Retira elementos da pilha em ordem reversa (último empurrado primeiro)
+          for (int i = 0; i < elementCount; i++) {
+            list.insert(0, _pop());
+          }
+          
+          _push(list);
+          break;
         case OpCode.return_:
           return InterpretResult.ok;
       }

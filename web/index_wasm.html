@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 MiniDart Compiler Web v1.4.1 - WebAssembly</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">
+                    🚀 <span class="title-main">MiniDart Compiler</span>
+                    <span class="title-version">v1.4.1 WebAssembly</span>
+                </h1>
+                <p class="subtitle">Compilador de linguagem educacional em português - Powered by WebAssembly</p>
+                <div class="wasm-indicator">
+                    <span id="wasm-status" class="wasm-status loading">🔄 Carregando WebAssembly...</span>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <button id="btn-compile" class="btn btn-primary" disabled>
+                    <span class="btn-icon">▶️</span>
+                    Executar
+                </button>
+                <button id="btn-ast" class="btn btn-secondary" disabled>
+                    <span class="btn-icon">🌳</span>
+                    Ver AST
+                </button>
+                <button id="btn-bytecode" class="btn btn-secondary" disabled>
+                    <span class="btn-icon">⚙️</span>
+                    Bytecode
+                </button>
+                <button id="btn-clear" class="btn btn-outline">
+                    <span class="btn-icon">🧹</span>
+                    Limpar
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Left Panel: Editor -->
+            <div class="editor-panel">
+                <div class="panel-header">
+                    <h3 class="panel-title">📝 Código MiniDart</h3>
+                    <div class="editor-controls">
+                        <select id="examples" class="select">
+                            <option value="">Selecione um exemplo...</option>
+                            <option value="hello">🌍 Olá Mundo</option>
+                            <option value="calculator">🧮 Calculadora</option>
+                            <option value="conditions">🔀 Estruturas de Controle</option>
+                            <option value="loops">🔄 Loops</option>
+                            <option value="functions">🎯 Funções</option>
+                            <option value="complex">🚀 Exemplo Complexo</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="editor-container">
+                    <textarea id="code-editor" class="code-editor" placeholder="// Digite seu código MiniDart aqui...
+// Exemplo:
+var nome = &quot;Mundo&quot;;
+imprimir &quot;Olá, &quot;;
+imprimir nome;"></textarea>
+                    <div class="editor-status">
+                        <span id="line-count">1 linha</span>
+                        <span id="char-count">0 caracteres</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel: Output -->
+            <div class="output-panel">
+                <div class="tabs">
+                    <button class="tab active" data-tab="output">
+                        <span class="tab-icon">📤</span>
+                        Saída
+                    </button>
+                    <button class="tab" data-tab="ast">
+                        <span class="tab-icon">🌳</span>
+                        AST
+                    </button>
+                    <button class="tab" data-tab="bytecode">
+                        <span class="tab-icon">⚙️</span>
+                        Bytecode
+                    </button>
+                    <button class="tab" data-tab="errors">
+                        <span class="tab-icon">❌</span>
+                        Erros
+                    </button>
+                </div>
+                
+                <div class="tab-contents">
+                    <div id="tab-output" class="tab-content active">
+                        <div class="output-header">
+                            <h4>📤 Saída da Execução</h4>
+                            <button id="btn-copy-output" class="btn-copy" title="Copiar saída">📋</button>
+                        </div>
+                        <pre id="output-content" class="output-text">WebAssembly carregando... Aguarde para executar o código.</pre>
+                    </div>
+                    
+                    <div id="tab-ast" class="tab-content">
+                        <div class="output-header">
+                            <h4>🌳 Árvore Sintática Abstrata</h4>
+                            <button id="btn-copy-ast" class="btn-copy" title="Copiar AST">📋</button>
+                        </div>
+                        <pre id="ast-content" class="output-text">AST será gerada quando você executar o código...</pre>
+                    </div>
+                    
+                    <div id="tab-bytecode" class="tab-content">
+                        <div class="output-header">
+                            <h4>⚙️ Bytecode Gerado</h4>
+                            <button id="btn-copy-bytecode" class="btn-copy" title="Copiar bytecode">📋</button>
+                        </div>
+                        <pre id="bytecode-content" class="output-text">Bytecode será gerado quando você executar o código...</pre>
+                    </div>
+                    
+                    <div id="tab-errors" class="tab-content">
+                        <div class="output-header">
+                            <h4>❌ Erros de Compilação</h4>
+                            <button id="btn-copy-errors" class="btn-copy" title="Copiar erros">📋</button>
+                        </div>
+                        <pre id="errors-content" class="output-text">Nenhum erro encontrado.</pre>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p>© 2025 <strong>Deriks Karlay Dias Costa</strong> | MiniDart Compiler v1.4.1 WebAssembly</p>
+                <div class="footer-links">
+                    <a href="https://github.com/karlaycosta/minidart_compiler" target="_blank">GitHub</a>
+                    <span>•</span>
+                    <a href="#" id="link-about">Sobre</a>
+                    <span>•</span>
+                    <a href="#" id="link-help">Ajuda</a>
+                    <span>•</span>
+                    <span id="wasm-info">WebAssembly Ready</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Loading Overlay -->
+    <!-- <div id="loading" class="loading-overlay hidden">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p>Processando com WebAssembly...</p>
+        </div>
+    </div> -->
+
+    <!-- About Modal -->
+    <!-- <div id="modal-about" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🚀 Sobre o MiniDart Compiler WebAssembly</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p><strong>MiniDart WebAssembly</strong> é uma versão otimizada do compilador que usa WebAssembly para máxima performance.</p>
+                
+                <h4>✨ Características WebAssembly:</h4>
+                <ul>
+                    <li>🚀 Performance nativa no navegador</li>
+                    <li>⚡ Execução mais rápida que JavaScript</li>
+                    <li>🔧 Compilação ahead-of-time (AOT)</li>
+                    <li>🌐 Suporte universal em navegadores modernos</li>
+                    <li>📦 Bundle menor e mais eficiente</li>
+                </ul>
+
+                <h4>🛠️ Tecnologias:</h4>
+                <ul>
+                    <li>Dart 3.8+ com suporte WebAssembly</li>
+                    <li>WASM para execução nativa</li>
+                    <li>HTML5 + CSS3 para interface</li>
+                    <li>Arquitetura modular e extensível</li>
+                </ul>
+                
+                <h4>📊 Performance:</h4>
+                <ul>
+                    <li>Inicialização mais rápida</li>
+                    <li>Menor uso de memória</li>
+                    <li>Execução otimizada</li>
+                </ul>
+            </div>
+        </div>
+    </div> -->
+
+    <!-- Carregar WebAssembly -->
+    <script type="module">
+        import { compileStreaming } from './main.mjs';
+        
+        // Indicador de status do WebAssembly
+        const wasmStatus = document.getElementById('wasm-status');
+        const wasmInfo = document.getElementById('wasm-info');
+        const buttons = document.querySelectorAll('.btn:not(.btn-outline)');
+        
+        async function loadWasm() {
+            try {
+                wasmStatus.textContent = '🔄 Carregando WebAssembly...';
+                wasmStatus.className = 'wasm-status loading';
+                
+                // Verificar se WebAssembly é suportado
+                if (typeof WebAssembly === 'undefined') {
+                    throw new Error('WebAssembly não é suportado neste navegador');
+                }
+                
+                // Carregar e compilar o módulo WebAssembly usando a API correta
+                console.log('Fetching WebAssembly module...');
+                const wasmResponse = fetch('./main.wasm');
+                
+                console.log('Compiling WebAssembly...');
+                const compiledApp = await compileStreaming(wasmResponse);
+                
+                console.log('Instantiating WebAssembly...');
+                // Instanciar o módulo
+                const instantiatedApp = await compiledApp.instantiate();
+                
+                // WebAssembly carregado com sucesso
+                wasmStatus.textContent = '✅ WebAssembly Carregado';
+                wasmStatus.className = 'wasm-status success';
+                wasmInfo.textContent = 'WebAssembly Active';
+                
+                // Habilitar botões
+                buttons.forEach(btn => btn.removeAttribute('disabled'));
+                
+                // Atualizar mensagem inicial
+                document.getElementById('output-content').textContent = 
+                    'WebAssembly carregado! Clique em "Executar" para ver a saída do seu programa...';
+                
+                console.log('🚀 MiniDart WebAssembly carregado com sucesso!');
+                
+                // Inicializar a aplicação invocando main
+                console.log('Invoking main...');
+                instantiatedApp.invokeMain();
+                
+            } catch (error) {
+                console.error('Erro detalhado ao carregar WebAssembly:', error);
+                wasmStatus.textContent = '❌ Erro ao carregar WebAssembly';
+                wasmStatus.className = 'wasm-status error';
+                wasmInfo.textContent = 'WebAssembly Error';
+                
+                // Fallback para JavaScript
+                document.getElementById('output-content').textContent = 
+                    `Erro no WebAssembly: ${error.message}\nCarregando versão JavaScript...`;
+                
+                // Carregar versão JavaScript como fallback
+                const script = document.createElement('script');
+                script.src = 'main.dart.js';
+                script.onload = () => {
+                    console.log('JavaScript fallback carregado com sucesso');
+                    // Habilitar botões mesmo no fallback
+                    buttons.forEach(btn => btn.removeAttribute('disabled'));
+                    document.getElementById('output-content').textContent = 
+                        'Usando versão JavaScript. Clique em "Executar" para ver a saída do seu programa...';
+                };
+                document.head.appendChild(script);
+            }
+        }
+        
+        // Carregar WebAssembly quando a página estiver pronta
+        loadWasm();
+    </script>
+</body>
+</html>

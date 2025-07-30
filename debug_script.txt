@@ -1,7 +1,0 @@
-break 3
-break 5
-continue
-vars
-continue
-vars
-quit

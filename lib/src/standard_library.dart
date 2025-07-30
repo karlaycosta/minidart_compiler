@@ -449,6 +449,23 @@ class StandardLibrary {
 
   /// Registra as funções da biblioteca de tipos
   void _registerTypeLibrary() {
+    // Função para converter qualquer tipo para texto
+    register('paraTexto', 1, (args) {
+      final value = args[0];
+      
+      // Conversão específica para cada tipo
+      if (value == null) return 'nulo';
+      if (value is bool) return value ? 'verdadeiro' : 'falso';
+      if (value is List) {
+        // Para listas, mostra os elementos separados por vírgula entre colchetes
+        final elementos = value.map((e) => e?.toString() ?? 'nulo').join(', ');
+        return '[$elementos]';
+      }
+      
+      // Para outros tipos, usa toString() padrão
+      return value.toString();
+    });
+
     // Função para obter o tipo de uma variável (similar ao runtimeType do Dart)
     register('tipo', 1, (args) {
       final value = args[0];
@@ -458,6 +475,7 @@ class StandardLibrary {
       if (value is double) return 'real';
       if (value is String) return 'texto';
       if (value is bool) return 'logico';
+      if (value is List) return 'lista';
 
       // Fallback para tipos não reconhecidos
       return 'desconhecido';

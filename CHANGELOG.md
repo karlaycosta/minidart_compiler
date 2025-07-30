@@ -5,6 +5,55 @@ Todas as alterações notáveis deste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [0.18.1] - 2025-07-30
+
+### 🚀 Sistema de Listas Avançado Completo
+
+#### **📋 Novos Métodos de Lista:**
+- **`vazio()`**: Retorna `verdadeiro` se a lista estiver vazia, `falso` caso contrário
+- **`tamanho()`**: Retorna o número de elementos (inteiro)
+- **`adicionar(valor)`**: Adiciona elemento ao final da lista
+- **`remover()`**: Remove e retorna o último elemento
+
+#### **🎯 Acesso e Modificação por Índice:**
+- **Acesso**: `elemento = lista[indice]` - Acessa elemento em posição específica
+- **Atribuição**: `lista[indice] = valor` - Modifica elemento em posição específica
+- **Verificação de limites**: Erro de execução para índices inválidos
+
+#### **🔧 Implementação Técnica:**
+- **AST**: Novas classes `MethodCallExpr`, `IndexAccessExpr`, `IndexAssignExpr`
+- **Parser**: Suporte completo para sintaxe `objeto.metodo()` e `lista[indice]`
+- **Bytecode**: Novos opcodes `listSize`, `listAdd`, `listRemove`, `listEmpty`, `indexAccess`, `indexAssign`
+- **VM**: Execução segura com verificação de tipos e tratamento de erros
+- **Analisador Semântico**: Inferência de tipos para métodos de lista
+
+#### **✨ Biblioteca Padrão Expandida:**
+- **`paraTexto(valor)`**: Converte qualquer tipo para texto
+  - Inteiros e reais → representação numérica
+  - Booleanos → `"verdadeiro"` / `"falso"`
+  - Listas → `"[elemento1, elemento2, ...]"`
+  - Strings → mantém valor original
+  - Nulo → `"nulo"`
+- **`tipo(valor)`**: Atualizado para reconhecer tipo `lista`
+
+#### **🧪 Testes Completos:**
+- Verificação de todos os métodos de lista
+- Testes de acesso e atribuição por índice
+- Validação de conversão de tipos
+- Casos de erro (lista vazia, índice inválido)
+
+### 🔄 Correções e Melhorias
+- **Inferência de tipos**: Métodos de lista agora retornam tipos corretos
+- **Tratamento de tokens**: Métodos de lista reconhecidos corretamente pelo parser
+- **Gestão de memória**: Operações de lista implementadas com segurança
+
+### 📊 Estatísticas da Versão
+- **4 novos métodos** de lista implementados
+- **3 novos opcodes** de bytecode
+- **2 novas classes** AST para expressões
+- **1 nova função** de biblioteca padrão (`paraTexto`)
+- **100% dos testes** passando
+
 ## [1.17.1] - 2025-07-28
 
 ### ✅ Conversão Implícita Inteiro → Real

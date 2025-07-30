@@ -85,6 +85,17 @@ enum TokenType {
   
   // Operador typeof
   typeof_,     // 'tipode'
+  
+  // Sistema de listas
+  lista,       // 'lista'
+  
+  // Métodos de lista
+  tamanho,     // 'tamanho'
+  adicionar,   // 'adicionar'
+  remover,     // 'remover'
+  estaVazio,   // 'vazio'
+  leftBracket, // '['
+  rightBracket,// ']'
 
   eof,
 }
@@ -200,6 +211,16 @@ extension TokenTypeExtension on TokenType {
       TokenType.as_ => 'Como',
       TokenType.typeof_ => 'Operador TipoDe',
       // ========================================================================
+      // SISTEMA DE LISTAS
+      // ========================================================================
+      TokenType.lista => 'Tipo Lista',
+      TokenType.tamanho => 'Tamanho da Lista',
+      TokenType.adicionar => 'Adicionar à Lista',
+      TokenType.remover => 'Remover da Lista',
+      TokenType.estaVazio => 'Verificar se Lista Está Vazia',
+      TokenType.leftBracket => 'Colchete Esquerdo',
+      TokenType.rightBracket => 'Colchete Direito',
+      // ========================================================================
       // ESPECIAIS
       // ========================================================================
       TokenType.eof => 'Fim do Arquivo',
@@ -281,6 +302,14 @@ extension TokenTypeExtension on TokenType {
       TokenType.import_ => 'importar',
       TokenType.as_ => 'como',
       TokenType.typeof_ => 'tipode',
+      // Sistema de listas
+      TokenType.lista => 'lista',
+      TokenType.tamanho => 'tamanho',
+      TokenType.adicionar => 'adicionar',
+      TokenType.remover => 'remover',
+      TokenType.estaVazio => 'vazio',
+      TokenType.leftBracket => '[',
+      TokenType.rightBracket => ']',
       // Especiais
       TokenType.eof => '<EOF>',
     };

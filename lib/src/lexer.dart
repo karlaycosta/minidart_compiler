@@ -102,7 +102,12 @@ class Lexer {
     'real': TokenType.real, // Tipo de dados real/float
     'texto': TokenType.texto, // Tipo de dados string
     'logico': TokenType.logico, // Tipo de dados boolean
-    'vazio': TokenType.vazio, // Tipo de retorno void
+    'vazio': TokenType.estaVazio, // Método vazio() - sobrescreve o tipo void
+    // Sistema de listas
+    'lista': TokenType.lista, // Tipo de dados lista
+    'tamanho': TokenType.tamanho, // Método tamanho()
+    'adicionar': TokenType.adicionar, // Método adicionar()
+    'remover': TokenType.remover, // Método remover()
   };
 
   /// **Construtor do Lexer**
@@ -180,6 +185,10 @@ class Lexer {
         _addToken(TokenType.leftBrace); // Chave esquerda
       case '}':
         _addToken(TokenType.rightBrace); // Chave direita
+      case '[':
+        _addToken(TokenType.leftBracket); // Colchete esquerdo
+      case ']':
+        _addToken(TokenType.rightBracket); // Colchete direito
       case ',':
         _addToken(TokenType.comma); // Vírgula
       case '.':

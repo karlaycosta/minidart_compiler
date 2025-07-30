@@ -651,6 +651,101 @@ class ASTGraphvizGenerator implements AstVisitor<String> {
     return nodeId;
   }
 
+  @override
+  String visitListDeclStmt(ListDeclStmt stmt) {
+    final nodeId = _nextId();
+    final escapedName = _escapeLabel(stmt.name.lexeme);
+    final escapedType = _escapeLabel(stmt.elementType.name);
+    _buffer.writeln(
+      '  $nodeId [label="📋 lista\\n$escapedType $escapedName", fillcolor=lightcyan];',
+    );
+
+    // Se há inicializador
+    if (stmt.initializer != null) {
+      final initId = stmt.initializer!.accept(this);
+      _buffer.writeln('  $nodeId -> $initId [label="inicialização"];');
+    }
+
+    return nodeId;
+  }
+
+  @override
+  String visitListLiteralExpr(ListLiteralExpr expr) {
+    final nodeId = _nextId();
+    _buffer.writeln(
+      '  $nodeId [label="🧾 lista literal\\n${expr.elements.length} elemento(s)", fillcolor=lightcyan, shape=ellipse];',
+    );
+
+    // Conectar elementos
+    for (int i = 0; i < expr.elements.length; i++) {
+      final elementId = expr.elements[i].accept(this);
+      _buffer.writeln('  $nodeId -> $elementId [label="[$i]"];');
+    }
+
+    return nodeId;
+  }
+
+  @override
+  String visitIndexAccessExpr(IndexAccessExpr expr) {
+    final nodeId = _nextId();
+    _buffer.writeln(
+      '  $nodeId [label="🎯 acesso\\npor índice", fillcolor=lightcyan, shape=ellipse];',
+    );
+
+    // Lista sendo acessada
+    final objectId = expr.object.accept(this);
+    _buffer.writeln('  $nodeId -> $objectId [label="lista"];');
+
+    // Índice
+    final indexId = expr.index.accept(this);
+    _buffer.writeln('  $nodeId -> $indexId [label="índice"];');
+
+    return nodeId;
+  }
+
+  @override
+  String visitIndexAssignExpr(IndexAssignExpr expr) {
+    final nodeId = _nextId();
+    _buffer.writeln(
+      '  $nodeId [label="🎯 atribuição\\npor índice", fillcolor=orange, shape=ellipse];',
+    );
+
+    // Lista sendo atribuída
+    final objectId = expr.object.accept(this);
+    _buffer.writeln('  $nodeId -> $objectId [label="lista"];');
+
+    // Índice
+    final indexId = expr.index.accept(this);
+    _buffer.writeln('  $nodeId -> $indexId [label="índice"];');
+
+    // Valor
+    final valueId = expr.value.accept(this);
+    _buffer.writeln('  $nodeId -> $valueId [label="valor"];');
+
+    return nodeId;
+  }
+
+  @override
+  String visitMethodCallExpr(MethodCallExpr expr) {
+    final nodeId = _nextId();
+    final methodName = expr.name.lexeme;
+    _buffer.writeln(
+      '  $nodeId [label="📞 método\\n$methodName()", fillcolor=lightgreen, shape=ellipse];',
+    );
+
+    // Objeto
+    final objectId = expr.object.accept(this);
+    _buffer.writeln('  $nodeId -> $objectId [label="objeto"];');
+
+    // Argumentos
+    for (int i = 0; i < expr.arguments.length; i++) {
+      final argId = expr.arguments[i].accept(this);
+      _buffer.writeln('  $nodeId -> $argId [label="arg$i"];');
+    }
+
+    return nodeId;
+  }
+
   // ===== FIM DOS NOVOS VISITANTES =====
 
   /// Escapa caracteres especiais para o formato DOT
