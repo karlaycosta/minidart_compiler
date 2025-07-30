@@ -24,7 +24,7 @@ minidart_ast.pdf
 ANALYSIS_RESULTADO.md
 
 # WebAssembly gerado
-web/
+# web/ 
 
 # IDEs
 .vscode/settings.json

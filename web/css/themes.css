@@ -1,0 +1,322 @@
+/* ==========================================================================
+   SISTEMA DE TEMAS MINIDART - ABORDAGEM DIRETA
+   ========================================================================== */
+
+/* ==========================================================================
+   TEMA PADRÃO (LIGHT THEME)
+   ========================================================================== */
+
+/* Aplicar tema light por padrão */
+body.light-theme,
+body:not(.dark-theme):not(.high-contrast-theme) {
+    background: #ffffff;
+    color: #212529;
+}
+
+/* BOTÕES - TEMA LIGHT */
+body.light-theme button,
+body:not(.dark-theme):not(.high-contrast-theme) button {
+    background: #ffffff;
+    color: #212529;
+    border-color: #dee2e6;
+}
+
+body.light-theme button:hover,
+body:not(.dark-theme):not(.high-contrast-theme) button:hover {
+    background: #f8f9fa;
+}
+
+body.light-theme .btn-primary,
+body:not(.dark-theme):not(.high-contrast-theme) .btn-primary {
+    background: #0d6efd;
+    color: #ffffff;
+    border-color: #0d6efd;
+}
+
+body.light-theme .btn-primary:hover,
+body:not(.dark-theme):not(.high-contrast-theme) .btn-primary:hover {
+    background: #0b5ed7;
+}
+
+body.light-theme .btn-secondary,
+body:not(.dark-theme):not(.high-contrast-theme) .btn-secondary {
+    background: #6c757d;
+    color: #ffffff;
+    border-color: #6c757d;
+}
+
+body.light-theme .btn-secondary:hover,
+body:not(.dark-theme):not(.high-contrast-theme) .btn-secondary:hover {
+    background: #5c636a;
+}
+
+body.light-theme .btn-icon,
+body:not(.dark-theme):not(.high-contrast-theme) .btn-icon {
+    background: transparent;
+    color: #212529;
+    border-color: #dee2e6;
+}
+
+body.light-theme .btn-icon:hover,
+body:not(.dark-theme):not(.high-contrast-theme) .btn-icon:hover {
+    background: #f8f9fa;
+}
+
+body.light-theme .btn-run,
+body:not(.dark-theme):not(.high-contrast-theme) .btn-run {
+    background: #198754;
+    color: #ffffff;
+    border-color: #198754;
+}
+
+body.light-theme .btn-run:hover,
+body:not(.dark-theme):not(.high-contrast-theme) .btn-run:hover {
+    background: #157347;
+}
+
+/* ==========================================================================
+   TEMA ESCURO (DARK THEME)
+   ========================================================================== */
+
+body.dark-theme {
+    background: #0d1117;
+    color: #ffffff;
+}
+
+/* BOTÕES - TEMA DARK */
+body.dark-theme button {
+    background: #21262d;
+    color: #ffffff;
+    border-color: #30363d;
+}
+
+body.dark-theme button:hover {
+    background: #30363d;
+}
+
+body.dark-theme .btn-primary {
+    background: #4dabf7;
+    color: #ffffff;
+    border-color: #4dabf7;
+}
+
+body.dark-theme .btn-primary:hover {
+    background: #339af0;
+}
+
+body.dark-theme .btn-secondary {
+    background: #868e96;
+    color: #ffffff;
+    border-color: #868e96;
+}
+
+body.dark-theme .btn-secondary:hover {
+    background: #777a7d;
+}
+
+body.dark-theme .btn-icon {
+    background: transparent;
+    color: #ffffff;
+    border-color: #30363d;
+}
+
+body.dark-theme .btn-icon:hover {
+    background: #30363d;
+}
+
+body.dark-theme .btn-run {
+    background: #0d6efd;
+    color: #ffffff;
+    border-color: #0d6efd;
+}
+
+body.dark-theme .btn-run:hover {
+    background: #0b5ed7;
+}
+
+/* ==========================================================================
+   TEMA ALTO CONTRASTE (HIGH CONTRAST THEME)
+   ========================================================================== */
+
+body.high-contrast-theme {
+    background: #000000;
+    color: #ffffff;
+}
+
+/* BOTÕES - TEMA HIGH CONTRAST */
+body.high-contrast-theme button {
+    background: #000000;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+}
+
+body.high-contrast-theme button:hover {
+    background: #333333;
+}
+
+body.high-contrast-theme .btn-primary {
+    background: #000000;
+    color: #00ff00;
+    border: 2px solid #00ff00;
+}
+
+body.high-contrast-theme .btn-primary:hover {
+    background: #00ff00;
+    color: #000000;
+}
+
+body.high-contrast-theme .btn-secondary {
+    background: #000000;
+    color: #ffff00;
+    border: 2px solid #ffff00;
+}
+
+body.high-contrast-theme .btn-secondary:hover {
+    background: #ffff00;
+    color: #000000;
+}
+
+body.high-contrast-theme .btn-icon {
+    background: #000000;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+}
+
+body.high-contrast-theme .btn-icon:hover {
+    background: #333333;
+}
+
+body.high-contrast-theme .btn-run {
+    background: #000000;
+    color: #00ff00;
+    border: 2px solid #00ff00;
+}
+
+body.high-contrast-theme .btn-run:hover {
+    background: #00ff00;
+    color: #000000;
+}
+
+/* ==========================================================================
+   OUTROS ELEMENTOS DOS TEMAS
+   ========================================================================== */
+
+/* HEADER - TEMAS */
+body.dark-theme .header {
+    background: #161b22;
+    border-bottom-color: #30363d;
+}
+
+body.high-contrast-theme .header {
+    background: #000000;
+    border-bottom: 2px solid #ffffff;
+}
+
+body.dark-theme .logo h1 {
+    color: #ffffff;
+}
+
+body.high-contrast-theme .logo h1 {
+    color: #ffffff;
+}
+
+/* PAINÉIS - TEMAS */
+body.dark-theme .panel {
+    background: #161b22;
+    border-color: #30363d;
+}
+
+body.high-contrast-theme .panel {
+    background: #000000;
+    border: 2px solid #ffffff;
+}
+
+body.dark-theme .panel-header {
+    background: #0d1117;
+    border-bottom-color: #30363d;
+    color: #ffffff;
+}
+
+body.high-contrast-theme .panel-header {
+    background: #000000;
+    border-bottom: 2px solid #ffffff;
+    color: #ffffff;
+}
+
+/* EDITOR E OUTPUT */
+body.dark-theme #editor {
+    background: #0d1117;
+    color: #ffffff;
+}
+
+body.high-contrast-theme #editor {
+    background: #000000;
+    color: #ffffff;
+}
+
+body.dark-theme #output {
+    background: #0d1117;
+    color: #58a6ff;
+}
+
+body.high-contrast-theme #output {
+    background: #000000;
+    color: #58a6ff;
+}
+
+/* CONTROLES */
+body.dark-theme .controls {
+    background: #0d1117;
+    border-top-color: #30363d;
+}
+
+body.high-contrast-theme .controls {
+    background: #000000;
+    border-top: 2px solid #ffffff;
+}
+
+body.dark-theme .status {
+    color: #ffffff;
+}
+
+body.high-contrast-theme .status {
+    color: #ffffff;
+}
+
+body.dark-theme .editor-stats {
+    color: #8b949e;
+}
+
+body.high-contrast-theme .editor-stats {
+    color: #ffffff;
+}
+
+/* FOOTER */
+body.dark-theme .footer {
+    background: #161b22;
+    border-top-color: #30363d;
+    color: #ffffff;
+}
+
+body.high-contrast-theme .footer {
+    background: #000000;
+    border-top: 2px solid #ffffff;
+    color: #ffffff;
+}
+
+body.dark-theme .footer a {
+    color: #58a6ff;
+}
+
+body.high-contrast-theme .footer a {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+body.dark-theme .footer a:hover {
+    color: #79c0ff;
+}
+
+body.high-contrast-theme .footer a:hover {
+    color: #cccccc;
+}
