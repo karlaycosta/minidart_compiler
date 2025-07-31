@@ -34,7 +34,11 @@ class SymbolTable {
 
   /// Define um novo símbolo de lista no escopo atual.
   void defineList(Token name, TokenType elementType) {
-    _symbols[name.lexeme] = Symbol(name, type: TokenType.lista, elementType: elementType);
+    _symbols[name.lexeme] = Symbol(
+      name,
+      type: TokenType.lista,
+      elementType: elementType,
+    );
   }
 
   /// Atribui um valor a um símbolo existente, marcando-o como inicializado.

@@ -3,32 +3,55 @@
     "prefix": "minidart",
     "body": [
       "// Programa MiniDart",
-      "var ${1:nome} = \"${2:valor}\";",
-      "",
-      "imprima ${1:nome};",
-      "$0"
+      "inteiro principal() {",
+      "\tvar ${1:nome} = \"${2:valor}\";",
+      "\timprima ${1:nome};",
+      "\tretorne 0;",
+      "}"
     ],
     "description": "Template básico de programa MiniDart"
+  },
+  "Programa principal": {
+    "prefix": "principal",
+    "body": [
+      "inteiro principal() {",
+      "\t$0",
+      "\tretorne 0;",
+      "}"
+    ],
+    "description": "Função principal do programa"
   },
   "Função MiniDart": {
     "prefix": "funcao",
     "body": [
-      "funcao ${1:nome}(${2:parametros}) {",
+      "${1:inteiro} ${2:nome}(${3:parametros}) {",
       "\t$0",
-      "\tretorne ${3:valor};",
+      "\tretorne ${4:valor};",
       "}"
     ],
     "description": "Template de função MiniDart"
   },
+  "Função sem retorno": {
+    "prefix": "funcaovoid",
+    "body": [
+      "vazio ${1:nome}(${2:parametros}) {",
+      "\t$0",
+      "}"
+    ],
+    "description": "Função void (sem retorno)"
+  },
   "Função simples": {
     "prefix": "funcaosimples",
     "body": [
-      "funcao ${1:quadrado}(${2:x}) {",
+      "inteiro ${1:quadrado}(inteiro ${2:x}) {",
       "\tretorne ${2:x} * ${2:x};",
       "}",
       "",
-      "var ${3:resultado} = ${1:quadrado}(${4:5});",
-      "imprima ${3:resultado};"
+      "inteiro principal() {",
+      "\tvar ${3:resultado} = ${1:quadrado}(${4:5});",
+      "\timprima paraTexto(${3:resultado});",
+      "\tretorne 0;",
+      "}"
     ],
     "description": "Exemplo de função simples"
   },
@@ -246,5 +269,195 @@
       "logico ${7:ativo} = ${8:verdadeiro};"
     ],
     "description": "Declaração de variáveis com tipos explícitos"
+  },
+  "Lista de inteiros": {
+    "prefix": "listainteiro",
+    "body": [
+      "lista<inteiro> ${1:numeros} = [${2:1, 2, 3, 4, 5}];",
+      "imprima \"Tamanho: \" + paraTexto(${1:numeros}.tamanho());",
+      "imprima \"Primeiro: \" + paraTexto(${1:numeros}[0]);"
+    ],
+    "description": "Lista de números inteiros"
+  },
+  "Lista de texto": {
+    "prefix": "listatexto",
+    "body": [
+      "lista<texto> ${1:nomes} = [\"${2:Ana}\", \"${3:Bruno}\", \"${4:Carlos}\"];",
+      "${1:nomes}.adicionar(\"${5:Diana}\");",
+      "imprima \"Total de nomes: \" + paraTexto(${1:nomes}.tamanho());"
+    ],
+    "description": "Lista de strings/texto"
+  },
+  "Lista de reais": {
+    "prefix": "listareal",
+    "body": [
+      "lista<real> ${1:precos} = [${2:29.99, 15.50, 42.00}];",
+      "real ${3:total} = 0.0;",
+      "para i = 0 ate ${1:precos}.tamanho() - 1 faca {",
+      "\t${3:total} += ${1:precos}[i];",
+      "}",
+      "imprima \"Total: R$ \" + paraTexto(${3:total});"
+    ],
+    "description": "Lista de números reais"
+  },
+  "Lista vazia": {
+    "prefix": "listavazia",
+    "body": [
+      "lista<${1:inteiro}> ${2:lista} = [];",
+      "se (${2:lista}.vazio()) {",
+      "\timprima \"Lista está vazia\";",
+      "}"
+    ],
+    "description": "Lista vazia com verificação"
+  },
+  "Operações com lista": {
+    "prefix": "listoperacoes",
+    "body": [
+      "lista<${1:inteiro}> ${2:valores} = [];",
+      "",
+      "// Adicionar elementos",
+      "${2:valores}.adicionar(${3:10});",
+      "${2:valores}.adicionar(${4:20});",
+      "${2:valores}.adicionar(${5:30});",
+      "",
+      "// Acessar elementos",
+      "imprima \"Primeiro: \" + paraTexto(${2:valores}[0]);",
+      "imprima \"Tamanho: \" + paraTexto(${2:valores}.tamanho());",
+      "",
+      "// Remover último elemento",
+      "${1:inteiro} ${6:removido} = ${2:valores}.remover();",
+      "imprima \"Removido: \" + paraTexto(${6:removido});"
+    ],
+    "description": "Operações completas com listas"
+  },
+  "Switch case": {
+    "prefix": "escolha",
+    "body": [
+      "escolha (${1:valor}) {",
+      "\tcaso ${2:1}:",
+      "\t\timprima \"${3:Primeira opção}\";",
+      "\t\tparar;",
+      "\tcaso ${4:2}:",
+      "\t\timprima \"${5:Segunda opção}\";",
+      "\t\tparar;",
+      "\tcontrario:",
+      "\t\timprima \"${6:Opção padrão}\";",
+      "}"
+    ],
+    "description": "Estrutura switch/case"
+  },
+  "Loop do-while": {
+    "prefix": "facaenquanto",
+    "body": [
+      "inteiro ${1:contador} = ${2:0};",
+      "faca {",
+      "\timprima \"Contador: \" + paraTexto(${1:contador});",
+      "\t${1:contador}++;",
+      "} enquanto (${1:contador} < ${3:5});"
+    ],
+    "description": "Loop do-while (faca-enquanto)"
+  },
+  "Operador ternário": {
+    "prefix": "ternario",
+    "body": [
+      "${1:tipo} ${2:resultado} = ${3:condicao} ? ${4:valor_verdadeiro} : ${5:valor_falso};"
+    ],
+    "description": "Operador ternário"
+  },
+  "Typeof": {
+    "prefix": "tipode",
+    "body": [
+      "var ${1:variavel} = ${2:valor};",
+      "imprima \"Tipo: \" + tipode ${1:variavel};"
+    ],
+    "description": "Operador typeof"
+  },
+  "Conversão para texto": {
+    "prefix": "paratexto",
+    "body": [
+      "${1:tipo} ${2:valor} = ${3:dados};",
+      "texto ${4:valorTexto} = paraTexto(${2:valor});",
+      "imprima ${4:valorTexto};"
+    ],
+    "description": "Conversão para texto"
+  },
+  "Função recursiva": {
+    "prefix": "recursiva",
+    "body": [
+      "inteiro ${1:fatorial}(inteiro ${2:n}) {",
+      "\tse (${2:n} <= 1) {",
+      "\t\tretorne 1;",
+      "\t}",
+      "\tretorne ${2:n} * ${1:fatorial}(${2:n} - 1);",
+      "}",
+      "",
+      "inteiro principal() {",
+      "\tinteiro ${3:resultado} = ${1:fatorial}(${4:5});",
+      "\timprima \"Resultado: \" + paraTexto(${3:resultado});",
+      "\tretorne 0;",
+      "}"
+    ],
+    "description": "Função recursiva"
+  },
+  "Import biblioteca": {
+    "prefix": "importar",
+    "body": [
+      "importar ${1:math};",
+      "",
+      "inteiro principal() {",
+      "\treal ${2:resultado} = ${1:math}.sqrt(${3:16});",
+      "\timprima \"Resultado: \" + paraTexto(${2:resultado});",
+      "\tretorne 0;",
+      "}"
+    ],
+    "description": "Import de biblioteca"
+  },
+  "Import com alias": {
+    "prefix": "importaralias",
+    "body": [
+      "importar ${1:string} como ${2:str};",
+      "",
+      "inteiro principal() {",
+      "\ttexto ${3:resultado} = ${2:str}.maiuscula(\"${4:texto}\");",
+      "\timprima ${3:resultado};",
+      "\tretorne 0;",
+      "}"
+    ],
+    "description": "Import com alias"
+  },
+  "Constante": {
+    "prefix": "constante",
+    "body": [
+      "constante ${1:inteiro} ${2:MAXIMO} = ${3:100};"
+    ],
+    "description": "Declaração de constante"
+  },
+  "Função com lista": {
+    "prefix": "funcaolista",
+    "body": [
+      "${1:inteiro} ${2:somarLista}(lista<inteiro> ${3:valores}) {",
+      "\tinteiro ${4:soma} = 0;",
+      "\tpara i = 0 ate ${3:valores}.tamanho() - 1 faca {",
+      "\t\t${4:soma} += ${3:valores}[i];",
+      "\t}",
+      "\tretorne ${4:soma};",
+      "}",
+      "",
+      "inteiro principal() {",
+      "\tlista<inteiro> ${5:numeros} = [${6:1, 2, 3, 4, 5}];",
+      "\tinteiro ${7:total} = ${2:somarLista}(${5:numeros});",
+      "\timprima \"Total: \" + paraTexto(${7:total});",
+      "\tretorne 0;",
+      "}"
+    ],
+    "description": "Função que trabalha com listas"
+  },
+  "Debug básico": {
+    "prefix": "debug",
+    "body": [
+      "debug(${1:variavel});",
+      "info_debug();"
+    ],
+    "description": "Comandos de debug"
   }
 }

@@ -1,10 +1,11 @@
 {
   "name": "minidart",
   "displayName": "MiniDart Language Support",
-  "description": "Suporte completo para a linguagem MiniDart v1.14.0 com debugger visual no VS Code, breakpoints interativos e debug adapter protocol",
-  "version": "2.0.1",
+  "description": "Suporte completo para a linguagem MiniDart v2.0 com listas tipadas, sistema de imports, bibliotecas padrão, debugger visual no VS Code e debug adapter protocol",
+  "version": "2.1.0",
   "publisher": "deriks-karlay",
   "author": "Deriks Karlay Dias Costa <karlay@example.com>",
+  "icon": "icon.png",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/karlaycosta/minidart_compiler.git"
@@ -14,14 +15,22 @@
   },
   "categories": [
     "Programming Languages",
+    "Debuggers",
     "Other"
   ],
   "keywords": [
     "minidart",
+    "lipo",
     "dart",
     "português",
+    "portuguese",
     "compilador",
-    "ast"
+    "compiler",
+    "ast",
+    "listas",
+    "lists",
+    "educacional",
+    "educational"
   ],
   "main": "./out/extension.js",
   "activationEvents": [],
@@ -93,6 +102,30 @@
         "title": "📄 Novo Arquivo MiniDart",
         "category": "MiniDart",
         "icon": "$(new-file)"
+      },
+      {
+        "command": "minidart.checkSyntax",
+        "title": "✅ Verificar Sintaxe",
+        "category": "MiniDart",
+        "icon": "$(check)"
+      },
+      {
+        "command": "minidart.analyzeCode",
+        "title": "🔍 Analisar Código",
+        "category": "MiniDart",
+        "icon": "$(search)"
+      },
+      {
+        "command": "minidart.formatCode",
+        "title": "💫 Formatar Código",
+        "category": "MiniDart",
+        "icon": "$(symbol-method)"
+      },
+      {
+        "command": "minidart.showDocumentation",
+        "title": "📚 Documentação",
+        "category": "MiniDart",
+        "icon": "$(book)"
       }
     ],
     "keybindings": [
@@ -115,6 +148,21 @@
         "command": "minidart.generateAST",
         "key": "ctrl+shift+a",
         "when": "resourceExtname == .mdart"
+      },
+      {
+        "command": "minidart.checkSyntax",
+        "key": "ctrl+shift+s",
+        "when": "resourceExtname == .mdart"
+      },
+      {
+        "command": "minidart.formatCode",
+        "key": "ctrl+shift+f",
+        "when": "resourceExtname == .mdart"
+      },
+      {
+        "command": "minidart.showDocumentation",
+        "key": "f1",
+        "when": "resourceExtname == .mdart"
       }
     ],
     "menus": {
@@ -135,9 +183,29 @@
           "group": "navigation@3"
         },
         {
-          "command": "minidart.generateAST",
+          "command": "minidart.checkSyntax",
           "when": "resourceExtname == .mdart",
           "group": "navigation@4"
+        },
+        {
+          "command": "minidart.generateAST",
+          "when": "resourceExtname == .mdart",
+          "group": "analysis@1"
+        },
+        {
+          "command": "minidart.analyzeCode",
+          "when": "resourceExtname == .mdart",
+          "group": "analysis@2"
+        },
+        {
+          "command": "minidart.formatCode",
+          "when": "resourceExtname == .mdart",
+          "group": "formatting@1"
+        },
+        {
+          "command": "minidart.showDocumentation",
+          "when": "resourceExtname == .mdart",
+          "group": "help@1"
         }
       ],
       "editor/title": [
@@ -155,6 +223,11 @@
           "command": "minidart.generateAST",
           "when": "resourceExtname == .mdart",
           "group": "navigation@3"
+        },
+        {
+          "command": "minidart.checkSyntax",
+          "when": "resourceExtname == .mdart",
+          "group": "navigation@4"
         }
       ],
       "explorer/context": [
@@ -247,6 +320,42 @@
           "type": "boolean",
           "default": false,
           "description": "Gerar AST automaticamente"
+        },
+        "minidart.autoFormat": {
+          "type": "boolean",
+          "default": true,
+          "description": "Formatar código automaticamente"
+        },
+        "minidart.syntaxHighlighting": {
+          "type": "boolean",
+          "default": true,
+          "description": "Habilitar realce de sintaxe avançado"
+        },
+        "minidart.enableLinting": {
+          "type": "boolean",
+          "default": true,
+          "description": "Habilitar análise de código e avisos"
+        },
+        "minidart.enableSnippets": {
+          "type": "boolean",
+          "default": true,
+          "description": "Habilitar snippets de código"
+        },
+        "minidart.showDocumentationOnHover": {
+          "type": "boolean",
+          "default": true,
+          "description": "Mostrar documentação ao passar o mouse"
+        },
+        "minidart.enableAutoCompletion": {
+          "type": "boolean",
+          "default": true,
+          "description": "Habilitar autocompletar inteligente"
+        },
+        "minidart.theme": {
+          "type": "string",
+          "default": "default",
+          "enum": ["default", "dark", "light"],
+          "description": "Tema para realce de sintaxe"
         }
       }
     }

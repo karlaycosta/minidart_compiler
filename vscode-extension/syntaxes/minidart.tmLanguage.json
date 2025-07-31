@@ -23,6 +23,12 @@
     },
     {
       "include": "#variables"
+    },
+    {
+      "include": "#lists"
+    },
+    {
+      "include": "#imports"
     }
   ],
   "repository": {
@@ -30,15 +36,15 @@
       "patterns": [
         {
           "name": "keyword.control.minidart",
-          "match": "\\b(se|senao|enquanto|para|faca|ate|incremente|decremente|retorne|e|ou)\\b"
+          "match": "\\b(se|senao|enquanto|para|faca|ate|incremente|decremente|retorne|e|ou|escolha|caso|contrario|parar|continuar)\\b"
         },
         {
           "name": "keyword.declaration.minidart",
-          "match": "\\b(var|constante|vazio)\\b"
+          "match": "\\b(var|constante|vazio|funcao|principal)\\b"
         },
         {
           "name": "storage.type.minidart",
-          "match": "\\b(inteiro|real|texto|logico|vazio)\\b"
+          "match": "\\b(inteiro|real|texto|logico|vazio|lista)\\b"
         },
         {
           "name": "constant.language.minidart",
@@ -46,7 +52,11 @@
         },
         {
           "name": "keyword.other.minidart",
-          "match": "\\b(imprima|tipode)\\b"
+          "match": "\\b(imprima|tipode|tipo|paraTexto|importar|como|debug|info_debug)\\b"
+        },
+        {
+          "name": "support.function.list.minidart",
+          "match": "\\b(tamanho|adicionar|remover|vazio)\\b"
         }
       ]
     },
@@ -59,18 +69,7 @@
           "patterns": [
             {
               "name": "constant.character.escape.minidart",
-              "match": "\\\\."
-            }
-          ]
-        },
-        {
-          "name": "string.quoted.single.minidart",
-          "begin": "'",
-          "end": "'",
-          "patterns": [
-            {
-              "name": "constant.character.escape.minidart",
-              "match": "\\\\."
+              "match": "\\\\([\"\\\\/bfnrt]|u[0-9a-fA-F]{4})"
             }
           ]
         }
@@ -85,6 +84,10 @@
         {
           "name": "constant.numeric.integer.minidart",
           "match": "\\b([0-9]+)\\b"
+        },
+        {
+          "name": "constant.numeric.negative.minidart",
+          "match": "\\b(-[0-9]+(?:\\.[0-9]+)?)\\b"
         }
       ]
     },
@@ -94,16 +97,6 @@
           "name": "comment.line.double-slash.minidart",
           "begin": "//",
           "end": "$",
-          "captures": {
-            "0": {
-              "name": "punctuation.definition.comment.minidart"
-            }
-          }
-        },
-        {
-          "name": "comment.block.minidart",
-          "begin": "/\\*",
-          "end": "\\*/",
           "captures": {
             "0": {
               "name": "punctuation.definition.comment.minidart"
@@ -149,6 +142,46 @@
         {
           "name": "variable.other.minidart",
           "match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\b"
+        }
+      ]
+    },
+    "lists": {
+      "patterns": [
+        {
+          "name": "storage.type.list.minidart",
+          "match": "\\blista\\s*<\\s*(inteiro|real|texto|logico)\\s*>"
+        },
+        {
+          "name": "punctuation.definition.list.begin.minidart",
+          "match": "\\["
+        },
+        {
+          "name": "punctuation.definition.list.end.minidart",
+          "match": "\\]"
+        },
+        {
+          "name": "punctuation.separator.list.minidart",
+          "match": ","
+        }
+      ]
+    },
+    "imports": {
+      "patterns": [
+        {
+          "name": "keyword.import.minidart",
+          "match": "\\b(importar)\\b"
+        },
+        {
+          "name": "keyword.import.alias.minidart",
+          "match": "\\b(como)\\b"
+        },
+        {
+          "name": "entity.name.module.minidart",
+          "match": "(?<=importar\\s)\\b[a-zA-Z_][a-zA-Z0-9_]*\\b"
+        },
+        {
+          "name": "entity.name.alias.minidart",
+          "match": "(?<=como\\s)\\b[a-zA-Z_][a-zA-Z0-9_]*\\b"
         }
       ]
     }
