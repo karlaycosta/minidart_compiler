@@ -1,9 +1,0 @@
-// Ternário
-constante var idade = 16;
-imprima idade;
-var status = idade >= 18 ? "adulto" : "jovem";
-imprima status;
-imprima idade >= 18 ? "adulto" : "jovem";
-para (inteiro i = 0; i < 10; i++) {
-    imprima i;
-}
