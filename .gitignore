@@ -24,7 +24,7 @@ minidart_ast.pdf
 ANALYSIS_RESULTADO.md
 
 # WebAssembly gerado
-web/
+# web/ 
 
 # IDEs
 .vscode/settings.json
@@ -35,3 +35,19 @@ web/
 # OS
 .DS_Store
 Thumbs.db
+
+# Arquivos de teste temporários (adicione aqui arquivos que sempre recriam)
+teste_*.mdart
+debug_*.mdart
+*_debug.mdart
+*_teste.mdart
+
+# Documentação temporária
+*_TEMP.md
+*_BACKUP.md
+
+# Logs e outputs
+*.log
+*.out
+# Local Netlify folder
+.netlify

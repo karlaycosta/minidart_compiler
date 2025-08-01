@@ -69,7 +69,6 @@ class Lexer {
   /// - **Operadores lógicos**: e, ou
   /// - **Literais**: verdadeiro, falso, nulo
   /// - **Comandos**: imprima, retorne
-  /// - **Orientação a objetos**: isto, super
   static final Map<String, TokenType> _keywords = {
     'e': TokenType.and, // Operador lógico AND
     'senao': TokenType.else_, // Estrutura condicional ELSE
@@ -83,6 +82,11 @@ class Lexer {
     'verdadeiro': TokenType.true_, // Literal booleano true
     'var': TokenType.var_, // Declaração de variável
     'enquanto': TokenType.while_, // Loop WHILE
+    'parar': TokenType.break_, // Comando break para loops
+    'continuar': TokenType.continue_, // Comando continue para loops
+    'escolha': TokenType.switch_, // Switch statement
+    'caso': TokenType.case_, // Case em switch
+    'contrario': TokenType.default_, // Default case em switch
     'ate': TokenType.to_, // Loop FOR - até
     'faca': TokenType.do_, // Loop FOR - faça
     'incremente': TokenType.increment_, // Loop FOR - incremento positivo
@@ -91,12 +95,19 @@ class Lexer {
     // Sistema de imports
     'importar': TokenType.import_, // Declaração de import
     'como': TokenType.as_, // Alias em import
+    // Operador typeof
+    'tipode': TokenType.typeof_, // Operador typeof
     // Tipos de dados
     'inteiro': TokenType.inteiro, // Tipo de dados inteiro
     'real': TokenType.real, // Tipo de dados real/float
     'texto': TokenType.texto, // Tipo de dados string
     'logico': TokenType.logico, // Tipo de dados boolean
-    'vazio': TokenType.vazio, // Tipo de retorno void
+    'vazio': TokenType.estaVazio, // Método vazio() - sobrescreve o tipo void
+    // Sistema de listas
+    'lista': TokenType.lista, // Tipo de dados lista
+    'tamanho': TokenType.tamanho, // Método tamanho()
+    'adicionar': TokenType.adicionar, // Método adicionar()
+    'remover': TokenType.remover, // Método remover()
   };
 
   /// **Construtor do Lexer**
@@ -174,6 +185,10 @@ class Lexer {
         _addToken(TokenType.leftBrace); // Chave esquerda
       case '}':
         _addToken(TokenType.rightBrace); // Chave direita
+      case '[':
+        _addToken(TokenType.leftBracket); // Colchete esquerdo
+      case ']':
+        _addToken(TokenType.rightBracket); // Colchete direito
       case ',':
         _addToken(TokenType.comma); // Vírgula
       case '.':
@@ -327,8 +342,11 @@ class Lexer {
       _advance();
     }
 
+    bool hasDecimal = false;
+    
     // Verifica se há parte decimal
     if (_peek() == '.' && _isDigit(_peekNext())) {
+      hasDecimal = true;
       _advance(); // Consome o ponto decimal
 
       // Consome a parte fracionária
@@ -337,9 +355,18 @@ class Lexer {
       }
     }
 
-    // Converte para double e cria o token
-    final value = double.parse(_source.substring(_start, _current));
-    _addToken(TokenType.number, value);
+    // Converte para o tipo apropriado
+    final valueStr = _source.substring(_start, _current);
+    
+    if (hasDecimal) {
+      // É um número real (com ponto decimal)
+      final value = double.parse(valueStr);
+      _addToken(TokenType.number, value);
+    } else {
+      // É um número inteiro (sem ponto decimal)
+      final value = int.parse(valueStr);
+      _addToken(TokenType.number, value);
+    }
   }
 
   /// **Processamento de Strings Literais**

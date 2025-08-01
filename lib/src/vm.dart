@@ -34,12 +34,23 @@ class VM {
   final List<CallFrame> _frames = [];
   Map<String, CompiledFunction> _functions = {};
   late StandardLibrary _standardLibrary;
+  bool _debugMode = false; // Modo debug da VM
+  
+  // Callbacks para debugger interativo
+  Function(int ip, OpCode opCode, List<dynamic> stack, Map<String, dynamic> globals)? onInstructionExecute;
+  Function(String functionName, List<dynamic> args)? onFunctionCall;
+  Function(String functionName, dynamic returnValue)? onFunctionReturn;
 
   VM() {
     // Configura stdout para UTF-8
     stdout.encoding = utf8;
     // Inicializa a biblioteca padrão
     _standardLibrary = StandardLibrary();
+  }
+
+  /// Ativa ou desativa o modo debug da VM
+  void setDebugMode(bool enabled) {
+    _debugMode = enabled;
   }
 
   InterpretResult interpret(BytecodeChunk chunk) {
@@ -65,6 +76,17 @@ class VM {
   InterpretResult _run() {
     while (true) {
       final instruction = _chunk.code[_ip++];
+      
+      // Debug: mostra instrução atual
+      if (_debugMode) {
+        _debugInstruction(instruction);
+      }
+      
+      // Callback para debugger interativo
+      if (onInstructionExecute != null) {
+        onInstructionExecute!(_ip - 1, instruction.opcode, List.from(_stack), Map.from(_globals));
+      }
+      
       switch (instruction.opcode) {
         case OpCode.pushConst:
           _push(_chunk.constants[instruction.operand!]);
@@ -78,10 +100,14 @@ class VM {
           break;
         case OpCode.getGlobal:
           final name = _chunk.constants[instruction.operand!] as String;
-          if (!_globals.containsKey(name)) {
+          if (_globals.containsKey(name)) {
+            _push(_globals[name]);
+          } else if (_standardLibrary.hasFunction(name)) {
+            // É uma função nativa, coloca o nome na pilha para posterior chamada
+            _push(name);
+          } else {
             _runtimeError("Variável global indefinida '$name'.");
           }
-          _push(_globals[name]);
           break;
         case OpCode.setGlobal:
           final name = _chunk.constants[instruction.operand!] as String;
@@ -125,12 +151,24 @@ class VM {
         case OpCode.not:
           _push(!_isTruthy(_pop()));
           break;
+        case OpCode.typeof_:
+          final value = _pop();
+          _push(_getTypeName(value));
+          break;
         case OpCode.toInt:
           final value = _pop();
           if (value is double) {
             _push(value.toInt());
           } else {
             _push(value); // Se já é int ou outro tipo, mantém
+          }
+          break;
+        case OpCode.toDouble:
+          final value = _pop();
+          if (value is int) {
+            _push(value.toDouble());
+          } else {
+            _push(value); // Se já é double ou outro tipo, mantém
           }
           break;
         case OpCode.equal:
@@ -165,6 +203,101 @@ class VM {
           if (!_callValue(_peek(0), argCount)) {  // A função está no topo da pilha
             return InterpretResult.runtimeError;
           }
+          break;
+        case OpCode.break_:
+          // break_ é tratado durante a compilação com jumps - não deveria chegar aqui
+          _runtimeError("Instrução 'break' inválida.");
+          break;
+        case OpCode.continue_:
+          // continue_ é tratado durante a compilação com jumps - não deveria chegar aqui
+          _runtimeError("Instrução 'continue' inválida.");
+          break;
+        case OpCode.indexAccess:
+          final index = _pop();
+          final list = _pop();
+          if (list is List && index is int) {
+            if (index >= 0 && index < list.length) {
+              _push(list[index]);
+            } else {
+              _runtimeError("Índice $index fora do alcance da lista (tamanho: ${list.length}).");
+              return InterpretResult.runtimeError;
+            }
+          } else {
+            _runtimeError("Acesso por índice requer uma lista e um índice inteiro.");
+            return InterpretResult.runtimeError;
+          }
+          break;
+        case OpCode.indexAssign:
+          final value = _pop();
+          final index = _pop();
+          final list = _pop();
+          if (list is List && index is int) {
+            if (index >= 0 && index < list.length) {
+              list[index] = value;
+              _push(value); // Retorna o valor atribuído
+            } else {
+              _runtimeError("Índice $index fora do alcance da lista (tamanho: ${list.length}).");
+              return InterpretResult.runtimeError;
+            }
+          } else {
+            _runtimeError("Atribuição por índice requer uma lista e um índice inteiro.");
+            return InterpretResult.runtimeError;
+          }
+          break;
+        case OpCode.listSize:
+          final list = _pop();
+          if (list is List) {
+            _push(list.length);
+          } else {
+            _runtimeError("Método 'tamanho' só pode ser chamado em listas.");
+            return InterpretResult.runtimeError;
+          }
+          break;
+        case OpCode.listAdd:
+          final value = _pop();
+          final list = _pop();
+          if (list is List) {
+            list.add(value);
+            _push(null); // Método não retorna valor
+          } else {
+            _runtimeError("Método 'adicionar' só pode ser chamado em listas.");
+            return InterpretResult.runtimeError;
+          }
+          break;
+        case OpCode.listRemove:
+          final list = _pop();
+          if (list is List) {
+            if (list.isNotEmpty) {
+              final removedValue = list.removeLast();
+              _push(removedValue);
+            } else {
+              _runtimeError("Não é possível remover elemento de lista vazia.");
+              return InterpretResult.runtimeError;
+            }
+          } else {
+            _runtimeError("Método 'remover' só pode ser chamado em listas.");
+            return InterpretResult.runtimeError;
+          }
+          break;
+        case OpCode.listEmpty:
+          final list = _pop();
+          if (list is List) {
+            _push(list.isEmpty);
+          } else {
+            _runtimeError("Método 'vazio' só pode ser chamado em listas.");
+            return InterpretResult.runtimeError;
+          }
+          break;
+        case OpCode.createList:
+          final elementCount = instruction.operand!;
+          final list = <Object?>[];
+          
+          // Retira elementos da pilha em ordem reversa (último empurrado primeiro)
+          for (int i = 0; i < elementCount; i++) {
+            list.insert(0, _pop());
+          }
+          
+          _push(list);
           break;
         case OpCode.return_:
           return InterpretResult.ok;
@@ -286,6 +419,11 @@ class VM {
       args.insert(0, _pop()); // Remove argumentos na ordem reversa
     }
     
+    // Callback para debugger
+    if (onFunctionCall != null) {
+      onFunctionCall!(function.name, args);
+    }
+    
     // Salva as variáveis globais que podem ser sobrescritas pelos parâmetros
     final savedGlobals = <String, Object?>{};
     for (int i = 0; i < function.paramNames.length; i++) {
@@ -340,6 +478,11 @@ class VM {
             
             // Resultado já está no topo da pilha
             final result = _pop();
+            
+            // Callback para debugger
+            if (onFunctionReturn != null) {
+              onFunctionReturn!(frame.function.name, result);
+            }
             
             // Restaura contexto anterior
             _chunk = oldChunk;
@@ -423,6 +566,26 @@ class VM {
       case OpCode.not:
         _push(_isFalsey(_pop()));
         break;
+      case OpCode.typeof_:
+        final value = _pop();
+        _push(_getTypeName(value));
+        break;
+      case OpCode.toInt:
+        final value = _pop();
+        if (value is double) {
+          _push(value.toInt());
+        } else {
+          _push(value); // Se já é int ou outro tipo, mantém
+        }
+        break;
+      case OpCode.toDouble:
+        final value = _pop();
+        if (value is int) {
+          _push(value.toDouble());
+        } else {
+          _push(value); // Se já é double ou outro tipo, mantém
+        }
+        break;
       case OpCode.equal:
         final b = _pop();
         final a = _pop();
@@ -461,6 +624,16 @@ class VM {
           _runtimeError("Erro na chamada de função.");
         }
         break;
+      case OpCode.return_:
+        // No contexto principal (sem frames), return_ marca fim do programa
+        if (_frames.isEmpty) {
+          // Programa principal terminando - isso é normal
+          return;
+        } else {
+          // Retorno de função - isso deve ser tratado pelo callFunction
+          _runtimeError("Return inesperado fora de contexto de função.");
+        }
+        break;
       default:
         _runtimeError("Operação não suportada: ${instruction.opcode}");
         break;
@@ -472,6 +645,137 @@ class VM {
     if (value == null) return true;
     if (value is bool) return !value;
     return false;
+  }
+
+  /// Debug: mostra informações da instrução atual
+  void _debugInstruction(Instruction instruction) {
+    // Mostra posição atual e instrução
+    print('🔍 [VM] IP: ${_ip - 1} | ${instruction.opcode}${instruction.operand != null ? ' ${instruction.operand}' : ''}');
+    
+    // Mostra pilha atual
+    stdout.write('    Stack: [');
+    for (int i = 0; i < _stack.length; i++) {
+      if (i > 0) stdout.write(', ');
+      final value = _stack[i];
+      if (value is String) {
+        stdout.write('"$value"');
+      } else {
+        stdout.write('$value');
+      }
+    }
+    print(']');
+    
+    // Mostra globals relevantes (apenas se não vazio)
+    if (_globals.isNotEmpty && _globals.length <= 5) {
+      stdout.write('    Globals: {');
+      final entries = _globals.entries.toList();
+      for (int i = 0; i < entries.length; i++) {
+        if (i > 0) stdout.write(', ');
+        final entry = entries[i];
+        stdout.write('${entry.key}: ${entry.value}');
+      }
+      print('}');
+    }
+    print('');
+  }
+
+  // ===== MÉTODOS PARA DEBUGGER INTERATIVO =====
+
+  /// Executa uma única instrução (para step-by-step)
+  InterpretResult interpretStep(BytecodeChunk chunk) {
+    // Inicializa se necessário
+    try {
+      if (_chunk != chunk) {
+        _chunk = chunk;
+        _ip = 0;
+        _stack.clear();
+        _globals.clear();
+        _frames.clear();
+      }
+    } catch (e) {
+      // Se _chunk não foi inicializada ainda
+      _chunk = chunk;
+      _ip = 0;
+      _stack.clear();
+      _globals.clear();
+      _frames.clear();
+    }
+    
+    if (_ip >= chunk.code.length) {
+      return InterpretResult.ok;
+    }
+    
+    final instruction = chunk.code[_ip++];
+    
+    if (_debugMode) {
+      _debugInstruction(instruction);
+    }
+    
+    if (onInstructionExecute != null) {
+      onInstructionExecute!(_ip - 1, instruction.opcode, List.from(_stack), Map.from(_globals));
+    }
+    
+    try {
+      _executeInstruction(instruction);
+      return InterpretResult.ok;
+    } on VmRuntimeError catch (e) {
+      stderr.writeln('Erro de Execução: ${e.message}');
+      return InterpretResult.runtimeError;
+    }
+  }
+
+  /// Verifica se chegou ao fim do programa
+  bool isAtEnd() {
+    return _ip >= _chunk.code.length;
+  }
+
+  /// Obtém valor de uma variável global
+  Object? getGlobalValue(String name) {
+    if (_globals.containsKey(name)) {
+      return _globals[name];
+    }
+    throw VmRuntimeError("Variável '$name' não encontrada");
+  }
+
+  /// Obtém todas as variáveis globais
+  Map<String, Object?> getAllGlobals() {
+    return Map.from(_globals);
+  }
+
+  /// Obtém valores da pilha
+  List<Object?> getStackValues() {
+    return List.from(_stack);
+  }
+
+  /// Obtém call stack atual
+  List<CallFrame> getCallStack() {
+    return List.from(_frames);
+  }
+
+  /// Retorna o nome do tipo de um valor para o operador typeof
+  String _getTypeName(dynamic value) {
+    if (value == null) return 'nulo';
+    if (value is bool) return 'logico';
+    if (value is int) return 'inteiro';
+    if (value is double) return 'real';
+    if (value is String) return 'texto';
+    if (value is CompiledFunction) return 'funcao';
+    return 'desconhecido';
+  }
+
+  /// Define callback para execução de instrução
+  void setOnInstructionExecute(Function(int ip, OpCode opCode, List<dynamic> stack, Map<String, dynamic> globals) callback) {
+    onInstructionExecute = callback;
+  }
+
+  /// Define callback para chamada de função
+  void setOnFunctionCall(Function(String functionName, List<dynamic> args) callback) {
+    onFunctionCall = callback;
+  }
+
+  /// Define callback para retorno de função
+  void setOnFunctionReturn(Function(String functionName, dynamic returnValue) callback) {
+    onFunctionReturn = callback;
   }
 
 }

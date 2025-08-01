@@ -25,6 +25,33 @@ class Parser {
       if (_match([TokenType.var_])) return _varDeclaration();
       if (_match([TokenType.constante])) return _constDeclaration();
       
+      // Verificar se é uma declaração de lista (lista<tipo> nome = ...)
+      // Precisa distinguir de função que retorna lista
+      if (_check(TokenType.lista)) {
+        // Olhar mais à frente para ver se tem parênteses
+        int lookAhead = _current + 1; // Avançar past 'lista'
+        if (lookAhead < _tokens.length && _tokens[lookAhead].type == TokenType.less) {
+          lookAhead++; // Avançar past '<'
+          while (lookAhead < _tokens.length && _tokens[lookAhead].type != TokenType.greater) {
+            lookAhead++; // Pular o tipo
+          }
+          if (lookAhead < _tokens.length && _tokens[lookAhead].type == TokenType.greater) {
+            lookAhead++; // Avançar past '>'
+            if (lookAhead < _tokens.length && _tokens[lookAhead].type == TokenType.identifier) {
+              lookAhead++; // Avançar past identifier
+              // Se o próximo token é '(' então é função que retorna lista
+              if (lookAhead < _tokens.length && _tokens[lookAhead].type == TokenType.leftParen) {
+                return _functionDeclaration();
+              } else {
+                // Senão é declaração de lista
+                _match([TokenType.lista]); // Consumir 'lista'
+                return _listDeclaration();
+              }
+            }
+          }
+        }
+      }
+      
       // Verificar se é uma declaração de função (tipo + identificador + parênteses)
       if (_isTypeToken(_peek()) && 
           _current + 1 < _tokens.length && 
@@ -91,7 +118,7 @@ class Parser {
   /// **Parsing de Declaração de Constante**
   /// 
   /// Reconhece e analisa declarações de constantes com tipo explícito.
-  /// Sintaxe: constante <tipo> <nome> = <valor>;
+  /// Sintaxe: constante `<tipo>` `<nome>` = `<valor>`;
   /// 
   /// **Exemplos:**
   /// - constante inteiro MAXIMO = 100;
@@ -128,6 +155,44 @@ class Parser {
     return ConstDeclStmt(type, name, initializer);
   }
 
+  /// **Parsing de Declaração de Lista**
+  /// 
+  /// Reconhece e analisa declarações de listas homogêneas.
+  /// Sintaxe: lista<tipo> nome = [elementos...];
+  /// 
+  /// **Exemplos:**
+  /// - lista<inteiro> numeros = [1, 2, 3];
+  /// - lista<texto> nomes = ["João", "Maria"];
+  /// - lista<real> valores = [1.5, 2.7, 3.14];
+  /// - lista<logico> flags = [verdadeiro, falso];
+  /// - lista<inteiro> vazia = [];
+  Stmt _listDeclaration() {
+    // Consumir '<'
+    _consume(TokenType.less, "Esperado '<' após 'lista'.");
+    
+    // Consumir tipo dos elementos
+    if (!_isTypeToken(_peek())) {
+      throw _error(_peek(), "Esperado tipo válido dentro de 'lista<tipo>'.");
+    }
+    final elementTypeToken = _advance();
+    final elementType = TypeInfo(elementTypeToken);
+    
+    // Consumir '>'
+    _consume(TokenType.greater, "Esperado '>' após tipo em 'lista<tipo>'.");
+    
+    // Consumir nome da lista
+    final name = _consume(TokenType.identifier, "Esperado nome da lista.");
+    
+    // Verificar se há inicialização
+    Expr? initializer;
+    if (_match([TokenType.equal])) {
+      initializer = _expression();
+    }
+    
+    _consume(TokenType.semicolon, "Esperado ';' após a declaração da lista.");
+    return ListDeclStmt(elementType, name, initializer);
+  }
+
   Stmt _statement() {
     if (_match([TokenType.import_])) return _importStatement();
     if (_match([TokenType.if_])) return _ifStatement();
@@ -143,6 +208,9 @@ class Parser {
       }
     }
     if (_match([TokenType.return_])) return _returnStatement();
+    if (_match([TokenType.break_])) return _breakStatement();
+    if (_match([TokenType.continue_])) return _continueStatement();
+    if (_match([TokenType.switch_])) return _switchStatement();
     if (_match([TokenType.leftBrace])) return BlockStmt(_block());
     return _expressionStatement();
   }
@@ -296,6 +364,8 @@ class Parser {
       final value = _assignment();
       if (expr is VariableExpr) {
         return AssignExpr(expr.name, value);
+      } else if (expr is IndexAccessExpr) {
+        return IndexAssignExpr(expr.object, expr.bracket, expr.index, value);
       }
       _error(equals, "Alvo de atribuição inválido.");
     } else if (_match([TokenType.plusEqual, TokenType.minusEqual, TokenType.starEqual, TokenType.slashEqual, TokenType.percentEqual])) {
@@ -330,7 +400,7 @@ class Parser {
   Expr _factor() => _binary(next: _unary, types: [TokenType.slash, TokenType.star, TokenType.percent]);
 
   Expr _unary() {
-    if (_match([TokenType.bang, TokenType.minus])) {
+    if (_match([TokenType.bang, TokenType.minus, TokenType.typeof_])) {
       final operator = _previous();
       final right = _unary();
       return UnaryExpr(operator, right);
@@ -363,10 +433,44 @@ class Parser {
       if (_match([TokenType.leftParen])) {
         expr = _finishCall(expr);
       } else if (_match([TokenType.dot])) {
-        // Suporte a acesso de membro: objeto.propriedade
+        // Verifica se é uma chamada de método ou acesso de membro
         final dot = _previous();
-        final property = _consume(TokenType.identifier, "Esperado nome da propriedade após '.'.");
-        expr = MemberAccessExpr(expr, dot, property);
+        
+        // Aceitar tanto identificadores quanto métodos de lista
+        Token property;
+        if (_check(TokenType.identifier) || 
+            _check(TokenType.tamanho) || 
+            _check(TokenType.adicionar) || 
+            _check(TokenType.remover) ||
+            _check(TokenType.estaVazio)) {
+          property = _advance();
+        } else {
+          throw _error(_peek(), "Esperado nome da propriedade ou método após '.'.");
+        }
+        
+        // Se há parênteses após o identificador, é uma chamada de método
+        if (_check(TokenType.leftParen)) {
+          final paren = _advance();
+          final arguments = <Expr>[];
+          
+          if (!_check(TokenType.rightParen)) {
+            do {
+              arguments.add(_expression());
+            } while (_match([TokenType.comma]));
+          }
+          
+          _consume(TokenType.rightParen, "Esperado ')' após argumentos do método.");
+          expr = MethodCallExpr(expr, dot, property, paren, arguments);
+        } else {
+          // Caso contrário, é acesso de membro
+          expr = MemberAccessExpr(expr, dot, property);
+        }
+      } else if (_match([TokenType.leftBracket])) {
+        // Suporte a acesso por índice: lista[indice]
+        final bracket = _previous();
+        final index = _expression();
+        _consume(TokenType.rightBracket, "Esperado ']' após índice.");
+        expr = IndexAccessExpr(expr, bracket, index);
       } else if (_match([TokenType.plusPlus])) {
         // Suporte a incremento pós-fixo: variavel++
         if (expr is VariableExpr) {
@@ -404,7 +508,39 @@ class Parser {
       _consume(TokenType.rightParen, "Esperado ')' após a expressão.");
       return GroupingExpr(expr);
     }
+    if (_match([TokenType.leftBracket])) {
+      return _listLiteral();
+    }
     throw _error(_peek(), "Expressão esperada.");
+  }
+
+  /// **Parsing de Lista Literal**
+  /// 
+  /// Reconhece e analisa listas literais na forma [elemento1, elemento2, ...].
+  /// 
+  /// **Exemplos:**
+  /// - [1, 2, 3, 4, 5]
+  /// - ["João", "Maria", "Pedro"]
+  /// - [1.5, 2.7, 3.14]
+  /// - [verdadeiro, falso, verdadeiro]
+  /// - [] (lista vazia)
+  Expr _listLiteral() {
+    final leftBracket = _previous(); // Já consumimos o '['
+    final elements = <Expr>[];
+    
+    // Lista vazia
+    if (_check(TokenType.rightBracket)) {
+      final rightBracket = _advance();
+      return ListLiteralExpr(leftBracket, elements, rightBracket);
+    }
+    
+    // Lista com elementos
+    do {
+      elements.add(_expression());
+    } while (_match([TokenType.comma]));
+    
+    final rightBracket = _consume(TokenType.rightBracket, "Esperado ']' após elementos da lista.");
+    return ListLiteralExpr(leftBracket, elements, rightBracket);
   }
 
   // Funções de utilidade do Parser
@@ -427,7 +563,39 @@ class Parser {
            token.type == TokenType.real ||
            token.type == TokenType.texto ||
            token.type == TokenType.logico ||
-           token.type == TokenType.vazio;
+           token.type == TokenType.vazio ||
+           token.type == TokenType.lista;
+  }
+
+  /// Parseia um tipo simples ou complexo (como lista<tipo>)
+  TypeInfo _parseType() {
+    if (_match([TokenType.lista])) {
+      // Parsear tipo de lista: lista<tipo>
+      _consume(TokenType.less, "Esperado '<' após 'lista'.");
+      
+      if (!_isTypeToken(_peek())) {
+        throw _error(_peek(), "Esperado tipo válido dentro de 'lista<tipo>'.");
+      }
+      final elementTypeToken = _advance();
+      
+      _consume(TokenType.greater, "Esperado '>' após tipo em 'lista<tipo>'.");
+      
+      // Retornar TypeInfo com tipo composto
+      final listToken = Token(
+        type: TokenType.lista,
+        lexeme: "lista<${elementTypeToken.lexeme}>",
+        literal: null,
+        line: elementTypeToken.line,
+        column: elementTypeToken.column,
+      );
+      return TypeInfo(listToken);
+    } else {
+      // Tipo simples
+      if (!_isTypeToken(_peek())) {
+        throw _error(_peek(), "Esperado tipo válido.");
+      }
+      return TypeInfo(_advance());
+    }
   }
 
   /// Retorna o próximo token sem consumi-lo
@@ -436,7 +604,7 @@ class Parser {
     return _tokens[_current + 1];
   }
 
-  /// Retorna o token seguinte ao próximo sem consumi-lo
+  /// Retorna o token depois do próximo sem consumi-lo
   Token _peekNextNext() {
     if (_current + 2 >= _tokens.length) return _tokens.last;
     return _tokens[_current + 2];
@@ -444,9 +612,8 @@ class Parser {
 
   /// Analisa declaração de função: tipo nome(params) { body }
   Stmt _functionDeclaration() {
-    // Consumir o tipo de retorno
-    final returnTypeToken = _advance();
-    final returnType = TypeInfo(returnTypeToken);
+    // Parsear o tipo de retorno (pode ser simples ou complexo como lista<tipo>)
+    final returnType = _parseType();
 
     // Consumir o nome da função
     final name = _consume(TokenType.identifier, "Esperado nome da função.");
@@ -457,11 +624,8 @@ class Parser {
     final parameters = <Parameter>[];
     if (!_check(TokenType.rightParen)) {
       do {
-        // Tipo do parâmetro
-        if (!_isTypeToken(_peek())) {
-          throw _error(_peek(), "Esperado tipo do parâmetro.");
-        }
-        final paramType = TypeInfo(_advance());
+        // Tipo do parâmetro (pode ser simples ou complexo)
+        final paramType = _parseType();
         
         // Nome do parâmetro
         final paramName = _consume(TokenType.identifier, "Esperado nome do parâmetro.");
@@ -490,6 +654,61 @@ class Parser {
     
     _consume(TokenType.semicolon, "Esperado ';' após valor de retorno.");
     return ReturnStmt(keyword, value);
+  }
+
+  /// Analisa comando break: parar;
+  Stmt _breakStatement() {
+    final keyword = _previous();
+    _consume(TokenType.semicolon, "Esperado ';' após 'parar'.");
+    return BreakStmt(keyword);
+  }
+
+  /// Analisa comando continue: continuar;
+  Stmt _continueStatement() {
+    final keyword = _previous();
+    _consume(TokenType.semicolon, "Esperado ';' após 'continuar'.");
+    return ContinueStmt(keyword);
+  }
+
+  /// Analisa estrutura switch: escolha (expr) { caso valor: statements parar; caso contrario: statements }
+  Stmt _switchStatement() {
+    final keyword = _previous();
+    _consume(TokenType.leftParen, "Esperado '(' após 'escolha'.");
+    final expression = _expression();
+    _consume(TokenType.rightParen, "Esperado ')' após expressão do switch.");
+    _consume(TokenType.leftBrace, "Esperado '{' após expressão do switch.");
+    
+    final cases = <CaseStmt>[];
+    
+    while (!_check(TokenType.rightBrace) && !_isAtEnd()) {
+      if (_match([TokenType.case_])) {
+        final caseKeyword = _previous();
+        final value = _expression();
+        _consume(TokenType.colon, "Esperado ':' após valor do caso.");
+        
+        final statements = <Stmt>[];
+        while (!_check(TokenType.case_) && !_check(TokenType.default_) && !_check(TokenType.rightBrace) && !_isAtEnd()) {
+          statements.add(_statement());
+        }
+        
+        cases.add(CaseStmt(caseKeyword, value, statements));
+      } else if (_match([TokenType.default_])) {
+        final defaultKeyword = _previous();
+        _consume(TokenType.colon, "Esperado ':' após 'contrario'.");
+        
+        final statements = <Stmt>[];
+        while (!_check(TokenType.case_) && !_check(TokenType.default_) && !_check(TokenType.rightBrace) && !_isAtEnd()) {
+          statements.add(_statement());
+        }
+        
+        cases.add(CaseStmt(defaultKeyword, null, statements));
+      } else {
+        throw _error(_peek(), "Esperado 'caso' ou 'contrario' dentro do switch.");
+      }
+    }
+    
+    _consume(TokenType.rightBrace, "Esperado '}' após casos do switch.");
+    return SwitchStmt(keyword, expression, cases);
   }
 
   /// Finaliza uma chamada de função processando os argumentos

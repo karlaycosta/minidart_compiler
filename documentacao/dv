@@ -1,0 +1,45 @@
+#!/bin/bash
+
+CHECKSUM_FILE=".last_deploy_checksum"
+
+calc_checksum() {
+  find . -type f \
+    ! -path "./.git/*" \
+    ! -path "./$CHECKSUM_FILE" \
+    -exec md5sum {} \; | sort | md5sum
+}
+
+echo "🔄 Iniciando monitoramento automático de alterações..."
+
+while true; do
+  current_checksum=$(calc_checksum)
+
+  if [ -f "$CHECKSUM_FILE" ]; then
+    last_checksum=$(cat "$CHECKSUM_FILE")
+  else
+    last_checksum=""
+  fi
+
+  if [ "$current_checksum" != "$last_checksum" ]; then
+    echo "📦 Alterações detectadas! Gerando site e realizando deploy..."
+
+    # Build silencioso (oculta detalhes desnecessários do docmd)
+    docmd build > /dev/null 2>&1
+
+    # Deploy silencioso
+    netlify deploy --prod --dir=site --no-build > /dev/null 2>&1
+
+    echo "$current_checksum" > "$CHECKSUM_FILE"
+
+    # Captura data/hora e resumo da alteração para log
+    TIMESTAMP=$(date '+%d/%m/%Y %H:%M:%S')
+    echo "📅 $TIMESTAMP - 🚀 Deploy realizado com alterações detectadas." >> deploy.log
+
+    echo "✅ Deploy finalizado com sucesso em $TIMESTAMP."
+  else
+    echo "🟢 Nenhuma alteração encontrada. Verificando novamente em breve..."
+  fi
+
+  echo "⏳ Aguardando 3 minutos..."
+  sleep 180
+done arrume deixa mas bonito limpa tela e organizaod legivel e bonitinho e deixe o deploy.log   

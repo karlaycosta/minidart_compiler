@@ -51,6 +51,15 @@ enum TokenType {
   var_,
   while_,
   
+  // Controle de loops
+  break_,      // 'parar'
+  continue_,   // 'continuar'
+  
+  // Switch/Case
+  switch_,     // 'escolha'
+  case_,       // 'caso'
+  default_,    // 'contrario'
+  
   // Novos tokens para loop for
   to_,         // 'ate'
   do_,         // 'faca'
@@ -73,6 +82,20 @@ enum TokenType {
   // Sistema de imports
   import_,     // 'importar'
   as_,         // 'como'
+  
+  // Operador typeof
+  typeof_,     // 'tipode'
+  
+  // Sistema de listas
+  lista,       // 'lista'
+  
+  // Métodos de lista
+  tamanho,     // 'tamanho'
+  adicionar,   // 'adicionar'
+  remover,     // 'remover'
+  estaVazio,   // 'vazio'
+  leftBracket, // '['
+  rightBracket,// ']'
 
   eof,
 }
@@ -165,6 +188,11 @@ extension TokenTypeExtension on TokenType {
       TokenType.true_ => 'Verdadeiro',
       TokenType.var_ => 'Variável',
       TokenType.while_ => 'Enquanto (loop)',
+      TokenType.break_ => 'Parar (loop)',
+      TokenType.continue_ => 'Continuar (loop)',
+      TokenType.switch_ => 'Escolha (switch)',
+      TokenType.case_ => 'Caso (case)',
+      TokenType.default_ => 'Contrário (default)',
       TokenType.to_ => 'Até (loop for)',
       TokenType.do_ => 'Faça (loop)',
       TokenType.increment_ => 'Incremente (incremento)',
@@ -181,6 +209,17 @@ extension TokenTypeExtension on TokenType {
       TokenType.constante => 'Declaração de Constante',
       TokenType.import_ => 'Importar',
       TokenType.as_ => 'Como',
+      TokenType.typeof_ => 'Operador TipoDe',
+      // ========================================================================
+      // SISTEMA DE LISTAS
+      // ========================================================================
+      TokenType.lista => 'Tipo Lista',
+      TokenType.tamanho => 'Tamanho da Lista',
+      TokenType.adicionar => 'Adicionar à Lista',
+      TokenType.remover => 'Remover da Lista',
+      TokenType.estaVazio => 'Verificar se Lista Está Vazia',
+      TokenType.leftBracket => 'Colchete Esquerdo',
+      TokenType.rightBracket => 'Colchete Direito',
       // ========================================================================
       // ESPECIAIS
       // ========================================================================
@@ -242,6 +281,11 @@ extension TokenTypeExtension on TokenType {
       TokenType.true_ => 'verdadeiro',
       TokenType.var_ => 'var',
       TokenType.while_ => 'enquanto',
+      TokenType.break_ => 'parar',
+      TokenType.continue_ => 'continuar',
+      TokenType.switch_ => 'escolha',
+      TokenType.case_ => 'caso',
+      TokenType.default_ => 'contrario',
       TokenType.to_ => 'ate',
       TokenType.do_ => 'faca',
       TokenType.increment_ => 'incremente',
@@ -257,6 +301,15 @@ extension TokenTypeExtension on TokenType {
       // Sistema de imports
       TokenType.import_ => 'importar',
       TokenType.as_ => 'como',
+      TokenType.typeof_ => 'tipode',
+      // Sistema de listas
+      TokenType.lista => 'lista',
+      TokenType.tamanho => 'tamanho',
+      TokenType.adicionar => 'adicionar',
+      TokenType.remover => 'remover',
+      TokenType.estaVazio => 'vazio',
+      TokenType.leftBracket => '[',
+      TokenType.rightBracket => ']',
       // Especiais
       TokenType.eof => '<EOF>',
     };

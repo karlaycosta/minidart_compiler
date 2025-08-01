@@ -2,12 +2,31 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 
+/**
+ * Debug Adapter Descriptor Factory para MiniDart
+ */
+class MiniDartDebugAdapterDescriptorFactory implements vscode.DebugAdapterDescriptorFactory {
+    createDebugAdapterDescriptor(session: vscode.DebugSession): vscode.ProviderResult<vscode.DebugAdapterDescriptor> {
+        // Retorna o caminho para o debug adapter DAP completo
+        const adapterPath = path.join(__dirname, 'debugMainStandalone.js');
+        console.log('🎯 Debug Adapter Standalone Path:', adapterPath);
+        return new vscode.DebugAdapterExecutable('node', [adapterPath]);
+    }
+}
+
 export function activate(context: vscode.ExtensionContext) {
     console.log('MiniDart Extension ativada!');
+
+    // Registrar Debug Adapter Factory
+    const debugAdapterFactory = new MiniDartDebugAdapterDescriptorFactory();
+    context.subscriptions.push(
+        vscode.debug.registerDebugAdapterDescriptorFactory('minidart', debugAdapterFactory)
+    );
 
     // Registrar comandos
     const compileCommand = vscode.commands.registerCommand('minidart.compile', compileFile);
     const runCommand = vscode.commands.registerCommand('minidart.run', runFile);
+    const debugCommand = vscode.commands.registerCommand('minidart.debug', debugFile);
     const generateASTCommand = vscode.commands.registerCommand('minidart.generateAST', generateAST);
     const openASTCommand = vscode.commands.registerCommand('minidart.openAST', openAST);
     const newFileCommand = vscode.commands.registerCommand('minidart.newFile', createNewFile);
@@ -29,6 +48,7 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(
         compileCommand,
         runCommand,
+        debugCommand,
         generateASTCommand,
         openASTCommand,
         newFileCommand,
@@ -98,6 +118,45 @@ async function runFile() {
     terminal.show();
 
     vscode.window.showInformationMessage('▶️ Executando arquivo MiniDart...');
+}
+
+async function debugFile() {
+    const editor = vscode.window.activeTextEditor;
+    if (!editor || !editor.document.fileName.endsWith('.mdart')) {
+        vscode.window.showErrorMessage('Por favor, abra um arquivo .mdart');
+        return;
+    }
+
+    const filePath = editor.document.fileName;
+    const workspaceFolder = vscode.workspace.getWorkspaceFolder(editor.document.uri);
+    
+    if (!workspaceFolder) {
+        vscode.window.showErrorMessage('Arquivo deve estar em um workspace');
+        return;
+    }
+
+    // Salvar arquivo antes de fazer debug
+    await editor.document.save();
+
+    // Criar configuração de debug
+    const debugConfig: vscode.DebugConfiguration = {
+        type: 'minidart',
+        name: 'Debug MiniDart',
+        request: 'launch',
+        program: filePath,
+        stopOnEntry: true,
+        compilerPath: path.join(workspaceFolder.uri.fsPath, 'bin/compile.dart'),
+        cwd: workspaceFolder.uri.fsPath
+    };
+
+    // Iniciar sessão de debug
+    const started = await vscode.debug.startDebugging(workspaceFolder, debugConfig);
+    
+    if (started) {
+        vscode.window.showInformationMessage('🐛 Iniciando debug MiniDart...');
+    } else {
+        vscode.window.showErrorMessage('❌ Erro ao iniciar debug. Verifique a configuração.');
+    }
 }
 
 async function generateAST() {
