@@ -1,77 +1,79 @@
 import 'dart:io';
 import 'package:args/args.dart';
-import 'package:minidart_compiler/src/token.dart';
-import 'package:minidart_compiler/src/version.dart';
-import 'package:minidart_compiler/src/lexer.dart';
-import 'package:minidart_compiler/src/parser.dart';
-import 'package:minidart_compiler/src/error.dart';
-import 'package:minidart_compiler/src/semantic_analyzer.dart';
-import 'package:minidart_compiler/src/code_generator.dart';
-import 'package:minidart_compiler/src/vm.dart';
-import 'package:minidart_compiler/src/ast_graphviz_generator.dart';
-import 'package:minidart_compiler/src/interactive_debugger.dart';
-import 'package:minidart_compiler/src/dap_debugger.dart';
+import 'package:LIPO_COMPILER/src/token.dart';
+import 'package:LIPO_COMPILER/src/version.dart';
+import 'package:LIPO_COMPILER/src/lexer.dart';
+import 'package:LIPO_COMPILER/src/parser.dart';
+import 'package:LIPO_COMPILER/src/error.dart';
+import 'package:LIPO_COMPILER/src/semantic_analyzer.dart';
+import 'package:LIPO_COMPILER/src/code_generator.dart';
+import 'package:LIPO_COMPILER/src/vm.dart';
+import 'package:LIPO_COMPILER/src/ast_graphviz_generator.dart';
+import 'package:LIPO_COMPILER/src/interactive_debugger.dart';
+import 'package:LIPO_COMPILER/src/dap_debugger.dart';
 
 // Cria uma instância única do reporter de erros para todo o compilador.
 final errorReporter = ErrorReporter();
 
 void main(List<String> arguments) {
-  final parser = ArgParser()
-    ..addFlag(
-      'version',
-      abbr: 'v',
-      negatable: false,
-      help: 'Mostra a versão do compilador',
-    )
-    ..addFlag(
-      'ast-only',
-      abbr: 'a',
-      negatable: false,
-      help: 'Gera apenas a AST em Graphviz (não executa o código)',
-    )
-    ..addFlag(
-      'bytecode',
-      abbr: 'b',
-      negatable: false,
-      help: 'Mostra o bytecode gerado durante a compilação',
-    )
-    ..addFlag(
-      'debug-interactive',
-      abbr: 'i',
-      negatable: false,
-      help: 'Inicia o debugger interativo com breakpoints e step-by-step',
-    )
-    ..addFlag(
-      'debug-dap',
-      negatable: false,
-      help:
-          'Inicia o modo DAP (Debug Adapter Protocol) para integração VS Code',
-    )
-    ..addFlag(
-      'debug-tokens',
-      negatable: false,
-      help: 'Mostra todos os tokens identificados durante a análise léxica',
-    )
-    ..addFlag(
-      'debug-parser',
-      negatable: false,
-      help: 'Mostra detalhes da construção da AST durante o parsing',
-    )
-    ..addFlag(
-      'debug-semantic',
-      negatable: false,
-      help: 'Exibe informações detalhadas da análise semântica e escopo',
-    )
-    ..addFlag(
-      'debug-vm',
-      negatable: false,
-      help: 'Mostra execução passo-a-passo da VM com stack e instruções',
-    )
-    ..addFlag(
-      'debug-all',
-      negatable: false,
-      help: 'Ativa todos os modos de debug (tokens + parser + semantic + vm)',
-    );
+  final parser =
+      ArgParser()
+        ..addFlag(
+          'version',
+          abbr: 'v',
+          negatable: false,
+          help: 'Mostra a versão do compilador',
+        )
+        ..addFlag(
+          'ast-only',
+          abbr: 'a',
+          negatable: false,
+          help: 'Gera apenas a AST em Graphviz (não executa o código)',
+        )
+        ..addFlag(
+          'bytecode',
+          abbr: 'b',
+          negatable: false,
+          help: 'Mostra o bytecode gerado durante a compilação',
+        )
+        ..addFlag(
+          'debug-interactive',
+          abbr: 'i',
+          negatable: false,
+          help: 'Inicia o debugger interativo com breakpoints e step-by-step',
+        )
+        ..addFlag(
+          'debug-dap',
+          negatable: false,
+          help:
+              'Inicia o modo DAP (Debug Adapter Protocol) para integração VS Code',
+        )
+        ..addFlag(
+          'debug-tokens',
+          negatable: false,
+          help: 'Mostra todos os tokens identificados durante a análise léxica',
+        )
+        ..addFlag(
+          'debug-parser',
+          negatable: false,
+          help: 'Mostra detalhes da construção da AST durante o parsing',
+        )
+        ..addFlag(
+          'debug-semantic',
+          negatable: false,
+          help: 'Exibe informações detalhadas da análise semântica e escopo',
+        )
+        ..addFlag(
+          'debug-vm',
+          negatable: false,
+          help: 'Mostra execução passo-a-passo da VM com stack e instruções',
+        )
+        ..addFlag(
+          'debug-all',
+          negatable: false,
+          help:
+              'Ativa todos os modos de debug (tokens + parser + semantic + vm)',
+        );
 
   ArgResults argResults;
   try {

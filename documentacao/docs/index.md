@@ -18,3 +18,5 @@ LiPo (Linguagem em Portugol) é uma linguagem de programação educacional desen
 | Inferência de Tipos                                                                                 | Conversão Automática                                                  |
 |---------------------------------------------------------------------------------------------------|----------------------------------------------------------------------|
 | O compilador pode deduzir automaticamente o tipo de uma variável com base em seu valor inicial.    | Valores inteiros são automaticamente convertidos para reais quando exigido pelo contexto. |
+
+
