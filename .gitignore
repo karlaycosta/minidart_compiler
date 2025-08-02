@@ -16,6 +16,7 @@ pubspec.lock
 icons/
 release/
 installer.nsi
+build_extension.bat
 
 # WebAssembly gerado
 web/
