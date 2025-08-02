@@ -158,14 +158,14 @@ class Parser {
   /// **Parsing de Declaração de Lista**
   /// 
   /// Reconhece e analisa declarações de listas homogêneas.
-  /// Sintaxe: lista<tipo> nome = [elementos...];
+  /// Sintaxe: lista`<tipo>` nome = [elementos...];
   /// 
   /// **Exemplos:**
-  /// - lista<inteiro> numeros = [1, 2, 3];
-  /// - lista<texto> nomes = ["João", "Maria"];
-  /// - lista<real> valores = [1.5, 2.7, 3.14];
-  /// - lista<logico> flags = [verdadeiro, falso];
-  /// - lista<inteiro> vazia = [];
+  /// - lista`<inteiro>` numeros = [1, 2, 3];
+  /// - lista`<texto>` nomes = ["João", "Maria"];
+  /// - lista`<real>` valores = [1.5, 2.7, 3.14];
+  /// - lista`<logico>` flags = [verdadeiro, falso];
+  /// - lista`<inteiro>` vazia = [];
   Stmt _listDeclaration() {
     // Consumir '<'
     _consume(TokenType.less, "Esperado '<' após 'lista'.");
@@ -392,8 +392,25 @@ class Parser {
     return expr;
   }
   
-  Expr _or() => _binary(next: _and, types: [TokenType.or]);
-  Expr _and() => _binary(next: _equality, types: [TokenType.and]);
+  Expr _or() {
+    var expr = _and();
+    while (_match([TokenType.or])) {
+      final operator = _previous();
+      final right = _and();
+      expr = LogicalExpr(expr, operator, right);
+    }
+    return expr;
+  }
+  
+  Expr _and() {
+    var expr = _equality();
+    while (_match([TokenType.and])) {
+      final operator = _previous();
+      final right = _equality();
+      expr = LogicalExpr(expr, operator, right);
+    }
+    return expr;
+  }
   Expr _equality() => _binary(next: _comparison, types: [TokenType.bangEqual, TokenType.equalEqual]);
   Expr _comparison() => _binary(next: _term, types: [TokenType.greater, TokenType.greaterEqual, TokenType.less, TokenType.lessEqual]);
   Expr _term() => _binary(next: _factor, types: [TokenType.minus, TokenType.plus]);
@@ -442,7 +459,8 @@ class Parser {
             _check(TokenType.tamanho) || 
             _check(TokenType.adicionar) || 
             _check(TokenType.remover) ||
-            _check(TokenType.estaVazio)) {
+            _check(TokenType.estaVazio) ||
+            _check(TokenType.vazio)) {
           property = _advance();
         } else {
           throw _error(_peek(), "Esperado nome da propriedade ou método após '.'.");
@@ -511,6 +529,14 @@ class Parser {
     if (_match([TokenType.leftBracket])) {
       return _listLiteral();
     }
+    
+    // Verificar se o token atual é uma palavra reservada para dar erro mais específico
+    final currentToken = _peek();
+    if (_isReservedWord(currentToken)) {
+      final wordName = _getReservedWordName(currentToken.type);
+      throw _error(currentToken, "A palavra reservada '$wordName' não pode ser usada como nome de variável ou em uma expressão. Considere usar um nome diferente.");
+    }
+    
     throw _error(_peek(), "Expressão esperada.");
   }
 
@@ -567,7 +593,7 @@ class Parser {
            token.type == TokenType.lista;
   }
 
-  /// Parseia um tipo simples ou complexo (como lista<tipo>)
+  /// Parseia um tipo simples ou complexo (como lista`<tipo>`)
   TypeInfo _parseType() {
     if (_match([TokenType.lista])) {
       // Parsear tipo de lista: lista<tipo>
@@ -739,6 +765,14 @@ class Parser {
 
   Token _consume(TokenType type, String message) {
     if (_check(type)) return _advance();
+    
+    // Se estivermos esperando um identificador mas encontramos uma palavra reservada,
+    // damos uma mensagem de erro mais específica
+    if (type == TokenType.identifier && _isReservedWord(_peek())) {
+      final wordName = _getReservedWordName(_peek().type);
+      throw _error(_peek(), "A palavra reservada '$wordName' não pode ser usada como nome de variável. Considere usar um nome diferente.");
+    }
+    
     throw _error(_peek(), message);
   }
 
@@ -849,6 +883,112 @@ class Parser {
       }
       _advance();
     }
+  }
+
+  /// **Verificação de Palavra Reservada**
+  /// 
+  /// Verifica se um token representa uma palavra reservada da linguagem.
+  /// Usado para melhorar as mensagens de erro quando o usuário tenta usar
+  /// palavras reservadas como nomes de variáveis.
+  /// 
+  /// **Parâmetros:**
+  /// - [token]: Token a ser verificado
+  /// 
+  /// **Retorna:**
+  /// - true se o token é uma palavra reservada, false caso contrário
+  bool _isReservedWord(Token token) {
+    // Lista de todas as palavras reservadas que podem ser confundidas com identificadores
+    const reservedWords = {
+      TokenType.and,
+      TokenType.else_,
+      TokenType.false_,
+      TokenType.for_,
+      TokenType.if_,
+      TokenType.nil,
+      TokenType.or,
+      TokenType.print_,
+      TokenType.return_,
+      TokenType.true_,
+      TokenType.var_,
+      TokenType.while_,
+      TokenType.break_,
+      TokenType.continue_,
+      TokenType.switch_,
+      TokenType.case_,
+      TokenType.default_,
+      TokenType.to_,
+      TokenType.do_,
+      TokenType.increment_,
+      TokenType.decrement_,
+      TokenType.dowhile_,
+      TokenType.inteiro,
+      TokenType.real,
+      TokenType.texto,
+      TokenType.logico,
+      TokenType.vazio,
+      TokenType.constante,
+      TokenType.import_,
+      TokenType.as_,
+      TokenType.typeof_,
+      TokenType.lista,
+      TokenType.tamanho,
+      TokenType.adicionar,
+      TokenType.remover,
+      TokenType.estaVazio,
+    };
+    
+    return reservedWords.contains(token.type);
+  }
+
+  /// **Obter Nome da Palavra Reservada**
+  /// 
+  /// Retorna o nome textual de uma palavra reservada para usar em mensagens de erro.
+  /// 
+  /// **Parâmetros:**
+  /// - [tokenType]: Tipo do token da palavra reservada
+  /// 
+  /// **Retorna:**
+  /// - String com o nome da palavra reservada
+  String _getReservedWordName(TokenType tokenType) {
+    const wordNames = {
+      TokenType.and: 'e',
+      TokenType.else_: 'senao',
+      TokenType.false_: 'falso',
+      TokenType.for_: 'para',
+      TokenType.if_: 'se',
+      TokenType.nil: 'nulo',
+      TokenType.or: 'ou',
+      TokenType.print_: 'imprima',
+      TokenType.return_: 'retorne',
+      TokenType.true_: 'verdadeiro',
+      TokenType.var_: 'var',
+      TokenType.while_: 'enquanto',
+      TokenType.break_: 'parar',
+      TokenType.continue_: 'continuar',
+      TokenType.switch_: 'escolha',
+      TokenType.case_: 'caso',
+      TokenType.default_: 'contrario',
+      TokenType.to_: 'ate',
+      TokenType.do_: 'faca',
+      TokenType.increment_: 'incremente',
+      TokenType.decrement_: 'decremente',
+      TokenType.inteiro: 'inteiro',
+      TokenType.real: 'real',
+      TokenType.texto: 'texto',
+      TokenType.logico: 'logico',
+      TokenType.vazio: 'vazio',
+      TokenType.constante: 'constante',
+      TokenType.import_: 'importar',
+      TokenType.as_: 'como',
+      TokenType.typeof_: 'tipode',
+      TokenType.lista: 'lista',
+      TokenType.tamanho: 'tamanho',
+      TokenType.adicionar: 'adicionar',
+      TokenType.remover: 'remover',
+      TokenType.estaVazio: 'vazio',
+    };
+    
+    return wordNames[tokenType] ?? tokenType.toString();
   }
 }
 

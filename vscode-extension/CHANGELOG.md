@@ -1,10 +1,36 @@
-# 📋 Changelog - Extensão VS Code MiniDart
+# 📋 Changelog - LiPo VS Code Extension
+
+## [2.3.0] - 2025-08-01
+
+### 🚀 **Recursos Principais**
+- ✅ **Comando Global**: Usa `lipo` em vez de caminho do compilador
+- ✅ **Execução Simplificada**: Terminal compartilhado otimizado
+- ✅ **Configuração Limpa**: Removidas configurações desnecessárias
+- ✅ **Performance**: Execução mais rápida e eficiente
+
+### 🔧 **Mudanças Técnicas**
+- ✅ Removida dependência do `compilerPath`
+- ✅ Simplificação do código da extensão
+- ✅ Configurações de debug otimizadas
+- ✅ README atualizado para marketplace
+
+### 📦 **Preparação para Marketplace**
+- ✅ Metadados completos no package.json
+- ✅ README profissional com badges
+- ✅ Documentação de instalação
+- ✅ Links para suporte e issues
+
+## [2.2.0] - 2025-07-31
+
+### ✨ **Recursos Adicionados**
+- ✅ Terminal compartilhado para todas as operações
+- ✅ Correção de configurações de debug
+- ✅ Remoção de referências a extensões antigas
+- ✅ Configurações de workspace atualizadas
 
 ## [2.1.0] - 2025-07-30
 
-### ✨ **Recursos Adicionados**
-
-#### 🎯 **Sistema de Listas Completo**
+### ✨ **Sistema de Listas Completo**
 - ✅ Suporte completo para listas tipadas: `lista<inteiro>`, `lista<real>`, `lista<texto>`, `lista<logico>`
 - ✅ Syntax highlighting para declarações de lista: `lista<tipo> nome = [elementos];`
 - ✅ Destaque para métodos de lista: `.tamanho()`, `.adicionar()`, `.remover()`, `.vazio()`

@@ -521,8 +521,11 @@ class SemanticAnalyzer implements AstVisitor<void> {
 
   @override
   void visitFunctionStmt(FunctionStmt stmt) {
-    // Declara a função no escopo atual
+    // Declara a função no escopo atual com o tipo de retorno
     _declare(stmt.name);
+    if (stmt.returnType != null) {
+      _currentScope.defineFunction(stmt.name, stmt.returnType!.type.type);
+    }
     _define(stmt.name);
 
     // Salva o tipo de retorno atual e define o novo
@@ -535,7 +538,19 @@ class SemanticAnalyzer implements AstVisitor<void> {
     // Declara os parâmetros no escopo da função
     for (final param in stmt.params) {
       _declare(param.name);
-      _currentScope.defineTyped(param.name, param.type.type.type);
+      
+      // Verifica se é uma lista para extrair o tipo do elemento
+      if (param.type.type.type == TokenType.lista) {
+        final elementType = _extractElementTypeFromListParam(param.type.type.lexeme);
+        if (elementType != null) {
+          _currentScope.defineList(param.name, elementType);
+        } else {
+          _currentScope.defineTyped(param.name, param.type.type.type);
+        }
+      } else {
+        _currentScope.defineTyped(param.name, param.type.type.type);
+      }
+      
       // Marca o parâmetro como inicializado (parâmetros sempre são válidos)
       _currentScope.assign(param.name);
     }
@@ -833,9 +848,77 @@ class SemanticAnalyzer implements AstVisitor<void> {
         default:
           return TokenType.real; // fallback para métodos desconhecidos
       }
+    } else if (expr is CallExpr) {
+      // Para chamadas de função, tenta obter o tipo de retorno da função
+      if (expr.callee is VariableExpr) {
+        final functionName = (expr.callee as VariableExpr).name.lexeme;
+        
+        // Primeiro verifica se é uma função nativa da biblioteca padrão
+        final nativeReturnType = _getNativeFunctionReturnType(functionName);
+        if (nativeReturnType != null) {
+          return nativeReturnType;
+        }
+        
+        // Se não é nativa, tenta encontrar função definida pelo usuário
+        final functionToken = Token(
+          type: TokenType.identifier,
+          lexeme: functionName,
+          line: 0,
+          column: 0,
+        );
+        final functionSymbol = _currentScope.get(functionToken);
+        if (functionSymbol != null && functionSymbol.functionReturnType != null) {
+          return functionSymbol.functionReturnType!;
+        }
+      }
+      return TokenType.real; // fallback para funções desconhecidas
+    } else if (expr is TernaryExpr) {
+      // Para operador ternário, infere do tipo dos ramos then/else
+      final thenType = _inferExpressionType(expr.thenBranch);
+      final elseType = _inferExpressionType(expr.elseBranch);
+      
+      // Se ambos os ramos têm o mesmo tipo, retorna esse tipo
+      if (thenType == elseType) {
+        return thenType;
+      }
+      
+      // Se um é inteiro e outro é real, retorna real (widening)
+      if ((thenType == TokenType.inteiro && elseType == TokenType.real) ||
+          (thenType == TokenType.real && elseType == TokenType.inteiro)) {
+        return TokenType.real;
+      }
+      
+      // Para outros casos incompatíveis, retorna o tipo do primeiro ramo
+      return thenType;
+    } else if (expr is GroupingExpr) {
+      // Para expressões agrupadas (parênteses), retorna o tipo da expressão interna
+      return _inferExpressionType(expr.expression);
     }
 
     return TokenType.real; // fallback
+  }
+
+  /// Extrai o tipo do elemento de um parâmetro de lista baseado no lexeme
+  /// Ex: "lista`<inteiro>`" -> TokenType.inteiro
+  TokenType? _extractElementTypeFromListParam(String lexeme) {
+    // Verifica se tem o formato lista<tipo>
+    final match = RegExp(r'lista<(\w+)>').firstMatch(lexeme);
+    if (match != null) {
+      final elementTypeName = match.group(1)!;
+      switch (elementTypeName) {
+        case 'inteiro':
+          return TokenType.inteiro;
+        case 'real':
+          return TokenType.real;
+        case 'texto':
+          return TokenType.texto;
+        case 'logico':
+          return TokenType.logico;
+        default:
+          return null;
+      }
+    }
+    return null;
   }
 
   /// Verifica se dois tipos são compatíveis
@@ -925,8 +1008,27 @@ class SemanticAnalyzer implements AstVisitor<void> {
       _resolveExpr(argument);
     }
     
-    // Verificar se é um método de lista válido
     final methodName = expr.name.lexeme;
+    
+    // Verificar se é um método de módulo importado
+    if (expr.object is VariableExpr) {
+      final objectName = (expr.object as VariableExpr).name.lexeme;
+      final libraryName = _importedLibraries[objectName];
+      
+      if (libraryName != null) {
+        // É um método de biblioteca importada
+        _validateLibraryMethod(libraryName, methodName, expr.arguments, expr.name.line);
+        return;
+      }
+      
+      // Verificar se é uma biblioteca padrão usada sem import (compatibilidade)
+      if (['math', 'string', 'io', 'data'].contains(objectName)) {
+        _validateLibraryMethod(objectName, methodName, expr.arguments, expr.name.line);
+        return;
+      }
+    }
+    
+    // Verificar se é um método de lista válido
     if (!['tamanho', 'adicionar', 'remover', 'vazio'].contains(methodName)) {
       _errorReporter.error(expr.name.line, "Método '$methodName' não reconhecido.");
       return;
@@ -957,6 +1059,113 @@ class SemanticAnalyzer implements AstVisitor<void> {
     }
   }
 
+  /// Valida métodos de bibliotecas importadas
+  void _validateLibraryMethod(String libraryName, String methodName, List<Expr> arguments, int line) {
+    switch (libraryName) {
+      case 'math':
+        _validateMathMethod(methodName, arguments, line);
+        break;
+      case 'string':
+        _validateStringMethod(methodName, arguments, line);
+        break;
+      case 'data':
+        _validateDataMethod(methodName, arguments, line);
+        break;
+      case 'io':
+        _validateIoMethod(methodName, arguments, line);
+        break;
+      default:
+        _errorReporter.error(line, "Biblioteca '$libraryName' não suportada.");
+    }
+  }
+
+  /// Valida métodos da biblioteca math
+  void _validateMathMethod(String methodName, List<Expr> arguments, int line) {
+    switch (methodName) {
+      case 'raiz':
+        if (arguments.length != 1) {
+          _errorReporter.error(line, "Método 'math.raiz' requer exatamente um argumento.");
+        }
+        break;
+      case 'pi':
+        if (arguments.isNotEmpty) {
+          _errorReporter.error(line, "Propriedade 'math.pi' não aceita argumentos.");
+        }
+        break;
+      case 'abs':
+        if (arguments.length != 1) {
+          _errorReporter.error(line, "Método 'math.abs' requer exatamente um argumento.");
+        }
+        break;
+      case 'pow':
+        if (arguments.length != 2) {
+          _errorReporter.error(line, "Método 'math.pow' requer exatamente dois argumentos.");
+        }
+        break;
+      default:
+        _errorReporter.error(line, "Método 'math.$methodName' não reconhecido.");
+    }
+  }
+
+  /// Valida métodos da biblioteca string
+  void _validateStringMethod(String methodName, List<Expr> arguments, int line) {
+    switch (methodName) {
+      case 'maiuscula':
+        if (arguments.length != 1) {
+          _errorReporter.error(line, "Método 'string.maiuscula' requer exatamente um argumento.");
+        }
+        break;
+      case 'minuscula':
+        if (arguments.length != 1) {
+          _errorReporter.error(line, "Método 'string.minuscula' requer exatamente um argumento.");
+        }
+        break;
+      case 'tamanho':
+        if (arguments.length != 1) {
+          _errorReporter.error(line, "Método 'string.tamanho' requer exatamente um argumento.");
+        }
+        break;
+      default:
+        _errorReporter.error(line, "Método 'string.$methodName' não reconhecido.");
+    }
+  }
+
+  /// Valida métodos da biblioteca data
+  void _validateDataMethod(String methodName, List<Expr> arguments, int line) {
+    switch (methodName) {
+      case 'dataAtual':
+        if (arguments.isNotEmpty) {
+          _errorReporter.error(line, "Método 'data.dataAtual' não aceita argumentos.");
+        }
+        break;
+      case 'diaSemana':
+        if (arguments.length != 1) {
+          _errorReporter.error(line, "Método 'data.diaSemana' requer exatamente um argumento.");
+        }
+        break;
+      default:
+        _errorReporter.error(line, "Método 'data.$methodName' não reconhecido.");
+    }
+  }
+
+  /// Valida métodos da biblioteca io
+  void _validateIoMethod(String methodName, List<Expr> arguments, int line) {
+    switch (methodName) {
+      case 'lerTexto':
+        if (arguments.isNotEmpty) {
+          _errorReporter.error(line, "Método 'io.lerTexto' não aceita argumentos.");
+        }
+        break;
+      case 'lerInteiro':
+        if (arguments.isNotEmpty) {
+          _errorReporter.error(line, "Método 'io.lerInteiro' não aceita argumentos.");
+        }
+        break;
+      default:
+        _errorReporter.error(line, "Método 'io.$methodName' não reconhecido.");
+    }
+  }
+
   // Funções auxiliares para declaração e definição de variáveis
   void _declare(Token name) {
     _currentScope.define(name);
@@ -964,5 +1173,37 @@ class SemanticAnalyzer implements AstVisitor<void> {
 
   void _define(Token name) {
     _currentScope.assign(name);
+  }
+
+  /// Retorna o tipo de retorno de uma função nativa da biblioteca padrão
+  TokenType? _getNativeFunctionReturnType(String functionName) {
+    switch (functionName) {
+      // Funções de conversão existentes
+      case 'paraTexto':
+        return TokenType.texto;
+      
+      // Função de tipo existente  
+      case 'tipo':
+        return TokenType.texto;
+      
+      // Funções de debug existentes
+      case 'debug':
+        return TokenType.nil; // não retorna valor
+      case 'info_debug':
+        return TokenType.nil; // não retorna valor
+      
+      // Função de impressão (existe através do OpCode.print)
+      case 'imprima':
+        return TokenType.nil;
+        
+      // Funções internas de operadores lógicos
+      case '__or__':
+      case '__and__':
+        return TokenType.logico;
+        
+      // Outras funções nativas podem ser adicionadas aqui conforme implementadas
+      default:
+        return null; // Função não é nativa conhecida
+    }
   }
 }

@@ -1,14 +1,23 @@
 {
-  "name": "minidart",
-  "displayName": "MiniDart Language Support",
-  "description": "Suporte completo para a linguagem MiniDart v2.0 com listas tipadas, sistema de imports, bibliotecas padrão, debugger visual no VS Code e debug adapter protocol",
-  "version": "2.1.0",
-  "publisher": "deriks-karlay",
-  "author": "Deriks Karlay Dias Costa <karlay@example.com>",
+  "name": "lipo",
+  "displayName": "LiPo - Linguagem Portugol",
+  "description": "Suporte à linguagem LiPo e depurador para Visual Studio Code",
+  "version": "2.3.0",
+  "publisher": "karlaycosta",
+  "author": "Deriks Karlay Dias Costa <karlaycosta@gmail.com>",
   "icon": "icon.png",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/karlaycosta/minidart_compiler.git"
+    "url": "git+https://github.com/karlaycosta/lipo_compiler.git"
+  },
+  "homepage": "https://github.com/karlaycosta/lipo_compiler#readme",
+  "bugs": {
+    "url": "https://github.com/karlaycosta/lipo_compiler/issues"
+  },
+  "qna": "https://github.com/karlaycosta/lipo_compiler/discussions",
+  "galleryBanner": {
+    "color": "#1e1e1e",
+    "theme": "dark"
   },
   "engines": {
     "vscode": "^1.102.0"
@@ -19,17 +28,12 @@
     "Other"
   ],
   "keywords": [
-    "minidart",
     "lipo",
     "dart",
     "português",
     "portuguese",
     "compilador",
     "compiler",
-    "ast",
-    "listas",
-    "lists",
-    "educacional",
     "educational"
   ],
   "main": "./out/extension.js",
@@ -37,202 +41,111 @@
   "contributes": {
     "languages": [
       {
-        "id": "minidart",
+        "id": "lipo",
         "aliases": [
-          "MiniDart",
-          "minidart"
+          "LiPo",
+          "lipo"
         ],
         "extensions": [
-          ".mdart"
+          ".lip"
         ],
-        "configuration": "./language/minidart-configuration.json"
+        "configuration": "./language/lipo-configuration.json"
       }
     ],
     "grammars": [
       {
-        "language": "minidart",
-        "scopeName": "source.minidart",
-        "path": "./syntaxes/minidart.tmLanguage.json"
+        "language": "lipo",
+        "scopeName": "source.lipo",
+        "path": "./syntaxes/lipo.tmLanguage.json"
       }
     ],
     "snippets": [
       {
-        "language": "minidart",
-        "path": "./snippets/minidart.json"
+        "language": "lipo",
+        "path": "./snippets/lipo.json"
       }
     ],
     "breakpoints": [
       {
-        "language": "minidart"
+        "language": "lipo"
       }
     ],
     "commands": [
       {
-        "command": "minidart.compile",
-        "title": "🚀 Compilar MiniDart",
-        "category": "MiniDart",
+        "command": "lipo.compile",
+        "title": "🚀 Compilar LiPo",
+        "category": "LiPo",
         "icon": "$(play)"
       },
       {
-        "command": "minidart.run",
-        "title": "▶️ Executar MiniDart",
-        "category": "MiniDart",
+        "command": "lipo.run",
+        "title": "▶️ Executar LiPo",
+        "category": "LiPo",
         "icon": "$(run)"
       },
       {
-        "command": "minidart.debug",
-        "title": "🐛 Debug MiniDart",
-        "category": "MiniDart",
+        "command": "lipo.debug",
+        "title": "🐛 Debug LiPo",
+        "category": "LiPo",
         "icon": "$(debug-alt)"
       },
       {
-        "command": "minidart.generateAST",
-        "title": "🌳 Gerar AST",
-        "category": "MiniDart",
-        "icon": "$(graph)"
-      },
-      {
-        "command": "minidart.openAST",
-        "title": "👁️ Visualizar AST",
-        "category": "MiniDart",
-        "icon": "$(eye)"
-      },
-      {
-        "command": "minidart.newFile",
-        "title": "📄 Novo Arquivo MiniDart",
-        "category": "MiniDart",
+        "command": "lipo.newFile",
+        "title": "📄 Novo Arquivo LiPo",
+        "category": "LiPo",
         "icon": "$(new-file)"
-      },
-      {
-        "command": "minidart.checkSyntax",
-        "title": "✅ Verificar Sintaxe",
-        "category": "MiniDart",
-        "icon": "$(check)"
-      },
-      {
-        "command": "minidart.analyzeCode",
-        "title": "🔍 Analisar Código",
-        "category": "MiniDart",
-        "icon": "$(search)"
-      },
-      {
-        "command": "minidart.formatCode",
-        "title": "💫 Formatar Código",
-        "category": "MiniDart",
-        "icon": "$(symbol-method)"
-      },
-      {
-        "command": "minidart.showDocumentation",
-        "title": "📚 Documentação",
-        "category": "MiniDart",
-        "icon": "$(book)"
       }
     ],
     "keybindings": [
       {
-        "command": "minidart.run",
+        "command": "lipo.run",
         "key": "ctrl+f5",
-        "when": "resourceExtname == .mdart"
+        "when": "resourceExtname == .lip"
       },
       {
-        "command": "minidart.debug",
+        "command": "lipo.debug",
         "key": "f5",
-        "when": "resourceExtname == .mdart"
+        "when": "resourceExtname == .lip"
       },
       {
-        "command": "minidart.compile",
+        "command": "lipo.compile",
         "key": "ctrl+shift+b",
-        "when": "resourceExtname == .mdart"
-      },
-      {
-        "command": "minidart.generateAST",
-        "key": "ctrl+shift+a",
-        "when": "resourceExtname == .mdart"
-      },
-      {
-        "command": "minidart.checkSyntax",
-        "key": "ctrl+shift+s",
-        "when": "resourceExtname == .mdart"
-      },
-      {
-        "command": "minidart.formatCode",
-        "key": "ctrl+shift+f",
-        "when": "resourceExtname == .mdart"
-      },
-      {
-        "command": "minidart.showDocumentation",
-        "key": "f1",
-        "when": "resourceExtname == .mdart"
+        "when": "resourceExtname == .lip"
       }
     ],
     "menus": {
       "editor/context": [
         {
-          "command": "minidart.run",
-          "when": "resourceExtname == .mdart",
+          "command": "lipo.run",
+          "when": "resourceExtname == .lip",
           "group": "navigation@1"
         },
         {
-          "command": "minidart.debug",
-          "when": "resourceExtname == .mdart",
+          "command": "lipo.debug",
+          "when": "resourceExtname == .lip",
           "group": "navigation@2"
         },
         {
-          "command": "minidart.compile",
-          "when": "resourceExtname == .mdart",
+          "command": "lipo.compile",
+          "when": "resourceExtname == .lip",
           "group": "navigation@3"
-        },
-        {
-          "command": "minidart.checkSyntax",
-          "when": "resourceExtname == .mdart",
-          "group": "navigation@4"
-        },
-        {
-          "command": "minidart.generateAST",
-          "when": "resourceExtname == .mdart",
-          "group": "analysis@1"
-        },
-        {
-          "command": "minidart.analyzeCode",
-          "when": "resourceExtname == .mdart",
-          "group": "analysis@2"
-        },
-        {
-          "command": "minidart.formatCode",
-          "when": "resourceExtname == .mdart",
-          "group": "formatting@1"
-        },
-        {
-          "command": "minidart.showDocumentation",
-          "when": "resourceExtname == .mdart",
-          "group": "help@1"
         }
       ],
       "editor/title": [
         {
-          "command": "minidart.run",
-          "when": "resourceExtname == .mdart",
+          "command": "lipo.run",
+          "when": "resourceExtname == .lip",
           "group": "navigation@1"
         },
         {
-          "command": "minidart.debug",
-          "when": "resourceExtname == .mdart",
+          "command": "lipo.debug",
+          "when": "resourceExtname == .lip",
           "group": "navigation@2"
-        },
-        {
-          "command": "minidart.generateAST",
-          "when": "resourceExtname == .mdart",
-          "group": "navigation@3"
-        },
-        {
-          "command": "minidart.checkSyntax",
-          "when": "resourceExtname == .mdart",
-          "group": "navigation@4"
         }
       ],
       "explorer/context": [
         {
-          "command": "minidart.newFile",
+          "command": "lipo.newFile",
           "when": "explorerResourceIsFolder",
           "group": "navigation"
         }
@@ -240,11 +153,9 @@
     },
     "debuggers": [
       {
-        "type": "minidart",
-        "label": "MiniDart Debug",
-        "program": "./out/debugMainStandalone.js",
-        "runtime": "node",
-        "languages": ["minidart"],
+        "type": "lipo",
+        "label": "LiPo Debug",
+        "languages": ["lipo"],
         "configurationAttributes": {
           "launch": {
             "required": [
@@ -253,8 +164,8 @@
             "properties": {
               "program": {
                 "type": "string",
-                "description": "Arquivo MiniDart para executar",
-                "default": "${workspaceFolder}/main.mdart"
+                "description": "Arquivo LiPo para executar",
+                "default": "${workspaceFolder}/main.lip"
               },
               "args": {
                 "type": "array",
@@ -266,11 +177,6 @@
                 "description": "Diretório de trabalho",
                 "default": "${workspaceFolder}"
               },
-              "compilerPath": {
-                "type": "string",
-                "description": "Caminho para o compilador MiniDart",
-                "default": "bin/compile.dart"
-              },
               "stopOnEntry": {
                 "type": "boolean",
                 "description": "Parar automaticamente no início do programa",
@@ -281,8 +187,8 @@
         },
         "initialConfigurations": [
           {
-            "name": "Debug MiniDart",
-            "type": "minidart",
+            "name": "Debug LiPo",
+            "type": "lipo",
             "request": "launch",
             "program": "${file}",
             "stopOnEntry": false
@@ -290,11 +196,11 @@
         ],
         "configurationSnippets": [
           {
-            "label": "MiniDart: Debug File",
-            "description": "Debug arquivo MiniDart atual",
+            "label": "LiPo: Debug File",
+            "description": "Debug arquivo LiPo atual",
             "body": {
-              "name": "Debug MiniDart",
-              "type": "minidart",
+              "name": "Debug LiPo",
+              "type": "LiPo",
               "request": "launch",
               "program": "^\"\\${file}\"",
               "stopOnEntry": true
@@ -304,54 +210,44 @@
       }
     ],
     "configuration": {
-      "title": "MiniDart",
+      "title": "LiPo",
       "properties": {
-        "minidart.compilerPath": {
-          "type": "string",
-          "default": "bin/compile.dart",
-          "description": "Caminho para o compilador MiniDart"
-        },
-        "minidart.autoCompile": {
+        "lipo.autoCompile": {
           "type": "boolean",
           "default": false,
           "description": "Compilar automaticamente ao salvar"
         },
-        "minidart.showAST": {
-          "type": "boolean",
-          "default": false,
-          "description": "Gerar AST automaticamente"
-        },
-        "minidart.autoFormat": {
+        "lipo.autoFormat": {
           "type": "boolean",
           "default": true,
           "description": "Formatar código automaticamente"
         },
-        "minidart.syntaxHighlighting": {
+        "lipo.syntaxHighlighting": {
           "type": "boolean",
           "default": true,
           "description": "Habilitar realce de sintaxe avançado"
         },
-        "minidart.enableLinting": {
+        "lipo.enableLinting": {
           "type": "boolean",
           "default": true,
           "description": "Habilitar análise de código e avisos"
         },
-        "minidart.enableSnippets": {
+        "lipo.enableSnippets": {
           "type": "boolean",
           "default": true,
           "description": "Habilitar snippets de código"
         },
-        "minidart.showDocumentationOnHover": {
+        "lipo.showDocumentationOnHover": {
           "type": "boolean",
           "default": true,
           "description": "Mostrar documentação ao passar o mouse"
         },
-        "minidart.enableAutoCompletion": {
+        "lipo.enableAutoCompletion": {
           "type": "boolean",
           "default": true,
           "description": "Habilitar autocompletar inteligente"
         },
-        "minidart.theme": {
+        "lipo.theme": {
           "type": "string",
           "default": "default",
           "enum": ["default", "dark", "light"],
@@ -375,9 +271,5 @@
     "typescript": "^4.9.5"
   },
   "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/karlaycosta/minidart_compiler/issues"
-  },
-  "homepage": "https://github.com/karlaycosta/minidart_compiler#readme"
+  "type": "commonjs"
 }

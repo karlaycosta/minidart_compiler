@@ -1,0 +1,10 @@
+// Teste de operadores lógicos
+logico verdade = verdadeiro;
+logico mentira = falso;
+logico resultado_e = verdade e mentira;
+logico resultado_ou = verdade ou mentira;
+logico resultado_nao = !verdade;
+
+imprima "AND: " + paraTexto(resultado_e);
+imprima "OR: " + paraTexto(resultado_ou);
+imprima "NOT: " + paraTexto(resultado_nao);

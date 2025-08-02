@@ -22,13 +22,13 @@ SOFTWARE.
 
 ---
 
-MINIDART COMPILER - LINGUAGEM DE PROGRAMAÇÃO EDUCACIONAL
+LIPO COMPILER - LINGUAGEM PORTUGOL
 
 Este software é uma linguagem de programação educacional desenvolvida em 
 português brasileiro para facilitar o aprendizado de programação.
 
 Recursos inclusos:
-- Compilador MiniDart
+- Compilador LiPo
 - Documentação completa da sintaxe
 - Exemplos de código
 - Suporte a tipos básicos e estruturas de controle

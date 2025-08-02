@@ -5,6 +5,44 @@ Todas as alterações notáveis deste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [0.18.3] - 2025-08-02
+
+### Melhorias nas Mensagens de Erro
+
+- **Corrigido**: Mensagens de erro mais específicas para palavras reservadas
+- **Melhoria**: Parser agora detecta quando palavras reservadas são usadas como nomes de variáveis
+- **Melhoria**: Substituída mensagem genérica "Expressão esperada" por orientações específicas
+- **Melhoria**: Adicionadas 35+ palavras reservadas com detecção específica
+
+### Correções de Bugs na VM e Análise Semântica
+
+- **Corrigido**: Funções da biblioteca padrão agora funcionam em contexto de função
+- **Corrigido**: Inferência de tipo para parâmetros de lista genérica (lista<inteiro>)
+- **Corrigido**: Operadores de incremento/decremento em variáveis locais
+- **Corrigido**: Operadores lógicos (e/ou) não causam mais desbalanceamento na pilha da VM
+- **Corrigido**: Sistema de imports funcionando completamente com aliases
+- **Melhoria**: Implementados operadores lógicos como funções nativas na biblioteca padrão
+
+### Módulos da Biblioteca Padrão Implementados
+
+- **math**: raiz(), pi, absoluto(), potencia(), maximo(), minimo()
+- **string**: maiuscula(), minuscula(), tamanho()
+- **data**: dataAtual(), diaSemana(), hoje(), horaAtual()
+- **io**: lerTexto(), lerInteiro()
+
+### Bugs reportados por:
+
+- **Revisores:** Filipe e Guile
+
+## [0.18.2] - 2025-08-01
+
+### Correções de Bugs no Analisador Semântico 
+
+- **Corrigido**: Operador ternário (`?:`) agora infere corretamente o tipo dos ramos (texto, inteiro, etc.)
+- **Corrigido**: Expressões entre parênteses agora são analisadas corretamente para inferência de tipos
+- **Melhoria**: Comparações (`>=`, `<=`, `>`, `<`, `==`, `!=`) agora retornam tipo `lógico` consistentemente
+- **Revisores:** Filipe e Guile
+
 ## [0.18.1] - 2025-07-30
 
 ### 🚀 Sistema de Listas Avançado Completo

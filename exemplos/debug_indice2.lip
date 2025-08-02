@@ -1,0 +1,9 @@
+// Teste com parâmetro de função
+inteiro testeIndice(lista<inteiro> nums, inteiro indice) {
+    inteiro valor = nums[indice];
+    retorne valor;
+}
+
+lista<inteiro> valores = [1, 2, 3];
+inteiro resultado = testeIndice(valores, 1);
+imprima resultado;

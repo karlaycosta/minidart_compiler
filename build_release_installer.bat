@@ -1,63 +1,85 @@
 @echo off
-echo 🚀 === MINIDART RELEASE COM INSTALADOR ===
+chcp 65001 > nul
+setlocal enabledelayedexpansion
+
+echo === LIPO RELEASE COM INSTALADOR ===
 echo.
 
-REM Verificar se NSIS está instalado
-where makensis >nul 2>nul
-if %ERRORLEVEL% NEQ 0 (
-    echo ❌ NSIS não encontrado!
-    echo 📥 Instale o NSIS de: https://nsis.sourceforge.io/Download
-    echo 💡 Ou use: choco install nsis
+REM Extrair versão do pubspec.yaml
+echo Extraindo versão do pubspec.yaml...
+set "version="
+for /f "tokens=2 delims=: " %%a in ('findstr /r "^version:" pubspec.yaml') do (
+    set "version=%%a"
+)
+
+if "!version!"=="" (
+    echo Erro: Não foi possível extrair a versão do pubspec.yaml
+    exit /b 1
+)
+
+echo Versão detectada: v!version!
+echo.
+
+REM Verifica se o Inno Setup está instalado
+set "INNO_PATH=C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+echo Verificando Inno Setup em: %INNO_PATH%
+if not exist "%INNO_PATH%" (
+    echo Inno Setup não encontrado
+    echo.
+    echo Baixe e instale o Inno Setup 6:
+    echo Instale de: https://jrsoftware.org/isdl.php
     pause
     exit /b 1
 )
 
 REM Executar build básico
-echo 🔨 Executando build básico...
+echo Executando build básico...
 call build_release.bat
 if %ERRORLEVEL% NEQ 0 (
-    echo ❌ Erro no build básico
+    echo Erro no build básico
     exit /b 1
 )
 
 REM Copiar documentação adicional para release
-echo 📚 Copiando documentação adicional...
-copy LICENSE release\ >nul
+echo Copiando documentação adicional...
+if exist LICENSE copy LICENSE release\ >nul
 if exist CHANGELOG.md copy CHANGELOG.md release\ >nul
 if exist README.md copy README.md release\ >nul
 
-REM Criar o instalador NSIS
-echo 🛠️  Criando instalador Windows...
-makensis installer.nsi
+REM Compila o instalador
+echo Compilando instalador Windows...
+"%INNO_PATH%" "/DVERSION=!version!" "installer.iss"
 if %ERRORLEVEL% NEQ 0 (
-    echo ❌ Erro ao criar instalador
+    echo Erro ao criar instalador
     exit /b 1
 )
+echo Instalador compilado com versão v!version!
 
 REM Mover instalador para pasta release
-if exist "MiniDart-Installer-v0.18.1.exe" (
-    move "MiniDart-Installer-v0.18.1.exe" release\ >nul
-    echo ✅ Instalador criado: release/MiniDart-Installer-v0.18.1.exe
+if exist "LiPo-Installer-v!version!.exe" (
+    move "LiPo-Installer-v!version!.exe" release\ >nul
+    echo Instalador criado: release/LiPo-Installer-v!version!.exe
 )
 
 REM Mostrar resumo final
 echo.
-echo ✅ === RELEASE COMPLETO CRIADO ===
-echo 📁 Arquivos em release/:
+echo === RELEASE COMPLETO CRIADO ===
+echo Arquivos em release/:
 dir release /B
 echo.
-echo 📦 Release contém:
-echo    ✅ minidart-windows-x64.exe (executável)
-echo    ✅ MiniDart-Installer-v0.18.1.exe (instalador)
-echo    ✅ VERSION.txt (informações de versão)
-echo    ✅ exemplos/ (códigos de exemplo)
-echo    ✅ documentação completa
+echo Release contém:
+echo    - lipo.exe (executável)
+echo    - LiPo-Installer-v!version!.exe (instalador)
+echo    - VERSION.txt (informações de versão)
+echo    - LICENSE (Arquivo de Licença)
+echo    - CHANGELOG.md (Registro de alterações)
+echo    - README.md (Leia-me)
 echo.
-echo 🎯 Próximos passos para GitHub Release:
+echo Próximos passos para GitHub Release:
 echo    1. git add .
-echo    2. git commit -m "Release v0.18.1"
-echo    3. git tag v0.18.1
-echo    4. git push origin v0.18.1
+echo    2. git commit -m "Release v!version!"
+echo    3. git tag v!version!
+echo    4. git push origin v!version!
 echo    5. Criar release no GitHub e enviar arquivos da pasta release/
 echo.
-pause
+REM pause

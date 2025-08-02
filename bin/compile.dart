@@ -1,16 +1,16 @@
 import 'dart:io';
 import 'package:args/args.dart';
-import 'package:minidart_compiler/src/token.dart';
-import 'package:minidart_compiler/src/version.dart';
-import 'package:minidart_compiler/src/lexer.dart';
-import 'package:minidart_compiler/src/parser.dart';
-import 'package:minidart_compiler/src/error.dart';
-import 'package:minidart_compiler/src/semantic_analyzer.dart';
-import 'package:minidart_compiler/src/code_generator.dart';
-import 'package:minidart_compiler/src/vm.dart';
-import 'package:minidart_compiler/src/ast_graphviz_generator.dart';
-import 'package:minidart_compiler/src/interactive_debugger.dart';
-import 'package:minidart_compiler/src/dap_debugger.dart';
+import 'package:lipo_compiler/src/token.dart';
+import 'package:lipo_compiler/src/version.dart';
+import 'package:lipo_compiler/src/lexer.dart';
+import 'package:lipo_compiler/src/parser.dart';
+import 'package:lipo_compiler/src/error.dart';
+import 'package:lipo_compiler/src/semantic_analyzer.dart';
+import 'package:lipo_compiler/src/code_generator.dart';
+import 'package:lipo_compiler/src/vm.dart';
+import 'package:lipo_compiler/src/ast_graphviz_generator.dart';
+import 'package:lipo_compiler/src/interactive_debugger.dart';
+import 'package:lipo_compiler/src/dap_debugger.dart';
 
 // Cria uma instância única do reporter de erros para todo o compilador.
 final errorReporter = ErrorReporter();
@@ -128,21 +128,10 @@ void main(List<String> arguments) {
 
 String getUsage(ArgParser parser) {
   return '''
-Uso: dart bin/compile.dart <caminho_para_arquivo.mdart> [opções]
+Uso: lipo <caminho_para_arquivo.lip> [opções]
 
 Opções:
 ${parser.usage}
-
-Exemplos:
-  dart bin/compile.dart exemplos/teste_simples.mdart
-  dart bin/compile.dart exemplos/teste_complexo.mdart --bytecode
-  dart bin/compile.dart exemplos/teste_simples.mdart --ast-only
-  dart bin/compile.dart exemplos/teste_debug.mdart --debug-interactive
-  dart bin/compile.dart exemplos/teste_debug.mdart --debug-tokens
-  dart bin/compile.dart exemplos/teste_debug.mdart --debug-parser
-  dart bin/compile.dart exemplos/teste_debug.mdart --debug-semantic
-  dart bin/compile.dart exemplos/teste_debug.mdart --debug-vm
-  dart bin/compile.dart exemplos/teste_debug.mdart --debug-all
 ''';
 }
 
@@ -215,7 +204,7 @@ void run(
   if (astOnly) {
     print('--- AST em Graphviz ---');
     final astGenerator = ASTGraphvizGenerator();
-    astGenerator.saveAndVisualize(statements, filename: 'minidart_ast');
+    astGenerator.saveAndVisualize(statements, filename: 'lipo_ast');
     print('-----------------------\n');
     print('✅ AST gerada com sucesso! Use o comando abaixo para visualizar:');
     print('   dot -Tpng minidart_ast.dot -o minidart_ast.png');

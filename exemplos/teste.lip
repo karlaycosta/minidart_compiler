@@ -1,0 +1,132 @@
+    inteiro testeParaTexto() {
+      texto resultado = paraTexto(42);
+      imprima resultado;
+      retorne 1;
+    }
+    
+    inteiro x = testeParaTexto();
+    inteiro processarLista(lista<inteiro> nums) {
+      retorne nums.tamanho();
+    }
+    
+    lista<inteiro> minhaLista = [1, 2, 3];
+    inteiro tamanho = processarLista(minhaLista);
+    imprima paraTexto(tamanho);
+// inteiro somar(inteiro a, inteiro b) {
+//     retorne a + b;
+// }
+
+// vazio exemplo2() {
+//     inteiro x = 10;
+//     inteiro y = 20;
+//     inteiro resultado = somar(x, y);
+//     imprima "Resultado: " + paraTexto(resultado);
+// }
+// exemplo2();
+
+// imprima "Resultado: " + paraTexto(5);
+// vazio teste(inteiro operacao) {
+//     imprima "Resultado: " + paraTexto(operacao);
+// }
+// teste(5);
+
+// vazio exemplo3() {
+//     inteiro numero = 15;
+    
+//     // Condicional
+//     se (numero > 10) {
+//         imprima "Número é maior que 10";
+//     } senao {
+//         imprima "Número é menor ou igual a 10";
+//     }
+    
+//     // Loop while
+//     inteiro contador = 0;
+//     enquanto (contador < 5) {
+//         imprima "Contador: " + paraTexto(contador);
+//         contador++;
+//     }
+    
+//     // Loop for tradicional
+//     para (inteiro i = 0; i < 3; i++) {
+//         imprima "i = " + paraTexto(i);
+//     }
+    
+//     // Loop for MiniDart
+//     para j = 1 ate 3 faca {
+//         imprima "j = " + paraTexto(j);
+//     }
+// }
+// // Executa a funcão
+// exemplo3();
+
+// texto obterNomeDia(inteiro dia) {
+//     escolha (dia) {
+//         caso 1:
+//             retorne "Segunda-feira";
+//         caso 2:
+//             retorne "Terça-feira";
+//         caso 3:
+//             retorne "Quarta-feira";
+//         caso 4:
+//             retorne "Quinta-feira";
+//         caso 5:
+//             retorne "Sexta-feira";
+//         caso 6:
+//             retorne "Sábado";
+//         caso 7:
+//             retorne "Domingo";
+//         contrario:
+//             retorne "Dia inválido";
+//     }
+// }
+
+// inteiro principal() {
+//     inteiro dia = 3;
+//     texto nomeDia = obterNomeDia(dia);
+
+//     imprima "Hoje é: " + nomeDia;
+
+//     // Operador ternário
+//     texto periodo = (dia >= 6) ? "fim de semana" : "dia útil";
+//     imprima "Período: " + periodo;
+
+//     retorne 0;
+// }
+
+// principal();
+
+// lista<inteiro> a = [1, 2, 3];
+// vazio teste(texto nome) {
+//     lista<inteiro> a = [1, 2, 3, 4];  // Volta ao nome original para testar escopo
+//     logico b = a.vazio();
+//     imprima a;
+//     imprima "Olá " + nome;
+// }
+
+// teste("Deriks");
+
+// imprima a;
+
+// lista<inteiro> teste2() {
+//     lista<inteiro> c = [1, 2, 3, 4, 5];
+//     imprima c;
+//     retorne a;  // Agora deve retornar a variável global correta
+// }
+
+// imprima teste2();
+
+// // Teste de recursividade - Fatorial
+// inteiro fatorial(inteiro n) {
+//     se (n <= 1) {
+//         retorne 1;
+//     } senao {
+//         retorne n * fatorial(n - 1);
+//     }
+// }
+
+// var resultado = fatorial(5);
+// imprima resultado;  // Deve imprimir 120
+// var c = 10 * 5;
+// imprima tipode resultado;
+// imprima tipode c;

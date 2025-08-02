@@ -11,6 +11,10 @@ enum OpCode {
   setGlobal,
   defineGlobal,
 
+  // --- Operações de Variáveis Locais ---
+  getLocal,
+  setLocal,
+
   // --- Operações Aritméticas e Lógicas ---
   add,
   subtract,

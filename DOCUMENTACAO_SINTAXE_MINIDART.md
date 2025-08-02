@@ -626,7 +626,7 @@ para i = 1 ate 10 faca {
 ### Declaração de Função
 
 ```minidart
-tipo_retorno nome_funcao(parametros) {
+tipo_retorno nome_funcao(tipo parametro1, tipo parametro2, ...) {
     // corpo da função
     retorne valor;  // opcional para tipo vazio
 }
@@ -1008,18 +1008,19 @@ inteiro somar(inteiro a, inteiro b) {
     retorne a + b;
 }
 
-inteiro principal() {
+vazio principal() {
     inteiro x = 10;
     inteiro y = 20;
     inteiro resultado = somar(x, y);
     imprima "Resultado: " + paraTexto(resultado);
-    retorne 0;
 }
+// Executa a funcão
+principal();
 ```
 
 ### 🔄 Exemplo 3: Estruturas de Controle
 ```minidart
-inteiro principal() {
+vazio principal() {
     inteiro numero = 15;
     
     // Condicional
@@ -1045,9 +1046,9 @@ inteiro principal() {
     para j = 1 ate 3 faca {
         imprima "j = " + paraTexto(j);
     }
-    
-    retorne 0;
 }
+// Executa a funcão
+principal();
 ```
 
 ### 📋 Exemplo 4: Trabalhando com Listas

@@ -9,7 +9,7 @@
 /// - MAJOR: Mudanças incompatíveis na API
 /// - MINOR: Funcionalidades adicionadas de forma compatível
 /// - PATCH: Correções de bugs compatíveis
-const String version = r'0.18.1';
+const String version = r'0.18.3';
 
 /// Obter versão formatada para exibição
 String get versionString => 'v$version';

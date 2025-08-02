@@ -1,0 +1,11 @@
+// Teste específico de comparações
+inteiro a = 3;
+inteiro b = 6;
+
+// Teste direto de comparação
+var comp1 = (a >= b);
+imprima "Comparação var: " + paraTexto(comp1);
+
+// Teste com tipo explícito
+logico comp2 = (a >= b);
+imprima "Comparação explícita: " + paraTexto(comp2);

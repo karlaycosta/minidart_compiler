@@ -1,0 +1,296 @@
+// 🎯 TESTE COMPLETO DA SINTAXE MINIDART v2.0
+// =============================================
+// Este arquivo testa TODAS as funcionalidades implementadas
+
+imprima "🚀 === TESTE COMPLETO MINIDART v2.0 ===";
+imprima "==========================================";
+
+// ===== 1. VARIÁVEIS E TIPOS =====
+imprima "📊 VARIÁVEIS E TIPOS:";
+
+var numeroAuto = 42;
+inteiro idade = 25;
+real altura = 1.75;
+texto nome = "MiniDart";
+logico ativo = verdadeiro;
+
+imprima "Número automático: " + paraTexto(numeroAuto);
+imprima "Idade: " + paraTexto(idade);
+imprima "Altura: " + paraTexto(altura);
+imprima "Nome: " + nome;
+imprima "Ativo: " + paraTexto(ativo);
+
+// ===== 2. OPERADOR TYPEOF =====
+imprima "\n🔍 OPERADOR TYPEOF:";
+imprima "Tipo de numeroAuto: " + tipode numeroAuto;
+imprima "Tipo de altura: " + tipode altura;
+imprima "Tipo de nome: " + tipode nome;
+imprima "Tipo de ativo: " + tipode ativo;
+
+// ===== 3. CONSTANTES =====
+imprima "\n📋 CONSTANTES:";
+constante inteiro MAX_IDADE = 120;
+constante texto LINGUAGEM = "MiniDart";
+constante var PI_APROX = 3.14159;
+
+imprima "MAX_IDADE: " + paraTexto(MAX_IDADE);
+imprima "LINGUAGEM: " + LINGUAGEM;
+imprima "PI_APROX: " + paraTexto(PI_APROX);
+
+// ===== 4. LISTAS HOMOGÊNEAS =====
+imprima "\n📋 LISTAS:";
+
+lista<inteiro> numeros = [1, 2, 3, 4, 5];
+lista<texto> nomes = ["Ana", "Bruno", "Carlos"];
+lista<real> precos;
+
+imprima "Lista números: " + paraTexto(numeros.tamanho()) + " elementos";
+imprima "Primeiro número: " + paraTexto(numeros[0]);
+imprima "Último número: " + paraTexto(numeros[numeros.tamanho() - 1]);
+
+// Acessando lista de textos
+imprima "Segundo nome: " + nomes[1];
+
+// Modificando elementos
+numeros[0] = 10;
+nomes[2] = "Carolina";
+imprima "Primeiro após modificação: " + paraTexto(numeros[0]);
+imprima "Terceiro nome após modificação: " + nomes[2];
+
+// Operações de lista
+numeros.adicionar(6);
+numeros.adicionar(7);
+imprima "Tamanho após adições: " + paraTexto(numeros.tamanho());
+
+// Lista inicialmente vazia
+precos.adicionar(29.99);
+precos.adicionar(15.50);
+precos.adicionar(99.90);
+imprima "Preços: " + paraTexto(precos.tamanho()) + " itens";
+imprima "Lista preços vazia? " + paraTexto(precos.vazio());
+
+// Método vazio em lista com elementos
+imprima "Lista números vazia? " + paraTexto(numeros.vazio());
+
+// ===== 5. OPERADORES ARITMÉTICOS =====
+imprima "\n🧮 OPERADORES ARITMÉTICOS:";
+
+inteiro a = 15;
+inteiro b = 4;
+
+imprima "a = " + paraTexto(a) + ", b = " + paraTexto(b);
+imprima "a + b = " + paraTexto(a + b);
+imprima "a - b = " + paraTexto(a - b);
+imprima "a * b = " + paraTexto(a * b);
+imprima "a / b = " + paraTexto(a / b);
+imprima "a % b = " + paraTexto(a % b);
+
+// ===== 6. OPERADORES DE COMPARAÇÃO =====
+imprima "\n🔍 OPERADORES DE COMPARAÇÃO:";
+
+imprima "a > b: " + paraTexto(a > b);
+imprima "a < b: " + paraTexto(a < b);
+imprima "a >= b: " + paraTexto(a >= b);
+imprima "a <= b: " + paraTexto(a <= b);
+imprima "a == b: " + paraTexto(a == b);
+imprima "a != b: " + paraTexto(a != b);
+
+// ===== 7. OPERADORES LÓGICOS =====
+imprima "\n🔀 OPERADORES LÓGICOS:";
+
+logico verdade = verdadeiro;
+logico mentira = falso;
+
+// Operadores lógicos agora funcionam corretamente!
+logico resultado_e = verdade e mentira;
+logico resultado_ou = verdade ou mentira;
+logico resultado_nao1 = !verdade;
+logico resultado_nao2 = !mentira;
+
+imprima "verdade e mentira: " + paraTexto(resultado_e);
+imprima "verdade ou mentira: " + paraTexto(resultado_ou);
+imprima "!verdade: " + paraTexto(resultado_nao1);
+imprima "!mentira: " + paraTexto(resultado_nao2);
+
+// ===== 8. ESTRUTURAS CONDICIONAIS =====
+imprima "\n🔀 ESTRUTURAS CONDICIONAIS:";
+
+// Condicional simples
+se (idade >= 18) {
+    imprima "Pessoa maior de idade";
+} senao {
+    imprima "Pessoa menor de idade";
+}
+
+// Condicional composta
+se (altura > 1.80) {
+    imprima "Pessoa alta";
+} senao se (altura > 1.60) {
+    imprima "Pessoa de altura média";
+} senao {
+    imprima "Pessoa baixa";
+}
+
+// ===== 9. LOOPS =====
+imprima "\n🔄 LOOPS:";
+
+// Loop while
+inteiro contador = 0;
+imprima "Loop while (0 a 2):";
+enquanto (contador < 3) {
+    imprima "  contador = " + paraTexto(contador);
+    contador = contador + 1;
+}
+
+// Loop for tradicional
+imprima "Loop for tradicional (0 a 2):";
+para (inteiro i = 0; i < 3; i = i + 1) {
+    imprima "  i = " + paraTexto(i);
+}
+
+// Loop for MiniDart
+imprima "Loop for MiniDart (1 a 3):";
+para j = 1 ate 3 faca {
+    imprima "  j = " + paraTexto(j);
+}
+
+// Loop for com incremento
+imprima "Loop for com incremento 2 (0 a 6):";
+para k = 0 ate 6 incremente 2 faca {
+    imprima "  k = " + paraTexto(k);
+}
+
+// Loop for com decremento
+imprima "Loop for com decremento (5 a 1):";
+para l = 5 ate 1 decremente 1 faca {
+    imprima "  l = " + paraTexto(l);
+}
+
+// Do-while
+inteiro x = 0;
+imprima "Do-while:";
+faca {
+    imprima "  x = " + paraTexto(x);
+    x = x + 1;
+} enquanto (x < 2);
+
+// ===== 10. SWITCH/CASE =====
+imprima "\n🎯 SWITCH/CASE:";
+
+inteiro opcao = 2;
+imprima "Testando switch com opcao = " + paraTexto(opcao);
+escolha (opcao) {
+    caso 1:
+        imprima "  Primeira opção selecionada";
+        parar;
+    caso 2:
+        imprima "  Segunda opção selecionada";
+        parar;
+    caso 3:
+        imprima "  Terceira opção selecionada";
+        parar;
+    contrario:
+        imprima "  Opção inválida";
+}
+
+// ===== 11. CONTROLE DE FLUXO (BREAK/CONTINUE) =====
+imprima "\n🎪 CONTROLE DE FLUXO:";
+
+imprima "Teste de continue (pula 3) e break (para em 7):";
+para i = 1 ate 10 faca {
+    se (i == 3) {
+        continuar;  // Pula quando i = 3
+    }
+    se (i == 7) {
+        parar;      // Para quando i = 7
+    }
+    imprima "  i = " + paraTexto(i);
+}
+
+// ===== 12. ITERAÇÃO SOBRE LISTAS =====
+imprima "\n📋 ITERAÇÃO SOBRE LISTAS:";
+
+imprima "Números da lista (par/ímpar):";
+para i = 0 ate numeros.tamanho() - 1 faca {
+    inteiro valor = numeros[i];
+    se (valor % 2 == 0) {
+        imprima "  " + paraTexto(valor) + " é par";
+    } senao {
+        imprima "  " + paraTexto(valor) + " é ímpar";
+    }
+}
+
+imprima "Lista de nomes:";
+para i = 0 ate nomes.tamanho() - 1 faca {
+    imprima "  Nome " + paraTexto(i + 1) + ": " + nomes[i];
+}
+
+// ===== 13. CONVERSÃO DE TIPOS =====
+imprima "\n💫 CONVERSÃO DE TIPOS (paraTexto):";
+
+imprima "paraTexto(42): '" + paraTexto(42) + "'";
+imprima "paraTexto(3.14159): '" + paraTexto(3.14159) + "'";
+imprima "paraTexto(verdadeiro): '" + paraTexto(verdadeiro) + "'";
+imprima "paraTexto(falso): '" + paraTexto(falso) + "'";
+
+// ===== 14. OPERAÇÕES COMPLEXAS =====
+imprima "\n🧠 OPERAÇÕES COMPLEXAS:";
+
+// Expressões aninhadas
+real resultado = (10 + 5) * 2 - 8 / 4;
+imprima "Expressão complexa: (10 + 5) * 2 - 8 / 4 = " + paraTexto(resultado);
+
+// Condição complexa
+imprima "Condição complexa testada separadamente";
+
+// ===== 15. OPERADORES DE ATRIBUIÇÃO =====
+imprima "\n📝 OPERADORES DE ATRIBUIÇÃO:";
+
+real valor = 100.0;
+imprima "Valor inicial: " + paraTexto(valor);
+
+valor = valor + 10.0;  // +=
+imprima "valor += 10: " + paraTexto(valor);
+
+valor = valor - 5.0;   // -=
+imprima "valor -= 5: " + paraTexto(valor);
+
+valor = valor * 2.0;   // *=
+imprima "valor *= 2: " + paraTexto(valor);
+
+valor = valor / 4.0;   // /=
+imprima "valor /= 4: " + paraTexto(valor);
+
+// ===== 16. TESTE DE PRECEDÊNCIA =====
+imprima "\n⚖️ TESTE DE PRECEDÊNCIA:";
+
+inteiro precedencia1 = 2 + 3 * 4;  // Deve ser 14, não 20
+imprima "2 + 3 * 4 = " + paraTexto(precedencia1) + " (esperado: 14)";
+
+real precedencia2 = (2 + 3) * 4;  // Deve ser 20
+imprima "(2 + 3) * 4 = " + paraTexto(precedencia2) + " (esperado: 20)";
+
+// Teste de precedência lógica (agora funciona!)
+logico precedencia3 = verdadeiro ou (falso e falso);
+imprima "verdadeiro ou (falso e falso) = " + paraTexto(precedencia3) + " (esperado: verdadeiro)";
+
+// ===== FINALIZAÇÃO =====
+imprima "\n🏁 === TESTE COMPLETO FINALIZADO ===";
+imprima "✅ Todas as funcionalidades da sintaxe foram testadas!";
+imprima "📊 Recursos testados:";
+imprima "   • Variáveis (var, tipadas)";
+imprima "   • Constantes";
+imprima "   • Tipos básicos (inteiro, real, texto, logico)";
+imprima "   • Listas homogêneas tipadas";
+imprima "   • Operador typeof";
+imprima "   • Operadores aritméticos, lógicos, comparação";
+imprima "   • Estruturas condicionais (se/senao/senao se)";
+imprima "   • Loops (while, for tradicional, for MiniDart, do-while)";
+imprima "   • Switch/case com contrario";
+imprima "   • Break e continue";
+imprima "   • Precedência de operadores";
+imprima "   • Conversão de tipos (paraTexto)";
+imprima "   • Operações de lista (acesso, modificação, métodos)";
+imprima "";
+imprima "🚀 MiniDart v2.0 - Linguagem educacional em português";
+imprima "🎓 Perfeita para ensinar programação!";

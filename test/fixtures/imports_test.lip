@@ -1,0 +1,11 @@
+// Teste de imports e módulos
+importar math;
+importar string como s;
+
+real raiz = math.raiz(16);
+real pi = math.pi;
+texto maiuscula = s.maiuscula("teste");
+
+imprima "Raiz de 16: " + paraTexto(raiz);
+imprima "PI: " + paraTexto(pi);
+imprima "Maiúscula: " + maiuscula;
