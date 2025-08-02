@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="web/icons/logo.png" alt="LIPO Logo" width="400" />
+  <img src="web/icons/logo.png" alt="LIPO Logo" width="100" />
 </p>
 
 <h1 align="center">LIPO</h1>
@@ -79,7 +79,7 @@ dart pub get
 #### 4. Execute o compilador
 
 ```bash
-dart compile exe bin/compile.dart -o minidart
+flutter run -d chrome
 ```
 
 #### Versão Web
