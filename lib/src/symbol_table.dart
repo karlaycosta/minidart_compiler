@@ -5,9 +5,16 @@ class Symbol {
   final Token declaration;
   final TokenType? type; // Tipo da variável (se conhecido)
   final TokenType? elementType; // Tipo dos elementos (para listas)
+<<<<<<< HEAD
   bool isInitialized = false;
 
   Symbol(this.declaration, {this.type, this.elementType});
+=======
+  final TokenType? functionReturnType; // Tipo de retorno (para funções)
+  bool isInitialized = false;
+
+  Symbol(this.declaration, {this.type, this.elementType, this.functionReturnType});
+>>>>>>> origin/dev
 }
 
 /// Gerencia os escopos e os símbolos declarados dentro deles.
@@ -34,7 +41,23 @@ class SymbolTable {
 
   /// Define um novo símbolo de lista no escopo atual.
   void defineList(Token name, TokenType elementType) {
+<<<<<<< HEAD
     _symbols[name.lexeme] = Symbol(name, type: TokenType.lista, elementType: elementType);
+=======
+    _symbols[name.lexeme] = Symbol(
+      name,
+      type: TokenType.lista,
+      elementType: elementType,
+    );
+  }
+
+  /// Define um novo símbolo de função no escopo atual.
+  void defineFunction(Token name, TokenType returnType) {
+    _symbols[name.lexeme] = Symbol(
+      name,
+      functionReturnType: returnType,
+    );
+>>>>>>> origin/dev
   }
 
   /// Atribui um valor a um símbolo existente, marcando-o como inicializado.

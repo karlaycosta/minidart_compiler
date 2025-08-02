@@ -1,0 +1,65 @@
+// imprima tipo(5);
+// imprima tipode 5;
+// vazio teste(inteiro operacao) {
+//     imprima tipo(operacao);
+//     imprima tipode operacao;
+// }
+// teste(5);
+// Função recursiva para calcular fatorial
+inteiro fatorial(inteiro n) {
+    se (n <= 1) {
+        retorne 1;
+    }
+    retorne n * fatorial(n - 1);
+}
+
+// Função recursiva para somar elementos de uma lista de inteiros
+inteiro somarLista(lista<inteiro> nums, inteiro indice) {
+    se (indice >= nums.tamanho()) {
+        retorne 0;
+    }
+    retorne nums[indice] + somarLista(nums, indice + 1);
+}
+
+inteiro principal() {
+    imprima "Fatorial de 5:";
+    imprima fatorial(5);
+
+    lista<inteiro> valores = [1, 2, 3, 4, 5]; // GARANTA QUE É INTEIRO, NÃO REAL!
+    inteiro somaTotal = somarLista(valores, 0);
+    imprima "Soma dos valores:";
+    imprima somaTotal;
+
+    retorne 0;
+}
+principal();
+
+vazio exemplo3() {
+    inteiro numero = 15;
+    
+    // Condicional
+    se (numero > 10) {
+        imprima "Número é maior que 10";
+    } senao {
+        imprima "Número é menor ou igual a 10";
+    }
+    
+    // Loop while
+    inteiro contador = 0;
+    enquanto (contador < 5) {
+        imprima "Contador: " + paraTexto(contador);
+        contador++;
+    }
+    
+    // Loop for tradicional
+    para (inteiro i = 0; i < 3; i++) {
+        imprima "i = " + paraTexto(i);
+    }
+    
+    // Loop for MiniDart
+    para j = 1 ate 3 faca {
+        imprima "j = " + paraTexto(j);
+    }
+}
+// Executa a funcão
+exemplo3();

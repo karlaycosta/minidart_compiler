@@ -1,0 +1,4 @@
+// Teste comparação com tipo explícito
+inteiro dia = 3;
+logico comp = (dia >= 6);
+imprima "Comparação: " + paraTexto(comp);

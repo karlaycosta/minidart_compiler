@@ -1,0 +1,15 @@
+// Teste mais específico
+inteiro dia = 3;
+
+// Teste individual dos componentes
+logico condicao = (dia >= 6);
+imprima "Condição: " + paraTexto(condicao);
+
+texto opcao1 = "fim de semana";
+texto opcao2 = "dia útil";
+imprima "Opção 1: " + opcao1;
+imprima "Opção 2: " + opcao2;
+
+// Teste com variáveis separadas
+texto resultado = condicao ? opcao1 : opcao2;
+imprima "Resultado: " + resultado;

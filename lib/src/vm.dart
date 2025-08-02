@@ -9,6 +9,7 @@ enum InterpretResult { ok, compileError, runtimeError }
 class CallFrame {
   /// Função sendo executada
   final CompiledFunction function;
+<<<<<<< HEAD
   
   /// Ponteiro de instrução para esta função
   int ip;
@@ -22,6 +23,17 @@ class CallFrame {
     required this.slots,
   });
   
+=======
+
+  /// Ponteiro de instrução para esta função
+  int ip;
+
+  /// Posição na pilha onde começam as variáveis locais desta função
+  final int slots;
+
+  CallFrame({required this.function, this.ip = 0, required this.slots});
+
+>>>>>>> origin/dev
   @override
   String toString() => 'CallFrame(${function.name}/${function.arity})';
 }
@@ -35,6 +47,7 @@ class VM {
   Map<String, CompiledFunction> _functions = {};
   late StandardLibrary _standardLibrary;
   bool _debugMode = false; // Modo debug da VM
+<<<<<<< HEAD
   
   // Callbacks para debugger interativo
   Function(int ip, OpCode opCode, List<dynamic> stack, Map<String, dynamic> globals)? onInstructionExecute;
@@ -42,10 +55,32 @@ class VM {
   Function(String functionName, dynamic returnValue)? onFunctionReturn;
 
   VM() {
+=======
+
+  // Callback opcional para capturar print (útil para testes)
+  void Function(String)? _printCallback;
+
+  // Callbacks para debugger interativo
+  Function(
+    int ip,
+    OpCode opCode,
+    List<dynamic> stack,
+    Map<String, dynamic> globals,
+  )?
+  onInstructionExecute;
+  Function(String functionName, List<dynamic> args)? onFunctionCall;
+  Function(String functionName, dynamic returnValue)? onFunctionReturn;
+
+  VM({void Function(String)? printCallback}) {
+>>>>>>> origin/dev
     // Configura stdout para UTF-8
     stdout.encoding = utf8;
     // Inicializa a biblioteca padrão
     _standardLibrary = StandardLibrary();
+<<<<<<< HEAD
+=======
+    _printCallback = printCallback;
+>>>>>>> origin/dev
   }
 
   /// Ativa ou desativa o modo debug da VM
@@ -76,17 +111,35 @@ class VM {
   InterpretResult _run() {
     while (true) {
       final instruction = _chunk.code[_ip++];
+<<<<<<< HEAD
       
+=======
+
+>>>>>>> origin/dev
       // Debug: mostra instrução atual
       if (_debugMode) {
         _debugInstruction(instruction);
       }
+<<<<<<< HEAD
       
       // Callback para debugger interativo
       if (onInstructionExecute != null) {
         onInstructionExecute!(_ip - 1, instruction.opcode, List.from(_stack), Map.from(_globals));
       }
       
+=======
+
+      // Callback para debugger interativo
+      if (onInstructionExecute != null) {
+        onInstructionExecute!(
+          _ip - 1,
+          instruction.opcode,
+          List.from(_stack),
+          Map.from(_globals),
+        );
+      }
+
+>>>>>>> origin/dev
       switch (instruction.opcode) {
         case OpCode.pushConst:
           _push(_chunk.constants[instruction.operand!]);
@@ -116,6 +169,17 @@ class VM {
           }
           _globals[name] = _peek(0); // Atribui sem desempilhar
           break;
+<<<<<<< HEAD
+=======
+        case OpCode.getLocal:
+          final slot = instruction.operand!;
+          _push(_stack[_currentFrame().slots + slot]);
+          break;
+        case OpCode.setLocal:
+          final slot = instruction.operand!;
+          _stack[_currentFrame().slots + slot] = _peek(0);
+          break;
+>>>>>>> origin/dev
         case OpCode.add:
           final b = _pop();
           final a = _pop();
@@ -183,8 +247,26 @@ class VM {
           _binaryOp((a, b) => a < b);
           break;
         case OpCode.print:
+<<<<<<< HEAD
           final value = _stringify(_pop());
           stdout.write('$value\n');
+=======
+          final value = _pop();
+          // Se é um número e é inteiro, imprimir como inteiro
+          String output;
+          if (value is double && value == value.truncate()) {
+            output = value.toInt().toString();
+          } else {
+            output = value.toString();
+          }
+
+          // Use callback se disponível, senão use print padrão
+          if (_printCallback != null) {
+            _printCallback!(output);
+          } else {
+            print(output);
+          }
+>>>>>>> origin/dev
           break;
         case OpCode.jump:
           _ip += instruction.operand!;
@@ -200,7 +282,12 @@ class VM {
           break;
         case OpCode.call:
           final argCount = instruction.operand!;
+<<<<<<< HEAD
           if (!_callValue(_peek(0), argCount)) {  // A função está no topo da pilha
+=======
+          if (!_callValue(_peek(0), argCount)) {
+            // A função está no topo da pilha
+>>>>>>> origin/dev
             return InterpretResult.runtimeError;
           }
           break;
@@ -219,11 +306,23 @@ class VM {
             if (index >= 0 && index < list.length) {
               _push(list[index]);
             } else {
+<<<<<<< HEAD
               _runtimeError("Índice $index fora do alcance da lista (tamanho: ${list.length}).");
               return InterpretResult.runtimeError;
             }
           } else {
             _runtimeError("Acesso por índice requer uma lista e um índice inteiro.");
+=======
+              _runtimeError(
+                "Índice $index fora do alcance da lista (tamanho: ${list.length}).",
+              );
+              return InterpretResult.runtimeError;
+            }
+          } else {
+            _runtimeError(
+              "Acesso por índice requer uma lista e um índice inteiro.",
+            );
+>>>>>>> origin/dev
             return InterpretResult.runtimeError;
           }
           break;
@@ -236,11 +335,23 @@ class VM {
               list[index] = value;
               _push(value); // Retorna o valor atribuído
             } else {
+<<<<<<< HEAD
               _runtimeError("Índice $index fora do alcance da lista (tamanho: ${list.length}).");
               return InterpretResult.runtimeError;
             }
           } else {
             _runtimeError("Atribuição por índice requer uma lista e um índice inteiro.");
+=======
+              _runtimeError(
+                "Índice $index fora do alcance da lista (tamanho: ${list.length}).",
+              );
+              return InterpretResult.runtimeError;
+            }
+          } else {
+            _runtimeError(
+              "Atribuição por índice requer uma lista e um índice inteiro.",
+            );
+>>>>>>> origin/dev
             return InterpretResult.runtimeError;
           }
           break;
@@ -291,12 +402,20 @@ class VM {
         case OpCode.createList:
           final elementCount = instruction.operand!;
           final list = <Object?>[];
+<<<<<<< HEAD
           
+=======
+
+>>>>>>> origin/dev
           // Retira elementos da pilha em ordem reversa (último empurrado primeiro)
           for (int i = 0; i < elementCount; i++) {
             list.insert(0, _pop());
           }
+<<<<<<< HEAD
           
+=======
+
+>>>>>>> origin/dev
           _push(list);
           break;
         case OpCode.return_:
@@ -321,15 +440,42 @@ class VM {
     return true; // Números e strings são 'truthy'
   }
 
+<<<<<<< HEAD
   String _stringify(Object? value) {
     if (value == null) return "nulo";
     return value.toString();
   }
+=======
+  // String _stringify(Object? value) {
+  //   if (value == null) return "nulo";
+  //   return value.toString();
+  // }
+>>>>>>> origin/dev
 
   void _push(Object? value) => _stack.add(value);
   Object? _pop() => _stack.removeLast();
   Object? _peek(int distance) => _stack[_stack.length - 1 - distance];
 
+<<<<<<< HEAD
+=======
+  /// Retorna o frame de chamada atual
+  CallFrame _currentFrame() {
+    if (_frames.isEmpty) {
+      // Se não há frames, cria um frame dummy para o escopo global
+      return CallFrame(
+        function: CompiledFunction(
+          name: "__global__",
+          arity: 0,
+          chunk: BytecodeChunk(),
+          paramNames: [],
+        ),
+        slots: 0,
+      );
+    }
+    return _frames.last;
+  }
+
+>>>>>>> origin/dev
   void _runtimeError(String message) {
     final currentLocation = _getCurrentSourceLocation();
     if (currentLocation != null) {
@@ -356,7 +502,11 @@ class VM {
       if (nativeFunction != null) {
         return _callNative(nativeFunction, argCount);
       }
+<<<<<<< HEAD
       
+=======
+
+>>>>>>> origin/dev
       // Se não é nativa, verifica se é uma função compilada
       final function = _functions[callee];
       if (function != null) {
@@ -368,7 +518,13 @@ class VM {
     } else if (callee is CompiledFunction) {
       return _call(callee, argCount);
     } else {
+<<<<<<< HEAD
       _runtimeError("Só é possível chamar funções. Recebido: ${callee.runtimeType}");
+=======
+      _runtimeError(
+        "Só é possível chamar funções. Recebido: ${callee.runtimeType}",
+      );
+>>>>>>> origin/dev
       return false;
     }
   }
@@ -376,18 +532,29 @@ class VM {
   /// Executa uma chamada de função nativa
   bool _callNative(NativeFunction nativeFunction, int argCount) {
     if (argCount != nativeFunction.arity) {
+<<<<<<< HEAD
       _runtimeError("Esperado ${nativeFunction.arity} argumentos mas recebeu $argCount.");
+=======
+      _runtimeError(
+        "Esperado ${nativeFunction.arity} argumentos mas recebeu $argCount.",
+      );
+>>>>>>> origin/dev
       return false;
     }
 
     // Remove a função que está no topo
     _pop(); // Remove o nome da função da pilha
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> origin/dev
     // Coleta os argumentos da pilha
     final args = <Object?>[];
     for (int i = 0; i < argCount; i++) {
       args.insert(0, _pop()); // Remove argumentos na ordem reversa
     }
+<<<<<<< HEAD
     
     try {
       // Executa a função nativa
@@ -396,6 +563,16 @@ class VM {
       // Coloca o resultado na pilha (mesmo que seja null)
       _push(result);
       
+=======
+
+    try {
+      // Executa a função nativa
+      final result = nativeFunction.call(args);
+
+      // Coloca o resultado na pilha (mesmo que seja null)
+      _push(result);
+
+>>>>>>> origin/dev
       return true;
     } catch (e) {
       _runtimeError("Erro na função nativa ${nativeFunction.name}: $e");
@@ -406,12 +583,19 @@ class VM {
   /// Executa uma chamada de função
   bool _call(CompiledFunction function, int argCount) {
     if (argCount != function.arity) {
+<<<<<<< HEAD
       _runtimeError("Esperado ${function.arity} argumentos mas recebeu $argCount.");
+=======
+      _runtimeError(
+        "Esperado ${function.arity} argumentos mas recebeu $argCount.",
+      );
+>>>>>>> origin/dev
       return false;
     }
 
     // Remove a função que está no topo
     _pop(); // Remove a função da pilha
+<<<<<<< HEAD
     
     // Salva os argumentos em variáveis globais temporárias para os parâmetros
     final args = <Object?>[];
@@ -439,11 +623,33 @@ class VM {
       function: function,
       ip: 0,
       slots: _stack.length,
+=======
+
+    // Os argumentos já estão na pilha na ordem correta para serem variáveis locais
+    // Não precisamos removê-los da pilha
+
+    // Callback para debugger
+    if (onFunctionCall != null) {
+      final args = <Object?>[];
+      for (int i = 0; i < argCount; i++) {
+        args.add(_stack[_stack.length - argCount + i]);
+      }
+      onFunctionCall!(function.name, args);
+    }
+
+    // Cria um novo frame de chamada
+    // slots aponta para onde os parâmetros começam na pilha
+    final frame = CallFrame(
+      function: function,
+      ip: 0,
+      slots: _stack.length - argCount,
+>>>>>>> origin/dev
     );
     _frames.add(frame);
 
     // Executa a função
     final result = _executeFunction(frame);
+<<<<<<< HEAD
     
     // Restaura as variáveis globais originais
     for (final paramName in function.paramNames) {
@@ -454,6 +660,9 @@ class VM {
       }
     }
     
+=======
+
+>>>>>>> origin/dev
     return result;
   }
 
@@ -475,14 +684,27 @@ class VM {
           case OpCode.return_:
             // Remove o frame
             _frames.removeLast();
+<<<<<<< HEAD
             
             // Resultado já está no topo da pilha
             final result = _pop();
             
+=======
+
+            // Resultado já está no topo da pilha
+            final result = _pop();
+
+            // Remove todas as variáveis locais da pilha (incluindo parâmetros)
+            while (_stack.length > frame.slots) {
+              _pop();
+            }
+
+>>>>>>> origin/dev
             // Callback para debugger
             if (onFunctionReturn != null) {
               onFunctionReturn!(frame.function.name, result);
             }
+<<<<<<< HEAD
             
             // Restaura contexto anterior
             _chunk = oldChunk;
@@ -491,6 +713,16 @@ class VM {
             // Coloca o resultado na pilha
             _push(result);
             
+=======
+
+            // Restaura contexto anterior
+            _chunk = oldChunk;
+            _ip = oldIp;
+
+            // Coloca o resultado na pilha
+            _push(result);
+
+>>>>>>> origin/dev
             return true;
           default:
             // Para outras operações, usa a implementação padrão
@@ -520,10 +752,21 @@ class VM {
         break;
       case OpCode.getGlobal:
         final name = _chunk.constants[instruction.operand!] as String;
+<<<<<<< HEAD
         if (!_globals.containsKey(name)) {
           _runtimeError("Variável global indefinida '$name'.");
         }
         _push(_globals[name]);
+=======
+        if (_globals.containsKey(name)) {
+          _push(_globals[name]);
+        } else if (_standardLibrary.hasFunction(name)) {
+          // É uma função nativa, coloca o nome na pilha para posterior chamada
+          _push(name);
+        } else {
+          _runtimeError("Variável global indefinida '$name'.");
+        }
+>>>>>>> origin/dev
         break;
       case OpCode.setGlobal:
         final name = _chunk.constants[instruction.operand!] as String;
@@ -532,6 +775,17 @@ class VM {
         }
         _globals[name] = _peek(0); // Atribui sem desempilhar
         break;
+<<<<<<< HEAD
+=======
+      case OpCode.getLocal:
+        final slot = instruction.operand!;
+        _push(_stack[_currentFrame().slots + slot]);
+        break;
+      case OpCode.setLocal:
+        final slot = instruction.operand!;
+        _stack[_currentFrame().slots + slot] = _peek(0);
+        break;
+>>>>>>> origin/dev
       case OpCode.add:
         final b = _pop();
         final a = _pop();
@@ -600,10 +854,25 @@ class VM {
       case OpCode.print:
         final value = _pop();
         // Se é um número e é inteiro, imprimir como inteiro
+<<<<<<< HEAD
         if (value is double && value == value.truncate()) {
           print(value.toInt());
         } else {
           print(value);
+=======
+        String output;
+        if (value is double && value == value.truncate()) {
+          output = value.toInt().toString();
+        } else {
+          output = value.toString();
+        }
+        
+        // Use callback se disponível, senão use print padrão
+        if (_printCallback != null) {
+          _printCallback!(output);
+        } else {
+          print(output);
+>>>>>>> origin/dev
         }
         break;
       case OpCode.jump:
@@ -624,6 +893,7 @@ class VM {
           _runtimeError("Erro na chamada de função.");
         }
         break;
+<<<<<<< HEAD
       case OpCode.return_:
         // No contexto principal (sem frames), return_ marca fim do programa
         if (_frames.isEmpty) {
@@ -634,6 +904,102 @@ class VM {
           _runtimeError("Return inesperado fora de contexto de função.");
         }
         break;
+=======
+      case OpCode.break_:
+        // break_ é tratado durante a compilação com jumps - não deveria chegar aqui
+        _runtimeError("Instrução 'break' inválida.");
+        break;
+      case OpCode.continue_:
+        // continue_ é tratado durante a compilação com jumps - não deveria chegar aqui
+        _runtimeError("Instrução 'continue' inválida.");
+        break;
+      case OpCode.indexAccess:
+        final index = _pop();
+        final list = _pop();
+        if (list is List && index is int) {
+          if (index >= 0 && index < list.length) {
+            _push(list[index]);
+          } else {
+            _runtimeError(
+              "Índice $index fora do alcance da lista (tamanho: ${list.length}).",
+            );
+          }
+        } else {
+          _runtimeError(
+            "Acesso por índice requer uma lista e um índice inteiro.",
+          );
+        }
+        break;
+      case OpCode.indexAssign:
+        final value = _pop();
+        final index = _pop();
+        final list = _pop();
+        if (list is List && index is int) {
+          if (index >= 0 && index < list.length) {
+            list[index] = value;
+            _push(value); // Retorna o valor atribuído
+          } else {
+            _runtimeError(
+              "Índice $index fora do alcance da lista (tamanho: ${list.length}).",
+            );
+          }
+        } else {
+          _runtimeError(
+            "Atribuição por índice requer uma lista e um índice inteiro.",
+          );
+        }
+        break;
+      case OpCode.listSize:
+        final list = _pop();
+        if (list is List) {
+          _push(list.length);
+        } else {
+          _runtimeError("Método 'tamanho' só pode ser chamado em listas.");
+        }
+        break;
+      case OpCode.listAdd:
+        final value = _pop();
+        final list = _pop();
+        if (list is List) {
+          list.add(value);
+          _push(null); // Método não retorna valor
+        } else {
+          _runtimeError("Método 'adicionar' só pode ser chamado em listas.");
+        }
+        break;
+      case OpCode.listRemove:
+        final list = _pop();
+        if (list is List) {
+          if (list.isNotEmpty) {
+            final removedValue = list.removeLast();
+            _push(removedValue);
+          } else {
+            _runtimeError("Não é possível remover elemento de lista vazia.");
+          }
+        } else {
+          _runtimeError("Método 'remover' só pode ser chamado em listas.");
+        }
+        break;
+      case OpCode.listEmpty:
+        final list = _pop();
+        if (list is List) {
+          _push(list.isEmpty);
+        } else {
+          _runtimeError("Método 'vazio' só pode ser chamado em listas.");
+        }
+        break;
+      case OpCode.createList:
+        final elementCount = instruction.operand!;
+        final list = <Object?>[];
+
+        // Retira elementos da pilha em ordem reversa (último empurrado primeiro)
+        for (int i = 0; i < elementCount; i++) {
+          list.insert(0, _pop());
+        }
+
+        _push(list);
+        break;
+>>>>>>> origin/dev
       default:
         _runtimeError("Operação não suportada: ${instruction.opcode}");
         break;
@@ -650,8 +1016,15 @@ class VM {
   /// Debug: mostra informações da instrução atual
   void _debugInstruction(Instruction instruction) {
     // Mostra posição atual e instrução
+<<<<<<< HEAD
     print('🔍 [VM] IP: ${_ip - 1} | ${instruction.opcode}${instruction.operand != null ? ' ${instruction.operand}' : ''}');
     
+=======
+    print(
+      '🔍 [VM] IP: ${_ip - 1} | ${instruction.opcode}${instruction.operand != null ? ' ${instruction.operand}' : ''}',
+    );
+
+>>>>>>> origin/dev
     // Mostra pilha atual
     stdout.write('    Stack: [');
     for (int i = 0; i < _stack.length; i++) {
@@ -664,7 +1037,11 @@ class VM {
       }
     }
     print(']');
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> origin/dev
     // Mostra globals relevantes (apenas se não vazio)
     if (_globals.isNotEmpty && _globals.length <= 5) {
       stdout.write('    Globals: {');
@@ -700,6 +1077,7 @@ class VM {
       _globals.clear();
       _frames.clear();
     }
+<<<<<<< HEAD
     
     if (_ip >= chunk.code.length) {
       return InterpretResult.ok;
@@ -715,6 +1093,28 @@ class VM {
       onInstructionExecute!(_ip - 1, instruction.opcode, List.from(_stack), Map.from(_globals));
     }
     
+=======
+
+    if (_ip >= chunk.code.length) {
+      return InterpretResult.ok;
+    }
+
+    final instruction = chunk.code[_ip++];
+
+    if (_debugMode) {
+      _debugInstruction(instruction);
+    }
+
+    if (onInstructionExecute != null) {
+      onInstructionExecute!(
+        _ip - 1,
+        instruction.opcode,
+        List.from(_stack),
+        Map.from(_globals),
+      );
+    }
+
+>>>>>>> origin/dev
     try {
       _executeInstruction(instruction);
       return InterpretResult.ok;
@@ -764,20 +1164,46 @@ class VM {
   }
 
   /// Define callback para execução de instrução
+<<<<<<< HEAD
   void setOnInstructionExecute(Function(int ip, OpCode opCode, List<dynamic> stack, Map<String, dynamic> globals) callback) {
+=======
+  void setOnInstructionExecute(
+    Function(
+      int ip,
+      OpCode opCode,
+      List<dynamic> stack,
+      Map<String, dynamic> globals,
+    )
+    callback,
+  ) {
+>>>>>>> origin/dev
     onInstructionExecute = callback;
   }
 
   /// Define callback para chamada de função
+<<<<<<< HEAD
   void setOnFunctionCall(Function(String functionName, List<dynamic> args) callback) {
+=======
+  void setOnFunctionCall(
+    Function(String functionName, List<dynamic> args) callback,
+  ) {
+>>>>>>> origin/dev
     onFunctionCall = callback;
   }
 
   /// Define callback para retorno de função
+<<<<<<< HEAD
   void setOnFunctionReturn(Function(String functionName, dynamic returnValue) callback) {
     onFunctionReturn = callback;
   }
 
+=======
+  void setOnFunctionReturn(
+    Function(String functionName, dynamic returnValue) callback,
+  ) {
+    onFunctionReturn = callback;
+  }
+>>>>>>> origin/dev
 }
 
 class VmRuntimeError implements Exception {

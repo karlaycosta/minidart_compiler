@@ -1,0 +1,16 @@
+// Teste isolado - seção 7 (onde parou)
+imprima "🔀 OPERADORES LÓGICOS:";
+
+logico verdade = verdadeiro;
+logico mentira = falso;
+
+// Operadores lógicos
+logico resultado_e = verdade e mentira;
+logico resultado_ou = verdade ou mentira;
+logico resultado_nao1 = !verdade;
+logico resultado_nao2 = !mentira;
+
+imprima "verdade e mentira: " + paraTexto(resultado_e);
+imprima "verdade ou mentira: " + paraTexto(resultado_ou);
+imprima "!verdade: " + paraTexto(resultado_nao1);
+imprima "!mentira: " + paraTexto(resultado_nao2);

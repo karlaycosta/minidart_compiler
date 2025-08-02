@@ -35,6 +35,10 @@ class StandardLibrary {
     _registerIOLibrary();
     _registerDataLibrary();
     _registerTypeLibrary();
+<<<<<<< HEAD
+=======
+    _registerLogicalOperators();
+>>>>>>> origin/dev
   }
 
   /// Registra uma função nativa
@@ -117,6 +121,31 @@ class StandardLibrary {
     register('math.LOG10E', 0, (args) => math.log10e);
     register('math.SQRT1_2', 0, (args) => math.sqrt1_2);
     register('math.SQRT2', 0, (args) => math.sqrt2);
+<<<<<<< HEAD
+=======
+
+    // Aliases em português para funções matemáticas
+    register('math.raiz', 1, (args) => math.sqrt(_toDouble(args[0])));
+    register('math.pi', 0, (args) => math.pi);
+    register('math.absoluto', 1, (args) {
+      final value = args[0];
+      if (value is int) return value.abs();
+      if (value is double) return value.abs();
+      throw Exception('math.absoluto espera um número');
+    });
+    register('math.potencia', 2, (args) => math.pow(_toDouble(args[0]), _toDouble(args[1])));
+    register('math.arredondar', 1, (args) => _toDouble(args[0]).round());
+    register('math.maximo', 2, (args) {
+      final a = _toDouble(args[0]);
+      final b = _toDouble(args[1]);
+      return math.max(a, b);
+    });
+    register('math.minimo', 2, (args) {
+      final a = _toDouble(args[0]);
+      final b = _toDouble(args[1]);
+      return math.min(a, b);
+    });
+>>>>>>> origin/dev
   }
 
   /// Registra as funções da biblioteca de strings
@@ -298,6 +327,14 @@ class StandardLibrary {
     register('data.hoje', 0, (args) {
       return DateTime.now().toString().split(' ')[0];
     });
+<<<<<<< HEAD
+=======
+    
+    // Alias para compatibilidade
+    register('data.dataAtual', 0, (args) {
+      return DateTime.now().toString().split(' ')[0];
+    });
+>>>>>>> origin/dev
 
     // Hora atual (HH:MM:SS)
     register('data.horaAtual', 0, (args) {
@@ -509,4 +546,44 @@ class StandardLibrary {
       return null;
     });
   }
+<<<<<<< HEAD
+=======
+
+  /// Registra operadores lógicos internos
+  void _registerLogicalOperators() {
+    // Operador OR lógico
+    register('__or__', 2, (args) {
+      final left = args[0];
+      final right = args[1];
+      
+      // Converte para boolean e faz OR
+      final leftBool = _toBool(left);
+      final rightBool = _toBool(right);
+      
+      return leftBool || rightBool;
+    });
+
+    // Operador AND lógico
+    register('__and__', 2, (args) {
+      final left = args[0];
+      final right = args[1];
+      
+      // Converte para boolean e faz AND
+      final leftBool = _toBool(left);
+      final rightBool = _toBool(right);
+      
+      return leftBool && rightBool;
+    });
+  }
+
+  /// Converte um valor para boolean seguindo as regras do MiniDart
+  bool _toBool(Object? value) {
+    if (value == null) return false;
+    if (value is bool) return value;
+    if (value is int) return value != 0;
+    if (value is double) return value != 0.0;
+    if (value is String) return value.isNotEmpty;
+    return true; // outros valores são considerados true
+  }
+>>>>>>> origin/dev
 }

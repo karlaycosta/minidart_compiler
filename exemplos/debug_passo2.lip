@@ -1,0 +1,9 @@
+logico verdade = verdadeiro;
+logico mentira = falso;
+imprima "Teste 1: variáveis criadas";
+
+logico resultado_e = verdade e mentira;
+imprima "Teste 2: operador e funcionou";
+
+logico resultado_ou = verdade ou mentira;
+imprima "Teste 3: operador ou funcionou";

@@ -1,0 +1,26 @@
+// Teste de funções com listas - versão corrigida
+// Este arquivo demonstra o uso correto sem palavras reservadas
+
+funcao testeParaTexto() {
+    var numeros = [1, 2, 3, 4, 5];
+    var resultado = processarLista(numeros);
+    imprima("Resultado: " + resultado);
+}
+
+funcao processarLista(lista) {
+    var resultado = "";
+    var tamanhoLista = lista.tamanho(); // Usando método tamanho() corretamente
+    var contador = 0; // Usando nome não-reservado
+    
+    enquanto (contador < tamanhoLista) {
+        resultado = resultado + paraTexto(lista[contador]);
+        se (contador < tamanhoLista - 1) {
+            resultado = resultado + ", ";
+        }
+        contador = contador + 1;
+    }
+    
+    retorne "[" + resultado + "]";
+}
+
+testeParaTexto();

@@ -1,0 +1,17 @@
+// Teste básico de tipos
+inteiro dia = 3;
+inteiro limite = 6;
+
+// Teste comparação
+imprima "Testando comparação...";
+var comp = (dia >= limite);  // Deveria ser lógico
+imprima "Comparação: " + paraTexto(comp);
+
+// Teste strings
+texto str1 = "fim de semana";
+texto str2 = "dia útil";
+
+// Teste ternário com var
+imprima "Testando ternário...";
+var tern = comp ? str1 : str2;  // Deveria ser texto
+imprima "Ternário: " + tern;

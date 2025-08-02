@@ -1,0 +1,156 @@
+// Teste de tipos primitivos
+inteiro numA = 10;
+real numB = 5.75;
+texto textoTeste = "Teste";
+logico flagFalso = falso;
+
+// Teste de constante e variáveis com nomes válidos
+real valorDecimal = 3.14;
+constante inteiro MAXIMO = 100;
+constante texto VERSAO = "1.2.3";
+
+// Teste de lista
+lista<inteiro> numeros = [1, 2, 3];
+lista<real> listaReais;
+lista<texto> listaTextos = ["a", "b"];
+lista<logico> listaBooleana = [verdadeiro, falso];
+
+// Métodos de lista
+numeros.adicionar(4);
+inteiro valorRemovido = numeros.remover();
+imprima "Removido: " + paraTexto(valorRemovido);
+imprima "Tamanho numeros: " + paraTexto(numeros.tamanho());
+imprima "Está vazia? " + paraTexto(listaReais.vazio());
+listaReais.adicionar(8.88);
+imprima "Primeiro real: " + paraTexto(listaReais[0]);
+
+// Teste de acesso/modificação de listas
+imprima "Primeira letra: " + listaTextos[0];
+listaTextos[1] = "B";
+imprima "Segunda letra: " + listaTextos[1];
+
+// Teste operadores
+imprima "Soma: " + paraTexto(numA + 5);
+imprima "Divisão: " + paraTexto(numA / 2);
+imprima "Comparação: " + paraTexto(numA > 5);
+imprima "Lógico: " + paraTexto(flagFalso ou verdadeiro);
+imprima "Unário: " + paraTexto(-numA);
+
+// Teste operador ternário e tipode
+texto resultado = (numA > 5) ? "Maior" : "Menor";
+imprima "Ternário: " + resultado;
+imprima "Tipo de numB: " + tipode numB;
+
+// Controle de fluxo: if/else
+se (numA > 5) {
+    imprima "numA é maior que 5";
+} senao {
+    imprima "numA NÃO é maior que 5";
+}
+
+// while
+inteiro contadorWhile = 0;
+enquanto (contadorWhile < 3) {
+    imprima "While: " + paraTexto(contadorWhile);
+    contadorWhile++;
+}
+
+// do-while
+inteiro contadorDoWhile = 0;
+faca {
+    imprima "Do-while: " + paraTexto(contadorDoWhile);
+    contadorDoWhile++;
+} enquanto (contadorDoWhile < 2);
+
+// para tradicional (C-style)
+para (inteiro i = 0; i < 3; i++) {
+    imprima "Para tradicional: " + paraTexto(i);
+}
+
+// para MiniDart
+para j = 5 ate 7 faca {
+    imprima "Para MiniDart: " + paraTexto(j);
+}
+
+// para MiniDart incrementando
+para k = 2 ate 6 incremente 2 faca {
+    imprima "Para +2: " + paraTexto(k);
+}
+
+// para MiniDart decrementando
+para m = 6 ate 2 decremente 2 faca {
+    imprima "Para -2: " + paraTexto(m);
+}
+
+// switch/case
+inteiro diaSemana = 2;
+escolha (diaSemana) {
+    caso 1:
+        imprima "Domingo"; parar;
+    caso 2:
+        imprima "Segunda"; parar;
+    caso 3:
+        imprima "Terça"; parar;
+    contrario:
+        imprima "Outro dia";
+}
+
+// Funções: soma, sem retorno, mista
+inteiro soma(inteiro x, inteiro y) {
+    retorne x + y;
+}
+
+vazio mostrar(texto msg) {
+    imprima "Mensagem: " + msg;
+}
+
+real media(inteiro x, inteiro y) {
+    retorne (x + y) / 2.0;
+}
+
+// Teste funções
+imprima "Soma 7+8: " + paraTexto(soma(7, 8));
+mostrar("Olá da função void!");
+imprima "Média 7 e 8: " + paraTexto(media(7, 8));
+
+// Função recursiva
+inteiro fatorial(inteiro n) {
+    se (n <= 1) {
+        retorne 1;
+    }
+    retorne n * fatorial(n - 1);
+}
+imprima "Fatorial de 5: " + paraTexto(fatorial(5));
+
+// Função com lista recursiva
+inteiro somaLista(lista<inteiro> nums, inteiro idx) {
+    se (idx >= nums.tamanho()) {
+        retorne 0;
+    }
+    retorne nums[idx] + somaLista(nums, idx + 1);
+}
+imprima "Soma lista: " + paraTexto(somaLista([1, 2, 3, 4], 0));
+
+// Import e biblioteca padrão
+importar math;
+imprima "Raiz quadrada de 16: " + paraTexto(math.raiz(16));
+imprima "PI: " + paraTexto(math.pi);
+
+// import string como s
+importar string como s;
+imprima "Maiúscula: " + s.maiuscula("abc");
+// Comentado: método tamanho pode não existir para string como função
+// imprima "Tamanho texto: " + paraTexto(s.tamanho("abacate"));
+
+// import data
+importar data;
+imprima "Data hoje: " + data.dataAtual();
+imprima "Dia da semana: " + paraTexto(data.diaSemana(data.dataAtual()));
+
+// Comentários de linha e inline // funciona
+
+// EXCEÇÕES (esperadas - não descomente para evitar crash!)
+// inteiro erro = numeros[100]; // erro: índice fora do limite
+// inteiro bug = 3.5; // erro: real para inteiro
+
+retorne 0;

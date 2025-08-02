@@ -82,7 +82,11 @@ abstract interface class AstVisitor<T> {
   /// Visita uma declaração de import
   T visitImportStmt(ImportStmt stmt);
   
+<<<<<<< HEAD
   /// Visita uma declaração de lista (lista<tipo> nome = [elementos];)
+=======
+  /// Visita uma declaração de lista (lista`<tipo>` nome = [elementos];)
+>>>>>>> origin/dev
   T visitListDeclStmt(ListDeclStmt stmt);
 
   // === Visitantes para Expressions (Expressões) ===
@@ -307,7 +311,11 @@ final class ConstDeclStmt extends Stmt {
   T accept<T>(AstVisitor<T> visitor) => visitor.visitConstDeclStmt(this);
 }
 
+<<<<<<< HEAD
 /// **Statement de Declaração de Lista: lista<tipo> nome = [elementos];**
+=======
+/// **Statement de Declaração de Lista: lista`<tipo>` nome = [elementos];**
+>>>>>>> origin/dev
 ///
 /// Declara uma lista homogênea com tipo explícito dos elementos.
 /// Todas as listas devem especificar o tipo dos elementos que contêm.

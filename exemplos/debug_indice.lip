@@ -1,0 +1,4 @@
+// Teste simples de acesso por índice
+lista<inteiro> nums = [1, 2, 3];
+inteiro valor = nums[0];
+imprima valor;

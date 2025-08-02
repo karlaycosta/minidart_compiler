@@ -1,0 +1,10 @@
+// Teste isolado do operador ternário
+inteiro dia = 3;
+
+// Teste 1: Com var (funciona)
+var resultado1 = (dia >= 6) ? "fim de semana" : "dia útil";
+imprima "Resultado1: " + resultado1;
+
+// Teste 2: Com texto explícito (deveria funcionar mas não funciona)
+texto resultado2 = (dia >= 6) ? "fim de semana" : "dia útil";
+imprima "Resultado2: " + resultado2;

@@ -1,0 +1,22 @@
+// Teste de funções
+inteiro soma(inteiro a, inteiro b) {
+  retorne a + b;
+}
+
+inteiro fatorial(inteiro n) {
+  se (n <= 1) {
+    retorne 1;
+  }
+  retorne n * fatorial(n - 1);
+}
+
+vazio mostrarMensagem(texto msg) {
+  imprima "Mensagem: " + msg;
+}
+
+inteiro resultadoSoma = soma(10, 5);
+inteiro resultadoFatorial = fatorial(5);
+
+imprima "Soma: " + paraTexto(resultadoSoma);
+imprima "Fatorial: " + paraTexto(resultadoFatorial);
+mostrarMensagem("Teste de função void");

@@ -2,16 +2,25 @@
     "version": "0.2.0",
     "configurations": [
         {
+<<<<<<< HEAD
             "name": "Debug MiniDart (Arquivo Atual)",
             "type": "minidart",
             "request": "launch",
             "program": "${file}",
             "stopOnEntry": false,
             "compilerPath": "bin/compile.dart",
+=======
+            "name": "Debug LiPo (Arquivo Atual)",
+            "type": "lipo",
+            "request": "launch",
+            "program": "${file}",
+            "stopOnEntry": false,
+>>>>>>> origin/dev
             "cwd": "${workspaceFolder}"
         },
         {
             "name": "Debug com Stop na Entrada",
+<<<<<<< HEAD
             "type": "minidart",
             "request": "launch",
             "program": "${file}",
@@ -26,6 +35,20 @@
             "program": "${workspaceFolder}/exemplos/teste_validacao_data.mdart",
             "stopOnEntry": false,
             "compilerPath": "${workspaceFolder}/bin/compile.dart",
+=======
+            "type": "lipo",
+            "request": "launch",
+            "program": "${file}",
+            "stopOnEntry": true,
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Debug Teste",
+            "type": "lipo",
+            "request": "launch",
+            "program": "${workspaceFolder}/exemplos/teste.lip",
+            "stopOnEntry": false,
+>>>>>>> origin/dev
             "cwd": "${workspaceFolder}"
         }
     ]

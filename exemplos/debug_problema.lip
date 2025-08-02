@@ -1,0 +1,13 @@
+// Teste isolado do problema
+inteiro dia = 3;
+
+// Funciona com var
+var resultado1 = (dia >= 6) ? "fim de semana" : "dia útil";
+imprima "Resultado1 (var): " + resultado1;
+
+// Falha com declaração explícita
+logico condicao = (dia >= 6);
+imprima "Condição: " + paraTexto(condicao);
+
+texto resultado2 = condicao ? "fim de semana" : "dia útil";
+imprima "Resultado2 (texto): " + resultado2;

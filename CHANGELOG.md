@@ -5,6 +5,531 @@ Todas as alterações notáveis deste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+<<<<<<< HEAD
+=======
+## [0.18.3] - 2025-08-02
+
+### Melhorias nas Mensagens de Erro
+
+- **Corrigido**: Mensagens de erro mais específicas para palavras reservadas
+- **Melhoria**: Parser agora detecta quando palavras reservadas são usadas como nomes de variáveis
+- **Melhoria**: Substituída mensagem genérica "Expressão esperada" por orientações específicas
+- **Melhoria**: Adicionadas 35+ palavras reservadas com detecção específica
+
+### Correções de Bugs na VM e Análise Semântica
+
+- **Corrigido**: Funções da biblioteca padrão agora funcionam em contexto de função
+- **Corrigido**: Inferência de tipo para parâmetros de lista genérica (lista<inteiro>)
+- **Corrigido**: Operadores de incremento/decremento em variáveis locais
+- **Corrigido**: Operadores lógicos (e/ou) não causam mais desbalanceamento na pilha da VM
+- **Corrigido**: Sistema de imports funcionando completamente com aliases
+- **Melhoria**: Implementados operadores lógicos como funções nativas na biblioteca padrão
+
+### Módulos da Biblioteca Padrão Implementados
+
+- **math**: raiz(), pi, absoluto(), potencia(), maximo(), minimo()
+- **string**: maiuscula(), minuscula(), tamanho()
+- **data**: dataAtual(), diaSemana(), hoje(), horaAtual()
+- **io**: lerTexto(), lerInteiro()
+
+### Bugs reportados por:
+
+- **Revisores:** Filipe e Guile
+
+## [0.18.2] - 2025-08-01
+
+### Correções de Bugs no Analisador Semântico 
+
+- **Corrigido**: Operador ternário (`?:`) agora infere corretamente o tipo dos ramos (texto, inteiro, etc.)
+- **Corrigido**: Expressões entre parênteses agora são analisadas corretamente para inferência de tipos
+- **Melhoria**: Comparações (`>=`, `<=`, `>`, `<`, `==`, `!=`) agora retornam tipo `lógico` consistentemente
+- **Revisores:** Filipe e Guile
+
+## [0.18.1] - 2025-07-30
+
+### 🚀 Sistema de Listas Avançado Completo
+
+#### **📋 Novos Métodos de Lista:**
+- **`vazio()`**: Retorna `verdadeiro` se a lista estiver vazia, `falso` caso contrário
+- **`tamanho()`**: Retorna o número de elementos (inteiro)
+- **`adicionar(valor)`**: Adiciona elemento ao final da lista
+- **`remover()`**: Remove e retorna o último elemento
+
+#### **🎯 Acesso e Modificação por Índice:**
+- **Acesso**: `elemento = lista[indice]` - Acessa elemento em posição específica
+- **Atribuição**: `lista[indice] = valor` - Modifica elemento em posição específica
+- **Verificação de limites**: Erro de execução para índices inválidos
+
+#### **🔧 Implementação Técnica:**
+- **AST**: Novas classes `MethodCallExpr`, `IndexAccessExpr`, `IndexAssignExpr`
+- **Parser**: Suporte completo para sintaxe `objeto.metodo()` e `lista[indice]`
+- **Bytecode**: Novos opcodes `listSize`, `listAdd`, `listRemove`, `listEmpty`, `indexAccess`, `indexAssign`
+- **VM**: Execução segura com verificação de tipos e tratamento de erros
+- **Analisador Semântico**: Inferência de tipos para métodos de lista
+
+#### **✨ Biblioteca Padrão Expandida:**
+- **`paraTexto(valor)`**: Converte qualquer tipo para texto
+  - Inteiros e reais → representação numérica
+  - Booleanos → `"verdadeiro"` / `"falso"`
+  - Listas → `"[elemento1, elemento2, ...]"`
+  - Strings → mantém valor original
+  - Nulo → `"nulo"`
+- **`tipo(valor)`**: Atualizado para reconhecer tipo `lista`
+
+#### **🧪 Testes Completos:**
+- Verificação de todos os métodos de lista
+- Testes de acesso e atribuição por índice
+- Validação de conversão de tipos
+- Casos de erro (lista vazia, índice inválido)
+
+### 🔄 Correções e Melhorias
+- **Inferência de tipos**: Métodos de lista agora retornam tipos corretos
+- **Tratamento de tokens**: Métodos de lista reconhecidos corretamente pelo parser
+- **Gestão de memória**: Operações de lista implementadas com segurança
+
+### 📊 Estatísticas da Versão
+- **4 novos métodos** de lista implementados
+- **3 novos opcodes** de bytecode
+- **2 novas classes** AST para expressões
+- **1 nova função** de biblioteca padrão (`paraTexto`)
+- **100% dos testes** passando
+
+## [1.17.1] - 2025-07-28
+
+### ✅ Conversão Implícita Inteiro → Real
+- **Declarações de variáveis**: `real b = 10;` ✅
+- **Atribuições**: `real x; x = 42;` ✅  
+- **Retornos de função**: `real funcao() { retorne 10; }` ✅
+- **Constantes tipadas**: `const real pi = 3;` ✅
+
+### 🛡️ Proteção Contra Narrowing
+- **Real → Inteiro**: Gera erro de compilação ❌
+- **Detecção clara**: Mensagens específicas de incompatibilidade
+
+### 🔧 Implementação Técnica
+- **OpCode.toDouble**: Novo opcode para conversão
+- **Gerador de código**: Aplica conversões automaticamente
+- **VM**: Executa conversões em todos os contextos
+- **Duplo switch**: Funciona tanto no contexto principal quanto em funções
+
+## [1.17.0] - 2025-07-28
+
+### ✨ Novo
+- **🔀 Estruturas de Controle Switch/Case**: Implementação completa da estrutura `escolha`
+  - **Sintaxe em Português**: `escolha (expressao) { caso valor: ... pare ... caso contrario: ... }`
+  - **Suporte a Múltiplos Tipos**: Funciona com inteiros, strings e outros tipos básicos
+  - **Break Automático**: Comando `pare` previne fallthrough não intencional
+  - **Caso Padrão**: Suporte a `caso contrario` para valores não correspondentes
+  - **Integração Completa**: Implementado em todas as fases do compilador (lexer, parser, semântica, codegen, VM)
+
+- **🔄 Conversão Implícita de Tipos**: Sistema robusto de conversão automática
+  - **Inteiro → Real**: Conversão automática e segura (widening conversion)
+  - **Proteção Real → Inteiro**: Narrowing conversion requer conversão explícita
+  - **Validação Completa**: Verificação em atribuições, declarações e constantes
+  - **Mensagens Claras**: Erros específicos para incompatibilidade de tipos
+
+### 🔧 Melhorado
+- **📁 Organização do Projeto**: Removidos arquivos temporários e exemplos duplicados
+- **🔍 Exemplos de Recursividade**: Corrigidos tipos em funções recursivas avançadas
+- **📚 Sistema de Imports**: Melhorias no sistema de imports complexo
+- **🎯 Análise Semântica**: Melhor validação de tipos para operações matemáticas
+- **📝 Verificação de Tipos**: Implementada validação completa em atribuições e declarações
+
+### 🛠️ Corrigido
+- **➗ Divisão Inteira**: Corrigida divisão que retornava real em vez de inteiro
+- **🔧 Tipos de Retorno**: Ajustados tipos de retorno em funções recursivas
+- **📂 Estrutura de Arquivos**: Limpeza de arquivos temporários e organização do workspace
+
+## [1.16.1] - 2025-07-26
+
+### 🔧 Corrigido
+- **🛠️ Sistema de Debug Restaurado**: Restauradas flags de debug que estavam documentadas mas ausentes
+  - **`--debug-tokens`**: Mostra todos os tokens identificados durante a análise léxica
+  - **`--debug-parser`**: Exibe detalhes da construção da AST durante o parsing
+  - **`--debug-semantic`**: Mostra informações da análise semântica e validação de escopo
+  - **`--debug-vm`**: Exibe execução passo-a-passo da VM com stack e instruções
+  - **`--debug-all`**: Ativa todos os modos de debug simultaneamente
+- **📚 Documentação Sincronizada**: DEBUG.md agora corresponde às funcionalidades realmente implementadas
+- **🎯 Compilador Completo**: Todas as flags de debug documentadas agora funcionam corretamente
+
+### 📝 Detalhes da Correção
+- **Problema**: Flags de debug estavam documentadas em DEBUG.md mas não implementadas no compilador
+- **Causa**: Divergência entre documentação e código após refatorações
+- **Solução**: Implementação completa das flags com saída formatada e informativa
+- **Impacto**: Sistema de debug profissional totalmente funcional para desenvolvimento e ensino
+
+## [1.16.0] - 2025-07-26
+
+### 🎯 Adicionado
+- **🔀 Estrutura de Controle Switch/Case**: Implementação completa de switch statements
+  - **Comando `escolha`**: Estrutura de controle para múltiplas condições (equivalente ao `switch`)
+  - **Comando `caso`**: Define casos específicos dentro do switch (equivalente ao `case`)
+  - **Comando `contrario`**: Caso padrão quando nenhum caso específico é atendido (equivalente ao `default`)
+  - **Suporte a Break**: Comando `parar` funciona dentro de switches para sair imediatamente
+  - **Break Automático**: Cada caso automaticamente sai do switch (sem fall-through por padrão)
+  - **Múltiplos Tipos**: Suporte a valores inteiros, strings e outros tipos literais
+  - **Sintaxe Portuguesa**: Palavras-chave em português para melhor acessibilidade
+
+### 🛠️ Implementado
+- **Tokens e Lexer**:
+  - Novos tokens `TokenType.switch_`, `TokenType.case_` e `TokenType.default_`
+  - Mapeamento de palavras-chave: "escolha" → switch, "caso" → case, "contrario" → default
+- **AST (Abstract Syntax Tree)**:
+  - Classes `SwitchStmt` e `CaseStmt` com métodos visitor
+  - `SwitchStmt`: expressão + lista de casos
+  - `CaseStmt`: valor opcional (null para default) + statements
+  - Integração completa com todos os visitors do sistema
+- **Parser**:
+  - Método `_switchStatement()` para parsing completo de switches
+  - Reconhecimento automático da sintaxe `escolha (expr) { caso valor: ... contrario: ... }`
+  - Suporte a múltiplos casos e caso padrão opcional
+- **Análise Semântica**:
+  - Validação de casos duplicados
+  - Verificação de valores literais constantes
+  - Validação de caso padrão único
+  - Contexto de switch com `_switchNestingLevel` para break statements
+- **Geração de Código**:
+  - Classe `SwitchContext` para rastrear breaks em switches
+  - Implementação via cadeia if-else para simplicidade
+  - Suporte completo a break statements em switches
+  - Stack de switches `_switchStack` para contexto aninhado
+
+### 📝 Sintaxe
+```minidart
+escolha (variavel) {
+    caso 1:
+        imprima "Um";
+        parar;
+    caso 2:
+        imprima "Dois";
+        parar;
+    contrario:
+        imprima "Outro valor";
+}
+```
+
+## [1.15.0] - 2025-07-26
+
+### 🎨 Adicionado
+- **🔄 Controle de Fluxo em Loops**: Implementação completa de break e continue
+  - **Comando `parar`**: Sai imediatamente do loop atual (equivalente ao `break`)
+  - **Comando `continuar`**: Pula para a próxima iteração do loop (equivalente ao `continue`)
+  - **Suporte Universal**: Funciona em todos os tipos de loops (while, do-while, for, for-step, for-c)
+  - **Validação Semântica**: Verificação de contexto - break/continue só podem ser usados dentro de loops
+  - **Sintaxe Portuguesa**: Palavras-chave em português para melhor acessibilidade
+
+### 🛠️ Implementado
+- **Tokens e Lexer**:
+  - Novos tokens `TokenType.break_` e `TokenType.continue_`
+  - Mapeamento de palavras-chave: "parar" → break, "continuar" → continue
+- **AST (Abstract Syntax Tree)**:
+  - Classes `BreakStmt` e `ContinueStmt` com métodos visitor
+  - Integração completa com todos os visitors do sistema
+- **Parser**:
+  - Métodos `_breakStatement()` e `_continueStatement()`
+  - Reconhecimento automático da sintaxe `parar;` e `continuar;`
+- **Análise Semântica**:
+  - Validação de contexto com `_loopNestingLevel`
+  - Erro semântico quando break/continue são usados fora de loops
+- **Geração de Código**:
+  - Classe `LoopContext` para rastreamento de jumps
+  - Lógica específica por tipo de loop:
+    - **While/Do-While**: continue volta ao início da condição
+    - **For/ForStep**: continue pula para o incremento da variável
+    - **ForC**: continue pula para a seção de incremento
+  - Break sempre sai do loop mais interno
+- **Máquina Virtual**:
+  - Cases para `OpCode.break_` e `OpCode.continue_` no switch principal
+  - Tratamento de erros para instruções inválidas
+- **Visitors Auxiliares**:
+  - Atualização de `LineVisitor`, `LocationVisitor` e `ASTGraphvizGenerator`
+  - Suporte completo para depuração e visualização
+
+### 🧪 Testado
+- **Casos de Teste Criados**:
+  - `teste_break_continue.mdart`: Exemplo completo com todos os cenários
+  - `teste_break_simples.mdart`: Teste isolado do comando break
+  - `teste_continue_simples.mdart`: Teste isolado do comando continue
+- **Cenários Validados**:
+  - Break em while loops ✅
+  - Continue em while loops (pula números pares) ✅
+  - Break em for loops ✅
+  - Continue em for loops (pula múltiplos de 3) ✅
+  - Validação semântica de contexto ✅
+  - Loops aninhados com break/continue ✅
+
+### 📚 Exemplos
+```minidart
+// Break em loop while
+enquanto (i <= 10) {
+    se (i == 5) {
+        parar;  // Sai do loop
+    }
+    imprima i;
+    i = i + 1;
+}
+
+// Continue em loop for
+para (inteiro k = 1; k <= 10; k = k + 1) {
+    se (k % 3 == 0) {
+        continuar;  // Pula múltiplos de 3
+    }
+    imprima k;  // Imprime: 1, 2, 4, 5, 7, 8, 10
+}
+```
+
+## [1.14.0] - 2025-07-25
+
+### 🎨 Adicionado
+- **🖥️ Debug Visual no VS Code**: Integração completa com Debug Adapter Protocol (DAP)
+  - **Breakpoints Visuais**: Clique na margem para criar/remover breakpoints
+  - **Controles de Debug**: Botões visuais para Step Over, Step Into, Continue, etc.
+  - **Painel de Variáveis**: Visualização em tempo real de variáveis locais e globais
+  - **Call Stack Visual**: Navegação visual pela pilha de chamadas
+  - **Debug Console**: Console integrado para output e comandos
+  - **Watch Expressions**: Monitoramento de expressões customizadas
+- **🔧 Extensão VS Code Atualizada** (v1.6.0):
+  - Configuração de debugger tipo "minidart"
+  - Launch configurations para diferentes cenários
+  - Integração com Debug Adapter Protocol
+  - Suporte a debugging F5 nativo no VS Code
+
+### 🛠️ Implementado
+- **Debug Adapter** (`vscode-extension/src/debugAdapter.ts`):
+  - Classe `MiniDartDebugSession` extendendo `DebugSession`
+  - Implementação completa do DAP (Debug Adapter Protocol)
+  - Comunicação bidirecional entre VS Code e MiniDart debugger
+  - Parse automático de output do debugger interativo
+  - Mapeamento de comandos visuais para comandos do terminal
+- **Configurações de Launch**:
+  - Templates prontos para diferentes tipos de debug
+  - Configuração automática de paths e argumentos
+  - Suporte a `stopOnEntry` e configurações customizadas
+
+### 📚 Documentação
+- **DEBUG_VSCODE.md**: Guia completo do debug visual
+  - Configuração inicial e instalação
+  - Tutorial passo a passo com exemplos práticos
+  - Troubleshooting e dicas avançadas
+  - Workflow recomendado para debug eficiente
+- **Launch Configurations**: Exemplos prontos em `.vscode/launch.json`
+
+### 🔧 Técnico
+- **Dependencies**: Adicionado `@vscode/debugadapter` e `@vscode/debugprotocol`
+- **Build System**: Compilação TypeScript para debug adapter
+- **Architecture**: Bridge entre terminal debugger e VS Code UI
+
+## [1.13.0] - 2025-07-25
+
+### ✨ Adicionado
+- **🔍 Debugger Interativo Completo**: Sistema avançado de debugging com interface interativa
+  - **Breakpoints**: Pausar execução em linhas específicas
+    - `break <linha>` - Adiciona breakpoint
+    - `clear <linha>` - Remove breakpoint  
+    - `list` - Lista breakpoints ativos
+  - **Execução Step-by-Step**: Controle total da execução
+    - `step` / `s` - Ativa modo passo a passo
+    - `next` / `n` - Executa próxima instrução
+    - `continue` / `c` - Continua execução normal
+  - **Watch Variables**: Monitoramento de variáveis em tempo real
+    - `watch <var>` - Monitora variável
+    - `unwatch <var>` - Para de monitorar
+    - Atualização automática de valores a cada instrução
+  - **Call Stack Visualization**: Visualização da pilha de chamadas
+    - `stack` / `st` - Mostra call stack completa
+    - Rastreamento de chamadas de função aninhadas
+    - Informações de linha e argumentos
+  - **Interface Interativa Completa**:
+    - `vars` / `v` - Mostra todas as variáveis
+    - `state` - Estado atual completo
+    - `help` / `h` - Lista de comandos
+    - `quit` / `q` - Sair do debugger
+
+### 🔧 Melhorado
+- **VM (Virtual Machine)**:
+  - Adicionado `interpretStep()` para execução passo a passo
+  - Callbacks para debugger: `onInstructionExecute`, `onFunctionCall`, `onFunctionReturn`
+  - Métodos de acesso: `getGlobalValue()`, `getAllGlobals()`, `getStackValues()`
+  - Verificação de fim de programa: `isAtEnd()`
+- **Compilador Principal** (`bin/compile.dart`):
+  - Nova flag `--debug-interactive` / `-i`
+  - Integração automática com debugger interativo
+  - Atualizada versão para v1.13.0
+
+### 🧪 Adicionado
+- **Arquivos de teste e exemplo**:
+  - `exemplos/teste_debugger_interativo.mdart` - Exemplo abrangente com loops e funções
+  - `exemplos/debug_simples.mdart` - Exemplo básico para testes
+  - `DEBUGGER_INTERATIVO.md` - Documentação completa do debugger
+- **Casos de uso validados**:
+  - Breakpoints funcionais em múltiplas linhas
+  - Watch variables com atualização em tempo real
+  - Call stack com funções aninhadas
+  - Step-by-step execution com controle fino
+
+### 📖 Exemplos de Uso
+```bash
+# Inicia debugger interativo
+dart run bin/compile.dart arquivo.mdart --debug-interactive
+
+# Comandos no debugger:
+(minidart-debug) break 5        # Breakpoint na linha 5
+(minidart-debug) watch contador # Monitora variável
+(minidart-debug) step          # Modo step-by-step
+(minidart-debug) stack         # Mostra call stack
+(minidart-debug) continue      # Continua execução
+```
+
+```minidart
+// No código MiniDart - funciona naturalmente
+var x = 42;
+funcao inteiro dobrar(inteiro n) {
+    retornar n * 2;  // Breakpoint aqui
+}
+var resultado = dobrar(x);
+```
+
+## [1.12.11] - 2025-07-25
+
+### ✨ Adicionado
+- **Sistema de Debug Completo**: Implementação abrangente de funcionalidades de debugging
+  - **Flags de Debug do Compilador**:
+    - `--debug-tokens` - Mostra todos os tokens gerados pelo lexer com índices e linhas
+    - `--debug-parser` - Mostra processo de parsing e estrutura da AST gerada
+    - `--debug-semantic` - Mostra análise semântica detalhada e detecção de erros
+    - `--debug-vm` - Mostra execução da VM instrução por instrução com estado da pilha
+    - `--debug-all` / `-d` - Ativa todos os modos de debug simultaneamente
+  - **Funções Nativas de Debug**:
+    - `debug(valor)` - Inspeciona valor e tipo, retorna valor original para não interromper fluxo
+    - `info_debug()` - Mostra informações do sistema e versão do compilador
+  - **Debug da VM em Tempo Real**:
+    - **IP (Instruction Pointer)** - Posição atual da execução
+    - **Stack State** - Estado completo da pilha de execução
+    - **Global Variables** - Variáveis globais disponíveis no escopo
+    - **Current Instruction** - OpCode e operandos da instrução sendo executada
+
+### 🔧 Melhorado
+- **Compilador Principal** (`bin/compile.dart`):
+  - Adicionado suporte completo a flags de debug
+  - Integração entre todas as fases de compilação com debug
+  - Atualizada versão exibida para v1.12.11
+- **VM (Virtual Machine)**:
+  - Adicionado modo debug com método `setDebugMode()`
+  - Implementado `_debugInstruction()` para rastreamento detalhado
+  - Visualização em tempo real do estado da máquina virtual
+- **StandardLibrary**: Expandida biblioteca de tipos com funções de debug
+- **Error Reporting**: Melhor integração com sistema de debug
+
+### 🧪 Adicionado
+- **Arquivos de demonstração**:
+  - `exemplos/demo_debug_completo.mdart` - Demonstração completa do sistema
+  - `exemplos/teste_debug.mdart` - Teste abrangente com funções
+  - `exemplos/teste_debug_simples.mdart` - Exemplo básico de uso
+- **Casos de uso validados**:
+  - Debug de tokens mostra 62+ tokens com detalhes precisos
+  - Debug de parser identifica tipos de statements corretamente
+  - Debug de VM rastreia 40+ instruções com estado completo
+
+### 📖 Exemplos de Uso
+```bash
+# Debug completo
+dart run bin/compile.dart exemplo.mdart --debug-all
+
+# Debug específico da VM
+dart run bin/compile.dart exemplo.mdart --debug-vm
+
+# Debug apenas de tokens
+dart run bin/compile.dart exemplo.mdart --debug-tokens
+```
+
+```minidart
+// No código MiniDart
+var x = 42;
+imprima debug(x);  // 🔍 DEBUG: valor=42, tipo=inteiro
+imprima tipo(x);   // inteiro
+info_debug();      // Mostra informações do sistema
+```
+
+## [1.12.10] - 2025-07-25
+
+### ✨ Adicionado
+- **Função Nativa `tipo()`**: Introspecção de tipos em tempo de execução (similar ao `runtimeType` do Dart)
+  - **Funcionalidade**: Função que retorna o tipo de uma variável em tempo de execução
+  - **Sintaxe**: `tipo(variavel)` retorna string com nome do tipo em português
+  - **Tipos suportados**:
+    - `inteiro` - para valores `int` (ex: `42`)
+    - `real` - para valores `double` (ex: `3.14`)
+    - `texto` - para valores `String` (ex: `"MiniDart"`)
+    - `logico` - para valores `bool` (ex: `verdadeiro`)
+    - `nulo` - para valores `null`
+    - `desconhecido` - fallback para tipos não reconhecidos
+  - **Exemplos de uso**:
+    - `var x = 42; imprima tipo(x);` → imprime `"inteiro"`
+    - `var y = 3.14; imprima tipo(y);` → imprime `"real"`
+    - `var z = "teste"; imprima tipo(z);` → imprime `"texto"`
+
+### 🔧 Melhorado
+- **StandardLibrary**: Adicionado método `_registerTypeLibrary()` com função `tipo()`
+- **SemanticAnalyzer**: Modificado `visitVariableExpr()` para reconhecer funções nativas
+- **VM (Virtual Machine)**: 
+  - Atualizado `getGlobal` para tratar funções nativas corretamente
+  - Funções nativas agora são resolvidas durante execução sem conflitar com variáveis globais
+- **Type System**: Melhor integração entre análise estática e runtime para debugging
+
+### 🧪 Adicionado
+- **Arquivo de teste**: `exemplos/teste_tipo_debug.mdart`
+  - Demonstra uso básico da função `tipo()`
+  - Valida funcionamento com diferentes tipos de dados
+
+## [1.12.9] - 2025-07-25
+
+### ✨ Adicionado
+- **Validação de Tipo de Retorno de Função**: Implementação completa de verificação semântica
+  - **Funcionalidade**: Sistema agora valida se funções retornam valores compatíveis com tipos declarados
+  - **Detecção de erros**: Identifica quando função declara retornar um tipo mas tenta retornar outro
+  - **Mensagens precisas**: Erros reportam linha exata e explicam conflito de tipos
+  - **Exemplos de validação**:
+    - `inteiro teste() { retorne 2.5; }` → ERRO: "Tipo de retorno incompatível. Esperado 'inteiro', mas encontrado 'real'"
+    - `inteiro teste(inteiro a) { retorne a + 2.5; }` → ERRO: Operação resulta em real
+    - `inteiro teste(inteiro a) { retorne a; }` → OK: Parâmetro mantém seu tipo
+
+### 🔧 Melhorado
+- **Symbol Table**: Adicionado suporte a tipos tipados com método `defineTyped()`
+- **Semantic Analyzer**: 
+  - Implementada validação de retorno em `visitReturnStmt()`
+  - Melhorada `_inferExpressionType()` para consultar tabela de símbolos
+  - Parâmetros de função agora mantêm tipos corretos e são marcados como inicializados
+- **Type Inference**: Variáveis agora consultam tabela de símbolos para determinar tipo real
+- **Error Reporting**: Números de linha agora são reportados corretamente usando token `keyword`
+
+### 🧪 Adicionado
+- **Arquivos de teste**:
+  - `exemplos/teste_tipo_retorno.mdart` - Teste básico de erro de tipo
+  - `exemplos/teste_retorno_literal.mdart` - Teste com valores literais
+  - `exemplos/teste_completo_retorno.mdart` - Suite completa de validação
+- **Casos testados**: Validação robusta para funções com diferentes tipos de retorno
+
+## [1.12.8] - 2025-07-25
+
+### 🐛 Corrigido
+- **Crítico: Inferência de Tipos Incorreta**: Correção da inferência automática de tipos para constantes
+  - **Problema**: Números inteiros (ex: `16`) eram inferidos como `real` (16.0) em vez de `inteiro` (16)
+  - **Causa identificada**: Lexer sempre convertia números para `double`, independente de ter casas decimais
+  - **Solução implementada**: 
+    - Lexer agora diferencia números inteiros (`int`) de números reais (`double`)
+    - Números sem ponto decimal (ex: `16`) → armazenados como `int`
+    - Números com ponto decimal (ex: `1.75`) → armazenados como `double`
+    - Inferência de tipos agora funciona corretamente
+  - **Resultado**: `var idade = 16;` agora imprime `16` em vez de `16.0`
+  - **Teste**: Arquivo `teste_inferencia_tipos.mdart` criado para validação
+
+### 🧪 Adicionado
+- **Arquivo de teste**: `exemplos/teste_inferencia_tipos.mdart`
+  - Valida inferência para inteiros, reais, texto e lógicos
+  - Testa tanto variáveis (`var`) quanto constantes (`constante var`)
+  - Confirma correção aplicada com sucesso
+
+>>>>>>> origin/dev
 ## [1.12.7] - 2025-07-25
 
 ### ✨ Adicionado

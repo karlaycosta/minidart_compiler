@@ -1,0 +1,6 @@
+logico verdade = verdadeiro;
+logico mentira = falso;
+
+imprima "Testando operadores lógicos...";
+logico resultado_e = verdade e mentira;
+imprima "verdade e mentira: " + paraTexto(resultado_e);

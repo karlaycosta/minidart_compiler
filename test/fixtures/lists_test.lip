@@ -1,0 +1,13 @@
+// Teste de listas
+lista<inteiro> numeros = [1, 2, 3];
+lista<texto> nomes = ["Ana", "Bruno", "Carlos"];
+
+numeros.adicionar(4);
+inteiro removido = numeros.remover();
+inteiro tamanho = numeros.tamanho();
+logico vazia = numeros.vazio();
+
+imprima "Removido: " + paraTexto(removido);
+imprima "Tamanho: " + paraTexto(tamanho);
+imprima "Vazia: " + paraTexto(vazia);
+imprima "Primeiro nome: " + nomes[0];

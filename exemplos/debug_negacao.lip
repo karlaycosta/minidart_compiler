@@ -1,0 +1,6 @@
+logico verdade = verdadeiro;
+logico mentira = falso;
+
+imprima "Testando negação...";
+logico resultado_nao1 = !verdade;
+imprima "!verdade: " + paraTexto(resultado_nao1);

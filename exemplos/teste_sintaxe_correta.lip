@@ -1,0 +1,25 @@
+// Teste de funções com listas - versão com sintaxe correta
+
+vazio testeParaTexto() {
+    var numeros = [1, 2, 3, 4, 5];
+    var resultado = processarLista(numeros);
+    imprima "Resultado: " + resultado;
+}
+
+texto processarLista(lista<inteiro> minhaLista) {
+    var resultado = "";
+    var tamanhoLista = minhaLista.tamanho(); // Usando método tamanho() corretamente
+    var contador = 0; // Usando nome não-reservado
+    
+    enquanto (contador < tamanhoLista) {
+        resultado = resultado + paraTexto(minhaLista[contador]);
+        se (contador < tamanhoLista - 1) {
+            resultado = resultado + ", ";
+        }
+        contador = contador + 1;
+    }
+    
+    retorne "[" + resultado + "]";
+}
+
+testeParaTexto();

@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 name: minidart_compiler
 description: Um compilador completo para a linguagem MiniDart - uma linguagem de programação educacional com sintaxe em português.
 version: 0.18.1
 repository: https://github.com/karlaycosta/minidart_compiler
+=======
+name: lipo_compiler
+description: Um compilador completo para a linguagem LiPo (Linguagem Portugol) - uma linguagem de programação educacional com sintaxe em português.
+version: 0.18.3
+repository: https://github.com/karlaycosta/lipo_compiler
+>>>>>>> origin/dev
 
 environment:
   sdk: ^3.8.1

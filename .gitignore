@@ -5,6 +5,10 @@
 # Node.js (VS Code Extension)
 vscode-extension/node_modules/
 vscode-extension/out/
+<<<<<<< HEAD
+=======
+vscode-extension/
+>>>>>>> origin/dev
 *.vsix
 
 # Dart packages
@@ -12,11 +16,25 @@ vscode-extension/out/
 .pub/
 pubspec.lock
 
+<<<<<<< HEAD
 # AST files gerados
 minidart_ast.dot
 minidart_ast.png
 minidart_ast.svg
 minidart_ast.pdf
+=======
+icons/
+release/
+installer.nsi
+build_extension.bat
+
+# WebAssembly gerado
+web/
+lipo_ast.dot
+lipo_ast.png
+lipo_ast.svg
+lipo_ast.pdf
+>>>>>>> origin/dev
 
 # Arquivos temporários e de análise
 *.tmp
@@ -48,6 +66,10 @@ debug_*.mdart
 
 # Logs e outputs
 *.log
+<<<<<<< HEAD
 *.out
 # Local Netlify folder
 .netlify
+=======
+*.out
+>>>>>>> origin/dev

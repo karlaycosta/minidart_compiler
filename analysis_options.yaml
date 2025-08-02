@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # This file configures the static analysis results for your project (errors,
 # warnings, and lints).
 #
@@ -28,3 +29,12 @@ include: package:lints/recommended.yaml
 
 # For additional information about configuring this file, see
 # https://dart.dev/guides/language/analysis-options
+=======
+include: package:lints/recommended.yaml
+linter:
+  rules:
+    public_member_api_docs: false
+    prefer_const_constructors: true
+    prefer_const_literals_to_create_immutables: true
+    prefer_const_declarations: true
+>>>>>>> origin/dev

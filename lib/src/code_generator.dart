@@ -22,6 +22,26 @@ class SwitchContext {
   final List<int> breakJumps = [];
 }
 
+<<<<<<< HEAD
+=======
+/// Representa uma variável local
+class Local {
+  final String name;
+  final int depth;
+  
+  Local(this.name, this.depth);
+}
+
+/// Contexto de função para rastreamento de escopo
+class FunctionContext {
+  final String name;
+  final List<Local> locals = [];
+  int scopeDepth = 0;
+  
+  FunctionContext(this.name);
+}
+
+>>>>>>> origin/dev
 /// O CodeGenerator percorre a AST (validada semanticamente)
 /// e a traduz para um BytecodeChunk executável.
 class CodeGenerator implements AstVisitor<void> {
@@ -39,6 +59,12 @@ class CodeGenerator implements AstVisitor<void> {
   // Pilha para rastrear contexto de switches (para break)
   final List<SwitchContext> _switchStack = [];
 
+<<<<<<< HEAD
+=======
+  // Contexto de função atual para variáveis locais
+  FunctionContext? _currentFunction;
+
+>>>>>>> origin/dev
   // Tipo de retorno da função atual (para conversões implícitas)
   TokenType? _currentFunctionReturnType;
 
@@ -57,13 +83,68 @@ class CodeGenerator implements AstVisitor<void> {
   void _generateStmt(Stmt stmt) => stmt.accept(this);
   void _generateExpr(Expr expr) => expr.accept(this);
 
+<<<<<<< HEAD
+=======
+  // --- Métodos para gerenciamento de variáveis locais ---
+
+  /// Inicia um novo escopo local
+  void _beginScope() {
+    _currentFunction?.scopeDepth++;
+  }
+
+  /// Termina o escopo local atual
+  void _endScope() {
+    if (_currentFunction != null) {
+      _currentFunction!.scopeDepth--;
+      
+      // Remove variáveis locais que saíram de escopo
+      while (_currentFunction!.locals.isNotEmpty && 
+             _currentFunction!.locals.last.depth > _currentFunction!.scopeDepth) {
+        _currentFunction!.locals.removeLast();
+        _chunk.write(OpCode.pop, -1); // Remove da pilha
+      }
+    }
+  }
+
+  /// Adiciona uma variável local
+  void _addLocal(String name) {
+    if (_currentFunction != null) {
+      _currentFunction!.locals.add(Local(name, _currentFunction!.scopeDepth));
+    }
+  }
+
+  /// Resolve uma variável (local ou global)
+  int? _resolveLocal(String name) {
+    if (_currentFunction != null) {
+      // Procura de trás para frente (variáveis mais recentes primeiro)
+      for (int i = _currentFunction!.locals.length - 1; i >= 0; i--) {
+        if (_currentFunction!.locals[i].name == name) {
+          return i; // Retorna o slot da variável local
+        }
+      }
+    }
+    return null; // Não é uma variável local
+  }
+
+  /// Verifica se estamos dentro de uma função
+  bool get _isInFunction => _currentFunction != null;
+
+>>>>>>> origin/dev
   // --- Visitantes para Statements ---
 
   @override
   void visitBlockStmt(BlockStmt stmt) {
+<<<<<<< HEAD
     for (final statement in stmt.statements) {
       _generateStmt(statement);
     }
+=======
+    _beginScope();
+    for (final statement in stmt.statements) {
+      _generateStmt(statement);
+    }
+    _endScope();
+>>>>>>> origin/dev
   }
 
   @override
@@ -118,8 +199,20 @@ class CodeGenerator implements AstVisitor<void> {
     } else {
       _emitConstant(null, stmt.name.line); // Valor padrão nulo
     }
+<<<<<<< HEAD
     final globalIndex = _chunk.addConstant(stmt.name.lexeme);
     _chunk.write(OpCode.defineGlobal, stmt.name.line, globalIndex);
+=======
+    
+    if (_isInFunction) {
+      // Variável local - apenas adiciona à lista de locais
+      _addLocal(stmt.name.lexeme);
+    } else {
+      // Variável global
+      final globalIndex = _chunk.addConstant(stmt.name.lexeme);
+      _chunk.write(OpCode.defineGlobal, stmt.name.line, globalIndex);
+    }
+>>>>>>> origin/dev
   }
 
   @override
@@ -140,8 +233,20 @@ class CodeGenerator implements AstVisitor<void> {
       final defaultValue = _getDefaultValueForType(stmt.type);
       _emitConstant(defaultValue, stmt.name.line);
     }
+<<<<<<< HEAD
     final globalIndex = _chunk.addConstant(stmt.name.lexeme);
     _chunk.write(OpCode.defineGlobal, stmt.name.line, globalIndex);
+=======
+    
+    if (_isInFunction) {
+      // Variável local - apenas adiciona à lista de locais
+      _addLocal(stmt.name.lexeme);
+    } else {
+      // Variável global
+      final globalIndex = _chunk.addConstant(stmt.name.lexeme);
+      _chunk.write(OpCode.defineGlobal, stmt.name.line, globalIndex);
+    }
+>>>>>>> origin/dev
   }
 
   @override
@@ -521,6 +626,7 @@ class CodeGenerator implements AstVisitor<void> {
 
   @override
   void visitDecrementExpr(DecrementExpr expr) {
+<<<<<<< HEAD
     final globalIndex = _chunk.addConstant(expr.name.lexeme);
 
     if (expr.isPrefix) {
@@ -547,11 +653,53 @@ class CodeGenerator implements AstVisitor<void> {
 
       // Remove o valor decrementado da pilha, deixando apenas o valor original
       _chunk.write(OpCode.pop, expr.name.line);
+=======
+    final localSlot = _resolveLocal(expr.name.lexeme);
+
+    if (expr.isPrefix) {
+      // Decremento pré-fixo (--i): decrementa primeiro, depois retorna o novo valor
+      if (localSlot != null) {
+        // Variável local
+        _chunk.write(OpCode.getLocal, expr.name.line, localSlot);
+        _emitConstant(1, expr.name.line);
+        _chunk.write(OpCode.subtract, expr.name.line);
+        _chunk.write(OpCode.setLocal, expr.name.line, localSlot);
+        _chunk.write(OpCode.getLocal, expr.name.line, localSlot);
+      } else {
+        // Variável global
+        final globalIndex = _chunk.addConstant(expr.name.lexeme);
+        _chunk.write(OpCode.getGlobal, expr.name.line, globalIndex);
+        _emitConstant(1, expr.name.line);
+        _chunk.write(OpCode.subtract, expr.name.line);
+        _chunk.write(OpCode.setGlobal, expr.name.line, globalIndex);
+        _chunk.write(OpCode.getGlobal, expr.name.line, globalIndex);
+      }
+    } else {
+      // Decremento pós-fixo (i--): retorna valor original, depois decrementa
+      if (localSlot != null) {
+        // Variável local
+        _chunk.write(OpCode.getLocal, expr.name.line, localSlot);
+        _chunk.write(OpCode.getLocal, expr.name.line, localSlot);
+        _emitConstant(1, expr.name.line);
+        _chunk.write(OpCode.subtract, expr.name.line);
+        _chunk.write(OpCode.setLocal, expr.name.line, localSlot);
+      } else {
+        // Variável global
+        final globalIndex = _chunk.addConstant(expr.name.lexeme);
+        _chunk.write(OpCode.getGlobal, expr.name.line, globalIndex);
+        _chunk.write(OpCode.getGlobal, expr.name.line, globalIndex);
+        _emitConstant(1, expr.name.line);
+        _chunk.write(OpCode.subtract, expr.name.line);
+        _chunk.write(OpCode.setGlobal, expr.name.line, globalIndex);
+        _chunk.write(OpCode.pop, expr.name.line);
+      }
+>>>>>>> origin/dev
     }
   }
 
   @override
   void visitIncrementExpr(IncrementExpr expr) {
+<<<<<<< HEAD
     final globalIndex = _chunk.addConstant(expr.name.lexeme);
 
     if (expr.isPrefix) {
@@ -578,14 +726,67 @@ class CodeGenerator implements AstVisitor<void> {
 
       // Remove o valor incrementado da pilha, deixando apenas o valor original
       _chunk.write(OpCode.pop, expr.name.line);
+=======
+    final localSlot = _resolveLocal(expr.name.lexeme);
+
+    if (expr.isPrefix) {
+      // Incremento pré-fixo (++i): incrementa primeiro, depois retorna o novo valor
+      if (localSlot != null) {
+        // Variável local
+        _chunk.write(OpCode.getLocal, expr.name.line, localSlot);
+        _emitConstant(1, expr.name.line);
+        _chunk.write(OpCode.add, expr.name.line);
+        _chunk.write(OpCode.setLocal, expr.name.line, localSlot);
+        _chunk.write(OpCode.getLocal, expr.name.line, localSlot);
+      } else {
+        // Variável global
+        final globalIndex = _chunk.addConstant(expr.name.lexeme);
+        _chunk.write(OpCode.getGlobal, expr.name.line, globalIndex);
+        _emitConstant(1, expr.name.line);
+        _chunk.write(OpCode.add, expr.name.line);
+        _chunk.write(OpCode.setGlobal, expr.name.line, globalIndex);
+        _chunk.write(OpCode.getGlobal, expr.name.line, globalIndex);
+      }
+    } else {
+      // Incremento pós-fixo (i++): retorna valor original, depois incrementa
+      if (localSlot != null) {
+        // Variável local
+        _chunk.write(OpCode.getLocal, expr.name.line, localSlot);
+        _chunk.write(OpCode.getLocal, expr.name.line, localSlot);
+        _emitConstant(1, expr.name.line);
+        _chunk.write(OpCode.add, expr.name.line);
+        _chunk.write(OpCode.setLocal, expr.name.line, localSlot);
+      } else {
+        // Variável global
+        final globalIndex = _chunk.addConstant(expr.name.lexeme);
+        _chunk.write(OpCode.getGlobal, expr.name.line, globalIndex);
+        _chunk.write(OpCode.getGlobal, expr.name.line, globalIndex);
+        _emitConstant(1, expr.name.line);
+        _chunk.write(OpCode.add, expr.name.line);
+        _chunk.write(OpCode.setGlobal, expr.name.line, globalIndex);
+      }
+>>>>>>> origin/dev
     }
   }
 
   @override
   void visitAssignExpr(AssignExpr expr) {
     _generateExpr(expr.value);
+<<<<<<< HEAD
     final globalIndex = _chunk.addConstant(expr.name.lexeme);
     _chunk.write(OpCode.setGlobal, expr.name.line, globalIndex);
+=======
+    
+    final localSlot = _resolveLocal(expr.name.lexeme);
+    if (localSlot != null) {
+      // Variável local
+      _chunk.write(OpCode.setLocal, expr.name.line, localSlot);
+    } else {
+      // Variável global
+      final globalIndex = _chunk.addConstant(expr.name.lexeme);
+      _chunk.write(OpCode.setGlobal, expr.name.line, globalIndex);
+    }
+>>>>>>> origin/dev
   }
 
   @override
@@ -637,6 +838,7 @@ class CodeGenerator implements AstVisitor<void> {
 
   @override
   void visitLogicalExpr(LogicalExpr expr) {
+<<<<<<< HEAD
     // Implementação de curto-circuito
     if (expr.operator.type == TokenType.or) {
       _generateExpr(expr.left);
@@ -651,6 +853,28 @@ class CodeGenerator implements AstVisitor<void> {
       final endJump = _emitJump(OpCode.jumpIfFalse);
       _generateExpr(expr.right);
       _patchJump(endJump);
+=======
+    // Implementação simples: avalia ambos operandos
+    _generateExpr(expr.left);
+    _generateExpr(expr.right);
+    
+    // Implementa a operação lógica usando instruções básicas
+    if (expr.operator.type == TokenType.or) {
+      // OR lógico: true se pelo menos um for true
+      // Converte para valores booleanos e usa a lógica: A || B = A + B - A*B
+      // Mas de forma mais simples: se A é true, resultado é true; senão B
+      // Por agora, implementação básica sem short-circuit
+      
+      // Empilha uma função nativa que implementa OR
+      final nameIndex = _chunk.addConstant('__or__');
+      _chunk.write(OpCode.getGlobal, expr.operator.line, nameIndex);
+      _chunk.write(OpCode.call, expr.operator.line, 2);
+    } else {
+      // AND lógico  
+      final nameIndex = _chunk.addConstant('__and__');
+      _chunk.write(OpCode.getGlobal, expr.operator.line, nameIndex);
+      _chunk.write(OpCode.call, expr.operator.line, 2);
+>>>>>>> origin/dev
     }
   }
 
@@ -698,8 +922,20 @@ class CodeGenerator implements AstVisitor<void> {
 
   @override
   void visitVariableExpr(VariableExpr expr) {
+<<<<<<< HEAD
     final globalIndex = _chunk.addConstant(expr.name.lexeme);
     _chunk.write(OpCode.getGlobal, expr.name.line, globalIndex);
+=======
+    final localSlot = _resolveLocal(expr.name.lexeme);
+    if (localSlot != null) {
+      // Variável local
+      _chunk.write(OpCode.getLocal, expr.name.line, localSlot);
+    } else {
+      // Variável global
+      final globalIndex = _chunk.addConstant(expr.name.lexeme);
+      _chunk.write(OpCode.getGlobal, expr.name.line, globalIndex);
+    }
+>>>>>>> origin/dev
   }
 
   @override
@@ -722,6 +958,17 @@ class CodeGenerator implements AstVisitor<void> {
     // Define o tipo de retorno para conversões implícitas
     funcGenerator._currentFunctionReturnType = stmt.returnType?.type.type;
 
+<<<<<<< HEAD
+=======
+    // Configura o contexto de função para variáveis locais
+    funcGenerator._currentFunction = FunctionContext(stmt.name.lexeme);
+    
+    // Adiciona os parâmetros como variáveis locais
+    for (final param in stmt.params) {
+      funcGenerator._addLocal(param.name.lexeme);
+    }
+
+>>>>>>> origin/dev
     // Compila o corpo da função
     funcGenerator._generateStmt(stmt.body);
 
@@ -795,17 +1042,39 @@ class CodeGenerator implements AstVisitor<void> {
 
   @override
   void visitMemberAccessExpr(MemberAccessExpr expr) {
+<<<<<<< HEAD
     // Para acesso a membro (objeto.propriedade), geramos uma string
     // que representa o nome completo da função nativa
+=======
+    // Para acesso a membro (objeto.propriedade), geramos uma chamada
+    // de função nativa sem argumentos
+>>>>>>> origin/dev
     if (expr.object is VariableExpr) {
       final objectName = (expr.object as VariableExpr).name.lexeme;
       final propertyName = expr.property.lexeme;
 
       // Resolver alias para nome real da biblioteca
       final realLibraryName = _libraryAliases[objectName] ?? objectName;
+<<<<<<< HEAD
       final fullName = '$realLibraryName.$propertyName';
 
       // Emite uma constante string com o nome completo
+=======
+      
+      // Se é uma biblioteca conhecida, tratar como chamada de função
+      if (['math', 'string', 'data', 'io'].contains(realLibraryName)) {
+        final functionName = '$realLibraryName.$propertyName';
+        
+        // Emitir chamada de função nativa sem argumentos
+        final nameIndex = _chunk.addConstant(functionName);
+        _chunk.write(OpCode.getGlobal, expr.dot.line, nameIndex);
+        _chunk.write(OpCode.call, expr.dot.line, 0); // 0 argumentos
+        return;
+      }
+
+      // Se não é biblioteca, tratar como acesso normal (futuras extensões)
+      final fullName = '$realLibraryName.$propertyName';
+>>>>>>> origin/dev
       _emitConstant(fullName, expr.dot.line);
     } else {
       throw Exception(
@@ -824,9 +1093,20 @@ class CodeGenerator implements AstVisitor<void> {
       _emitConstant([], stmt.name.line);
     }
 
+<<<<<<< HEAD
     // Define a variável global
     final globalIndex = _chunk.addConstant(stmt.name.lexeme);
     _chunk.write(OpCode.defineGlobal, stmt.name.line, globalIndex);
+=======
+    if (_isInFunction) {
+      // Variável local - apenas adiciona à lista de locais
+      _addLocal(stmt.name.lexeme);
+    } else {
+      // Variável global
+      final globalIndex = _chunk.addConstant(stmt.name.lexeme);
+      _chunk.write(OpCode.defineGlobal, stmt.name.line, globalIndex);
+    }
+>>>>>>> origin/dev
   }
 
   @override
@@ -869,6 +1149,34 @@ class CodeGenerator implements AstVisitor<void> {
 
   @override
   void visitMethodCallExpr(MethodCallExpr expr) {
+<<<<<<< HEAD
+=======
+    final methodName = expr.name.lexeme;
+    
+    // Verificar se é um método de módulo
+    if (expr.object is VariableExpr) {
+      final objectName = (expr.object as VariableExpr).name.lexeme;
+      final realLibraryName = _libraryAliases[objectName] ?? objectName;
+      
+      // Se é um método de biblioteca, tratar como chamada de função nativa
+      if (['math', 'string', 'data', 'io'].contains(realLibraryName)) {
+        final functionName = '$realLibraryName.$methodName';
+        
+        // Gera código para os argumentos
+        for (final argument in expr.arguments) {
+          _generateExpr(argument);
+        }
+        
+        // Emitir chamada de função nativa
+        final nameIndex = _chunk.addConstant(functionName);
+        _chunk.write(OpCode.getGlobal, expr.name.line, nameIndex);
+        _chunk.write(OpCode.call, expr.name.line, expr.arguments.length);
+        return;
+      }
+    }
+    
+    // Se não é método de módulo, tratar como método de lista
+>>>>>>> origin/dev
     // Gera código para o objeto
     _generateExpr(expr.object);
     
@@ -878,7 +1186,10 @@ class CodeGenerator implements AstVisitor<void> {
     }
     
     // Determinar qual instrução emitir baseado no método
+<<<<<<< HEAD
     final methodName = expr.name.lexeme;
+=======
+>>>>>>> origin/dev
     switch (methodName) {
       case 'tamanho':
         _chunk.write(OpCode.listSize, expr.name.line);

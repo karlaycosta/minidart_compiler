@@ -1,0 +1,7 @@
+// Teste sem comparações - apenas ternário
+texto opcao1 = "fim de semana";
+texto opcao2 = "dia útil";
+logico condicao = verdadeiro;
+
+texto resultado = condicao ? opcao1 : opcao2;
+imprima "Resultado: " + resultado;
