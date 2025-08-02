@@ -18,18 +18,18 @@
 
 **LIPO** (*Linguagem em Portugol*) é uma linguagem de programação educacional desenvolvida com foco no ensino de lógica e fundamentos da programação. Utiliza palavras-chave em português brasileiro, tornando-se mais acessível e intuitiva para falantes nativos.
 
-####  Por que LIPO?
+### Por que LIPO?
 
 - **Sintaxe em Português** - Aproxima o código da língua natural
 - **Educacional** - Focada no aprendizado de programação
 - **Tipagem Estática** - Maior segurança e detecção de erros
 - **Inferência de Tipos** - Menos declarações explícitas necessárias
 
----
+<br>
 
-## ⚡ Funcionalidades
+## Funcionalidades
 
-####  Principais Características
+###  Principais Características
 
 - **Sintaxe em Português Brasileiro** - Todas as palavras-chave utilizam português, facilitando o aprendizado
 - **Tipagem Estática** - Verificação de tipos em tempo de compilação para maior segurança
@@ -38,7 +38,7 @@
 - **Ambiente Web** - Execute diretamente no navegador
 - **Debugger Integrado** - Ferramentas de depuração avançadas
 
-####  Ferramentas Incluídas
+###  Ferramentas Incluídas
 
 - Compilador completo
 - Máquina virtual
@@ -46,7 +46,7 @@
 - Extensão para VS Code
 - Interface web para testes
 
----
+<br>
 
 ##  Instalação
 
@@ -62,19 +62,24 @@
 ```bash
 
 git clone https://github.com/karlaycosta/minidart_compiler
+```
+
+####  2. Clone repositorio 
+
+```bash
 cd minidart_compiler
 ```
 
-####  2. Instale as dependências
+####  3. Instale as dependências
 
 ```bash
 dart pub get
 ```
 
-#### 3. Execute o compilador
+#### 4. Execute o compilador
 
 ```bash
-dart run bin/compile.dart --help
+dart compile exe bin/compile.dart -o minidart
 ```
 
 #### Versão Web
@@ -84,7 +89,6 @@ dart run bin/compile.dart --help
 cd web
 dart run server.dart
 
-# Ou abra diretamente o arquivo index.html no navegador
 ```
 
 ---
@@ -315,3 +319,6 @@ Agradecemos a todas as pessoas que contribuíram para este projeto:
   <br />
   <sub>Ajudando a democratizar o ensino de programação em português</sub>
 </p>
+
+
+
