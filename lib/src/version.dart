@@ -9,10 +9,10 @@
 /// - MAJOR: Mudanças incompatíveis na API
 /// - MINOR: Funcionalidades adicionadas de forma compatível
 /// - PATCH: Correções de bugs compatíveis
-const String version = r'0.18.3';
+const String version = r'0.18.4';
 
 /// Obter versão formatada para exibição
 String get versionString => 'v$version';
 
 /// Obter versão completa com prefixo
-String get fullVersionString => 'MiniDart Compiler v$version';
+String get fullVersionString => 'LiPo Compiler v$version';

@@ -50,7 +50,7 @@ class VM {
     // Configura stdout para UTF-8
     stdout.encoding = utf8;
     // Inicializa a biblioteca padrão
-    _standardLibrary = StandardLibrary();
+    _standardLibrary = StandardLibrary(printCallback: printCallback);
     _printCallback = printCallback;
   }
 
@@ -203,10 +203,19 @@ class VM {
           break;
         case OpCode.print:
           final value = _pop();
-          // Se é um número e é inteiro, imprimir como inteiro
+          // Converte o valor para string usando lógica similar à função paraTexto
           String output;
-          if (value is double && value == value.truncate()) {
+          if (value == null) {
+            output = 'nulo';
+          } else if (value is bool) {
+            output = value ? 'verdadeiro' : 'falso';
+          } else if (value is double && value == value.truncate()) {
+            // Se é um número e é inteiro, imprimir como inteiro
             output = value.toInt().toString();
+          } else if (value is List) {
+            // Para listas, mostra os elementos separados por vírgula entre colchetes
+            final elementos = value.map((e) => e?.toString() ?? 'nulo').join(', ');
+            output = '[$elementos]';
           } else {
             output = value.toString();
           }
@@ -361,11 +370,6 @@ class VM {
     if (value is bool) return value;
     return true; // Números e strings são 'truthy'
   }
-
-  // String _stringify(Object? value) {
-  //   if (value == null) return "nulo";
-  //   return value.toString();
-  // }
 
   void _push(Object? value) => _stack.add(value);
   Object? _pop() => _stack.removeLast();
@@ -663,14 +667,23 @@ class VM {
         break;
       case OpCode.print:
         final value = _pop();
-        // Se é um número e é inteiro, imprimir como inteiro
+        // Converte o valor para string usando lógica similar à função paraTexto
         String output;
-        if (value is double && value == value.truncate()) {
+        if (value == null) {
+          output = 'nulo';
+        } else if (value is bool) {
+          output = value ? 'verdadeiro' : 'falso';
+        } else if (value is double && value == value.truncate()) {
+          // Se é um número e é inteiro, imprimir como inteiro
           output = value.toInt().toString();
+        } else if (value is List) {
+          // Para listas, mostra os elementos separados por vírgula entre colchetes
+          final elementos = value.map((e) => e?.toString() ?? 'nulo').join(', ');
+          output = '[$elementos]';
         } else {
           output = value.toString();
         }
-        
+
         // Use callback se disponível, senão use print padrão
         if (_printCallback != null) {
           _printCallback!(output);

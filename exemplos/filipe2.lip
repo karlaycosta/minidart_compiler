@@ -1,0 +1,102 @@
+// Gerenciador de Tarefas em MiniDart
+
+// ==== Estrutura de Dados ====
+lista<mapa> tarefas = [];
+
+// ==== Funções ====
+
+vazio adicionarTarefa(texto titulo, inteiro prioridade) {
+    mapa tarefa = {
+        "titulo": titulo,
+        "prioridade": prioridade,
+        "concluida": falso
+    };
+    tarefas.adicionar(tarefa);
+    imprima "Tarefa adicionada: " + titulo;
+}
+
+vazio listarTarefas() {
+    imprima "📋 Lista de Tarefas:";
+    se (tarefas.vazio()) {
+        imprima "Nenhuma tarefa encontrada.";
+        retorne;
+    }
+    para i = 0 ate tarefas.tamanho() - 1 faca {
+        mapa t = tarefas[i];
+        texto status = t["concluida"] ? "✅" : "❌";
+        texto prioridade = t["prioridade"] == 1 ? "Alta" :
+                           t["prioridade"] == 2 ? "Média" : "Baixa";
+        imprima i + ". " + t["titulo"] + " [" + prioridade + "] " + status;
+    }
+}
+
+vazio concluirTarefa(inteiro indice) {
+    se (indice >= 0 e indice < tarefas.tamanho()) {
+        tarefas[indice]["concluida"] = verdadeiro;
+        imprima "Tarefa marcada como concluída.";
+    } senao {
+        imprima "Índice inválido.";
+    }
+}
+
+vazio removerTarefa(inteiro indice) {
+    se (indice >= 0 e indice < tarefas.tamanho()) {
+        imprima "Tarefa removida: " + tarefas[indice]["titulo"];
+        tarefas.remover();
+    } senao {
+        imprima "Índice inválido.";
+    }
+}
+
+vazio filtrarTarefasPorPrioridade(inteiro prioridade) {
+    imprima "🔎 Tarefas com prioridade " + paraTexto(prioridade) + ":";
+    para i = 0 ate tarefas.tamanho() - 1 faca {
+        mapa t = tarefas[i];
+        se (t["prioridade"] == prioridade) {
+            imprima "- " + t["titulo"];
+        }
+    }
+}
+
+vazio filtrarTarefasPorStatus(logico concluida) {
+    imprima "🔍 Tarefas " + (concluida ? "concluídas:" : "pendentes:");
+    para i = 0 ate tarefas.tamanho() - 1 faca {
+        mapa t = tarefas[i];
+        se (t["concluida"] == concluida) {
+            imprima "- " + t["titulo"];
+        }
+    }
+}
+
+vazio resumoTarefas() {
+    inteiro total = tarefas.tamanho();
+    inteiro concluidas = 0;
+    para i = 0 ate total - 1 faca {
+        se (tarefas[i]["concluida"]) {
+            concluidas = concluidas + 1;
+        }
+    }
+    inteiro pendentes = total - concluidas;
+    imprima "📊 Resumo:";
+    imprima "Total: " + paraTexto(total);
+    imprima "Concluídas: " + paraTexto(concluidas);
+    imprima "Pendentes: " + paraTexto(pendentes);
+}
+
+// ==== Simulação ====
+
+adicionarTarefa("Estudar MiniDart", 1);
+adicionarTarefa("Enviar relatório", 2);
+adicionarTarefa("Lavar o carro", 3);
+
+listarTarefas();
+concluirTarefa(1);
+removerTarefa(2);
+
+listarTarefas();
+
+filtrarTarefasPorPrioridade(1);
+filtrarTarefasPorStatus(falso);
+filtrarTarefasPorStatus(verdadeiro);
+
+resumoTarefas();

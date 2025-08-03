@@ -1,5 +1,3 @@
-import 'dart:io';
-
 /// Define os Opcodes (códigos de operação) para a Máquina Virtual MiniDart.
 enum OpCode {
   // --- Operações de Pilha e Constantes ---
@@ -23,9 +21,9 @@ enum OpCode {
   modulo,
   negate,
   not,
-  typeof_,      // Operador typeof
-  toInt,        // Converte para inteiro
-  toDouble,     // Converte para real (double)
+  typeof_, // Operador typeof
+  toInt, // Converte para inteiro
+  toDouble, // Converte para real (double)
   // --- Operações Relacionais ---
   equal,
   greater,
@@ -40,16 +38,14 @@ enum OpCode {
   // --- Operações de Função ---
   call, // Chama uma função
   return_, // Retorna de uma função
-  
   // --- Operações de Lista ---
   indexAccess, // Acesso por índice: lista[indice]
   indexAssign, // Atribuição por índice: lista[indice] = valor
-  createList,  // Cria lista com N elementos da pilha
-  listSize,    // Retorna o tamanho da lista
-  listAdd,     // Adiciona elemento ao final da lista
-  listRemove,  // Remove e retorna último elemento da lista
-  listEmpty,   // Verifica se a lista está vazia
-  
+  createList, // Cria lista com N elementos da pilha
+  listSize, // Retorna o tamanho da lista
+  listAdd, // Adiciona elemento ao final da lista
+  listRemove, // Remove e retorna último elemento da lista
+  listEmpty, // Verifica se a lista está vazia
   // --- Outras Operações ---
   print,
 }
@@ -156,7 +152,7 @@ class BytecodeChunk {
 
   /// Desmonta o bytecode para depuração.
   void disassemble() {
-    stdout.writeln('--- Desmontagem do Bytecode ---');
+    print('--- Desmontagem do Bytecode ---');
     for (int offset = 0; offset < code.length; offset++) {
       _disassembleInstruction(offset);
     }
@@ -180,6 +176,6 @@ class BytecodeChunk {
       }
     }
 
-    stdout.writeln('$offsetStr $lineStr $opName $operandStr');
+    print('$offsetStr $lineStr $opName $operandStr');
   }
 }

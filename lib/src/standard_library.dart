@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'version.dart';
 
-/// Representa uma função nativa que pode ser chamada do MiniDart
+/// Representa uma função nativa que pode ser chamada
 class NativeFunction {
   final String name;
   final int arity;
@@ -25,11 +25,13 @@ class NativeFunction {
   String toString() => 'NativeFunction($name/$arity)';
 }
 
-/// Gerenciador da biblioteca padrão do MiniDart
+/// Gerenciador da biblioteca padrão
 class StandardLibrary {
   final Map<String, NativeFunction> _functions = {};
+  void Function(String)? _printCallback;
 
-  StandardLibrary() {
+  StandardLibrary({void Function(String)? printCallback}) {
+    _printCallback = printCallback;
     _registerMathLibrary();
     _registerStringLibrary();
     _registerIOLibrary();
@@ -256,7 +258,12 @@ class StandardLibrary {
   /// Registra as funções da biblioteca de entrada/saída
   void _registerIOLibrary() {
     register('io.imprimir', 1, (args) {
-      print(args[0]);
+      final output = args[0].toString();
+      if (_printCallback != null) {
+        _printCallback!(output);
+      } else {
+        print(output);
+      }
       return null;
     });
 
@@ -323,6 +330,7 @@ class StandardLibrary {
     });
     
     // Alias para compatibilidade
+    // TODO: A data não está no formato brasileiro 2025-08-02
     register('data.dataAtual', 0, (args) {
       return DateTime.now().toString().split(' ')[0];
     });
@@ -524,13 +532,13 @@ class StandardLibrary {
           ? 'logico'
           : 'desconhecido';
 
-      print('🔍 DEBUG: valor=$value, tipo=$tipo');
+      print('DEBUG: valor=$value, tipo=$tipo');
       return value; // Retorna o valor original para não interromper o fluxo
     });
 
     // Função para mostrar informações de debug (sem argumentos)
     register('info_debug', 0, (args) {
-      print('🔍 MiniDart Debug Info:');
+      print('LiPo Debug Info:');
       print('  • Compilador: $versionString');
       print('  • Sistema de tipos: dinâmico com inferência');
       print('  • Funções nativas disponíveis: ${_functions.length}');
@@ -565,7 +573,7 @@ class StandardLibrary {
     });
   }
 
-  /// Converte um valor para boolean seguindo as regras do MiniDart
+  /// Converte um valor para boolean seguindo as regras
   bool _toBool(Object? value) {
     if (value == null) return false;
     if (value is bool) return value;

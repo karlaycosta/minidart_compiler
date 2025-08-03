@@ -145,6 +145,8 @@ imprima "Maiúscula: " + s.maiuscula("abc");
 // import data
 importar data;
 imprima "Data hoje: " + data.dataAtual();
+imprima "Hora horaAtual: " + data.horaAtual();
+imprima "Hoje: " + data.hoje();
 imprima "Dia da semana: " + paraTexto(data.diaSemana(data.dataAtual()));
 
 // Comentários de linha e inline // funciona
@@ -152,5 +154,7 @@ imprima "Dia da semana: " + paraTexto(data.diaSemana(data.dataAtual()));
 // EXCEÇÕES (esperadas - não descomente para evitar crash!)
 // inteiro erro = numeros[100]; // erro: índice fora do limite
 // inteiro bug = 3.5; // erro: real para inteiro
-
+// import data
+importar io;
+io.escrever("olá mundo");
 retorne 0;

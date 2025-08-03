@@ -1,0 +1,54 @@
+// Teste completo das bibliotecas padrão após correções do analisador semântico
+
+// Teste biblioteca Math - funções básicas
+importar math;
+imprima "=== BIBLIOTECA MATH ===";
+imprima "PI: " + paraTexto(math.pi);
+imprima "E: " + paraTexto(math.E);
+imprima "Raiz de 25: " + paraTexto(math.raiz(25));
+imprima "Absoluto de -10: " + paraTexto(math.abs(-10));
+
+// Teste funções trigonométricas
+imprima "Seno de 0: " + paraTexto(math.sin(0));
+imprima "Cosseno de 0: " + paraTexto(math.cos(0));
+
+// Teste funções de arredondamento
+imprima "Teto de 3.2: " + paraTexto(math.ceil(3.2));
+imprima "Piso de 3.8: " + paraTexto(math.floor(3.8));
+imprima "Arredondar 3.6: " + paraTexto(math.round(3.6));
+
+// Teste comparação
+imprima "Máximo entre 5 e 8: " + paraTexto(math.max(5, 8));
+imprima "Mínimo entre 5 e 8: " + paraTexto(math.min(5, 8));
+
+// Teste biblioteca String
+importar string como s;
+imprima "\n=== BIBLIOTECA STRING ===";
+texto teste = "Olá Mundo";
+imprima "Texto original: " + teste;
+imprima "Maiúscula: " + s.maiuscula(teste);
+imprima "Minúscula: " + s.minuscula(teste);
+imprima "Tamanho: " + paraTexto(s.tamanho(teste));
+imprima "Está vazio? " + paraTexto(s.vazio(""));
+imprima "Contém 'Mundo'? " + paraTexto(s.contem(teste, "Mundo"));
+
+// Teste biblioteca Data
+importar data;
+imprima "\n=== BIBLIOTECA DATA ===";
+imprima "Data atual: " + data.dataAtual();
+imprima "Hora atual: " + data.horaAtual();
+imprima "Hoje: " + data.hoje();
+texto dataHoje = data.hoje();
+imprima "Dia da semana de hoje: " + paraTexto(data.diaSemana(dataHoje));
+imprima "2024 é bissexto? " + paraTexto(data.ehBissexto(2024));
+imprima "Nome do mês 8: " + data.nomeMes(8);
+
+// Teste biblioteca IO
+importar io;
+imprima "\n=== BIBLIOTECA IO ===";
+io.escrever("Escrevendo sem quebra de linha... ");
+io.escrever("continuando na mesma linha.\n");
+io.novaLinha();
+imprima "Teste finalizado!";
+
+retorne 0;

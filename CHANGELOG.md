@@ -5,6 +5,58 @@ Todas as alterações notáveis deste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [0.18.4] - 2025-08-02
+
+### Resumo da Versão
+
+Esta versão representa uma **grande melhoria na robustez e confiabilidade** do compilador LiPo, com foco em:
+- **Limpeza arquitetural**: Remoção completa do DAP Debugger não utilizado
+- **Validação semântica abrangente**: Implementação completa da validação de bibliotecas padrão
+- **Cobertura de testes**: Suite de testes expandida para 47 testes (100% de sucesso)
+- **Qualidade de código**: Sistema de captura de erros melhorado e mensagens detalhadas
+
+### Removidas
+
+- **Removido**: Funcionalidade completa do DAP Debugger (Debug Adapter Protocol)
+  - Arquivo `dap_debugger.dart` e todas as suas dependências
+  - Flag `--debug-dap` do compilador
+  - Integração com VS Code via protocolo DAP
+  - Código morto e imports não utilizados
+
+### Melhorias na Análise Semântica
+
+- **Implementado**: Validação completa para ~50 funções de bibliotecas padrão
+  - `math`: Todas as funções matemáticas, trigonométricas, de arredondamento e constantes
+  - `string`: Transformações, verificações, busca e manipulação de strings
+  - `data`: Operações com datas, timestamps, validação e formatação
+  - `io`: Funções de entrada e saída com simulação para testes
+- **Melhoria**: Sistema completo de inferência de tipos para métodos de biblioteca
+- **Melhoria**: Validação rigorosa de bibliotecas não importadas
+- **Corrigido**: Detecção precisa de métodos inexistentes e argumentos incorretos
+
+### Expansão da Suite de Testes
+
+- **Adicionado**: Função `testStandardLibraries()` com 20+ testes detalhados
+- **Implementado**: Testes individuais para todas as bibliotecas padrão
+- **Adicionado**: Testes de integração entre múltiplas bibliotecas
+- **Implementado**: Testes de validação semântica para detectar erros
+- **Melhoria**: Sistema de captura de erros com mensagens detalhadas
+- **Resultado**: 47/47 testes passando (100% de sucesso)
+
+### Correções de Bugs
+
+- **Corrigido**: Impressão de valores booleanos em português (verdadeiro/falso) ao invés de inglês (true/false)
+- **Corrigido**: Sistema de captura de output para funções `io.imprimir`
+- **Corrigido**: Callback de print para bibliotecas IO em contexto de testes
+- **Melhoria**: Mensagens de erro detalhadas em vez de genéricas
+- **Corrigido**: Validação de uso de bibliotecas sem import
+
+### Mantidas
+
+- **Mantido**: Debugger interativo (--debug-interactive) permanece funcional
+- **Mantido**: Todos os outros modos de debug disponíveis
+- **Mantido**: Compatibilidade total com código existente
+
 ## [0.18.3] - 2025-08-02
 
 ### Melhorias nas Mensagens de Erro

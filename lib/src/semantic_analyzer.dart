@@ -357,16 +357,24 @@ class SemanticAnalyzer implements AstVisitor<void> {
   void visitVariableExpr(VariableExpr expr) {
     final symbol = _currentScope.get(expr.name);
 
-    // Verificar se é uma biblioteca padrão ou importada
-    if (['math', 'string', 'io'].contains(expr.name.lexeme) ||
-        _importedLibraries.containsKey(expr.name.lexeme)) {
-      // É uma biblioteca padrão ou importada, sempre válida
+    // Verificar se é uma biblioteca importada 
+    if (_importedLibraries.containsKey(expr.name.lexeme)) {
+      // É uma biblioteca importada, sempre válida
       return;
     }
 
     // Verificar se é uma função nativa
     if (_standardLibrary.hasFunction(expr.name.lexeme)) {
       // É uma função nativa, sempre válida
+      return;
+    }
+
+    // Se é uma biblioteca padrão usada sem import, gerar erro
+    if (['math', 'string', 'io', 'data'].contains(expr.name.lexeme)) {
+      _errorReporter.error(
+        expr.name.line,
+        "Biblioteca '${expr.name.lexeme}' não foi importada. Use 'importar ${expr.name.lexeme};' primeiro.",
+      );
       return;
     }
 
@@ -829,6 +837,20 @@ class SemanticAnalyzer implements AstVisitor<void> {
     } else if (expr is MethodCallExpr) {
       // Para chamadas de método, infere baseado no método específico
       final methodName = expr.name.lexeme;
+      
+      // Verifica se é um método de biblioteca
+      if (expr.object is VariableExpr) {
+        final objectName = (expr.object as VariableExpr).name.lexeme;
+        final libraryName = _importedLibraries[objectName] ?? objectName;
+        
+        // Inferir tipos de retorno para métodos de biblioteca
+        final libraryMethodType = _getLibraryMethodReturnType(libraryName, methodName);
+        if (libraryMethodType != null) {
+          return libraryMethodType;
+        }
+      }
+      
+      // Métodos de lista padrão
       switch (methodName) {
         case 'tamanho':
           return TokenType.inteiro; // tamanho() retorna inteiro
@@ -1082,6 +1104,7 @@ class SemanticAnalyzer implements AstVisitor<void> {
   /// Valida métodos da biblioteca math
   void _validateMathMethod(String methodName, List<Expr> arguments, int line) {
     switch (methodName) {
+      // Funções básicas já validadas
       case 'raiz':
         if (arguments.length != 1) {
           _errorReporter.error(line, "Método 'math.raiz' requer exatamente um argumento.");
@@ -1102,6 +1125,66 @@ class SemanticAnalyzer implements AstVisitor<void> {
           _errorReporter.error(line, "Método 'math.pow' requer exatamente dois argumentos.");
         }
         break;
+      
+      // Funções trigonométricas
+      case 'sin':
+      case 'cos':
+      case 'tan':
+      case 'asin':
+      case 'acos':
+      case 'atan':
+        if (arguments.length != 1) {
+          _errorReporter.error(line, "Método 'math.$methodName' requer exatamente um argumento.");
+        }
+        break;
+      
+      // Funções exponenciais e logarítmicas
+      case 'exp':
+      case 'log':
+      case 'log10':
+      case 'sqrt':
+        if (arguments.length != 1) {
+          _errorReporter.error(line, "Método 'math.$methodName' requer exatamente um argumento.");
+        }
+        break;
+      
+      // Funções de arredondamento
+      case 'ceil':
+      case 'floor':
+      case 'round':
+      case 'absoluto':
+      case 'arredondar':
+        if (arguments.length != 1) {
+          _errorReporter.error(line, "Método 'math.$methodName' requer exatamente um argumento.");
+        }
+        break;
+      
+      // Funções de comparação
+      case 'max':
+      case 'min':
+      case 'maximo':
+      case 'minimo':
+      case 'potencia':
+        if (arguments.length != 2) {
+          _errorReporter.error(line, "Método 'math.$methodName' requer exatamente dois argumentos.");
+        }
+        break;
+      
+      // Função aleatória e constantes
+      case 'random':
+      case 'PI':
+      case 'E':
+      case 'LN2':
+      case 'LN10':
+      case 'LOG2E':
+      case 'LOG10E':
+      case 'SQRT1_2':
+      case 'SQRT2':
+        if (arguments.isNotEmpty) {
+          _errorReporter.error(line, "Propriedade 'math.$methodName' não aceita argumentos.");
+        }
+        break;
+      
       default:
         _errorReporter.error(line, "Método 'math.$methodName' não reconhecido.");
     }
@@ -1110,21 +1193,60 @@ class SemanticAnalyzer implements AstVisitor<void> {
   /// Valida métodos da biblioteca string
   void _validateStringMethod(String methodName, List<Expr> arguments, int line) {
     switch (methodName) {
+      // Métodos já validados
       case 'maiuscula':
-        if (arguments.length != 1) {
-          _errorReporter.error(line, "Método 'string.maiuscula' requer exatamente um argumento.");
-        }
-        break;
       case 'minuscula':
-        if (arguments.length != 1) {
-          _errorReporter.error(line, "Método 'string.minuscula' requer exatamente um argumento.");
-        }
-        break;
       case 'tamanho':
         if (arguments.length != 1) {
-          _errorReporter.error(line, "Método 'string.tamanho' requer exatamente um argumento.");
+          _errorReporter.error(line, "Método 'string.$methodName' requer exatamente um argumento.");
         }
         break;
+      
+      // Propriedades
+      case 'vazio':
+        if (arguments.length != 1) {
+          _errorReporter.error(line, "Método 'string.vazio' requer exatamente um argumento.");
+        }
+        break;
+      
+      // Transformações
+      case 'inverter':
+      case 'limpar':
+        if (arguments.length != 1) {
+          _errorReporter.error(line, "Método 'string.$methodName' requer exatamente um argumento.");
+        }
+        break;
+      
+      // Verificações (2 argumentos)
+      case 'contem':
+      case 'comecaCom':
+      case 'terminaCom':
+      case 'encontrar':
+      case 'encontrarUltimo':
+      case 'repetir':
+      case 'concatenar':
+      case 'dividir':
+        if (arguments.length != 2) {
+          _errorReporter.error(line, "Método 'string.$methodName' requer exatamente dois argumentos.");
+        }
+        break;
+      
+      // Métodos com 3 argumentos
+      case 'substituir':
+      case 'substituirPrimeiro':
+      case 'fatiar':
+        if (arguments.length != 3) {
+          _errorReporter.error(line, "Método 'string.$methodName' requer exatamente três argumentos.");
+        }
+        break;
+      
+      // Extração de caracteres
+      case 'caractereEm':
+        if (arguments.length != 2) {
+          _errorReporter.error(line, "Método 'string.caractereEm' requer exatamente dois argumentos.");
+        }
+        break;
+      
       default:
         _errorReporter.error(line, "Método 'string.$methodName' não reconhecido.");
     }
@@ -1133,16 +1255,49 @@ class SemanticAnalyzer implements AstVisitor<void> {
   /// Valida métodos da biblioteca data
   void _validateDataMethod(String methodName, List<Expr> arguments, int line) {
     switch (methodName) {
+      // Métodos sem argumentos já validados
       case 'dataAtual':
+      case 'horaAtual':
+      case 'hoje':
         if (arguments.isNotEmpty) {
-          _errorReporter.error(line, "Método 'data.dataAtual' não aceita argumentos.");
+          _errorReporter.error(line, "Método 'data.$methodName' não aceita argumentos.");
         }
         break;
+      
+      // Métodos com 1 argumento já validados
       case 'diaSemana':
         if (arguments.length != 1) {
           _errorReporter.error(line, "Método 'data.diaSemana' requer exatamente um argumento.");
         }
         break;
+      
+      // Novos métodos sem argumentos
+      case 'timestamp':
+        if (arguments.isNotEmpty) {
+          _errorReporter.error(line, "Método 'data.timestamp' não aceita argumentos.");
+        }
+        break;
+      
+      // Novos métodos com 1 argumento
+      case 'ehBissexto':
+      case 'nomeMes':
+      case 'nomeDiaSemana':
+      case 'ehDataValida':
+      case 'deTimestamp':
+        if (arguments.length != 1) {
+          _errorReporter.error(line, "Método 'data.$methodName' requer exatamente um argumento.");
+        }
+        break;
+      
+      // Métodos com 2 argumentos
+      case 'diferenca':
+      case 'formatar':
+      case 'adicionarDias':
+        if (arguments.length != 2) {
+          _errorReporter.error(line, "Método 'data.$methodName' requer exatamente dois argumentos.");
+        }
+        break;
+      
       default:
         _errorReporter.error(line, "Método 'data.$methodName' não reconhecido.");
     }
@@ -1151,6 +1306,7 @@ class SemanticAnalyzer implements AstVisitor<void> {
   /// Valida métodos da biblioteca io
   void _validateIoMethod(String methodName, List<Expr> arguments, int line) {
     switch (methodName) {
+      // Métodos já validados
       case 'lerTexto':
         if (arguments.isNotEmpty) {
           _errorReporter.error(line, "Método 'io.lerTexto' não aceita argumentos.");
@@ -1161,6 +1317,29 @@ class SemanticAnalyzer implements AstVisitor<void> {
           _errorReporter.error(line, "Método 'io.lerInteiro' não aceita argumentos.");
         }
         break;
+      case 'escrever':
+        if (arguments.length != 1) {
+          _errorReporter.error(line, "Método 'io.escrever' requer exatamente um argumento.");
+        }
+        break;
+      
+      // Novos métodos
+      case 'imprimir':
+        if (arguments.length != 1) {
+          _errorReporter.error(line, "Método 'io.imprimir' requer exatamente um argumento.");
+        }
+        break;
+      case 'novaLinha':
+        if (arguments.isNotEmpty) {
+          _errorReporter.error(line, "Método 'io.novaLinha' não aceita argumentos.");
+        }
+        break;
+      case 'lerNumero':
+        if (arguments.isNotEmpty) {
+          _errorReporter.error(line, "Método 'io.lerNumero' não aceita argumentos.");
+        }
+        break;
+      
       default:
         _errorReporter.error(line, "Método 'io.$methodName' não reconhecido.");
     }
@@ -1204,6 +1383,157 @@ class SemanticAnalyzer implements AstVisitor<void> {
       // Outras funções nativas podem ser adicionadas aqui conforme implementadas
       default:
         return null; // Função não é nativa conhecida
+    }
+  }
+
+  /// Retorna o tipo de retorno de métodos de biblioteca
+  TokenType? _getLibraryMethodReturnType(String libraryName, String methodName) {
+    switch (libraryName) {
+      case 'math':
+        return _getMathMethodReturnType(methodName);
+      case 'string':
+        return _getStringMethodReturnType(methodName);
+      case 'data':
+        return _getDataMethodReturnType(methodName);
+      case 'io':
+        return _getIoMethodReturnType(methodName);
+      default:
+        return null;
+    }
+  }
+
+  /// Tipos de retorno para métodos da biblioteca math
+  TokenType? _getMathMethodReturnType(String methodName) {
+    switch (methodName) {
+      // Constantes retornam real
+      case 'pi':
+      case 'PI':
+      case 'E':
+      case 'LN2':
+      case 'LN10':
+      case 'LOG2E':
+      case 'LOG10E':
+      case 'SQRT1_2':
+      case 'SQRT2':
+      case 'raiz':
+      case 'abs':
+      case 'sin':
+      case 'cos':
+      case 'tan':
+      case 'asin':
+      case 'acos':
+      case 'atan':
+      case 'exp':
+      case 'log':
+      case 'log10':
+      case 'sqrt':
+      case 'absoluto':
+      case 'potencia':
+      case 'pow':
+      case 'max':
+      case 'min':
+      case 'maximo':
+      case 'minimo':
+      case 'random':
+        return TokenType.real;
+      
+      // Funções de arredondamento retornam inteiro
+      case 'ceil':
+      case 'floor':
+      case 'round':
+      case 'arredondar':
+        return TokenType.inteiro;
+      
+      default:
+        return TokenType.real; // fallback para funções math
+    }
+  }
+
+  /// Tipos de retorno para métodos da biblioteca string
+  TokenType? _getStringMethodReturnType(String methodName) {
+    switch (methodName) {
+      // Métodos que retornam texto
+      case 'maiuscula':
+      case 'minuscula':
+      case 'inverter':
+      case 'limpar':
+      case 'substituir':
+      case 'substituirPrimeiro':
+      case 'fatiar':
+      case 'caractereEm':
+      case 'repetir':
+      case 'concatenar':
+        return TokenType.texto;
+      
+      // Métodos que retornam inteiro
+      case 'tamanho':
+      case 'encontrar':
+      case 'encontrarUltimo':
+      case 'dividir':
+        return TokenType.inteiro;
+      
+      // Métodos que retornam lógico
+      case 'vazio':
+      case 'contem':
+      case 'comecaCom':
+      case 'terminaCom':
+        return TokenType.logico;
+      
+      default:
+        return TokenType.texto; // fallback para string
+    }
+  }
+
+  /// Tipos de retorno para métodos da biblioteca data
+  TokenType? _getDataMethodReturnType(String methodName) {
+    switch (methodName) {
+      // Métodos que retornam texto
+      case 'dataAtual':
+      case 'horaAtual':
+      case 'hoje':
+      case 'formatar':
+      case 'nomeMes':
+      case 'nomeDiaSemana':
+      case 'adicionarDias':
+      case 'deTimestamp':
+        return TokenType.texto;
+      
+      // Métodos que retornam inteiro
+      case 'diaSemana':
+      case 'diferenca':
+      case 'timestamp':
+        return TokenType.inteiro;
+      
+      // Métodos que retornam lógico
+      case 'ehBissexto':
+      case 'ehDataValida':
+        return TokenType.logico;
+      
+      default:
+        return TokenType.texto; // fallback para data
+    }
+  }
+
+  /// Tipos de retorno para métodos da biblioteca io
+  TokenType? _getIoMethodReturnType(String methodName) {
+    switch (methodName) {
+      // Métodos que retornam texto
+      case 'lerTexto':
+        return TokenType.texto;
+      
+      // Métodos que retornam inteiro
+      case 'lerInteiro':
+      case 'lerNumero':
+        return TokenType.inteiro;
+      
+      // Métodos que não retornam valor
+      case 'escrever':
+      case 'imprimir':
+      case 'novaLinha':
+        return TokenType.nil;
+      
+      default:
+        return TokenType.nil; // fallback para io
     }
   }
 }

@@ -10,7 +10,6 @@ import 'package:lipo_compiler/src/code_generator.dart';
 import 'package:lipo_compiler/src/vm.dart';
 import 'package:lipo_compiler/src/ast_graphviz_generator.dart';
 import 'package:lipo_compiler/src/interactive_debugger.dart';
-import 'package:lipo_compiler/src/dap_debugger.dart';
 
 // Cria uma instância única do reporter de erros para todo o compilador.
 final errorReporter = ErrorReporter();
@@ -40,12 +39,6 @@ void main(List<String> arguments) {
       abbr: 'i',
       negatable: false,
       help: 'Inicia o debugger interativo com breakpoints e step-by-step',
-    )
-    ..addFlag(
-      'debug-dap',
-      negatable: false,
-      help:
-          'Inicia o modo DAP (Debug Adapter Protocol) para integração VS Code',
     )
     ..addFlag(
       'debug-tokens',
@@ -84,7 +77,7 @@ void main(List<String> arguments) {
 
   // Verifica se é pedido para mostrar a versão
   if (argResults['version']) {
-    print('🚀 $fullVersionString');
+    print(fullVersionString);
     print('Copyright (c) 2025 Deriks Karlay Dias Costa');
     print('Linguagem de programação educacional em português');
     exit(0);
@@ -100,7 +93,6 @@ void main(List<String> arguments) {
   final astOnly = argResults['ast-only'] as bool;
   final showBytecode = argResults['bytecode'] as bool;
   final debugInteractive = argResults['debug-interactive'] as bool;
-  final debugDAP = argResults['debug-dap'] as bool;
   final debugTokens = argResults['debug-tokens'] as bool;
   final debugParser = argResults['debug-parser'] as bool;
   final debugSemantic = argResults['debug-semantic'] as bool;
@@ -114,7 +106,6 @@ void main(List<String> arguments) {
       astOnly: astOnly,
       showBytecode: showBytecode,
       debugInteractive: debugInteractive,
-      debugDAP: debugDAP,
       debugTokens: debugTokens || debugAll,
       debugParser: debugParser || debugAll,
       debugSemantic: debugSemantic || debugAll,
@@ -140,7 +131,6 @@ void run(
   bool astOnly = false,
   bool showBytecode = false,
   bool debugInteractive = false,
-  bool debugDAP = false,
   bool debugTokens = false,
   bool debugParser = false,
   bool debugSemantic = false,
@@ -257,11 +247,7 @@ void run(
   }
 
   // Verifica o modo de debug
-  if (debugDAP) {
-    print('🎯 Iniciando modo DAP (Debug Adapter Protocol)...\n');
-    final dapDebugger = DAPDebugger(vm);
-    dapDebugger.start(chunk, source);
-  } else if (debugInteractive) {
+  if (debugInteractive) {
     print('🔍 Iniciando Debugger Interativo...\n');
     final debugger = InteractiveDebugger(vm);
     debugger.start(chunk, source);

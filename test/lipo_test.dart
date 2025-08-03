@@ -38,6 +38,10 @@ void main() {
     group('7. Testes de Regressão', () {
       testRegression();
     });
+    
+    group('8. Testes das Bibliotecas Padrão', () {
+      testStandardLibraries();
+    });
   });
 }
 
@@ -452,7 +456,11 @@ ExecutionResult _executeCode(String source) {
     final tokens = lexer.scanTokens();
     
     if (errorReporter.hadError) {
-      return ExecutionResult(false, "", "Erro léxico");
+      // Capturar a primeira mensagem de erro detalhada
+      final errorMessage = errorReporter.errors.isNotEmpty 
+          ? errorReporter.errors.first 
+          : "Erro léxico";
+      return ExecutionResult(false, "", errorMessage);
     }
     
     // Análise sintática
@@ -460,7 +468,11 @@ ExecutionResult _executeCode(String source) {
     final statements = parser.parse();
     
     if (errorReporter.hadError) {
-      return ExecutionResult(false, "", "Erro sintático");
+      // Capturar a primeira mensagem de erro detalhada
+      final errorMessage = errorReporter.errors.isNotEmpty 
+          ? errorReporter.errors.first 
+          : "Erro sintático";
+      return ExecutionResult(false, "", errorMessage);
     }
     
     // Análise semântica
@@ -468,7 +480,11 @@ ExecutionResult _executeCode(String source) {
     analyzer.analyze(statements);
     
     if (errorReporter.hadError) {
-      return ExecutionResult(false, "", "Erro semântico");
+      // Capturar a primeira mensagem de erro detalhada
+      final errorMessage = errorReporter.errors.isNotEmpty 
+          ? errorReporter.errors.first 
+          : "Erro semântico";
+      return ExecutionResult(false, "", errorMessage);
     }
     
     // Geração de código
@@ -491,4 +507,390 @@ ExecutionResult _executeCode(String source) {
   } catch (e) {
     return ExecutionResult(false, "", e.toString());
   }
+}
+
+/// Testa as bibliotecas padrão (math, string, data, io)
+void testStandardLibraries() {
+  group('Biblioteca Math', () {
+    test('Deve executar funções básicas de math', () {
+      const source = '''
+        importar math;
+        imprima "PI: " + paraTexto(math.pi);
+        imprima "Raiz de 25: " + paraTexto(math.raiz(25));
+        imprima "Absoluto de -10: " + paraTexto(math.abs(-10));
+        imprima "Potência 2^3: " + paraTexto(math.pow(2, 3));
+        retorne 0;
+      ''';
+      
+      final result = _executeCode(source);
+      expect(result.success, isTrue);
+      expect(result.output, contains('PI: 3.14'));
+      expect(result.output, contains('Raiz de 25: 5'));
+      expect(result.output, contains('Absoluto de -10: 10'));
+      expect(result.output, contains('Potência 2^3: 8'));
+    });
+
+    test('Deve executar funções trigonométricas', () {
+      const source = '''
+        importar math;
+        imprima "Sen(0): " + paraTexto(math.sin(0));
+        imprima "Cos(0): " + paraTexto(math.cos(0));
+        imprima "Tan(0): " + paraTexto(math.tan(0));
+        retorne 0;
+      ''';
+      
+      final result = _executeCode(source);
+      expect(result.success, isTrue);
+      expect(result.output, contains('Sen(0): 0'));
+      expect(result.output, contains('Cos(0): 1'));
+      expect(result.output, contains('Tan(0): 0'));
+    });
+
+    test('Deve executar funções de arredondamento', () {
+      const source = '''
+        importar math;
+        imprima "Teto de 3.2: " + paraTexto(math.ceil(3.2));
+        imprima "Piso de 3.8: " + paraTexto(math.floor(3.8));
+        imprima "Arredondar 3.6: " + paraTexto(math.round(3.6));
+        retorne 0;
+      ''';
+      
+      final result = _executeCode(source);
+      expect(result.success, isTrue);
+      expect(result.output, contains('Teto de 3.2: 4'));
+      expect(result.output, contains('Piso de 3.8: 3'));
+      expect(result.output, contains('Arredondar 3.6: 4'));
+    });
+
+    test('Deve executar funções de comparação', () {
+      const source = '''
+        importar math;
+        imprima "Máximo entre 5 e 8: " + paraTexto(math.max(5, 8));
+        imprima "Mínimo entre 5 e 8: " + paraTexto(math.min(5, 8));
+        retorne 0;
+      ''';
+      
+      final result = _executeCode(source);
+      expect(result.success, isTrue);
+      expect(result.output, contains('Máximo entre 5 e 8: 8'));
+      expect(result.output, contains('Mínimo entre 5 e 8: 5'));
+    });
+
+    test('Deve acessar constantes matemáticas', () {
+      const source = '''
+        importar math;
+        imprima "E: " + paraTexto(math.E);
+        imprima "PI: " + paraTexto(math.PI);
+        retorne 0;
+      ''';
+      
+      final result = _executeCode(source);
+      expect(result.success, isTrue);
+      expect(result.output, contains('E: 2.71'));
+      expect(result.output, contains('PI: 3.14'));
+    });
+  });
+
+  group('Biblioteca String', () {
+    test('Deve executar transformações de string', () {
+      const source = '''
+        importar string como s;
+        texto teste = "Olá Mundo";
+        imprima "Original: " + teste;
+        imprima "Maiúscula: " + s.maiuscula(teste);
+        imprima "Minúscula: " + s.minuscula(teste);
+        imprima "Tamanho: " + paraTexto(s.tamanho(teste));
+        retorne 0;
+      ''';
+      
+      final result = _executeCode(source);
+      expect(result.success, isTrue);
+      expect(result.output, contains('Original: Olá Mundo'));
+      expect(result.output, contains('Maiúscula: OLÁ MUNDO'));
+      expect(result.output, contains('Minúscula: olá mundo'));
+      expect(result.output, contains('Tamanho: 9'));
+    });
+
+    test('Deve executar verificações de string', () {
+      const source = '''
+        importar string como s;
+        texto teste = "Hello World";
+        imprima "Está vazio? " + paraTexto(s.vazio(teste));
+        imprima "Contém 'World'? " + paraTexto(s.contem(teste, "World"));
+        imprima "Começa com 'Hello'? " + paraTexto(s.comecaCom(teste, "Hello"));
+        imprima "Termina com 'World'? " + paraTexto(s.terminaCom(teste, "World"));
+        retorne 0;
+      ''';
+      
+      final result = _executeCode(source);
+      expect(result.success, isTrue);
+      expect(result.output, contains('Está vazio? falso'));
+      expect(result.output, contains('Contém \'World\'? verdadeiro'));
+      expect(result.output, contains('Começa com \'Hello\'? verdadeiro'));
+      expect(result.output, contains('Termina com \'World\'? verdadeiro'));
+    });
+
+    test('Deve executar operações de busca e manipulação', () {
+      const source = '''
+        importar string como s;
+        texto original = "banana";
+        imprima "Encontrar 'na': " + paraTexto(s.encontrar(original, "na"));
+        imprima "Repetir 3x: " + s.repetir("ABC", 3);
+        imprima "Concatenar: " + s.concatenar("Hello", " World");
+        retorne 0;
+      ''';
+      
+      final result = _executeCode(source);
+      expect(result.success, isTrue);
+      expect(result.output, contains('Encontrar \'na\': 2'));
+      expect(result.output, contains('Repetir 3x: ABCABCABC'));
+      expect(result.output, contains('Concatenar: Hello World'));
+    });
+  });
+
+  group('Biblioteca Data', () {
+    test('Deve executar funções de data básicas', () {
+      const source = '''
+        importar data;
+        imprima "Data atual: " + data.dataAtual();
+        imprima "Hora atual: " + data.horaAtual();
+        imprima "Hoje: " + data.hoje();
+        retorne 0;
+      ''';
+      
+      final result = _executeCode(source);
+      expect(result.success, isTrue);
+      expect(result.output, contains('Data atual: 2025'));
+      expect(result.output, contains('Hora atual:'));
+      expect(result.output, contains('Hoje: 2025'));
+    });
+
+    test('Deve executar operações com datas', () {
+      const source = '''
+        importar data;
+        texto dataHoje = data.hoje();
+        imprima "Dia da semana: " + paraTexto(data.diaSemana(dataHoje));
+        imprima "2024 é bissexto? " + paraTexto(data.ehBissexto(2024));
+        imprima "2023 é bissexto? " + paraTexto(data.ehBissexto(2023));
+        imprima "Nome do mês 12: " + data.nomeMes(12);
+        retorne 0;
+      ''';
+      
+      final result = _executeCode(source);
+      expect(result.success, isTrue);
+      expect(result.output, contains('Dia da semana:'));
+      expect(result.output, contains('2024 é bissexto? verdadeiro'));
+      expect(result.output, contains('2023 é bissexto? falso'));
+      expect(result.output, contains('Nome do mês 12: Dezembro'));
+    });
+
+    test('Deve validar e manipular datas', () {
+      const source = '''
+        importar data;
+        imprima "Data válida? " + paraTexto(data.ehDataValida("2025-08-02"));
+        imprima "Data inválida? " + paraTexto(data.ehDataValida("invalid"));
+        imprima "Adicionar 7 dias: " + data.adicionarDias("2025-01-01", 7);
+        retorne 0;
+      ''';
+      
+      final result = _executeCode(source);
+      expect(result.success, isTrue);
+      expect(result.output, contains('Data válida? verdadeiro'));
+      expect(result.output, contains('Data inválida? falso'));
+      expect(result.output, contains('Adicionar 7 dias: 2025-01-08'));
+    });
+
+    test('Deve trabalhar com timestamps', () {
+      const source = '''
+        importar data;
+        inteiro timestamp = data.timestamp();
+        imprima "Timestamp gerado: " + paraTexto(timestamp > 1700000000);
+        texto dataRecuperada = data.deTimestamp(1609459200); // 2021-01-01
+        imprima "Data recuperada: " + dataRecuperada;
+        retorne 0;
+      ''';
+      
+      final result = _executeCode(source);
+      expect(result.success, isTrue);
+      expect(result.output, contains('Timestamp gerado: verdadeiro'));
+      expect(result.output, contains('Data recuperada:'));
+    });
+  });
+
+  group('Biblioteca IO', () {
+    test('Deve executar operações de saída', () {
+      const source = '''
+        importar io;
+        io.imprimir("Escrevendo texto");
+        io.novaLinha();
+        imprima "Teste finalizado";
+        retorne 0;
+      ''';
+      
+      final result = _executeCode(source);
+      expect(result.success, isTrue);
+      expect(result.output, contains('Escrevendo texto'));
+      expect(result.output, contains('Teste finalizado'));
+    });
+
+    test('Deve simular operações de entrada', () {
+      const source = '''
+        importar io;
+        texto entrada = io.lerTexto();
+        inteiro numero = io.lerNumero();
+        imprima "Texto lido: " + entrada;
+        imprima "Número lido: " + paraTexto(numero);
+        retorne 0;
+      ''';
+      
+      final result = _executeCode(source);
+      expect(result.success, isTrue);
+      expect(result.output, contains('Texto lido: entrada_do_usuario'));
+      expect(result.output, contains('Número lido: 42'));
+    });
+  });
+
+  group('Testes de Integração de Bibliotecas', () {
+    test('Deve usar múltiplas bibliotecas em conjunto', () {
+      const source = '''
+        importar math;
+        importar string como s;
+        importar data;
+        
+        real valor = math.raiz(16);
+        texto resultado = s.maiuscula("resultado: " + paraTexto(valor));
+        
+        imprima resultado;
+        imprima "Data do teste: " + data.hoje();
+        texto piFormatado = s.maiuscula(paraTexto(math.pi));
+        imprima "PI formatado: " + piFormatado;
+        
+        retorne 0;
+      ''';
+      
+      final result = _executeCode(source);
+      expect(result.success, isTrue);
+      expect(result.output, contains('RESULTADO: 4'));
+      expect(result.output, contains('Data do teste: 2025'));
+      expect(result.output, contains('PI formatado: 3.141'));
+    });
+
+    test('Deve validar tipos de retorno das bibliotecas', () {
+      const source = '''
+        importar math;
+        importar string como s;
+        importar data;
+        importar io;
+        
+        // Testando inferência de tipos
+        real piValue = math.pi;
+        inteiro tamTexto = s.tamanho("teste");
+        texto dataAtual = data.hoje();
+        logico bissexto = data.ehBissexto(2024);
+        
+        imprima "PI: " + paraTexto(piValue);
+        imprima "Tamanho: " + paraTexto(tamTexto);
+        imprima "Data: " + dataAtual;
+        imprima "Bissexto: " + paraTexto(bissexto);
+        
+        retorne 0;
+      ''';
+      
+      final result = _executeCode(source);
+      expect(result.success, isTrue);
+      expect(result.output, contains('PI: 3.14'));
+      expect(result.output, contains('Tamanho: 5'));
+      expect(result.output, contains('Data: 2025'));
+      expect(result.output, contains('Bissexto: verdadeiro'));
+    });
+
+    test('Deve funcionar com aliases de bibliotecas', () {
+      const source = '''
+        importar math como m;
+        importar string como str;
+        importar data como dt;
+        
+        imprima "Math alias: " + paraTexto(m.abs(-5));
+        imprima "String alias: " + str.maiuscula("hello");
+        imprima "Data alias: " + dt.nomeMes(1);
+        
+        retorne 0;
+      ''';
+      
+      final result = _executeCode(source);
+      expect(result.success, isTrue);
+      expect(result.output, contains('Math alias: 5'));
+      expect(result.output, contains('String alias: HELLO'));
+      expect(result.output, contains('Data alias: Janeiro'));
+    });
+  });
+
+  group('Testes de Validação Semântica das Bibliotecas', () {
+    test('Deve rejeitar uso de biblioteca não importada', () {
+      const source = '''
+        // Sem importar math
+        imprima "PI: " + paraTexto(math.pi);
+        retorne 0;
+      ''';
+      
+      final result = _executeCode(source);
+      expect(result.success, isFalse);
+      expect(result.error, isNotEmpty);
+    });
+
+    test('Deve rejeitar métodos inexistentes', () {
+      const source = '''
+        importar math;
+        imprima "Função inexistente: " + paraTexto(math.funcaoInexistente());
+        retorne 0;
+      ''';
+      
+      final result = _executeCode(source);
+      expect(result.success, isFalse);
+      expect(result.error, contains('não reconhecido'));
+    });
+
+    test('Deve rejeitar número incorreto de argumentos', () {
+      const source = '''
+        importar math;
+        imprima "Sem argumentos: " + paraTexto(math.abs());
+        retorne 0;
+      ''';
+      
+      final result = _executeCode(source);
+      expect(result.success, isFalse);
+      expect(result.error, contains('requer exatamente um argumento'));
+    });
+
+    test('Deve rejeitar argumentos em propriedades', () {
+      const source = '''
+        importar math;
+        imprima "Com argumentos: " + paraTexto(math.pi(5));
+        retorne 0;
+      ''';
+      
+      final result = _executeCode(source);
+      expect(result.success, isFalse);
+      expect(result.error, contains('não aceita argumentos'));
+    });
+
+    test('Deve validar tipos de retorno corretamente', () {
+      const source = '''
+        importar math;
+        importar string como s;
+        
+        // Estas atribuições devem ser válidas
+        real piValue = math.pi;
+        inteiro tamanhoString = s.tamanho("teste");
+        logico stringVazia = s.vazio("");
+        
+        imprima "Validação OK";
+        retorne 0;
+      ''';
+      
+      final result = _executeCode(source);
+      expect(result.success, isTrue);
+      expect(result.output, contains('Validação OK'));
+    });
+  });
 }
