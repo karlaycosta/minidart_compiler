@@ -1,11 +1,10 @@
 ---
 title: "Palavras-chave reservadas"
-description: "Your documentation starts here."
 ---
 
-# visão geral
-
 As palavras-chave reservadas são termos que possuem significado especial na linguagem LiPo e não podem ser utilizados como nomes de variáveis, funções ou identificadores personalizados. Elas definem comandos, estruturas e operações fundamentais da linguagem.
+
+<br>
 
 | Palavra-chave | Função/Significado                              |
 |---------------|--------------------------------------------------|

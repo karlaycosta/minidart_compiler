@@ -1,36 +1,21 @@
 import 'dart:io';
 import 'package:args/args.dart';
-<<<<<<< HEAD
-import 'package:LIPO_COMPILER/src/token.dart';
-import 'package:LIPO_COMPILER/src/version.dart';
-import 'package:LIPO_COMPILER/src/lexer.dart';
-import 'package:LIPO_COMPILER/src/parser.dart';
-import 'package:LIPO_COMPILER/src/error.dart';
-import 'package:LIPO_COMPILER/src/semantic_analyzer.dart';
-import 'package:LIPO_COMPILER/src/code_generator.dart';
-import 'package:LIPO_COMPILER/src/vm.dart';
-import 'package:LIPO_COMPILER/src/ast_graphviz_generator.dart';
-import 'package:LIPO_COMPILER/src/interactive_debugger.dart';
-import 'package:LIPO_COMPILER/src/dap_debugger.dart';
-=======
-import 'package:lipo_compiler/src/token.dart';
-import 'package:lipo_compiler/src/version.dart';
-import 'package:lipo_compiler/src/lexer.dart';
-import 'package:lipo_compiler/src/parser.dart';
-import 'package:lipo_compiler/src/error.dart';
-import 'package:lipo_compiler/src/semantic_analyzer.dart';
-import 'package:lipo_compiler/src/code_generator.dart';
-import 'package:lipo_compiler/src/vm.dart';
-import 'package:lipo_compiler/src/ast_graphviz_generator.dart';
-import 'package:lipo_compiler/src/interactive_debugger.dart';
-import 'package:lipo_compiler/src/dap_debugger.dart';
->>>>>>> origin/dev
+import 'package:minidart_compiler/src/token.dart';
+import 'package:minidart_compiler/src/version.dart';
+import 'package:minidart_compiler/src/lexer.dart';
+import 'package:minidart_compiler/src/parser.dart';
+import 'package:minidart_compiler/src/error.dart';
+import 'package:minidart_compiler/src/semantic_analyzer.dart';
+import 'package:minidart_compiler/src/code_generator.dart';
+import 'package:minidart_compiler/src/vm.dart';
+import 'package:minidart_compiler/src/ast_graphviz_generator.dart';
+import 'package:minidart_compiler/src/interactive_debugger.dart';
+import 'package:minidart_compiler/src/dap_debugger.dart';
 
 // Cria uma instância única do reporter de erros para todo o compilador.
 final errorReporter = ErrorReporter();
 
 void main(List<String> arguments) {
-<<<<<<< HEAD
   final parser =
       ArgParser()
         ..addFlag(
@@ -89,64 +74,6 @@ void main(List<String> arguments) {
           help:
               'Ativa todos os modos de debug (tokens + parser + semantic + vm)',
         );
-=======
-  final parser = ArgParser()
-    ..addFlag(
-      'version',
-      abbr: 'v',
-      negatable: false,
-      help: 'Mostra a versão do compilador',
-    )
-    ..addFlag(
-      'ast-only',
-      abbr: 'a',
-      negatable: false,
-      help: 'Gera apenas a AST em Graphviz (não executa o código)',
-    )
-    ..addFlag(
-      'bytecode',
-      abbr: 'b',
-      negatable: false,
-      help: 'Mostra o bytecode gerado durante a compilação',
-    )
-    ..addFlag(
-      'debug-interactive',
-      abbr: 'i',
-      negatable: false,
-      help: 'Inicia o debugger interativo com breakpoints e step-by-step',
-    )
-    ..addFlag(
-      'debug-dap',
-      negatable: false,
-      help:
-          'Inicia o modo DAP (Debug Adapter Protocol) para integração VS Code',
-    )
-    ..addFlag(
-      'debug-tokens',
-      negatable: false,
-      help: 'Mostra todos os tokens identificados durante a análise léxica',
-    )
-    ..addFlag(
-      'debug-parser',
-      negatable: false,
-      help: 'Mostra detalhes da construção da AST durante o parsing',
-    )
-    ..addFlag(
-      'debug-semantic',
-      negatable: false,
-      help: 'Exibe informações detalhadas da análise semântica e escopo',
-    )
-    ..addFlag(
-      'debug-vm',
-      negatable: false,
-      help: 'Mostra execução passo-a-passo da VM com stack e instruções',
-    )
-    ..addFlag(
-      'debug-all',
-      negatable: false,
-      help: 'Ativa todos os modos de debug (tokens + parser + semantic + vm)',
-    );
->>>>>>> origin/dev
 
   ArgResults argResults;
   try {
@@ -203,7 +130,6 @@ void main(List<String> arguments) {
 
 String getUsage(ArgParser parser) {
   return '''
-<<<<<<< HEAD
 Uso: dart bin/compile.dart <caminho_para_arquivo.mdart> [opções]
 
 Opções:
@@ -219,12 +145,6 @@ Exemplos:
   dart bin/compile.dart exemplos/teste_debug.mdart --debug-semantic
   dart bin/compile.dart exemplos/teste_debug.mdart --debug-vm
   dart bin/compile.dart exemplos/teste_debug.mdart --debug-all
-=======
-Uso: lipo <caminho_para_arquivo.lip> [opções]
-
-Opções:
-${parser.usage}
->>>>>>> origin/dev
 ''';
 }
 
@@ -297,11 +217,7 @@ void run(
   if (astOnly) {
     print('--- AST em Graphviz ---');
     final astGenerator = ASTGraphvizGenerator();
-<<<<<<< HEAD
     astGenerator.saveAndVisualize(statements, filename: 'minidart_ast');
-=======
-    astGenerator.saveAndVisualize(statements, filename: 'lipo_ast');
->>>>>>> origin/dev
     print('-----------------------\n');
     print('✅ AST gerada com sucesso! Use o comando abaixo para visualizar:');
     print('   dot -Tpng minidart_ast.dot -o minidart_ast.png');

@@ -4,42 +4,70 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-      <meta name="description" content="Your documentation starts here.">
-  <link rel="canonical" href="https://karlaycosta.github.io/minidart_compiler/operadores_aritmeticos/">
-  <meta property="og:title" content="Operadores Aritméticos | LiPo | DOC">
-  <meta property="og:description" content="Your documentation starts here.">
-  <meta property="og:url" content="https://karlaycosta.github.io/minidart_compiler/operadores_aritmeticos/">
-  <meta property="og:site_name" content="LiPo | DOC">
-  <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Operadores Aritméticos | LiPo | DOC">
-  <meta name="twitter:description" content="Your documentation starts here.">
- 
+     
 
     <title>Operadores Aritméticos : LiPo | DOC</title>
+    
+      <meta name="description" content="Your documentation starts here.">
     
 
     <link rel="shortcut icon" href="../assets/icon/favico.svg" type="image/x-icon">
  
 
+    <script>// Source file from the docmd project — https://github.com/mgks/docmd
+
+/*
+ * Initialize the theme from localStorage
+ */
+
+(function() {
+    try {
+      const storedTheme = localStorage.getItem('docmd-theme');
+      if (storedTheme) {
+        document.documentElement.setAttribute('data-theme', storedTheme);
+        
+        // Also update highlight CSS link to match the stored theme
+        const highlightThemeLink = document.getElementById('highlight-theme');
+        if (highlightThemeLink) {
+          const baseHref = highlightThemeLink.getAttribute('data-base-href');
+          if (baseHref) {
+            const newHref = baseHref + `docmd-highlight-${storedTheme}.css`;
+            highlightThemeLink.setAttribute('href', newHref);
+          }
+        }
+      }
+    } catch (e) {
+      console.error('Error applying theme from localStorage', e);
+    }
+})();</script>
+
     <link rel="stylesheet" href="../assets/css/docmd-main.css">
 
-    <link rel="stylesheet" href="../assets/css/docmd-highlight-light.css" id="highlight-theme">
+    
+        <link rel="stylesheet" id="highlight-theme" href="../assets/css/docmd-highlight-light.css" data-base-href="../assets/css/">
+    
 
-      <link rel="stylesheet" href="../assets/css/docmd-theme-sky.css">
+      <link rel="stylesheet" href="../assets/css/docmd-theme-ruby.css">
  
 
+    
+      <link rel="stylesheet" href="../assets/css/style.css">
     
 
      
 
      
 </head>
-<body class="sidebar-not-collapsible" data-theme="light" data-default-collapsed="false">
+<body class="sidebar-not-collapsible"
+    data-theme="light" data-default-collapsed="false"
+    data-copy-code-enabled="true">
     <aside class="sidebar">
         <div class="sidebar-header">
             
-                <h1><a href="../index.html">LiPo | DOC</a></h1>
+                <a href="/" class="logo-link">
+                    <img src=".././assets/imagens/Logo_horzontal_preto.svg" alt="LiPo Docs" class="logo-light" >
+                    <img src=".././assets/imagens/Logo_horzontal_branco.png" alt="LiPo Docs" class="logo-dark" >
+                </a>
             
         </div>
         
@@ -240,7 +268,7 @@
   <line x1="5" x2="19" y1="12" y2="12" />
   <circle cx="12" cy="18" r="1" />
 </svg>
-          <span>Operadores Aritméticos</span> 
+          <span>Aritméticos</span> 
           
         </a>
 
@@ -305,8 +333,11 @@
         <a href="../incremento_decremento/"
            class=""
            >
-          
-          <span>Incremento/Decremento</span> 
+          <svg class="lucide-icon icon-plus nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14" />
+  <path d="M12 5v14" />
+</svg>
+          <span>Incremento / Decremento</span> 
           
         </a>
 
@@ -335,8 +366,15 @@
         <a href="../precedencia_operadores/"
            class=""
            >
-          
-          <span>Precedência de Operadores</span> 
+          <svg class="lucide-icon icon-list nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 12h.01" />
+  <path d="M3 18h.01" />
+  <path d="M3 6h.01" />
+  <path d="M8 12h13" />
+  <path d="M8 18h13" />
+  <path d="M8 6h13" />
+</svg>
+          <span>Precedência</span> 
           
         </a>
 
@@ -389,7 +427,9 @@
         <a href="../condicional_ternaria/"
            class=""
            >
-          
+          <svg class="lucide-icon icon-circle nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10" />
+</svg>
           <span>Condicional Ternária</span> 
           
         </a>
@@ -421,11 +461,11 @@
         <a href="../loop_do_while/"
            class=""
            >
-          <svg class="lucide-icon icon-refresh-ccw nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
-  <path d="M3 3v5h5" />
-  <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
-  <path d="M16 16h5v5" />
+          <svg class="lucide-icon icon-repeat nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m17 2 4 4-4 4" />
+  <path d="M3 11v-1a4 4 0 0 1 4-4h14" />
+  <path d="m7 22-4-4 4-4" />
+  <path d="M21 13v1a4 4 0 0 1-4 4H3" />
 </svg>
           <span>Loop Do While</span> 
           
@@ -524,8 +564,16 @@
         <a href="../controle_loop/"
            class=""
            >
-          <svg class="lucide-icon icon-square nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <rect width="18" height="18" x="3" y="3" rx="2" />
+          <svg class="lucide-icon icon-sliders nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <line x1="4" x2="4" y1="21" y2="14" />
+  <line x1="4" x2="4" y1="10" y2="3" />
+  <line x1="12" x2="12" y1="21" y2="12" />
+  <line x1="12" x2="12" y1="8" y2="3" />
+  <line x1="20" x2="20" y1="21" y2="16" />
+  <line x1="20" x2="20" y1="12" y2="3" />
+  <line x1="2" x2="6" y1="14" y2="14" />
+  <line x1="10" x2="14" y1="8" y2="8" />
+  <line x1="18" x2="22" y1="16" y2="16" />
 </svg>
           <span>Controle de Loop</span> 
           
@@ -539,8 +587,9 @@
         <a href="../break/"
            class=""
            >
-          <svg class="lucide-icon icon-square nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <rect width="18" height="18" x="3" y="3" rx="2" />
+          <svg class="lucide-icon icon-corner-up-left nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 20v-7a4 4 0 0 0-4-4H4" />
+  <path d="M9 14 4 9l5-5" />
 </svg>
           <span>Break</span> 
           
@@ -554,8 +603,9 @@
         <a href="../continue/"
            class=""
            >
-          <svg class="lucide-icon icon-square nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <rect width="18" height="18" x="3" y="3" rx="2" />
+          <svg class="lucide-icon icon-corner-up-right nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m15 14 5-5-5-5" />
+  <path d="M4 20v-7a4 4 0 0 1 4-4h12" />
 </svg>
           <span>Continue</span> 
           
@@ -564,26 +614,471 @@
         
       </li>
     
+  </ul>
+
+        
+      </li>
+    
       
       <li class="">
-        <a href="https://github.com/karlaycosta/lipo_compiler"
+        <a href="../funcoes/"
            class=""
-           target="_blank" rel="noopener noreferrer">
-          <svg class="lucide-icon icon-github nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
-  <path d="M9 18c-4.51 2-5-2-7-2" />
+           >
+          <svg class="lucide-icon icon-function-square nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+  <path d="M9 17c2 0 2.8-1 2.8-2.8V10c0-2 1-3.3 3.2-3" />
+  <path d="M9 11.2h5.7" />
 </svg>
-          <span>GitHub</span> 
-          <svg class="lucide-icon icon-arrow-up-right nav-external-icon" width="0.8em" height="0.8em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M7 7h10v10" />
-  <path d="M7 17 17 7" />
+          <span>Funções</span> 
+          
+        </a>
+
+        
+          
+  <ul>
+    
+      
+      <li class="">
+        <a href="../funcao_vazia/"
+           class=""
+           >
+          <svg class="lucide-icon icon-circle nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10" />
 </svg>
+          <span>Função Vazia</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../funcao_retorno/"
+           class=""
+           >
+          <svg class="lucide-icon icon-arrow-right-circle nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10" />
+  <path d="m12 16 4-4-4-4" />
+  <path d="M8 12h8" />
+</svg>
+          <span>Função com Retorno</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../funcao_recursiva/"
+           class=""
+           >
+          <svg class="lucide-icon icon-repeat nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m17 2 4 4-4 4" />
+  <path d="M3 11v-1a4 4 0 0 1 4-4h14" />
+  <path d="m7 22-4-4 4-4" />
+  <path d="M21 13v1a4 4 0 0 1-4 4H3" />
+</svg>
+          <span>Função Recursiva</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../funcao_mista/"
+           class=""
+           >
+          <svg class="lucide-icon icon-code-square nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m10 9-3 3 3 3" />
+  <path d="m14 15 3-3-3-3" />
+  <rect x="3" y="3" width="18" height="18" rx="2" />
+</svg>
+          <span>Função Mista</span> 
+          
         </a>
 
         
       </li>
     
   </ul>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../sistema_imports/"
+           class=""
+           >
+          
+          <span>Sistema de Imports</span> 
+          
+        </a>
+
+        
+          
+  <ul>
+    
+      
+      <li class="">
+        <a href="../importacao_basico/"
+           class=""
+           >
+          <svg class="lucide-icon icon-file-plus nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+  <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+  <path d="M9 15h6" />
+  <path d="M12 18v-6" />
+</svg>
+          <span>Importação Básica</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../importacao_alias/"
+           class=""
+           >
+          <svg class="lucide-icon icon-file-minus nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+  <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+  <path d="M9 15h6" />
+</svg>
+          <span>Importação com Alias</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../import_exemplos/"
+           class=""
+           >
+          <svg class="lucide-icon icon-file-text nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+  <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+  <path d="M10 9H8" />
+  <path d="M16 13H8" />
+  <path d="M16 17H8" />
+</svg>
+          <span>Exemplos de Import</span> 
+          
+        </a>
+
+        
+      </li>
+    
+  </ul>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../biblioteca/"
+           class=""
+           >
+          <svg class="lucide-icon icon-layers nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" />
+  <path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12" />
+  <path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" />
+</svg>
+          <span>Biblioteca</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../comentarios/"
+           class=""
+           >
+          <svg class="lucide-icon icon-message-square nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+</svg>
+          <span>Comentários</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../gramatica_formal/"
+           class=""
+           >
+          <svg class="lucide-icon icon-file-text nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+  <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+  <path d="M10 9H8" />
+  <path d="M16 13H8" />
+  <path d="M16 17H8" />
+</svg>
+          <span>Gramática Formal</span> 
+          
+        </a>
+
+        
+          
+  <ul>
+    
+      
+      <li class="">
+        <a href="../estrutura_geral_programa/"
+           class=""
+           >
+          <svg class="lucide-icon icon-file nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+  <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+</svg>
+          <span>Estrutura Geral Programa</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../instrucoes_statements/"
+           class=""
+           >
+          <svg class="lucide-icon icon-file-text nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+  <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+  <path d="M10 9H8" />
+  <path d="M16 13H8" />
+  <path d="M16 17H8" />
+</svg>
+          <span>Instruções (Statements)</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../expressoes/"
+           class=""
+           >
+          <svg class="lucide-icon icon-file-code nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 12.5 8 15l2 2.5" />
+  <path d="m14 12.5 2 2.5-2 2.5" />
+  <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+  <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
+</svg>
+          <span>Expressões</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../literais_tokens/"
+           class=""
+           >
+          <svg class="lucide-icon icon-file-text nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+  <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+  <path d="M10 9H8" />
+  <path d="M16 13H8" />
+  <path d="M16 17H8" />
+</svg>
+          <span>Literais e Tokens</span> 
+          
+        </a>
+
+        
+      </li>
+    
+  </ul>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../exemplos_praticos/"
+           class=""
+           >
+          <svg class="lucide-icon icon-code nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m16 18 6-6-6-6" />
+  <path d="m8 6-6 6 6 6" />
+</svg>
+          <span>Exemplos Práticos</span> 
+          
+        </a>
+
+        
+          
+  <ul>
+    
+      
+      <li class="">
+        <a href="../exemplo1_programa_basico/"
+           class=""
+           >
+          <svg class="lucide-icon icon-terminal nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 19h8" />
+  <path d="m4 17 6-6-6-6" />
+</svg>
+          <span>Programa Básico</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../exemplo2_estruturas_de_controle/"
+           class=""
+           >
+          <svg class="lucide-icon icon-code-square nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m10 9-3 3 3 3" />
+  <path d="m14 15 3-3-3-3" />
+  <rect x="3" y="3" width="18" height="18" rx="2" />
+</svg>
+          <span>Estruturas de Controle</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../exemplo3_funcoes/"
+           class=""
+           >
+          <svg class="lucide-icon icon-function-square nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+  <path d="M9 17c2 0 2.8-1 2.8-2.8V10c0-2 1-3.3 3.2-3" />
+  <path d="M9 11.2h5.7" />
+</svg>
+          <span>Funções</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../exemplo4_switch_case/"
+           class=""
+           >
+          <svg class="lucide-icon icon-git-branch nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <line x1="6" x2="6" y1="3" y2="15" />
+  <circle cx="18" cy="6" r="3" />
+  <circle cx="6" cy="18" r="3" />
+  <path d="M18 9a9 9 0 0 1-9 9" />
+</svg>
+          <span>Switch/Case</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../exemplo5_imports/"
+           class=""
+           >
+          
+          <span>Sistema de Imports</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../exemplo6_recursividade/"
+           class=""
+           >
+          <svg class="lucide-icon icon-repeat nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m17 2 4 4-4 4" />
+  <path d="M3 11v-1a4 4 0 0 1 4-4h14" />
+  <path d="m7 22-4-4 4-4" />
+  <path d="M21 13v1a4 4 0 0 1-4 4H3" />
+</svg>
+          <span>Recursividade</span> 
+          
+        </a>
+
+        
+      </li>
+    
+  </ul>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../como_contribuir/"
+           class=""
+           >
+          <svg class="lucide-icon icon-heart nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5" />
+</svg>
+          <span>Como Contribuir</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../licenca/"
+           class=""
+           >
+          <svg class="lucide-icon icon-gavel nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m14 13-8.381 8.38a1 1 0 0 1-3.001-3l8.384-8.381" />
+  <path d="m16 16 6-6" />
+  <path d="m21.5 10.5-8-8" />
+  <path d="m8 8 6-6" />
+  <path d="m8.5 7.5 8 8" />
+</svg>
+          <span>Licença</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../sobre/"
+           class=""
+           >
+          <svg class="lucide-icon icon-info nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10" />
+  <path d="M12 16v-4" />
+  <path d="M12 8h.01" />
+</svg>
+          <span>Sobre</span> 
+          
+        </a>
 
         
       </li>
@@ -615,7 +1110,7 @@
   <path d="m19.07 4.93-1.41 1.41" />
 </svg>
                     <svg class="lucide-icon icon-moon icon-moon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+  <path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" />
 </svg>
                 </button>
             </div>
@@ -624,9 +1119,9 @@
         <main class="content-area">
             <div class="content-layout">
                 <div class="main-content">
-                    <h1 id="operadores-aritmticos">Operadores Aritméticos</h1>
+                    <h1>Operadores Aritméticos</h1>
 <p>Os operadores aritméticos são utilizados para realizar operações matemáticas entre valores numéricos ou, em alguns casos, operações sobre strings (como concatenação). Eles estão presentes em praticamente todas as linguagens de programação assim como no LiPo.</p>
-<h1 id="operadores">Operadores:</h1>
+<h1>Operadores:</h1>
 <ul>
 <li><p>+= Adição / Concatenação</p>
 </li>
@@ -639,7 +1134,7 @@
 <li><p>%= Módulo</p>
 </li>
 </ul>
-<h1 id="descrio">Descrição:</h1>
+<h1>Descrição:</h1>
 <ul>
 <li><p>Adição / Concatenação = Soma dois valores numéricos ou concatena duas strings</p>
 </li>
@@ -652,7 +1147,7 @@
 <li><p>Módulo = Retorna o resto da divisão entre dois valores</p>
 </li>
 </ul>
-<h1 id="exemplo">Exemplo:</h1>
+<h1>Exemplo:</h1>
 <ul>
 <li><p>Adição / Concatenação = a + b ou &quot;Olá, &quot; + nome</p>
 </li>
@@ -698,7 +1193,7 @@
                     
                 </div>
                 
-                <!-- DEBUG: {"headingsLength":4} -->
+                <!-- DEBUG: {"headingsLength":0} -->
                 
                 <!-- TOC sidebar -->
                 <div class="toc-sidebar">
@@ -710,7 +1205,7 @@
         <footer class="page-footer">
             <div class="footer-content">
                 <div class="user-footer">
-                    © 2025 LiPo Docs — Desenvolvido com ❤️
+                    © 2025 LiPo Docs — Desenvolvido com todo carinho
                 </div>
                 <div class="branding-footer">
                     Build with <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path><path d="M12 5 9.04 7.96a2.17 2.17 0 0 0 0 3.08c.82.82 2.13.85 3 .07l2.07-1.9a2.82 2.82 0 0 1 3.79 0l2.96 2.66"></path><path d="m18 15-2-2"></path><path d="m15 18-2-2"></path></svg> <a href="https://docmd.mgks.dev" target="_blank" rel="noopener">docmd.</a>
@@ -722,11 +1217,18 @@
     <script src="../assets/js/docmd-main.js"></script>
 
     
-      <script src="../assets/js/docmd-image-lightbox.js"></script>
-    
 
     
     
+    
+    <div class="sponsor-ribbon">
+        <a href="https://github.com/karlaycosta/lipo_compiler" target="_blank" rel="noopener noreferrer" class="sponsor-link">
+            <svg class="lucide-icon icon-heart sponsor-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5" />
+</svg>
+            <span class="sponsor-text">Github LiPo</span>
+        </a>
+    </div>
     
 </body>
 </html>

@@ -16,6 +16,16 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://karlaycosta.github.io/minidart_compiler/comentarios/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://karlaycosta.github.io/minidart_compiler/como_contribuir/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://karlaycosta.github.io/minidart_compiler/comparacao/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -56,6 +66,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://karlaycosta.github.io/minidart_compiler/estrutura_geral_programa/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://karlaycosta.github.io/minidart_compiler/estrutura_lexica/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -66,7 +81,92 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://karlaycosta.github.io/minidart_compiler/exemplo1_programa_basico/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://karlaycosta.github.io/minidart_compiler/exemplo2_estruturas_de_controle/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://karlaycosta.github.io/minidart_compiler/exemplo3_funcoes/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://karlaycosta.github.io/minidart_compiler/exemplo4_switch_case/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://karlaycosta.github.io/minidart_compiler/exemplo5_imports/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://karlaycosta.github.io/minidart_compiler/exemplo6_recursividade/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://karlaycosta.github.io/minidart_compiler/exemplos_praticos/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://karlaycosta.github.io/minidart_compiler/expressoes/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://karlaycosta.github.io/minidart_compiler/funcao_mista/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://karlaycosta.github.io/minidart_compiler/funcao_recursiva/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://karlaycosta.github.io/minidart_compiler/funcao_retorno/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://karlaycosta.github.io/minidart_compiler/funcao_vazia/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://karlaycosta.github.io/minidart_compiler/funcoes/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://karlaycosta.github.io/minidart_compiler/gramatica_formal/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://karlaycosta.github.io/minidart_compiler/identificadores/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://karlaycosta.github.io/minidart_compiler/import_exemplos/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://karlaycosta.github.io/minidart_compiler/importacao_alias/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://karlaycosta.github.io/minidart_compiler/importacao_basico/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -78,7 +178,22 @@
   <url>
     <loc>https://karlaycosta.github.io/minidart_compiler/</loc>
     <changefreq>weekly</changefreq>
-    <priority>1</priority>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://karlaycosta.github.io/minidart_compiler/instrucoes_statements/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://karlaycosta.github.io/minidart_compiler/licenca/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://karlaycosta.github.io/minidart_compiler/literais_tokens/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://karlaycosta.github.io/minidart_compiler/logicos/</loc>
@@ -86,7 +201,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://karlaycosta.github.io/minidart_compiler/loop_Do_While/</loc>
+    <loc>https://karlaycosta.github.io/minidart_compiler/loop_do_while/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -142,6 +257,11 @@
   </url>
   <url>
     <loc>https://karlaycosta.github.io/minidart_compiler/sistema_imports/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://karlaycosta.github.io/minidart_compiler/sobre/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

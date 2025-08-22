@@ -1,0 +1,236 @@
+:root[data-theme="light"] {
+  --ruby-font-family-sans: 'Inter', system-ui, sans-serif;
+  --ruby-font-family-serif: 'Playfair Display', Georgia, serif;
+  --ruby-font-family-mono: 'JetBrains Mono', monospace;
+
+  /* Azuis - Light */
+  --ruby-primary: #1565c0;
+  --ruby-primary-light: #e3f2fd;
+  --ruby-primary-dark: #0d47a1;
+  --ruby-accent: #0277bd;
+  --ruby-accent-light: #e1f5fe;
+
+  /* Textos */
+  --ruby-text: #2d2d2d;
+  --ruby-text-light: #5a5a5a;
+  --ruby-text-lightest: #757575;
+
+  /* Fundos */
+  --ruby-background: #ffffff;
+  --ruby-background-alt: #f5faff;
+
+  /* Bordas */
+  --ruby-border: #d0d7de;
+  --ruby-border-light: #ebf0f4;
+
+  /* Scroll, código, links, imagem */
+  --bg-color: var(--ruby-background);
+  --text-color: var(--ruby-text);
+  --link-color: var(--ruby-primary);
+  --border-color: var(--ruby-border);
+
+  --sidebar-bg: #f2f7fc;
+  --sidebar-text: var(--ruby-text-light);
+  --sidebar-link-active-bg: #d6e9ff;
+  --sidebar-link-active-text: var(--ruby-primary);
+
+  --code-bg: var(--ruby-primary-light);
+  --code-text: var(--ruby-primary-dark);
+
+  --header-bg: var(--ruby-background);
+  --header-border: var(--ruby-border);
+
+  /* Sombras azuis */
+  --shadow-sm: 0 2px 4px rgba(21, 101, 192, 0.1);
+  --shadow-md: 0 4px 8px rgba(21, 101, 192, 0.15);
+  --shadow-lg: 0 8px 16px rgba(21, 101, 192, 0.2);
+
+  /* Imagens */
+  --image-border-color: var(--ruby-border);
+  --image-shadow: var(--shadow-md);
+  --image-caption-bg: var(--ruby-background-alt);
+  --image-caption-text: var(--ruby-text-light);
+  --image-hover-transform: translateY(-3px);
+  --image-hover-shadow: var(--shadow-lg);
+  --image-border-radius: 6px;
+  --image-transition: all 0.3s ease;
+}
+
+:root[data-theme="dark"] {
+  --ruby-primary: #64b5f6;
+  --ruby-primary-light: #1e2b3a;
+  --ruby-primary-dark: #90caf9;
+  --ruby-accent: #4fc3f7;
+  --ruby-accent-light: #1a2a3a;
+
+  --ruby-text: #e0e0e0;
+  --ruby-text-light: #b0b0b0;
+  --ruby-text-lightest: #8a8a8a;
+
+  --ruby-background: #0e1621;
+  --ruby-background-alt: #152232;
+
+  --ruby-border: #243447;
+  --ruby-border-light: #1b2939;
+
+  --bg-color: var(--ruby-background);
+  --text-color: var(--ruby-text);
+  --link-color: var(--ruby-primary);
+  --border-color: var(--ruby-border);
+
+  --sidebar-bg: #0e1621;
+  --sidebar-text: var(--ruby-text-light);
+  --sidebar-link-active-bg: #1a2e47;
+  --sidebar-link-active-text: var(--ruby-primary);
+
+  --code-bg: var(--ruby-primary-light);
+  --code-text: var(--ruby-primary-dark);
+
+  --header-bg: var(--ruby-background);
+  --header-border: var(--ruby-border);
+
+  --shadow-sm: 0 2px 4px rgba(100, 181, 246, 0.1);
+  --shadow-md: 0 4px 8px rgba(100, 181, 246, 0.15);
+  --shadow-lg: 0 8px 16px rgba(100, 181, 246, 0.2);
+
+  --image-border-color: var(--ruby-border);
+  --image-shadow: var(--shadow-md);
+  --image-caption-bg: var(--ruby-background-alt);
+  --image-caption-text: var(--ruby-text-light);
+  --image-hover-transform: translateY(-3px);
+  --image-hover-shadow: var(--shadow-lg);
+  --image-border-radius: 6px;
+  --image-transition: all 0.3s ease;
+}
+
+/* Scrollbar bonito e azul */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--ruby-primary);
+  border-radius: 6px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+  transition: background-color 0.3s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--ruby-primary-dark);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--ruby-primary) transparent;
+}
+
+/* Scroll dark mode automático */
+@media (prefers-color-scheme: dark) {
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--ruby-primary);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--ruby-primary-dark);
+  }
+  * {
+    scrollbar-color: var(--ruby-primary-dark) transparent;
+  }
+}
+
+/* Body com fundo/texto azulinos */
+body {
+  background-color: var(--bg-color) !important;
+  color: var(--text-color);
+  font-family: var(--ruby-font-family-sans);
+}
+
+/* Links azul bonito */
+a {
+  color: var(--link-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+
+.theme-toggle {
+  position: relative;
+  display: inline-block;
+}
+
+.theme-menu {
+  display: none;
+  position: absolute;
+  top: 110%;
+  left: 0;
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.theme-menu div {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.theme-menu div:hover {
+  background: var(--ruby-primary-light);
+}
+
+.theme-toggle:hover .theme-menu {
+  display: block;
+}
+:root[data-theme="green"] {
+  --ruby-primary: #2e7d32;
+  --ruby-primary-light: #e8f5e9;
+  --ruby-primary-dark: #1b5e20;
+  --ruby-accent: #43a047;
+  --ruby-accent-light: #c8e6c9;
+
+  --ruby-text: #1b1b1b;
+  --ruby-background: #ffffff;
+  --ruby-background-alt: #f1f8f4;
+
+  --bg-color: var(--ruby-background);
+  --text-color: var(--ruby-text);
+}
+
+:root[data-theme="purple"] {
+  --ruby-primary: #6a1b9a;
+  --ruby-primary-light: #f3e5f5;
+  --ruby-primary-dark: #4a148c;
+  --ruby-accent: #8e24aa;
+  --ruby-accent-light: #e1bee7;
+
+  --ruby-text: #1b1b1b;
+  --ruby-background: #ffffff;
+  --ruby-background-alt: #f8f4fa;
+
+  --bg-color: var(--ruby-background);
+  --text-color: var(--ruby-text);
+}
+:root[data-theme="emerald"] {
+  --ruby-primary: #2e7d32;
+  --ruby-primary-light: #e8f5e9;
+  --ruby-primary-dark: #1b5e20;
+  --ruby-accent: #43a047;
+  --ruby-accent-light: #c8e6c9;
+
+  --ruby-text: #1b1b1b;
+  --ruby-background: #ffffff;
+  --ruby-background-alt: #f1f8f4;
+
+  --bg-color: var(--ruby-background);
+  --text-color: var(--ruby-text);
+}

@@ -1,9 +1,9 @@
 ---
-title: "biblioteca"
+title: "bibliotecas do LiPO"
 description: "Your documentation starts here."
 ---
 
-# Criando Bibliotecas 
+## Criando Bibliotecas 
 
 Estenda o poder do MiniDart criando suas próprias bibliotecas com funções nativas implementadas em Dart.
 
@@ -14,13 +14,13 @@ Estenda o poder do MiniDart criando suas próprias bibliotecas com funções nat
 3. **Sistema de Imports**: Permite importar bibliotecas com ou sem alias
 4. **VM Integration**: Execução das funções nativas durante runtime
 
-### Fluxo de Funcionamento
+## Fluxo de Funcionamento
 
 ```
 MiniDart Code → Parser → Import Recognition → Semantic Analysis → Code Generation → VM Execution → Native Function Call
 ```
 
-## 📦 Estrutura de uma Biblioteca
+##  Estrutura de uma Biblioteca
 
 ### 1. Registro da Biblioteca
 
@@ -48,7 +48,7 @@ class NativeFunction {
 }
 ```
 
-## 🔧 Processo de Criação de Nova Biblioteca
+## Processo de Criação de Nova Biblioteca
 
 ### Passo 1: Definir o Escopo da Biblioteca
 
@@ -127,7 +127,7 @@ imprima data.hoje();                    // Data atual
 imprima data.diferenca("2024-01-01", "2024-12-31"); // Diferença em dias
 ```
 
-## 📋 Exemplo Completo: Biblioteca de Arquivos
+## Exemplo Completo: Biblioteca de Arquivos
 
 ### 1. Definição da Biblioteca
 
@@ -200,7 +200,7 @@ se (arq.existe("dados.txt")) {
 }
 ```
 
-## 🛡️ Boas Práticas
+##  Boas Práticas
 
 ### 1. Tratamento de Erros
 
@@ -250,7 +250,7 @@ void _registerMathAvancadaLibrary() {
 - **Função**: verbo ou substantivo descritivo (`calcular`, `tamanho`, `existe`)
 - **Parâmetros**: nomes claros e em português quando possível
 
-## 🧪 Tipos de Dados Suportados
+##  Tipos de Dados Suportados
 
 ### Entrada (Parâmetros)
 - `int` - Números inteiros
@@ -272,7 +272,7 @@ _toInt(value)     // Converte para int
 _toString(value)  // Converte para String
 ```
 
-## 📊 Sistema de Imports
+## Sistema de Imports
 
 ### Import Básico
 ```dart
@@ -295,7 +295,7 @@ No arquivo `semantic_analyzer.dart`, adicione sua biblioteca à lista de bibliot
 final validLibraries = {'math', 'string', 'io', 'minhalib'}; // ← Adicionar aqui
 ```
 
-## 🔍 Debugging e Testes
+##  Debugging e Testes
 
 ### 1. Teste Individual de Funções
 
@@ -323,7 +323,7 @@ imprima minhalib.funcao(-1); // Deve gerar erro apropriado
 dart run bin/compile.dart exemplos/teste_minhalib.mdart
 ```
 
-## 📈 Bibliotecas Existentes como Referência
+## Bibliotecas Existentes como Referência
 
 ### 1. Math Library (31 funções)
 - Trigonometria: `sin`, `cos`, `tan`, `asin`, `acos`, `atan`
@@ -344,7 +344,7 @@ dart run bin/compile.dart exemplos/teste_minhalib.mdart
 - Saída: `imprimir`, `escrever`, `novaLinha`
 - Entrada: `lerTexto`, `lerNumero` (simulados)
 
-## 🚀 Próximos Passos
+##  Próximos Passos
 
 ### Ideias para Novas Bibliotecas
 

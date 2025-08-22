@@ -1,0 +1,60 @@
+ 
+
+
+:root[data-theme="light"] {
+  --ruby-font-family-sans: 'Inter', system-ui, sans-serif;
+  --ruby-font-family-serif: 'Playfair Display', Georgia, serif;
+  --ruby-font-family-mono: 'JetBrains Mono', monospace;
+
+  /* Azuis - Light */
+  --ruby-primary: #1565c0;
+  --ruby-primary-light: #e3f2fd;
+  --ruby-primary-dark: #0d47a1;
+  --ruby-accent: #0277bd;
+  --ruby-accent-light: #e1f5fe;
+
+  /* Textos */
+  --ruby-text: #2d2d2d;
+  --ruby-text-light: #5a5a5a;
+  --ruby-text-lightest: #757575;
+
+  /* Fundos */
+  --ruby-background: #ffffff;
+  --ruby-background-alt: #f5faff;
+
+  /* Bordas */
+  --ruby-border: #d0d7de;
+  --ruby-border-light: #ebf0f4;
+
+  /* Scroll, código, links, imagem */
+  --bg-color: var(--ruby-background);
+  --text-color: var(--ruby-text);
+  --link-color: var(--ruby-primary);
+  --border-color: var(--ruby-border);
+
+  --sidebar-bg: #f2f7fc;
+  --sidebar-text: var(--ruby-text-light);
+  --sidebar-link-active-bg: #d6e9ff;
+  --sidebar-link-active-text: var(--ruby-primary);
+
+  --code-bg: var(--ruby-primary-light);
+  --code-text: var(--ruby-primary-dark);
+
+  --header-bg: var(--ruby-background);
+  --header-border: var(--ruby-border);
+
+  /* Sombras azuis */
+  --shadow-sm: 0 2px 4px rgba(21, 101, 192, 0.1);
+  --shadow-md: 0 4px 8px rgba(21, 101, 192, 0.15);
+  --shadow-lg: 0 8px 16px rgba(21, 101, 192, 0.2);
+
+  /* Imagens */
+  --image-border-color: var(--ruby-border);
+  --image-shadow: var(--shadow-md);
+  --image-caption-bg: var(--ruby-background-alt);
+  --image-caption-text: var(--ruby-text-light);
+  --image-hover-transform: translateY(-3px);
+  --image-hover-shadow: var(--shadow-lg);
+  --image-border-radius: 6px;
+  --image-transition: all 0.3s ease;
+}

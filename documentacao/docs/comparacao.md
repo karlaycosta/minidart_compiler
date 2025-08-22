@@ -1,50 +1,66 @@
 ---
 title: "Comparação"
-description: "Your documentation starts here."
+description: "Operadores de comparação e seus usos em programação"
 ---
 
 # Comparação
 
-Comparações retornam valores booleanos (true ou false) e são essenciais em decisões condicionais.
+Operadores de comparação são usados para **comparar valores** e sempre retornam um valor booleano: `true` (verdadeiro) ou `false` (falso). Eles são fundamentais para tomar decisões em programas, como em estruturas condicionais (`se`, `enquanto` etc.).
 
-# Operadores:
+---
 
-* == = Igual
+# Operadores de Comparação
 
-* != = Diferente
+| Operador | Nome             | Descrição                              |
+|----------|------------------|--------------------------------------|
+| `==`     | Igual            | Verifica se dois valores são iguais  |
+| `!=`     | Diferente        | Verifica se dois valores são diferentes |
+| `<`      | Menor que        | Verifica se o primeiro é menor que o segundo |
+| `>`      | Maior que        | Verifica se o primeiro é maior que o segundo |
+| `<=`     | Menor ou igual   | Verifica se o primeiro é menor ou igual ao segundo |
+| `>=`     | Maior ou igual   | Verifica se o primeiro é maior ou igual ao segundo |
 
-* < = Menor que
+---
 
-* '>' = Maior que
+# Descrição dos Operadores
 
-* <= = Menor ou igual
+- **Igual (`==`)**  
+  Confirma se dois valores têm o mesmo conteúdo.
 
-* '>'= = Maior ou igual  
+- **Diferente (`!=`)**  
+  Confirma se dois valores são diferentes.
 
-# Descrição: 
+- **Menor que (`<`)**  
+  Verifica se o primeiro valor é menor que o segundo.
 
-* Igual = Verifica se os valores são idênticos
+- **Maior que (`>`)**  
+  Verifica se o primeiro valor é maior que o segundo.
 
-* Diferente = Verifica se os valores são diferentes
+- **Menor ou igual (`<=`)**  
+  Verifica se o primeiro valor é menor ou igual ao segundo.
 
-* Menor que = Verifica se o primeiro é menor que o segundo
+- **Maior ou igual (`>=`)**  
+  Verifica se o primeiro valor é maior ou igual ao segundo.
 
-* Maior que = Verifica se o primeiro é maior que o segundo
+---
 
-* Menor ou igual = Verifica se o primeiro é menor ou igual
+# Exemplos de Uso
 
-* Maior ou igual = Verifica se o primeiro é maior ou igual
+```dart
+idade == 18            // Verdadeiro se idade for exatamente 18
+senha != "1234"        // Verdadeiro se senha for diferente de "1234"
+nota < 7               // Verdadeiro se nota for menor que 7
+pontuacao > 100        // Verdadeiro se pontuacao for maior que 100
+tempo <= 60            // Verdadeiro se tempo for menor ou igual a 60
+nível >= 5             // Verdadeiro se nível for maior ou igual a 5
+```
 
-# Exemplo:
+### Observação
 
-*  Igual = idade == 18
+Esses operadores são amplamente usados em:
 
-* Diferente = senha != "1234"
+- Estruturas condicionais (se, senão)
+- Laços de repetição (enquanto, para)
+- Validação de dados e lógica de negócios
 
-* Menor que = nota < 7
-
-* Maior que = pontuacao > 100
-
-* Menor ou igual = tempo <= 60
-
-* Maior ou igual = nível >= 5
+ 

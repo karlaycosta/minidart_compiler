@@ -1,31 +1,47 @@
 ---
-title: "Conversão"
-description: "Your documentation starts here."
+title: "Conversão de Tipos em LiPo "
 ---
 
-# Conversão Automática de Tipos
+<br>
 
-**Permitido:** Inteiros são convertidos automaticamente para reais quando necessário.
+Na linguagem **LiPo**, algumas conversões de tipos são feitas automaticamente (implícitas), enquanto outras exigem conversão manual (explícita).
 
+<br>
+
+#  Conversão Automática Permitida
+
+Em certas situações, **valores inteiros** são automaticamente convertidos para **valores reais**, especialmente em **operações matemáticas mistas**.
+
+<br>
+
+#  Exemplo:
+
+```lipo
 real numero = 42;        // 42 (inteiro) → 42.0 (real)
 
 inteiro a = 10;
 real b = 3.5;
 
 real resultado = a + b;  // 10 + 3.5 → 13.5
+```
 
-**Não permitido:** Reais não são convertidos automaticamente para inteiros — é necessário fazer a conversão de forma explícita.
+> Como a é um inteiro e b é um real, o valor de a é convertido para real automaticamente durante a operação.
 
-inteiro número = 3.14;   // ERRO!
+<br>
 
-# Literais
+#  Conversão Não Permitida (Explícita Necessária)
 
-* Inteiros: 42, -17, 0
+Reais não são convertidos automaticamente para inteiros.
+É necessário fazer essa conversão de forma explícita, pois pode haver perda de informação (parte decimal).
 
-* Reais: 3.14, -2.5, 0.0, 1.0
+<br>
 
-* Texto: "Olá, mundo!", "Nome: João", "", "Aspas: \"texto\""
+# Exemplo incorreto:
 
-* Booleanos: verdadeiro, falso
-	
-* Nulo: nulo
+'''bash
+inteiro numero = 3.14;   //  ERRO: tentativa de atribuir real a inteiro
+'''
+
+> Nesse caso, será necessário aplicar uma conversão explícita 
+(quando suportada pela linguagem) para truncar ou arredondar o valor.
+

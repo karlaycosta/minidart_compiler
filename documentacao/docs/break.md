@@ -1,17 +1,22 @@
 ---
 title: "Break"
-description: "Your documentation starts here."
+description: "Comando para interromper a execução de loops"
 ---
 
 # Break (Parar)
 
-Interrompe a execução do loop imediatamente.
+O comando **`parar`** é usado para **interromper imediatamente a execução de um loop**, seja ele um `enquanto` (while), `para` (for) ou outro tipo de repetição.
 
-# Exemplo: 
+Quando o programa encontra um `parar`, ele sai do loop atual e continua a execução a partir da próxima linha após o loop.
 
+---
+
+## Exemplo prático
+
+```dart
 enquanto (verdadeiro) {
     se (condicao) {
-        parar;  // sai do loop
+        parar;  // interrompe o loop e sai imediatamente
     }
+    // outras instruções do loop
 }
-

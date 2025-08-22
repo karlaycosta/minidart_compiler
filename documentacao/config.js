@@ -3,55 +3,54 @@
 ═══════════════════════════════════════════════════════════════════════════════ */
 
 module.exports = {
-
   /* ─────────────────────────────────────────────────────────────────────────────
      METADADOS DO SITE
-     Configurações básicas de identificação e SEO do site
+     Informações básicas de identificação e SEO
   ───────────────────────────────────────────────────────────────────────────── */
-  siteTitle: 'LiPo | DOC',
-  siteUrl: 'https://karlaycosta.github.io/minidart_compiler',
-  favicon: '/assets/icon/favico.svg',
+  siteTitle: "LiPo | DOC", // Título do site
+  siteUrl: "https://karlaycosta.github.io/minidart_compiler", // URL pública
+  favicon: "/assets/icon/favico.svg", // Ícone da aba do navegador
 
   /* ─────────────────────────────────────────────────────────────────────────────
-     CONFIGURAÇÃO DO LOGOTIPO
-     Define as imagens do logo para diferentes temas
+     LOGOTIPO
+     Configura o logo para diferentes temas e estilos
   ───────────────────────────────────────────────────────────────────────────── */
   logo: {
-    light: '',              /* Caminho para logo no modo claro */
-    dark: '',               /* Caminho para logo no modo escuro */
-    alt: 'LiPo Docs',       /* Texto alternativo para acessibilidade */
-    href: '/',              /* Link de redirecionamento (geralmente para home) */
+    light: "./assets/imagens/Logo_horzontal_preto.svg", // Logo para tema claro
+    dark: "./assets/imagens/Logo_horzontal_branco.png", // Logo para tema escuro
+    alt: "LiPo Docs", // Texto alternativo
+    href: "/", // Link ao clicar no logo
+    style: {
+      width: "100px", // Largura do logo
+    },
   },
 
   /* ─────────────────────────────────────────────────────────────────────────────
      ESTRUTURA DE DIRETÓRIOS
-     Define onde estão os arquivos fonte e onde será gerado o build
+     Define onde estão os arquivos fonte e onde será gerado o site
   ───────────────────────────────────────────────────────────────────────────── */
-  srcDir: 'docs',           /* Pasta contendo os arquivos .md de documentação */
-  outputDir: 'site',        /* Pasta onde será gerado o site após o build */
+  srcDir: "docs", // Pasta contendo arquivos .md
+  outputDir: "site", // Pasta onde será gerado o build
 
   /* ─────────────────────────────────────────────────────────────────────────────
-     CONFIGURAÇÃO DA BARRA LATERAL (SIDEBAR)
-     Controla o comportamento da navegação lateral
+     SIDEBAR / BARRA LATERAL
+     Configura o comportamento da navegação lateral
   ───────────────────────────────────────────────────────────────────────────── */
   sidebar: {
-    collapsible: false,       /* Permite colapsar/expandir seções */
-    defaultCollapsed: false, /* Estado inicial das seções (expandidas por padrão) */
+    collapsible: false, // Permite colapsar/expandir seções
+    defaultCollapsed: false, // Estado inicial das seções
   },
 
-  /* ──────────────────────────────────────────────────s───────────────────────────
+  /* ─────────────────────────────────────────────────────────────────────────────
      TEMA E APARÊNCIA
-     Configurações visuais e de tema do site
+     Configurações visuais do site, modo claro/escuro e CSS customizado
   ───────────────────────────────────────────────────────────────────────────── */
   theme: {
-    name: 'sky',                    /* Tema visual ('default', 'sky', 'ruby', 'retro') */
-    defaultMode: 'light',           /* Modo padrão de exibição ('light' ou 'dark') */
-    enableModeToggle: true,         /* Habilita botão para alternar entre temas */
-    positionMode: 'top',            /* Posição do botão de tema ('top' ou 'bottom') */
-    customCss: [
-      /* Adicione aqui caminhos para arquivos CSS personalizados */
-      /* Exemplo: '/assets/css/custom.css' */
-    ],
+    name: "ruby", // Nome do tema
+    defaultMode: "light", // Modo padrão
+    enableModeToggle: true, // Permite trocar entre claro/escuro
+    positionMode: "top", // Posição do seletor de tema
+    customCss: ["assets/css/style.css"], // Arquivos CSS customizados
   },
 
   /* ─────────────────────────────────────────────────────────────────────────────
@@ -59,304 +58,180 @@ module.exports = {
      JavaScript customizado para funcionalidades extras
   ───────────────────────────────────────────────────────────────────────────── */
   customJs: [
-    '/assets/js/docmd-image-lightbox.js', /* Lightbox para visualização de imagens */
+  
   ],
 
   /* ─────────────────────────────────────────────────────────────────────────────
      CONFIGURAÇÕES DE CONTEÚDO
-     Controla como o conteúdo é processado e exibido
+     Controle de título automático e cópia de código
   ───────────────────────────────────────────────────────────────────────────── */
-  autoTitleFromH1: false, /* Não gerar título automaticamente do H1 */
-
-
-/* ─────────────────────────────────────────────────────────────────────────────
-    SERVIDOR DE DESENVOLVIMENTO
-   Configurações para o ambiente local de desenvolvimento
-───────────────────────────────────────────────────────────────────────────── */
-
-devServer: {
-  host: '0.0.0.0',     // Permite acesso externo (útil para testes em rede)
-  port: 3000           // Porta do servidor local
-},
-
-/* ─────────────────────────────────────────────────────────────────────────────
-   COMPARTILHAMENTO REMOTO COM NGROK
-
-   O Ngrok cria um túnel seguro do localhost para a internet, permitindo que 
-   outras pessoas acessem seu projeto local por uma URL pública.
-
-    ETAPAS PARA CONFIGURAR:
-   ──────────────────────────────────────────────────────────────
-   1. INSTALAÇÃO:
-      • Via npm:             npm install -g ngrok
-      • Ou via site:         https://ngrok.com/download
-
-   2. CONFIGURAR CONTA (obrigatório):
-      • Criar conta grátis:  https://dashboard.ngrok.com/signup
-      • Obter seu token:     https://dashboard.ngrok.com/get-started/your-authtoken
-      • Aplicar token:       ngrok config add-authtoken SEU_TOKEN_AQUI
-
-   3. USO:
-      • Rodar projeto:       npm run dev (na porta 3000)
-      • Em outro terminal:   ngrok http 3000
-      • Compartilhar a URL pública gerada (ex: https://abc123.ngrok.io)
-
-   OBS;  POSSÍVEIS ERROS:
-      • "authtoken required" → Execute o passo 2
-      • "tunnel not found"   → Verifique se o servidor local está rodando
-───────────────────────────────────────────────────────────────────────────── */
-
-/* ─────────────────────────────────────────────────────────────────────────────
-    PLUGINS E INTEGRAÇÕES
-   Configurações extras como SEO, analytics, sitemap, etc.
-───────────────────────────────────────────────────────────────────────────── */
-
-plugins: {
-  seo: {
-    defaultTitle: 'LiPo | DOC',
-    defaultDescription: 'Documentação oficial da linguagem LiPo.',
-    titleTemplate: 'LiPo | DOC', // <-- isso força o título fixo
-  },
-
-
-
-  
-      
-       /* Twitter Cards   
-      twitter: {
-        cardType: 'summary_large_image', 
-      },
-    },
-    */
-
-    /* Analytics - Rastreamento de visitantes
-    analytics: {
-      googleV4: {
-        measurementId: 'G-8QVBDQ4KM1', ID do Google Analytics 4 
-      },
-    }, */
-
-    /* Sitemap - Mapa do site para SEO */ 
-
-    sitemap: {
-      defaultChangefreq: 'weekly',  /* Frequência de atualização das páginas */ 
-      defaultPriority: 0.8,         /* Prioridade padrão das páginas (0.0 a 1.0) */   
-    },
-  },
-
-  /*─────────────────────────────────────────────────────────────────────────────
-   NAVEGAÇÃO PRINCIPAL (SIDEBAR)
-   Estrutura hierárquica da documentação com ícones e links
-   ─────────────────────────────────────────────────────────────────────────────    */ 
-
-  navigation: [
-    
-    /* Página inicial */
-    {
-      title: 'Início',
-      path: '/',
-      icon: 'book-open', 
-    },
-
-    /* Estrutura básica da linguagem */
-    {
-      title: 'Estrutura Léxica',
-      path: '/estrutura_lexica',
-      icon: 'file-code', 
-    },
-
-    /* Sistema de identificação */
-    {
-      title: 'Identificadores',
-      path: '/identificadores',
-      icon: 'tag',  
-    },
-
-    /* Palavras reservadas da linguagem */ 
-    {
-      title: 'Palavra Reservada',
-      path: '/palavra_reservada',
-      icon: 'key',  
-    },
-
-   /* Sistema de tipos */
-    {
-      title: 'Tipos de Dados',
-      path: '/tipo_de_dados',
-      icon: 'database', 
-    },
-
-    /* Conversão entre tipos */
-    {
-      title: 'Conversão',
-      path: '/conversao',
-      icon: 'shuffle', 
-    },
-
-      /* Armazenamento de dados */ 
-    {
-      title: 'Variáveis e Constantes',
-      path: '/variaveis_constantes',
-      icon: 'box', 
-      children: [
-        {
-          title: 'Declaração de Variáveis',
-          path: '/declaracao_variaveis',
-          icon: 'file-plus', 
-        },
-        {
-          title: 'Declaração de Constantes',
-          path: '/declaracao_constantes',
-          icon: 'lock', 
-        },
-      ],
-    },
-
-    /* Sistema de operadores */
-    {
-      title: 'Operadores',
-      path: '/operadores',
-      icon: 'function-square',
-      children: [
-        {
-          title: 'Operadores Aritméticos',
-          path: '/operadores_aritmeticos',
-          icon: 'divide', 
-        },
-        {
-          title: 'Comparação',
-          path: '/comparacao',
-          icon: 'equal', 
-        },
-        {
-          title: 'Lógicos',
-          path: '/logicos',
-          icon: 'circuit-board', 
-        },
-        {
-          title: 'Atribuição',
-          path: '/atribuicao',
-          icon: 'arrow-right-left',
-        },
-        {
-          title: 'Incremento/Decremento',
-          path: '/incremento_decremento',
-          icon: 'plus-minus', 
-        },
-        {
-          title: 'Operador typeof',
-          path: '/operador_tipode',
-          icon: 'info', 
-        },
-        {
-          title: 'Precedência de Operadores',
-          path: '/precedencia_operadores',
-          icon: 'list-order', 
-        },
-      ],
-    },
-
-    // Controle de fluxo
-    {
-      title: 'Estruturas de Controle',
-      path: '/estruturas_de_controle',
-      icon: 'git-branch', 
-      children: [
-        {
-          title: 'Condicional',
-          path: '/condicional',
-          icon: 'help-circle',
-        },
-        {
-          title: 'Condicional Ternária',
-          path: '/condicional_ternaria',
-          icon: 'circle-split',
-        },
-        {
-          title: 'Loop While',
-          path: '/loop_while',
-          icon: 'repeat-1',
-        },
-        {
-          title: 'Loop Do While',
-          path: '/loop_do_while',
-          icon: 'refresh-ccw', 
-        },
-        {
-          title: 'Loop For',
-          path: '/loop_for',
-          icon: 'repeat', 
-        },
-        {
-          title: 'Loop For Incremento',
-          path: '/loop_for_incremento',
-          icon: 'arrow-up-circle', 
-        },
-        {
-          title: 'Loop For Decremento',
-          path: '/loop_for_decremento',
-          icon: 'arrow-down-circle', 
-        },
-        {
-          title: 'Loop For estilo C',
-          path: '/loop_for_estiloC',
-          icon: 'code-2', 
-        },
-        {
-          title: 'Switch Case',
-          path: '/switch_case',
-          icon: 'toggle-left', 
-        },
-        {
-          title: 'Controle de Loop',
-          path: '/controle_loop',
-          icon: 'square', 
-        },
-        {
-          title: 'Break',
-          path: '/break',
-          icon: 'square', 
-        },
-        {
-          title: 'Continue',
-          path: '/continue',
-          icon: 'square', 
-        },
-        
-        // Link externo para repositório
-        {
-          title: 'GitHub',
-          path: 'https://github.com/karlaycosta/lipo_compiler',
-          icon: 'github',
-          external: true, 
-        },
-      ],
-    },
-  ],
-
-   /* ─────────────────────────────────────────────────────────────────────────────
-   FAIXA DE PATROCÍNIO (DESATIVADA)
-   Seção para solicitar apoio financeiro ao projeto
-   ─────────────────────────────────────────────────────────────────────────────
-
- 
-  sponsor: {
-    enabled: false,                                    // Desabilitado por padrão
-    title: 'Apoie o DocMD',                           // Texto do botão
-    link: 'https://github.com/sponsors/mgks',         // Link para página de patrocínio
-  },
-  */
+  autoTitleFromH1: true, // Não gera título automaticamente do H1
+  copyCode: true, // Habilita botão de copiar código
 
   /* ─────────────────────────────────────────────────────────────────────────────
-   RODAPÉ
-   Texto exibido no final de todas as páginas
-   ───────────────────────────────────────────────────────────────────────────── */
-  
-  footer: `© ${new Date().getFullYear()} LiPo Docs — Desenvolvido com ❤️`,
-
-  /*─────────────────────────────────────────────────────────────────────────────
-  ÍCONE DA ABA (FAVICON)
-  Ícone exibido na aba do navegador (definido novamente por segurança)
+     SERVIDOR DE DESENVOLVIMENTO
+     Configurações para ambiente local
   ───────────────────────────────────────────────────────────────────────────── */
-  favicon: '/assets/icon/favico.svg',
-  }
+  devServer: {
+    host: "0.0.0.0", // Permite acesso externo (rede local)
+    port: 3000, // Porta do servidor local
+  },
+
+  /* ─────────────────────────────────────────────────────────────────────────────
+     NAVEGAÇÃO PRINCIPAL (SIDEBAR)
+     Estrutura hierárquica da documentação, com ícones e links
+  ───────────────────────────────────────────────────────────────────────────── */
+
+ navigation: [
+  // PÁGINA INICIAL
+  { title: "Início", path: "/", icon: "book-open" },
+
+  // ESTRUTURA BÁSICA DA LINGUAGEM
+  { title: "Estrutura Léxica", path: "/estrutura_lexica", icon: "file-code" },
+
+  // SISTEMA DE IDENTIFICAÇÃO
+  { title: "Identificadores", path: "/identificadores", icon: "tag" },
+
+  // PALAVRAS RESERVADAS
+  { title: "Palavra Reservada", path: "/palavra_reservada", icon: "key" },
+
+  // SISTEMA DE TIPOS
+  { title: "Tipos de Dados", path: "/tipo_de_dados", icon: "database" },
+
+  // CONVERSÃO
+  { title: "Conversão", path: "/conversao", icon: "shuffle" },
+
+  // VARIÁVEIS E CONSTANTES
+  {
+    title: "Variáveis e Constantes",
+    path: "/variaveis_constantes",
+    icon: "box",
+    children: [
+      { title: "Declaração de Variáveis", path: "/declaracao_variaveis", icon: "file-plus" },
+      { title: "Declaração de Constantes", path: "/declaracao_constantes", icon: "lock" },
+    ],
+  },
+
+  // OPERADORES
+  {
+    title: "Operadores",
+    path: "/operadores",
+    icon: "function-square",
+    children: [
+      { title: "Aritméticos", path: "/operadores_aritmeticos", icon: "divide" },
+      { title: "Comparação", path: "/comparacao", icon: "equal" },
+      { title: "Lógicos", path: "/logicos", icon: "circuit-board" },
+      { title: "Atribuição", path: "/atribuicao", icon: "arrow-right-left" },
+      { title: "Incremento / Decremento", path: "/incremento_decremento", icon: "plus" },
+      { title: "Operador typeof", path: "/operador_tipode", icon: "info" },
+      { title: "Precedência", path: "/precedencia_operadores", icon: "list" },
+    ],
+  },
+
+  // ESTRUTURAS DE CONTROLE
+  {
+    title: "Estruturas de Controle",
+    path: "/estruturas_de_controle",
+    icon: "git-branch",
+    children: [
+      { title: "Condicional", path: "/condicional", icon: "help-circle" },
+      { title: "Condicional Ternária", path: "/condicional_ternaria", icon: "circle" },
+      { title: "Loop While", path: "/loop_while", icon: "repeat-1" },
+      { title: "Loop Do While", path: "/loop_do_while", icon: "repeat" },
+      { title: "Loop For", path: "/loop_for", icon: "repeat" },
+      { title: "Loop For Incremento", path: "/loop_for_incremento", icon: "arrow-up-circle" },
+      { title: "Loop For Decremento", path: "/loop_for_decremento", icon: "arrow-down-circle" },
+      { title: "Loop For estilo C", path: "/loop_for_estiloC", icon: "code-2" },
+      { title: "Switch Case", path: "/switch_case", icon: "toggle-left" },
+      { title: "Controle de Loop", path: "/controle_loop", icon: "sliders" },
+      { title: "Break", path: "/break", icon: "corner-up-left" },
+      { title: "Continue", path: "/continue", icon: "corner-up-right" },
+    ],
+  },
+
+  // FUNÇÕES
+  {
+    title: "Funções",
+    path: "/funcoes",
+    icon: "function-square",
+    children: [
+      { title: "Função Vazia", path: "/funcao_vazia", icon: "circle" },
+      { title: "Função com Retorno", path: "/funcao_retorno", icon: "arrow-right-circle" },
+      { title: "Função Recursiva", path: "/funcao_recursiva", icon: "repeat" },
+      { title: "Função Mista", path: "/funcao_mista", icon: "code-square" },
+    ],
+  },
+
+  // SISTEMA DE IMPORTS
+  {
+    title: "Sistema de Imports",
+    path: "/sistema_imports",
+    icon: "file-import",
+    children: [
+      { title: "Importação Básica", path: "/importacao_basico", icon: "file-plus" },
+      { title: "Importação com Alias", path: "/importacao_alias", icon: "file-minus" },
+      { title: "Exemplos de Import", path: "/import_exemplos", icon: "file-text" },
+    ],
+  },
+
+  // ITENS GERAIS
+  { title: "Biblioteca", path: "/biblioteca", icon: "layers" },
+  { title: "Comentários", path: "/comentarios", icon: "message-square" },
+
+  // GRAMÁTICA FORMAL
+  {
+    title: "Gramática Formal",
+    path: "/gramatica_formal",
+    icon: "file-text",
+    children: [
+      { title: "Estrutura Geral Programa", path: "/estrutura_geral_programa", icon: "file" },
+      { title: "Instruções (Statements)", path: "/instrucoes_statements", icon: "file-text" },
+      { title: "Expressões", path: "/expressoes", icon: "file-code" },
+      { title: "Literais e Tokens", path: "/literais_tokens", icon: "file-text" },
+    ],
+  },
+
+  // EXEMPLOS PRÁTICOS
+  {
+    title: "Exemplos Práticos",
+    path: "/exemplos_praticos",
+    icon: "code",
+    children: [
+      { title: "Programa Básico", path: "/exemplo1_programa_basico", icon: "terminal" },
+      { title: "Estruturas de Controle", path: "/exemplo2_estruturas_de_controle", icon: "code-square" },
+      { title: "Funções", path: "/exemplo3_funcoes", icon: "function-square" },
+      { title: "Switch/Case", path: "/exemplo4_switch_case", icon: "git-branch" },
+      { title: "Sistema de Imports", path: "/exemplo5_imports", icon: "file-import" },
+      { title: "Recursividade", path: "/exemplo6_recursividade", icon: "repeat" },
+    ],
+  },
+
+  // CONTRIBUIÇÃO
+  { title: "Como Contribuir", path: "/como_contribuir", icon: "heart" },
+  { title: "Licença", path: "/licenca", icon: "gavel" },
+  { title: "Sobre", path: "/sobre", icon: "info" },
+
+],
+
+  /* ─────────────────────────────────────────────────────────────────────────────
+     PATROCÍNIO / SPONSOR / GITHUB
+
+  ───────────────────────────────────────────────────────────────────────────── */
+  sponsor: {
+    enabled: true, // Habilita botão de patrocínio
+    title: "Github LiPo",
+    link: "https://github.com/karlaycosta/lipo_compiler",
+  },
+
+  /* ─────────────────────────────────────────────────────────────────────────────
+     RODAPÉ
+     Texto exibido no final de todas as páginas
+  ───────────────────────────────────────────────────────────────────────────── */
+  footer: `© ${new Date().getFullYear()} LiPo Docs — Desenvolvido com todo carinho`,
+
+  /* ─────────────────────────────────────────────────────────────────────────────
+     FAVICON
+     Ícone exibido na aba do navegador (redundante para segurança)
+  ───────────────────────────────────────────────────────────────────────────── */
+  favicon: "/assets/icon/favico.svg",
+};

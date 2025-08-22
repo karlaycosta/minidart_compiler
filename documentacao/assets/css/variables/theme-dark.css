@@ -1,0 +1,47 @@
+
+:root[data-theme="dark"] {
+  --ruby-primary: #64b5f6;
+  --ruby-primary-light: #1e2b3a;
+  --ruby-primary-dark: #90caf9;
+  --ruby-accent: #4fc3f7;
+  --ruby-accent-light: #1a2a3a;
+
+  --ruby-text: #e0e0e0;
+  --ruby-text-light: #b0b0b0;
+  --ruby-text-lightest: #8a8a8a;
+
+  --ruby-background: #0e1621;
+  --ruby-background-alt: #152232;
+
+  --ruby-border: #243447;
+  --ruby-border-light: #1b2939;
+
+  --bg-color: var(--ruby-background);
+  --text-color: var(--ruby-text);
+  --link-color: var(--ruby-primary);
+  --border-color: var(--ruby-border);
+
+  --sidebar-bg: #0e1621;
+  --sidebar-text: var(--ruby-text-light);
+  --sidebar-link-active-bg: #1a2e47;
+  --sidebar-link-active-text: var(--ruby-primary);
+
+  --code-bg: var(--ruby-primary-light);
+  --code-text: var(--ruby-primary-dark);
+
+  --header-bg: var(--ruby-background);
+  --header-border: var(--ruby-border);
+
+  --shadow-sm: 0 2px 4px rgba(100, 181, 246, 0.1);
+  --shadow-md: 0 4px 8px rgba(100, 181, 246, 0.15);
+  --shadow-lg: 0 8px 16px rgba(100, 181, 246, 0.2);
+
+  --image-border-color: var(--ruby-border);
+  --image-shadow: var(--shadow-md);
+  --image-caption-bg: var(--ruby-background-alt);
+  --image-caption-text: var(--ruby-text-light);
+  --image-hover-transform: translateY(-3px);
+  --image-hover-shadow: var(--shadow-lg);
+  --image-border-radius: 6px;
+  --image-transition: all 0.3s ease;
+}

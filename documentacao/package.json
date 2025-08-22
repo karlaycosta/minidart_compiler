@@ -1,0 +1,14 @@
+{
+  "name": "lipo-docs",
+  "version": "1.0.0",
+  "description": "Documentação do compilador LiPo",
+  "scripts": {
+    "dev": "docmd dev",
+    "build": "docmd build",
+    "build-search": "node build-search-index.js"
+  },
+  "dependencies": {
+    "docmd": "file:../docmd",
+    "gray-matter": "^4.0.3"
+  }
+}

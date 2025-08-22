@@ -1,6 +1,5 @@
 ---
 title: "Sistema de importe "
-description: "Your documentation starts here."
 ---
 
 # Sistema de imports

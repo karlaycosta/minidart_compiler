@@ -1,0 +1,11 @@
+/* Variáveis de tema */
+@import url('variables/theme-light.css');
+@import url('variables/theme-dark.css');
+ 
+
+/* Componentes */
+@import url('./components/scrollbar.css');
+ 
+
+/* Base */
+@import url('base.css');

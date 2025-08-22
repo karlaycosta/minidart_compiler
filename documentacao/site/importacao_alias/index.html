@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+     
+
+    <title> : LiPo | DOC</title>
+    
+
+    <link rel="shortcut icon" href="../assets/icon/favico.svg" type="image/x-icon">
+ 
+
+    <script>// Source file from the docmd project — https://github.com/mgks/docmd
+
+/*
+ * Initialize the theme from localStorage
+ */
+
+(function() {
+    try {
+      const storedTheme = localStorage.getItem('docmd-theme');
+      if (storedTheme) {
+        document.documentElement.setAttribute('data-theme', storedTheme);
+        
+        // Also update highlight CSS link to match the stored theme
+        const highlightThemeLink = document.getElementById('highlight-theme');
+        if (highlightThemeLink) {
+          const baseHref = highlightThemeLink.getAttribute('data-base-href');
+          if (baseHref) {
+            const newHref = baseHref + `docmd-highlight-${storedTheme}.css`;
+            highlightThemeLink.setAttribute('href', newHref);
+          }
+        }
+      }
+    } catch (e) {
+      console.error('Error applying theme from localStorage', e);
+    }
+})();</script>
+
+    <link rel="stylesheet" href="../assets/css/docmd-main.css">
+
+    
+        <link rel="stylesheet" id="highlight-theme" href="../assets/css/docmd-highlight-light.css" data-base-href="../assets/css/">
+    
+
+      <link rel="stylesheet" href="../assets/css/docmd-theme-ruby.css">
+ 
+
+    
+      <link rel="stylesheet" href="../assets/css/style.css">
+    
+
+     
+
+     
+</head>
+<body class="sidebar-not-collapsible"
+    data-theme="light" data-default-collapsed="false"
+    data-copy-code-enabled="true">
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            
+                <a href="/" class="logo-link">
+                    <img src=".././assets/imagens/Logo_horzontal_preto.svg" alt="LiPo Docs" class="logo-light" >
+                    <img src=".././assets/imagens/Logo_horzontal_branco.png" alt="LiPo Docs" class="logo-dark" >
+                </a>
+            
+        </div>
+        
+
+
+
+
+
+<nav class="sidebar-nav">
+  
+  <ul>
+    
+      
+      <li class="">
+        <a href="../index.html"
+           class=""
+           >
+          <svg class="lucide-icon icon-book-open nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 7v14" />
+  <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" />
+</svg>
+          <span>Início</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../estrutura_lexica/"
+           class=""
+           >
+          <svg class="lucide-icon icon-file-code nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 12.5 8 15l2 2.5" />
+  <path d="m14 12.5 2 2.5-2 2.5" />
+  <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+  <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
+</svg>
+          <span>Estrutura Léxica</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../identificadores/"
+           class=""
+           >
+          <svg class="lucide-icon icon-tag nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z" />
+  <circle cx="7.5" cy="7.5" r=".5" fill="currentColor" />
+</svg>
+          <span>Identificadores</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../palavra_reservada/"
+           class=""
+           >
+          <svg class="lucide-icon icon-key nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4" />
+  <path d="m21 2-9.6 9.6" />
+  <circle cx="7.5" cy="15.5" r="5.5" />
+</svg>
+          <span>Palavra Reservada</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../tipo_de_dados/"
+           class=""
+           >
+          <svg class="lucide-icon icon-database nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <ellipse cx="12" cy="5" rx="9" ry="3" />
+  <path d="M3 5V19A9 3 0 0 0 21 19V5" />
+  <path d="M3 12A9 3 0 0 0 21 12" />
+</svg>
+          <span>Tipos de Dados</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../conversao/"
+           class=""
+           >
+          <svg class="lucide-icon icon-shuffle nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m18 14 4 4-4 4" />
+  <path d="m18 2 4 4-4 4" />
+  <path d="M2 18h1.973a4 4 0 0 0 3.3-1.7l5.454-8.6a4 4 0 0 1 3.3-1.7H22" />
+  <path d="M2 6h1.972a4 4 0 0 1 3.6 2.2" />
+  <path d="M22 18h-6.041a4 4 0 0 1-3.3-1.8l-.359-.45" />
+</svg>
+          <span>Conversão</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../variaveis_constantes/"
+           class=""
+           >
+          <svg class="lucide-icon icon-box nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
+  <path d="m3.3 7 8.7 5 8.7-5" />
+  <path d="M12 22V12" />
+</svg>
+          <span>Variáveis e Constantes</span> 
+          
+        </a>
+
+        
+          
+  <ul>
+    
+      
+      <li class="">
+        <a href="../declaracao_variaveis/"
+           class=""
+           >
+          <svg class="lucide-icon icon-file-plus nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+  <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+  <path d="M9 15h6" />
+  <path d="M12 18v-6" />
+</svg>
+          <span>Declaração de Variáveis</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../declaracao_constantes/"
+           class=""
+           >
+          <svg class="lucide-icon icon-lock nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+</svg>
+          <span>Declaração de Constantes</span> 
+          
+        </a>
+
+        
+      </li>
+    
+  </ul>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../operadores/"
+           class=""
+           >
+          <svg class="lucide-icon icon-function-square nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+  <path d="M9 17c2 0 2.8-1 2.8-2.8V10c0-2 1-3.3 3.2-3" />
+  <path d="M9 11.2h5.7" />
+</svg>
+          <span>Operadores</span> 
+          
+        </a>
+
+        
+          
+  <ul>
+    
+      
+      <li class="">
+        <a href="../operadores_aritmeticos/"
+           class=""
+           >
+          <svg class="lucide-icon icon-divide nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="6" r="1" />
+  <line x1="5" x2="19" y1="12" y2="12" />
+  <circle cx="12" cy="18" r="1" />
+</svg>
+          <span>Aritméticos</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../comparacao/"
+           class=""
+           >
+          <svg class="lucide-icon icon-equal nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <line x1="5" x2="19" y1="9" y2="9" />
+  <line x1="5" x2="19" y1="15" y2="15" />
+</svg>
+          <span>Comparação</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../logicos/"
+           class=""
+           >
+          <svg class="lucide-icon icon-circuit-board nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="18" height="18" x="3" y="3" rx="2" />
+  <path d="M11 9h4a2 2 0 0 0 2-2V3" />
+  <circle cx="9" cy="9" r="2" />
+  <path d="M7 21v-4a2 2 0 0 1 2-2h4" />
+  <circle cx="15" cy="15" r="2" />
+</svg>
+          <span>Lógicos</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../atribuicao/"
+           class=""
+           >
+          <svg class="lucide-icon icon-arrow-right-left nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m16 3 4 4-4 4" />
+  <path d="M20 7H4" />
+  <path d="m8 21-4-4 4-4" />
+  <path d="M4 17h16" />
+</svg>
+          <span>Atribuição</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../incremento_decremento/"
+           class=""
+           >
+          <svg class="lucide-icon icon-plus nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14" />
+  <path d="M12 5v14" />
+</svg>
+          <span>Incremento / Decremento</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../operador_tipode/"
+           class=""
+           >
+          <svg class="lucide-icon icon-info nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10" />
+  <path d="M12 16v-4" />
+  <path d="M12 8h.01" />
+</svg>
+          <span>Operador typeof</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../precedencia_operadores/"
+           class=""
+           >
+          <svg class="lucide-icon icon-list nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 12h.01" />
+  <path d="M3 18h.01" />
+  <path d="M3 6h.01" />
+  <path d="M8 12h13" />
+  <path d="M8 18h13" />
+  <path d="M8 6h13" />
+</svg>
+          <span>Precedência</span> 
+          
+        </a>
+
+        
+      </li>
+    
+  </ul>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../estruturas_de_controle/"
+           class=""
+           >
+          <svg class="lucide-icon icon-git-branch nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <line x1="6" x2="6" y1="3" y2="15" />
+  <circle cx="18" cy="6" r="3" />
+  <circle cx="6" cy="18" r="3" />
+  <path d="M18 9a9 9 0 0 1-9 9" />
+</svg>
+          <span>Estruturas de Controle</span> 
+          
+        </a>
+
+        
+          
+  <ul>
+    
+      
+      <li class="">
+        <a href="../condicional/"
+           class=""
+           >
+          <svg class="lucide-icon icon-help-circle nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10" />
+  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+  <path d="M12 17h.01" />
+</svg>
+          <span>Condicional</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../condicional_ternaria/"
+           class=""
+           >
+          <svg class="lucide-icon icon-circle nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10" />
+</svg>
+          <span>Condicional Ternária</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../loop_while/"
+           class=""
+           >
+          <svg class="lucide-icon icon-repeat-1 nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m17 2 4 4-4 4" />
+  <path d="M3 11v-1a4 4 0 0 1 4-4h14" />
+  <path d="m7 22-4-4 4-4" />
+  <path d="M21 13v1a4 4 0 0 1-4 4H3" />
+  <path d="M11 10h1v4" />
+</svg>
+          <span>Loop While</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../loop_do_while/"
+           class=""
+           >
+          <svg class="lucide-icon icon-repeat nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m17 2 4 4-4 4" />
+  <path d="M3 11v-1a4 4 0 0 1 4-4h14" />
+  <path d="m7 22-4-4 4-4" />
+  <path d="M21 13v1a4 4 0 0 1-4 4H3" />
+</svg>
+          <span>Loop Do While</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../loop_for/"
+           class=""
+           >
+          <svg class="lucide-icon icon-repeat nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m17 2 4 4-4 4" />
+  <path d="M3 11v-1a4 4 0 0 1 4-4h14" />
+  <path d="m7 22-4-4 4-4" />
+  <path d="M21 13v1a4 4 0 0 1-4 4H3" />
+</svg>
+          <span>Loop For</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../loop_for_incremento/"
+           class=""
+           >
+          <svg class="lucide-icon icon-arrow-up-circle nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10" />
+  <path d="m16 12-4-4-4 4" />
+  <path d="M12 16V8" />
+</svg>
+          <span>Loop For Incremento</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../loop_for_decremento/"
+           class=""
+           >
+          <svg class="lucide-icon icon-arrow-down-circle nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10" />
+  <path d="M12 8v8" />
+  <path d="m8 12 4 4 4-4" />
+</svg>
+          <span>Loop For Decremento</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../loop_for_estiloC/"
+           class=""
+           >
+          <svg class="lucide-icon icon-code-2 nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m18 16 4-4-4-4" />
+  <path d="m6 8-4 4 4 4" />
+  <path d="m14.5 4-5 16" />
+</svg>
+          <span>Loop For estilo C</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../switch_case/"
+           class=""
+           >
+          <svg class="lucide-icon icon-toggle-left nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="9" cy="12" r="3" />
+  <rect width="20" height="14" x="2" y="5" rx="7" />
+</svg>
+          <span>Switch Case</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../controle_loop/"
+           class=""
+           >
+          <svg class="lucide-icon icon-sliders nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <line x1="4" x2="4" y1="21" y2="14" />
+  <line x1="4" x2="4" y1="10" y2="3" />
+  <line x1="12" x2="12" y1="21" y2="12" />
+  <line x1="12" x2="12" y1="8" y2="3" />
+  <line x1="20" x2="20" y1="21" y2="16" />
+  <line x1="20" x2="20" y1="12" y2="3" />
+  <line x1="2" x2="6" y1="14" y2="14" />
+  <line x1="10" x2="14" y1="8" y2="8" />
+  <line x1="18" x2="22" y1="16" y2="16" />
+</svg>
+          <span>Controle de Loop</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../break/"
+           class=""
+           >
+          <svg class="lucide-icon icon-corner-up-left nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 20v-7a4 4 0 0 0-4-4H4" />
+  <path d="M9 14 4 9l5-5" />
+</svg>
+          <span>Break</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../continue/"
+           class=""
+           >
+          <svg class="lucide-icon icon-corner-up-right nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m15 14 5-5-5-5" />
+  <path d="M4 20v-7a4 4 0 0 1 4-4h12" />
+</svg>
+          <span>Continue</span> 
+          
+        </a>
+
+        
+      </li>
+    
+  </ul>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../funcoes/"
+           class=""
+           >
+          <svg class="lucide-icon icon-function-square nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+  <path d="M9 17c2 0 2.8-1 2.8-2.8V10c0-2 1-3.3 3.2-3" />
+  <path d="M9 11.2h5.7" />
+</svg>
+          <span>Funções</span> 
+          
+        </a>
+
+        
+          
+  <ul>
+    
+      
+      <li class="">
+        <a href="../funcao_vazia/"
+           class=""
+           >
+          <svg class="lucide-icon icon-circle nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10" />
+</svg>
+          <span>Função Vazia</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../funcao_retorno/"
+           class=""
+           >
+          <svg class="lucide-icon icon-arrow-right-circle nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10" />
+  <path d="m12 16 4-4-4-4" />
+  <path d="M8 12h8" />
+</svg>
+          <span>Função com Retorno</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../funcao_recursiva/"
+           class=""
+           >
+          <svg class="lucide-icon icon-repeat nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m17 2 4 4-4 4" />
+  <path d="M3 11v-1a4 4 0 0 1 4-4h14" />
+  <path d="m7 22-4-4 4-4" />
+  <path d="M21 13v1a4 4 0 0 1-4 4H3" />
+</svg>
+          <span>Função Recursiva</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../funcao_mista/"
+           class=""
+           >
+          <svg class="lucide-icon icon-code-square nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m10 9-3 3 3 3" />
+  <path d="m14 15 3-3-3-3" />
+  <rect x="3" y="3" width="18" height="18" rx="2" />
+</svg>
+          <span>Função Mista</span> 
+          
+        </a>
+
+        
+      </li>
+    
+  </ul>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../sistema_imports/"
+           class=""
+           >
+          
+          <span>Sistema de Imports</span> 
+          
+        </a>
+
+        
+          
+  <ul>
+    
+      
+      <li class="">
+        <a href="../importacao_basico/"
+           class=""
+           >
+          <svg class="lucide-icon icon-file-plus nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+  <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+  <path d="M9 15h6" />
+  <path d="M12 18v-6" />
+</svg>
+          <span>Importação Básica</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="active-parent">
+        <a href="../importacao_alias/"
+           class="active"
+           >
+          <svg class="lucide-icon icon-file-minus nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+  <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+  <path d="M9 15h6" />
+</svg>
+          <span>Importação com Alias</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../import_exemplos/"
+           class=""
+           >
+          <svg class="lucide-icon icon-file-text nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+  <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+  <path d="M10 9H8" />
+  <path d="M16 13H8" />
+  <path d="M16 17H8" />
+</svg>
+          <span>Exemplos de Import</span> 
+          
+        </a>
+
+        
+      </li>
+    
+  </ul>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../biblioteca/"
+           class=""
+           >
+          <svg class="lucide-icon icon-layers nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" />
+  <path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12" />
+  <path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" />
+</svg>
+          <span>Biblioteca</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../comentarios/"
+           class=""
+           >
+          <svg class="lucide-icon icon-message-square nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+</svg>
+          <span>Comentários</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../gramatica_formal/"
+           class=""
+           >
+          <svg class="lucide-icon icon-file-text nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+  <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+  <path d="M10 9H8" />
+  <path d="M16 13H8" />
+  <path d="M16 17H8" />
+</svg>
+          <span>Gramática Formal</span> 
+          
+        </a>
+
+        
+          
+  <ul>
+    
+      
+      <li class="">
+        <a href="../estrutura_geral_programa/"
+           class=""
+           >
+          <svg class="lucide-icon icon-file nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+  <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+</svg>
+          <span>Estrutura Geral Programa</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../instrucoes_statements/"
+           class=""
+           >
+          <svg class="lucide-icon icon-file-text nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+  <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+  <path d="M10 9H8" />
+  <path d="M16 13H8" />
+  <path d="M16 17H8" />
+</svg>
+          <span>Instruções (Statements)</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../expressoes/"
+           class=""
+           >
+          <svg class="lucide-icon icon-file-code nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 12.5 8 15l2 2.5" />
+  <path d="m14 12.5 2 2.5-2 2.5" />
+  <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+  <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
+</svg>
+          <span>Expressões</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../literais_tokens/"
+           class=""
+           >
+          <svg class="lucide-icon icon-file-text nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+  <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+  <path d="M10 9H8" />
+  <path d="M16 13H8" />
+  <path d="M16 17H8" />
+</svg>
+          <span>Literais e Tokens</span> 
+          
+        </a>
+
+        
+      </li>
+    
+  </ul>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../exemplos_praticos/"
+           class=""
+           >
+          <svg class="lucide-icon icon-code nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m16 18 6-6-6-6" />
+  <path d="m8 6-6 6 6 6" />
+</svg>
+          <span>Exemplos Práticos</span> 
+          
+        </a>
+
+        
+          
+  <ul>
+    
+      
+      <li class="">
+        <a href="../exemplo1_programa_basico/"
+           class=""
+           >
+          <svg class="lucide-icon icon-terminal nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 19h8" />
+  <path d="m4 17 6-6-6-6" />
+</svg>
+          <span>Programa Básico</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../exemplo2_estruturas_de_controle/"
+           class=""
+           >
+          <svg class="lucide-icon icon-code-square nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m10 9-3 3 3 3" />
+  <path d="m14 15 3-3-3-3" />
+  <rect x="3" y="3" width="18" height="18" rx="2" />
+</svg>
+          <span>Estruturas de Controle</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../exemplo3_funcoes/"
+           class=""
+           >
+          <svg class="lucide-icon icon-function-square nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+  <path d="M9 17c2 0 2.8-1 2.8-2.8V10c0-2 1-3.3 3.2-3" />
+  <path d="M9 11.2h5.7" />
+</svg>
+          <span>Funções</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../exemplo4_switch_case/"
+           class=""
+           >
+          <svg class="lucide-icon icon-git-branch nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <line x1="6" x2="6" y1="3" y2="15" />
+  <circle cx="18" cy="6" r="3" />
+  <circle cx="6" cy="18" r="3" />
+  <path d="M18 9a9 9 0 0 1-9 9" />
+</svg>
+          <span>Switch/Case</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../exemplo5_imports/"
+           class=""
+           >
+          
+          <span>Sistema de Imports</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../exemplo6_recursividade/"
+           class=""
+           >
+          <svg class="lucide-icon icon-repeat nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m17 2 4 4-4 4" />
+  <path d="M3 11v-1a4 4 0 0 1 4-4h14" />
+  <path d="m7 22-4-4 4-4" />
+  <path d="M21 13v1a4 4 0 0 1-4 4H3" />
+</svg>
+          <span>Recursividade</span> 
+          
+        </a>
+
+        
+      </li>
+    
+  </ul>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../como_contribuir/"
+           class=""
+           >
+          <svg class="lucide-icon icon-heart nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5" />
+</svg>
+          <span>Como Contribuir</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../licenca/"
+           class=""
+           >
+          <svg class="lucide-icon icon-gavel nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m14 13-8.381 8.38a1 1 0 0 1-3.001-3l8.384-8.381" />
+  <path d="m16 16 6-6" />
+  <path d="m21.5 10.5-8-8" />
+  <path d="m8 8 6-6" />
+  <path d="m8.5 7.5 8 8" />
+</svg>
+          <span>Licença</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../sobre/"
+           class=""
+           >
+          <svg class="lucide-icon icon-info nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10" />
+  <path d="M12 16v-4" />
+  <path d="M12 8h.01" />
+</svg>
+          <span>Sobre</span> 
+          
+        </a>
+
+        
+      </li>
+    
+  </ul>
+
+</nav>
+        
+    </aside>
+    <div class="main-content-wrapper">
+        <div class="page-header">
+            <div class="header-left">
+                
+                <h1></h1>
+            </div>
+            
+            <div class="header-right">
+                <button id="theme-toggle-button" aria-label="Toggle theme" class="theme-toggle-button theme-toggle-header">
+                    
+                    <svg class="lucide-icon icon-sun icon-sun" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="4" />
+  <path d="M12 2v2" />
+  <path d="M12 20v2" />
+  <path d="m4.93 4.93 1.41 1.41" />
+  <path d="m17.66 17.66 1.41 1.41" />
+  <path d="M2 12h2" />
+  <path d="M20 12h2" />
+  <path d="m6.34 17.66-1.41 1.41" />
+  <path d="m19.07 4.93-1.41 1.41" />
+</svg>
+                    <svg class="lucide-icon icon-moon icon-moon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" />
+</svg>
+                </button>
+            </div>
+            
+        </div>
+        <main class="content-area">
+            <div class="content-layout">
+                <div class="main-content">
+                    
+                    
+                    
+                    <div class="page-navigation">
+                        
+                        <a href="../importacao_basico/" class="prev-page">
+                            <svg class="lucide-icon icon-arrow-left page-nav-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m12 19-7-7 7-7" />
+  <path d="M19 12H5" />
+</svg>
+                            <span>
+                                <small>Previous</small>
+                                <strong>Importação Básica</strong>
+                            </span>
+                        </a>
+                        
+                        
+                        
+                        <a href="../import_exemplos/" class="next-page">
+                            <span>
+                                <small>Next</small>
+                                <strong>Exemplos de Import</strong>
+                            </span>
+                            <svg class="lucide-icon icon-arrow-right page-nav-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14" />
+  <path d="m12 5 7 7-7 7" />
+</svg>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+                
+                <!-- DEBUG: {"headingsLength":0} -->
+                
+                <!-- TOC sidebar -->
+                <div class="toc-sidebar">
+                    
+ 
+                </div>
+            </div>
+        </main>
+        <footer class="page-footer">
+            <div class="footer-content">
+                <div class="user-footer">
+                    © 2025 LiPo Docs — Desenvolvido com todo carinho
+                </div>
+                <div class="branding-footer">
+                    Build with <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path><path d="M12 5 9.04 7.96a2.17 2.17 0 0 0 0 3.08c.82.82 2.13.85 3 .07l2.07-1.9a2.82 2.82 0 0 1 3.79 0l2.96 2.66"></path><path d="m18 15-2-2"></path><path d="m15 18-2-2"></path></svg> <a href="https://docmd.mgks.dev" target="_blank" rel="noopener">docmd.</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../assets/js/docmd-main.js"></script>
+
+    
+
+    
+    
+    
+    <div class="sponsor-ribbon">
+        <a href="https://github.com/karlaycosta/lipo_compiler" target="_blank" rel="noopener noreferrer" class="sponsor-link">
+            <svg class="lucide-icon icon-heart sponsor-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5" />
+</svg>
+            <span class="sponsor-text">Github LiPo</span>
+        </a>
+    </div>
+    
+</body>
+</html>

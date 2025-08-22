@@ -1,56 +1,104 @@
 ---
-title: "Tipo de dados"
-description: "Your documentation starts here."
+title: "Tipos de Dados "
 ---
 
-# Tipo de dados
+<br>
 
-LiPo possui um conjunto simples e eficiente de tipos primitivos, utilizados para declarar variáveis, constantes e expressões. Os tipos de dados são:
+A linguagem **LiPo** possui um conjunto simples e eficiente de **tipos de dados primitivos** utilizados para declarar **variáveis**, **constantes** e **expressões**.  
+Esses tipos permitem uma programação mais clara, direta e acessível.
 
-| Tipo  | Descrição |
-| ------------- |:-------------:|
-| Inteiro    | Números inteiros (ex: -5, 0, 42)     |
-| Real      | Números com ponto flutuante   |
-| Lógico     | Cadeias de caracteres (strings)     |
-| Vázio      | Valores booleanos (verdadeiro, falso)    |
+<br>
 
-LiPo possui um conjunto simples e eficiente de tipos primitivos, utilizados para declarar variáveis, constantes e expressões.
+#  Tipos Primitivos Disponíveis
+
+Abaixo estão os principais tipos primitivos suportados pela linguagem:
+
+| Tipo     | Descrição                                              | Exemplos                        |
+|----------|--------------------------------------------------------|---------------------------------|
+| `inteiro`| Números inteiros (positivos, negativos e zero)         | `-5`, `0`, `42`                 |
+| `real`   | Números com casas decimais (ponto flutuante)           | `3.14`, `-2.5`, `0.001`         |
+| `texto`  | Sequência de caracteres (strings)                      | `"Olá mundo"`, `""`, `"Teste"` |
+| `lógico` | Valores booleanos (verdadeiro ou falso)                | `verdadeiro`, `falso`          |
+
+> **Dica:**  
+> O tipo de dado escolhido define as 
+> operações que você poderá realizar com ele.
 
 
-# Inteiros
+<br>
 
-Representa números inteiros (positivos, negativos ou zero).
+#  Tipo `inteiro`
 
+Utilizado para representar números inteiros. Pode ser positivo, negativo ou zero.
+
+## Exemplos:
+
+```lipo
 inteiro idade = 25;
+inteiro temperatura = -10;
+inteiro quantidade = 0;
+```
 
-inteiro numero = -42;
+<br>
 
-# Real
+# Tipo `real` 
 
-Representa números com casas decimais (ponto flutuante).
+Representa números com parte decimal. Útil para medidas, porcentagens, notas, etc.
 
-real altura = 1.75;
+## Exemplos:
 
-real pi = 3.14159;
+```lipo
+real nota = 8.75;
+real peso = 65.5;
+real temperatura = -3.2;
+```
 
-real negativo = -2.5;
+<br>
 
+# Tipo `texto`
 
-# Texto
+Utilizado para armazenar cadeias de caracteres como palavras, frases e símbolos.
 
-Representa cadeias de caracteres (strings).
+## Exemplos:
 
-texto nome = "João Silva";
-
+```lipo
+texto nome = "Maria";
+texto mensagem = "Bem-vindo!";
 texto vazio = "";
+```
 
-texto especial = "Olá, \"mundo\"!";
+> Observação:
+Textos são sempre definidos entre aspas duplas (").
 
-# Lógico
+<br>
 
-Representa valores booleanos: verdadeiro ou falso.
+# Tipo `lógico`
 
-logico ativo = verdadeiro;
+Usado para expressar valores booleanos: verdadeiro ou falso. Ideal para estruturas de decisão.
 
-logico desativado = falso;
+## Exemplos:
+
+```lipo
+lógico aprovado = verdadeiro;
+lógico ligado = falso;
+```
+
+<br>
+
+# Dicas para o uso de tipos
+
+
+* Utilize o tipo adequado para economizar memória e evitar erros de execução.
+
+* Ao fazer comparações ou condições, use o tipo lógico.
+
+* Aspas são obrigatórias em variáveis do tipo texto.
+
+* Utilize ponto (.) e não vírgula (,) para separar casas decimais no tipo real.
+
+ 
+
+
+
+
 

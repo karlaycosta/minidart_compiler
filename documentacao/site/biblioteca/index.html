@@ -4,42 +4,70 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-      <meta name="description" content="Your documentation starts here.">
-  <link rel="canonical" href="https://karlaycosta.github.io/minidart_compiler/biblioteca/">
-  <meta property="og:title" content="biblioteca | LiPo | DOC">
-  <meta property="og:description" content="Your documentation starts here.">
-  <meta property="og:url" content="https://karlaycosta.github.io/minidart_compiler/biblioteca/">
-  <meta property="og:site_name" content="LiPo | DOC">
-  <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="biblioteca | LiPo | DOC">
-  <meta name="twitter:description" content="Your documentation starts here.">
- 
+     
 
-    <title>biblioteca : LiPo | DOC</title>
+    <title>bibliotecas do LiPO : LiPo | DOC</title>
+    
+      <meta name="description" content="Your documentation starts here.">
     
 
     <link rel="shortcut icon" href="../assets/icon/favico.svg" type="image/x-icon">
  
 
+    <script>// Source file from the docmd project — https://github.com/mgks/docmd
+
+/*
+ * Initialize the theme from localStorage
+ */
+
+(function() {
+    try {
+      const storedTheme = localStorage.getItem('docmd-theme');
+      if (storedTheme) {
+        document.documentElement.setAttribute('data-theme', storedTheme);
+        
+        // Also update highlight CSS link to match the stored theme
+        const highlightThemeLink = document.getElementById('highlight-theme');
+        if (highlightThemeLink) {
+          const baseHref = highlightThemeLink.getAttribute('data-base-href');
+          if (baseHref) {
+            const newHref = baseHref + `docmd-highlight-${storedTheme}.css`;
+            highlightThemeLink.setAttribute('href', newHref);
+          }
+        }
+      }
+    } catch (e) {
+      console.error('Error applying theme from localStorage', e);
+    }
+})();</script>
+
     <link rel="stylesheet" href="../assets/css/docmd-main.css">
 
-    <link rel="stylesheet" href="../assets/css/docmd-highlight-light.css" id="highlight-theme">
+    
+        <link rel="stylesheet" id="highlight-theme" href="../assets/css/docmd-highlight-light.css" data-base-href="../assets/css/">
+    
 
-      <link rel="stylesheet" href="../assets/css/docmd-theme-sky.css">
+      <link rel="stylesheet" href="../assets/css/docmd-theme-ruby.css">
  
 
+    
+      <link rel="stylesheet" href="../assets/css/style.css">
     
 
      
 
      
 </head>
-<body class="sidebar-not-collapsible" data-theme="light" data-default-collapsed="false">
+<body class="sidebar-not-collapsible"
+    data-theme="light" data-default-collapsed="false"
+    data-copy-code-enabled="true">
     <aside class="sidebar">
         <div class="sidebar-header">
             
-                <h1><a href="../index.html">LiPo | DOC</a></h1>
+                <a href="/" class="logo-link">
+                    <img src=".././assets/imagens/Logo_horzontal_preto.svg" alt="LiPo Docs" class="logo-light" >
+                    <img src=".././assets/imagens/Logo_horzontal_branco.png" alt="LiPo Docs" class="logo-dark" >
+                </a>
             
         </div>
         
@@ -240,7 +268,7 @@
   <line x1="5" x2="19" y1="12" y2="12" />
   <circle cx="12" cy="18" r="1" />
 </svg>
-          <span>Operadores Aritméticos</span> 
+          <span>Aritméticos</span> 
           
         </a>
 
@@ -305,8 +333,11 @@
         <a href="../incremento_decremento/"
            class=""
            >
-          
-          <span>Incremento/Decremento</span> 
+          <svg class="lucide-icon icon-plus nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14" />
+  <path d="M12 5v14" />
+</svg>
+          <span>Incremento / Decremento</span> 
           
         </a>
 
@@ -335,8 +366,15 @@
         <a href="../precedencia_operadores/"
            class=""
            >
-          
-          <span>Precedência de Operadores</span> 
+          <svg class="lucide-icon icon-list nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 12h.01" />
+  <path d="M3 18h.01" />
+  <path d="M3 6h.01" />
+  <path d="M8 12h13" />
+  <path d="M8 18h13" />
+  <path d="M8 6h13" />
+</svg>
+          <span>Precedência</span> 
           
         </a>
 
@@ -389,7 +427,9 @@
         <a href="../condicional_ternaria/"
            class=""
            >
-          
+          <svg class="lucide-icon icon-circle nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10" />
+</svg>
           <span>Condicional Ternária</span> 
           
         </a>
@@ -421,11 +461,11 @@
         <a href="../loop_do_while/"
            class=""
            >
-          <svg class="lucide-icon icon-refresh-ccw nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
-  <path d="M3 3v5h5" />
-  <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
-  <path d="M16 16h5v5" />
+          <svg class="lucide-icon icon-repeat nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m17 2 4 4-4 4" />
+  <path d="M3 11v-1a4 4 0 0 1 4-4h14" />
+  <path d="m7 22-4-4 4-4" />
+  <path d="M21 13v1a4 4 0 0 1-4 4H3" />
 </svg>
           <span>Loop Do While</span> 
           
@@ -524,8 +564,16 @@
         <a href="../controle_loop/"
            class=""
            >
-          <svg class="lucide-icon icon-square nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <rect width="18" height="18" x="3" y="3" rx="2" />
+          <svg class="lucide-icon icon-sliders nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <line x1="4" x2="4" y1="21" y2="14" />
+  <line x1="4" x2="4" y1="10" y2="3" />
+  <line x1="12" x2="12" y1="21" y2="12" />
+  <line x1="12" x2="12" y1="8" y2="3" />
+  <line x1="20" x2="20" y1="21" y2="16" />
+  <line x1="20" x2="20" y1="12" y2="3" />
+  <line x1="2" x2="6" y1="14" y2="14" />
+  <line x1="10" x2="14" y1="8" y2="8" />
+  <line x1="18" x2="22" y1="16" y2="16" />
 </svg>
           <span>Controle de Loop</span> 
           
@@ -539,8 +587,9 @@
         <a href="../break/"
            class=""
            >
-          <svg class="lucide-icon icon-square nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <rect width="18" height="18" x="3" y="3" rx="2" />
+          <svg class="lucide-icon icon-corner-up-left nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 20v-7a4 4 0 0 0-4-4H4" />
+  <path d="M9 14 4 9l5-5" />
 </svg>
           <span>Break</span> 
           
@@ -554,8 +603,9 @@
         <a href="../continue/"
            class=""
            >
-          <svg class="lucide-icon icon-square nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <rect width="18" height="18" x="3" y="3" rx="2" />
+          <svg class="lucide-icon icon-corner-up-right nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m15 14 5-5-5-5" />
+  <path d="M4 20v-7a4 4 0 0 1 4-4h12" />
 </svg>
           <span>Continue</span> 
           
@@ -564,26 +614,471 @@
         
       </li>
     
+  </ul>
+
+        
+      </li>
+    
       
       <li class="">
-        <a href="https://github.com/karlaycosta/lipo_compiler"
+        <a href="../funcoes/"
            class=""
-           target="_blank" rel="noopener noreferrer">
-          <svg class="lucide-icon icon-github nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
-  <path d="M9 18c-4.51 2-5-2-7-2" />
+           >
+          <svg class="lucide-icon icon-function-square nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+  <path d="M9 17c2 0 2.8-1 2.8-2.8V10c0-2 1-3.3 3.2-3" />
+  <path d="M9 11.2h5.7" />
 </svg>
-          <span>GitHub</span> 
-          <svg class="lucide-icon icon-arrow-up-right nav-external-icon" width="0.8em" height="0.8em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M7 7h10v10" />
-  <path d="M7 17 17 7" />
+          <span>Funções</span> 
+          
+        </a>
+
+        
+          
+  <ul>
+    
+      
+      <li class="">
+        <a href="../funcao_vazia/"
+           class=""
+           >
+          <svg class="lucide-icon icon-circle nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10" />
 </svg>
+          <span>Função Vazia</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../funcao_retorno/"
+           class=""
+           >
+          <svg class="lucide-icon icon-arrow-right-circle nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10" />
+  <path d="m12 16 4-4-4-4" />
+  <path d="M8 12h8" />
+</svg>
+          <span>Função com Retorno</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../funcao_recursiva/"
+           class=""
+           >
+          <svg class="lucide-icon icon-repeat nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m17 2 4 4-4 4" />
+  <path d="M3 11v-1a4 4 0 0 1 4-4h14" />
+  <path d="m7 22-4-4 4-4" />
+  <path d="M21 13v1a4 4 0 0 1-4 4H3" />
+</svg>
+          <span>Função Recursiva</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../funcao_mista/"
+           class=""
+           >
+          <svg class="lucide-icon icon-code-square nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m10 9-3 3 3 3" />
+  <path d="m14 15 3-3-3-3" />
+  <rect x="3" y="3" width="18" height="18" rx="2" />
+</svg>
+          <span>Função Mista</span> 
+          
         </a>
 
         
       </li>
     
   </ul>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../sistema_imports/"
+           class=""
+           >
+          
+          <span>Sistema de Imports</span> 
+          
+        </a>
+
+        
+          
+  <ul>
+    
+      
+      <li class="">
+        <a href="../importacao_basico/"
+           class=""
+           >
+          <svg class="lucide-icon icon-file-plus nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+  <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+  <path d="M9 15h6" />
+  <path d="M12 18v-6" />
+</svg>
+          <span>Importação Básica</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../importacao_alias/"
+           class=""
+           >
+          <svg class="lucide-icon icon-file-minus nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+  <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+  <path d="M9 15h6" />
+</svg>
+          <span>Importação com Alias</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../import_exemplos/"
+           class=""
+           >
+          <svg class="lucide-icon icon-file-text nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+  <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+  <path d="M10 9H8" />
+  <path d="M16 13H8" />
+  <path d="M16 17H8" />
+</svg>
+          <span>Exemplos de Import</span> 
+          
+        </a>
+
+        
+      </li>
+    
+  </ul>
+
+        
+      </li>
+    
+      
+      <li class="active-parent">
+        <a href="../biblioteca/"
+           class="active"
+           >
+          <svg class="lucide-icon icon-layers nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" />
+  <path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12" />
+  <path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" />
+</svg>
+          <span>Biblioteca</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../comentarios/"
+           class=""
+           >
+          <svg class="lucide-icon icon-message-square nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+</svg>
+          <span>Comentários</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../gramatica_formal/"
+           class=""
+           >
+          <svg class="lucide-icon icon-file-text nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+  <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+  <path d="M10 9H8" />
+  <path d="M16 13H8" />
+  <path d="M16 17H8" />
+</svg>
+          <span>Gramática Formal</span> 
+          
+        </a>
+
+        
+          
+  <ul>
+    
+      
+      <li class="">
+        <a href="../estrutura_geral_programa/"
+           class=""
+           >
+          <svg class="lucide-icon icon-file nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+  <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+</svg>
+          <span>Estrutura Geral Programa</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../instrucoes_statements/"
+           class=""
+           >
+          <svg class="lucide-icon icon-file-text nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+  <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+  <path d="M10 9H8" />
+  <path d="M16 13H8" />
+  <path d="M16 17H8" />
+</svg>
+          <span>Instruções (Statements)</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../expressoes/"
+           class=""
+           >
+          <svg class="lucide-icon icon-file-code nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 12.5 8 15l2 2.5" />
+  <path d="m14 12.5 2 2.5-2 2.5" />
+  <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+  <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
+</svg>
+          <span>Expressões</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../literais_tokens/"
+           class=""
+           >
+          <svg class="lucide-icon icon-file-text nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+  <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+  <path d="M10 9H8" />
+  <path d="M16 13H8" />
+  <path d="M16 17H8" />
+</svg>
+          <span>Literais e Tokens</span> 
+          
+        </a>
+
+        
+      </li>
+    
+  </ul>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../exemplos_praticos/"
+           class=""
+           >
+          <svg class="lucide-icon icon-code nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m16 18 6-6-6-6" />
+  <path d="m8 6-6 6 6 6" />
+</svg>
+          <span>Exemplos Práticos</span> 
+          
+        </a>
+
+        
+          
+  <ul>
+    
+      
+      <li class="">
+        <a href="../exemplo1_programa_basico/"
+           class=""
+           >
+          <svg class="lucide-icon icon-terminal nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 19h8" />
+  <path d="m4 17 6-6-6-6" />
+</svg>
+          <span>Programa Básico</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../exemplo2_estruturas_de_controle/"
+           class=""
+           >
+          <svg class="lucide-icon icon-code-square nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m10 9-3 3 3 3" />
+  <path d="m14 15 3-3-3-3" />
+  <rect x="3" y="3" width="18" height="18" rx="2" />
+</svg>
+          <span>Estruturas de Controle</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../exemplo3_funcoes/"
+           class=""
+           >
+          <svg class="lucide-icon icon-function-square nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+  <path d="M9 17c2 0 2.8-1 2.8-2.8V10c0-2 1-3.3 3.2-3" />
+  <path d="M9 11.2h5.7" />
+</svg>
+          <span>Funções</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../exemplo4_switch_case/"
+           class=""
+           >
+          <svg class="lucide-icon icon-git-branch nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <line x1="6" x2="6" y1="3" y2="15" />
+  <circle cx="18" cy="6" r="3" />
+  <circle cx="6" cy="18" r="3" />
+  <path d="M18 9a9 9 0 0 1-9 9" />
+</svg>
+          <span>Switch/Case</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../exemplo5_imports/"
+           class=""
+           >
+          
+          <span>Sistema de Imports</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../exemplo6_recursividade/"
+           class=""
+           >
+          <svg class="lucide-icon icon-repeat nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m17 2 4 4-4 4" />
+  <path d="M3 11v-1a4 4 0 0 1 4-4h14" />
+  <path d="m7 22-4-4 4-4" />
+  <path d="M21 13v1a4 4 0 0 1-4 4H3" />
+</svg>
+          <span>Recursividade</span> 
+          
+        </a>
+
+        
+      </li>
+    
+  </ul>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../como_contribuir/"
+           class=""
+           >
+          <svg class="lucide-icon icon-heart nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5" />
+</svg>
+          <span>Como Contribuir</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../licenca/"
+           class=""
+           >
+          <svg class="lucide-icon icon-gavel nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m14 13-8.381 8.38a1 1 0 0 1-3.001-3l8.384-8.381" />
+  <path d="m16 16 6-6" />
+  <path d="m21.5 10.5-8-8" />
+  <path d="m8 8 6-6" />
+  <path d="m8.5 7.5 8 8" />
+</svg>
+          <span>Licença</span> 
+          
+        </a>
+
+        
+      </li>
+    
+      
+      <li class="">
+        <a href="../sobre/"
+           class=""
+           >
+          <svg class="lucide-icon icon-info nav-item-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10" />
+  <path d="M12 16v-4" />
+  <path d="M12 8h.01" />
+</svg>
+          <span>Sobre</span> 
+          
+        </a>
 
         
       </li>
@@ -597,7 +1092,7 @@
         <div class="page-header">
             <div class="header-left">
                 
-                <h1>biblioteca</h1>
+                <h1>bibliotecas do LiPO</h1>
             </div>
             
             <div class="header-right">
@@ -615,7 +1110,7 @@
   <path d="m19.07 4.93-1.41 1.41" />
 </svg>
                     <svg class="lucide-icon icon-moon icon-moon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+  <path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" />
 </svg>
                 </button>
             </div>
@@ -624,36 +1119,39 @@
         <main class="content-area">
             <div class="content-layout">
                 <div class="main-content">
-                    <h1 id="criando-bibliotecas">Criando Bibliotecas</h1>
+                    <h2>Criando Bibliotecas</h2>
 <p>Estenda o poder do MiniDart criando suas próprias bibliotecas com funções nativas implementadas em Dart.</p>
-<h2 id="arquitetura-do-sistema-de-bibliotecas">Arquitetura do Sistema de Bibliotecas</h2>
+<h2>Arquitetura do Sistema de Bibliotecas</h2>
 <ol><li><strong>StandardLibrary</strong>: Gerenciador central das bibliotecas</li>
 <li><strong>NativeFunction</strong>: Representação de uma função nativa</li>
 <li><strong>Sistema de Imports</strong>: Permite importar bibliotecas com ou sem alias</li>
 <li><strong>VM Integration</strong>: Execução das funções nativas durante runtime</li>
 </ol>
-<h3 id="fluxo-de-funcionamento">Fluxo de Funcionamento</h3>
+<h2>Fluxo de Funcionamento</h2>
 <pre class="hljs"><code>MiniDart Code → Parser → Import Recognition → Semantic Analysis → Code Generation → VM Execution → Native Function Call
-</code></pre><h2 id="estrutura-de-uma-biblioteca">📦 Estrutura de uma Biblioteca</h2>
-<h3 id="1-registro-da-biblioteca">1. Registro da Biblioteca</h3>
+</code></pre>
+<h2>Estrutura de uma Biblioteca</h2>
+<h3>1. Registro da Biblioteca</h3>
 <p>Todas as bibliotecas são registradas no arquivo <code>lib/src/standard_library.dart</code> através de métodos privados:</p>
-<pre class="hljs"><code class="language-dart">void _registerMinhaLibrary() {
-  // Registrar funções da biblioteca aqui
+<pre class="hljs"><code><span class="hljs-keyword">void</span> _registerMinhaLibrary() {
+  <span class="hljs-comment">// Registrar funções da biblioteca aqui</span>
 }
-</code></pre><h3 id="2-conveno-de-nomes">2. Convenção de Nomes</h3>
+</code></pre>
+<h3>2. Convenção de Nomes</h3>
 <ul>
 <li><strong>Nome da biblioteca</strong>: <code>nomebiblioteca.funcao</code></li>
 <li><strong>Exemplo</strong>: <code>math.sqrt</code>, <code>string.tamanho</code>, <code>io.imprimir</code></li>
 <li><strong>Consistência</strong>: Use nomes em português para manter o padrão da linguagem</li>
 </ul>
-<h3 id="3-classe-nativefunction">3. Classe NativeFunction</h3>
-<pre class="hljs"><code class="language-dart">class NativeFunction {
-  final String name;        // Nome completo (biblioteca.funcao)
-  final int arity;         // Número de parâmetros
-  final Function implementation; // Implementação em Dart
+<h3>3. Classe NativeFunction</h3>
+<pre class="hljs"><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">NativeFunction</span> </span>{
+  <span class="hljs-keyword">final</span> <span class="hljs-built_in">String</span> name;        <span class="hljs-comment">// Nome completo (biblioteca.funcao)</span>
+  <span class="hljs-keyword">final</span> <span class="hljs-built_in">int</span> arity;         <span class="hljs-comment">// Número de parâmetros</span>
+  <span class="hljs-keyword">final</span> <span class="hljs-built_in">Function</span> implementation; <span class="hljs-comment">// Implementação em Dart</span>
 }
-</code></pre><h2 id="processo-de-criao-de-nova-biblioteca">🔧 Processo de Criação de Nova Biblioteca</h2>
-<h3 id="passo-1-definir-o-escopo-da-biblioteca">Passo 1: Definir o Escopo da Biblioteca</h3>
+</code></pre>
+<h2>Processo de Criação de Nova Biblioteca</h2>
+<h3>Passo 1: Definir o Escopo da Biblioteca</h3>
 <p>Determine:</p>
 <ul>
 <li><strong>Nome da biblioteca</strong> (ex: <code>data</code>, <code>arquivo</code>, <code>rede</code>)</li>
@@ -661,154 +1159,164 @@
 <li><strong>Tipos de dados</strong> que serão manipulados</li>
 <li><strong>Dependências</strong> externas necessárias</li>
 </ul>
-<h3 id="passo-2-implementar-as-funes">Passo 2: Implementar as Funções</h3>
-<h4 id="21-adicionar-mtodo-de-registro">2.1 Adicionar método de registro</h4>
+<h3>Passo 2: Implementar as Funções</h3>
+<h4>2.1 Adicionar método de registro</h4>
 <p>No arquivo <code>standard_library.dart</code>, adicione um novo método:</p>
-<pre class="hljs"><code class="language-dart">/// Registra as funções da biblioteca de dados
-void _registerDataLibrary() {
-  // Suas funções aqui
+<pre class="hljs"><code><span class="hljs-comment">/// <span class="language-markdown">Registra as funções da biblioteca de dados</span></span>
+<span class="hljs-keyword">void</span> _registerDataLibrary() {
+  <span class="hljs-comment">// Suas funções aqui</span>
 }
-</code></pre><h4 id="22-chamar-o-mtodo-no-construtor">2.2 Chamar o método no construtor</h4>
-<pre class="hljs"><code class="language-dart">StandardLibrary() {
+</code></pre>
+<h4>2.2 Chamar o método no construtor</h4>
+<pre class="hljs"><code>StandardLibrary() {
   _registerMathLibrary();
   _registerStringLibrary();
   _registerIOLibrary();
-  _registerDataLibrary(); // ← Adicionar aqui
+  _registerDataLibrary(); <span class="hljs-comment">// ← Adicionar aqui</span>
 }
-</code></pre><h4 id="23-implementar-as-funes">2.3 Implementar as funções</h4>
-<pre class="hljs"><code class="language-dart">void _registerDataLibrary() {
-  // Função com 1 parâmetro
-  register(&#39;data.hoje&#39;, 0, (args) {
-    return DateTime.now().toString().split(&#39; &#39;)[0];
+</code></pre>
+<h4>2.3 Implementar as funções</h4>
+<pre class="hljs"><code><span class="hljs-keyword">void</span> _registerDataLibrary() {
+  <span class="hljs-comment">// Função com 1 parâmetro</span>
+  register(<span class="hljs-string">&#x27;data.hoje&#x27;</span>, <span class="hljs-number">0</span>, (args) {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">DateTime</span>.now().toString().split(<span class="hljs-string">&#x27; &#x27;</span>)[<span class="hljs-number">0</span>];
   });
   
-  // Função com 2 parâmetros
-  register(&#39;data.diferenca&#39;, 2, (args) {
-    final data1 = _parseDate(args[0]);
-    final data2 = _parseDate(args[1]);
-    return data1.difference(data2).inDays;
+  <span class="hljs-comment">// Função com 2 parâmetros</span>
+  register(<span class="hljs-string">&#x27;data.diferenca&#x27;</span>, <span class="hljs-number">2</span>, (args) {
+    <span class="hljs-keyword">final</span> data1 = _parseDate(args[<span class="hljs-number">0</span>]);
+    <span class="hljs-keyword">final</span> data2 = _parseDate(args[<span class="hljs-number">1</span>]);
+    <span class="hljs-keyword">return</span> data1.difference(data2).inDays;
   });
 }
-</code></pre><h3 id="passo-3-implementar-funes-auxiliares">Passo 3: Implementar Funções Auxiliares</h3>
+</code></pre>
+<h3>Passo 3: Implementar Funções Auxiliares</h3>
 <p>Adicione métodos de conversão específicos para sua biblioteca:</p>
-<pre class="hljs"><code class="language-dart">/// Converte valor para DateTime
-DateTime _parseDate(Object? value) {
-  if (value is String) {
-    final parsed = DateTime.tryParse(value);
-    if (parsed != null) return parsed;
+<pre class="hljs"><code><span class="hljs-comment">/// <span class="language-markdown">Converte valor para DateTime</span></span>
+<span class="hljs-built_in">DateTime</span> _parseDate(<span class="hljs-built_in">Object?</span> value) {
+  <span class="hljs-keyword">if</span> (value <span class="hljs-keyword">is</span> <span class="hljs-built_in">String</span>) {
+    <span class="hljs-keyword">final</span> parsed = <span class="hljs-built_in">DateTime</span>.tryParse(value);
+    <span class="hljs-keyword">if</span> (parsed != <span class="hljs-keyword">null</span>) <span class="hljs-keyword">return</span> parsed;
   }
-  throw Exception(&#39;Não é possível converter $value para data&#39;);
+  <span class="hljs-keyword">throw</span> Exception(<span class="hljs-string">&#x27;Não é possível converter <span class="hljs-subst">$value</span> para data&#x27;</span>);
 }
-</code></pre><h3 id="passo-4-validao-e-testes">Passo 4: Validação e Testes</h3>
+</code></pre>
+<h3>Passo 4: Validação e Testes</h3>
 <p>Crie arquivos de teste para validar sua biblioteca:</p>
-<pre class="hljs"><code class="language-dart">// exemplos/teste_data.mdart
+<pre class="hljs"><code><span class="hljs-comment">// exemplos/teste_data.mdart</span>
 importar data;
 
-imprima data.hoje();                    // Data atual
-imprima data.diferenca(&quot;2024-01-01&quot;, &quot;2024-12-31&quot;); // Diferença em dias
-</code></pre><h2 id="exemplo-completo-biblioteca-de-arquivos">📋 Exemplo Completo: Biblioteca de Arquivos</h2>
-<h3 id="1-definio-da-biblioteca">1. Definição da Biblioteca</h3>
-<pre class="hljs"><code class="language-dart">/// Registra as funções da biblioteca de arquivos
-void _registerArquivoLibrary() {
-  // Verificação de existência
-  register(&#39;arquivo.existe&#39;, 1, (args) {
-    final caminho = _toString(args[0]);
-    return File(caminho).existsSync();
+imprima data.hoje();                    <span class="hljs-comment">// Data atual</span>
+imprima data.diferenca(<span class="hljs-string">&quot;2024-01-01&quot;</span>, <span class="hljs-string">&quot;2024-12-31&quot;</span>); <span class="hljs-comment">// Diferença em dias</span>
+</code></pre>
+<h2>Exemplo Completo: Biblioteca de Arquivos</h2>
+<h3>1. Definição da Biblioteca</h3>
+<pre class="hljs"><code><span class="hljs-comment">/// <span class="language-markdown">Registra as funções da biblioteca de arquivos</span></span>
+<span class="hljs-keyword">void</span> _registerArquivoLibrary() {
+  <span class="hljs-comment">// Verificação de existência</span>
+  register(<span class="hljs-string">&#x27;arquivo.existe&#x27;</span>, <span class="hljs-number">1</span>, (args) {
+    <span class="hljs-keyword">final</span> caminho = _toString(args[<span class="hljs-number">0</span>]);
+    <span class="hljs-keyword">return</span> File(caminho).existsSync();
   });
   
-  // Leitura de arquivo
-  register(&#39;arquivo.lerTexto&#39;, 1, (args) {
-    final caminho = _toString(args[0]);
-    try {
-      return File(caminho).readAsStringSync();
-    } catch (e) {
-      throw Exception(&#39;Erro ao ler arquivo: $e&#39;);
+  <span class="hljs-comment">// Leitura de arquivo</span>
+  register(<span class="hljs-string">&#x27;arquivo.lerTexto&#x27;</span>, <span class="hljs-number">1</span>, (args) {
+    <span class="hljs-keyword">final</span> caminho = _toString(args[<span class="hljs-number">0</span>]);
+    <span class="hljs-keyword">try</span> {
+      <span class="hljs-keyword">return</span> File(caminho).readAsStringSync();
+    } <span class="hljs-keyword">catch</span> (e) {
+      <span class="hljs-keyword">throw</span> Exception(<span class="hljs-string">&#x27;Erro ao ler arquivo: <span class="hljs-subst">$e</span>&#x27;</span>);
     }
   });
   
-  // Escrita de arquivo
-  register(&#39;arquivo.escreverTexto&#39;, 2, (args) {
-    final caminho = _toString(args[0]);
-    final conteudo = _toString(args[1]);
-    try {
+  <span class="hljs-comment">// Escrita de arquivo</span>
+  register(<span class="hljs-string">&#x27;arquivo.escreverTexto&#x27;</span>, <span class="hljs-number">2</span>, (args) {
+    <span class="hljs-keyword">final</span> caminho = _toString(args[<span class="hljs-number">0</span>]);
+    <span class="hljs-keyword">final</span> conteudo = _toString(args[<span class="hljs-number">1</span>]);
+    <span class="hljs-keyword">try</span> {
       File(caminho).writeAsStringSync(conteudo);
-      return true;
-    } catch (e) {
-      throw Exception(&#39;Erro ao escrever arquivo: $e&#39;);
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+    } <span class="hljs-keyword">catch</span> (e) {
+      <span class="hljs-keyword">throw</span> Exception(<span class="hljs-string">&#x27;Erro ao escrever arquivo: <span class="hljs-subst">$e</span>&#x27;</span>);
     }
   });
   
-  // Tamanho do arquivo
-  register(&#39;arquivo.tamanho&#39;, 1, (args) {
-    final caminho = _toString(args[0]);
-    try {
-      return File(caminho).lengthSync();
-    } catch (e) {
-      throw Exception(&#39;Erro ao obter tamanho: $e&#39;);
+  <span class="hljs-comment">// Tamanho do arquivo</span>
+  register(<span class="hljs-string">&#x27;arquivo.tamanho&#x27;</span>, <span class="hljs-number">1</span>, (args) {
+    <span class="hljs-keyword">final</span> caminho = _toString(args[<span class="hljs-number">0</span>]);
+    <span class="hljs-keyword">try</span> {
+      <span class="hljs-keyword">return</span> File(caminho).lengthSync();
+    } <span class="hljs-keyword">catch</span> (e) {
+      <span class="hljs-keyword">throw</span> Exception(<span class="hljs-string">&#x27;Erro ao obter tamanho: <span class="hljs-subst">$e</span>&#x27;</span>);
     }
   });
 }
-</code></pre><h3 id="2-uso-da-biblioteca">2. Uso da Biblioteca</h3>
-<pre class="hljs"><code class="language-dart">// exemplo_arquivo.mdart
+</code></pre>
+<h3>2. Uso da Biblioteca</h3>
+<pre class="hljs"><code><span class="hljs-comment">// exemplo_arquivo.mdart</span>
 importar arquivo como arq;
 
-// Verificar se arquivo existe
-se (arq.existe(&quot;dados.txt&quot;)) {
-    imprima &quot;Arquivo encontrado!&quot;;
+<span class="hljs-comment">// Verificar se arquivo existe</span>
+se (arq.existe(<span class="hljs-string">&quot;dados.txt&quot;</span>)) {
+    imprima <span class="hljs-string">&quot;Arquivo encontrado!&quot;</span>;
     
-    // Ler conteúdo
-    var conteudo = arq.lerTexto(&quot;dados.txt&quot;);
-    imprima &quot;Conteúdo: &quot; + conteudo;
+    <span class="hljs-comment">// Ler conteúdo</span>
+    <span class="hljs-keyword">var</span> conteudo = arq.lerTexto(<span class="hljs-string">&quot;dados.txt&quot;</span>);
+    imprima <span class="hljs-string">&quot;Conteúdo: &quot;</span> + conteudo;
     
-    // Verificar tamanho
-    var bytes = arq.tamanho(&quot;dados.txt&quot;);
-    imprima &quot;Tamanho: &quot; + bytes + &quot; bytes&quot;;
+    <span class="hljs-comment">// Verificar tamanho</span>
+    <span class="hljs-keyword">var</span> bytes = arq.tamanho(<span class="hljs-string">&quot;dados.txt&quot;</span>);
+    imprima <span class="hljs-string">&quot;Tamanho: &quot;</span> + bytes + <span class="hljs-string">&quot; bytes&quot;</span>;
 } senao {
-    imprima &quot;Arquivo não encontrado!&quot;;
+    imprima <span class="hljs-string">&quot;Arquivo não encontrado!&quot;</span>;
     
-    // Criar arquivo
-    arq.escreverTexto(&quot;dados.txt&quot;, &quot;Olá, mundo!&quot;);
-    imprima &quot;Arquivo criado com sucesso!&quot;;
+    <span class="hljs-comment">// Criar arquivo</span>
+    arq.escreverTexto(<span class="hljs-string">&quot;dados.txt&quot;</span>, <span class="hljs-string">&quot;Olá, mundo!&quot;</span>);
+    imprima <span class="hljs-string">&quot;Arquivo criado com sucesso!&quot;</span>;
 }
-</code></pre><h2 id="boas-prticas">🛡️ Boas Práticas</h2>
-<h3 id="1-tratamento-de-erros">1. Tratamento de Erros</h3>
-<pre class="hljs"><code class="language-dart">register(&#39;minhalib.funcao&#39;, 1, (args) {
-  try {
-    // Implementação
-    return resultado;
-  } catch (e) {
-    throw Exception(&#39;Erro em minhalib.funcao: $e&#39;);
+</code></pre>
+<h2>Boas Práticas</h2>
+<h3>1. Tratamento de Erros</h3>
+<pre class="hljs"><code>register(<span class="hljs-string">&#x27;minhalib.funcao&#x27;</span>, <span class="hljs-number">1</span>, (args) {
+  <span class="hljs-keyword">try</span> {
+    <span class="hljs-comment">// Implementação</span>
+    <span class="hljs-keyword">return</span> resultado;
+  } <span class="hljs-keyword">catch</span> (e) {
+    <span class="hljs-keyword">throw</span> Exception(<span class="hljs-string">&#x27;Erro em minhalib.funcao: <span class="hljs-subst">$e</span>&#x27;</span>);
   }
 });
-</code></pre><h3 id="2-validao-de-parmetros">2. Validação de Parâmetros</h3>
-<pre class="hljs"><code class="language-dart">register(&#39;minhalib.dividir&#39;, 2, (args) {
-  final a = _toDouble(args[0]);
-  final b = _toDouble(args[1]);
+</code></pre>
+<h3>2. Validação de Parâmetros</h3>
+<pre class="hljs"><code>register(<span class="hljs-string">&#x27;minhalib.dividir&#x27;</span>, <span class="hljs-number">2</span>, (args) {
+  <span class="hljs-keyword">final</span> a = _toDouble(args[<span class="hljs-number">0</span>]);
+  <span class="hljs-keyword">final</span> b = _toDouble(args[<span class="hljs-number">1</span>]);
   
-  if (b == 0) {
-    throw Exception(&#39;Divisão por zero não é permitida&#39;);
+  <span class="hljs-keyword">if</span> (b == <span class="hljs-number">0</span>) {
+    <span class="hljs-keyword">throw</span> Exception(<span class="hljs-string">&#x27;Divisão por zero não é permitida&#x27;</span>);
   }
   
-  return a / b;
+  <span class="hljs-keyword">return</span> a / b;
 });
-</code></pre><h3 id="3-documentao">3. Documentação</h3>
-<pre class="hljs"><code class="language-dart">/// Registra as funções da biblioteca matemática avançada
-/// 
-/// Funções disponíveis:
-/// - matavancada.factorial(n): Calcula fatorial de n
-/// - matavancada.fibonacci(n): Calcula n-ésimo número de Fibonacci
-/// - matavancada.primo(n): Verifica se n é primo
-void _registerMathAvancadaLibrary() {
-  // Implementações...
+</code></pre>
+<h3>3. Documentação</h3>
+<pre class="hljs"><code><span class="hljs-comment">/// <span class="language-markdown">Registra as funções da biblioteca matemática avançada</span></span>
+<span class="hljs-comment">/// </span>
+<span class="hljs-comment">/// <span class="language-markdown">Funções disponíveis:</span></span>
+<span class="hljs-comment">/// <span class="language-markdown"><span class="hljs-bullet">-</span> matavancada.factorial(n): Calcula fatorial de n</span></span>
+<span class="hljs-comment">/// <span class="language-markdown"><span class="hljs-bullet">-</span> matavancada.fibonacci(n): Calcula n-ésimo número de Fibonacci</span></span>
+<span class="hljs-comment">/// <span class="language-markdown"><span class="hljs-bullet">-</span> matavancada.primo(n): Verifica se n é primo</span></span>
+<span class="hljs-keyword">void</span> _registerMathAvancadaLibrary() {
+  <span class="hljs-comment">// Implementações...</span>
 }
-</code></pre><h3 id="4-convenes-de-nome">4. Convenções de Nome</h3>
+</code></pre>
+<h3>4. Convenções de Nome</h3>
 <ul>
 <li><strong>Biblioteca</strong>: substantivo em minúsculas (<code>math</code>, <code>string</code>, <code>arquivo</code>)</li>
 <li><strong>Função</strong>: verbo ou substantivo descritivo (<code>calcular</code>, <code>tamanho</code>, <code>existe</code>)</li>
 <li><strong>Parâmetros</strong>: nomes claros e em português quando possível</li>
 </ul>
-<h2 id="tipos-de-dados-suportados">🧪 Tipos de Dados Suportados</h2>
-<h3 id="entrada-parmetros">Entrada (Parâmetros)</h3>
+<h2>Tipos de Dados Suportados</h2>
+<h3>Entrada (Parâmetros)</h3>
 <ul>
 <li><code>int</code> - Números inteiros</li>
 <li><code>double</code> - Números reais</li>
@@ -816,44 +1324,51 @@ void _registerMathAvancadaLibrary() {
 <li><code>bool</code> - Valores lógicos (true/false)</li>
 <li><code>null</code> - Valor nulo</li>
 </ul>
-<h3 id="sada-retorno">Saída (Retorno)</h3>
+<h3>Saída (Retorno)</h3>
 <ul>
 <li>Mesmos tipos de entrada</li>
 <li><code>void</code> - Para funções que não retornam valor (use <code>return null;</code>)</li>
 </ul>
-<h3 id="converses-disponveis">Conversões Disponíveis</h3>
-<pre class="hljs"><code class="language-dart">// Use as funções auxiliares existentes:
-_toDouble(value)  // Converte para double
-_toInt(value)     // Converte para int  
-_toString(value)  // Converte para String
-</code></pre><h2 id="sistema-de-imports">📊 Sistema de Imports</h2>
-<h3 id="import-bsico">Import Básico</h3>
-<pre class="hljs"><code class="language-dart">importar minhalib;
-var resultado = minhalib.funcao(parametros);
-</code></pre><h3 id="import-com-alias">Import com Alias</h3>
-<pre class="hljs"><code class="language-dart">importar minhalib como ml;
-var resultado = ml.funcao(parametros);
-</code></pre><h3 id="validao-de-bibliotecas">Validação de Bibliotecas</h3>
+<h3>Conversões Disponíveis</h3>
+<pre class="hljs"><code><span class="hljs-comment">// Use as funções auxiliares existentes:</span>
+_toDouble(value)  <span class="hljs-comment">// Converte para double</span>
+_toInt(value)     <span class="hljs-comment">// Converte para int  </span>
+_toString(value)  <span class="hljs-comment">// Converte para String</span>
+</code></pre>
+<h2>Sistema de Imports</h2>
+<h3>Import Básico</h3>
+<pre class="hljs"><code>importar minhalib;
+<span class="hljs-keyword">var</span> resultado = minhalib.funcao(parametros);
+</code></pre>
+<h3>Import com Alias</h3>
+<pre class="hljs"><code>importar minhalib como ml;
+<span class="hljs-keyword">var</span> resultado = ml.funcao(parametros);
+</code></pre>
+<h3>Validação de Bibliotecas</h3>
 <p>No arquivo <code>semantic_analyzer.dart</code>, adicione sua biblioteca à lista de bibliotecas válidas:</p>
-<pre class="hljs"><code class="language-dart">// No método visitImportStmt
-final validLibraries = {&#39;math&#39;, &#39;string&#39;, &#39;io&#39;, &#39;minhalib&#39;}; // ← Adicionar aqui
-</code></pre><h2 id="debugging-e-testes">🔍 Debugging e Testes</h2>
-<h3 id="1-teste-individual-de-funes">1. Teste Individual de Funções</h3>
-<pre class="hljs"><code class="language-dart">// teste_funcao.mdart
+<pre class="hljs"><code><span class="hljs-comment">// No método visitImportStmt</span>
+<span class="hljs-keyword">final</span> validLibraries = {<span class="hljs-string">&#x27;math&#x27;</span>, <span class="hljs-string">&#x27;string&#x27;</span>, <span class="hljs-string">&#x27;io&#x27;</span>, <span class="hljs-string">&#x27;minhalib&#x27;</span>}; <span class="hljs-comment">// ← Adicionar aqui</span>
+</code></pre>
+<h2>Debugging e Testes</h2>
+<h3>1. Teste Individual de Funções</h3>
+<pre class="hljs"><code><span class="hljs-comment">// teste_funcao.mdart</span>
 importar minhalib;
 
-imprima minhalib.funcao1(10);
-imprima minhalib.funcao2(&quot;teste&quot;, 5);
-</code></pre><h3 id="2-verificao-de-erros">2. Verificação de Erros</h3>
-<pre class="hljs"><code class="language-dart">// teste_erros.mdart
+imprima minhalib.funcao1(<span class="hljs-number">10</span>);
+imprima minhalib.funcao2(<span class="hljs-string">&quot;teste&quot;</span>, <span class="hljs-number">5</span>);
+</code></pre>
+<h3>2. Verificação de Erros</h3>
+<pre class="hljs"><code><span class="hljs-comment">// teste_erros.mdart</span>
 importar minhalib;
 
-// Teste com parâmetros inválidos
-imprima minhalib.funcao(-1); // Deve gerar erro apropriado
-</code></pre><h3 id="3-execuo">3. Execução</h3>
-<pre class="hljs"><code class="language-bash">dart run bin/compile.dart exemplos/teste_minhalib.mdart
-</code></pre><h2 id="bibliotecas-existentes-como-referncia">📈 Bibliotecas Existentes como Referência</h2>
-<h3 id="1-math-library-31-funes">1. Math Library (31 funções)</h3>
+<span class="hljs-comment">// Teste com parâmetros inválidos</span>
+imprima minhalib.funcao(-<span class="hljs-number">1</span>); <span class="hljs-comment">// Deve gerar erro apropriado</span>
+</code></pre>
+<h3>3. Execução</h3>
+<pre class="hljs"><code>dart run bin/compile.dart exemplos/teste_minhalib.mdart
+</code></pre>
+<h2>Bibliotecas Existentes como Referência</h2>
+<h3>1. Math Library (31 funções)</h3>
 <ul>
 <li>Trigonometria: <code>sin</code>, <code>cos</code>, <code>tan</code>, <code>asin</code>, <code>acos</code>, <code>atan</code></li>
 <li>Exponenciais: <code>exp</code>, <code>log</code>, <code>log10</code>, <code>pow</code>, <code>sqrt</code></li>
@@ -862,7 +1377,7 @@ imprima minhalib.funcao(-1); // Deve gerar erro apropriado
 <li>Aleatórios: <code>random</code></li>
 <li>Constantes: <code>PI</code>, <code>E</code>, <code>LN2</code>, etc.</li>
 </ul>
-<h3 id="2-string-library-17-funes">2. String Library (17 funções)</h3>
+<h3>2. String Library (17 funções)</h3>
 <ul>
 <li>Propriedades: <code>tamanho</code>, <code>vazio</code></li>
 <li>Transformações: <code>maiuscula</code>, <code>minuscula</code>, <code>inverter</code>, <code>limpar</code></li>
@@ -870,13 +1385,13 @@ imprima minhalib.funcao(-1); // Deve gerar erro apropriado
 <li>Manipulação: <code>encontrar</code>, <code>substituir</code>, <code>fatiar</code>, <code>caractereEm</code></li>
 <li>Operações: <code>repetir</code>, <code>concatenar</code>, <code>dividir</code></li>
 </ul>
-<h3 id="3-io-library-5-funes">3. IO Library (5 funções)</h3>
+<h3>3. IO Library (5 funções)</h3>
 <ul>
 <li>Saída: <code>imprimir</code>, <code>escrever</code>, <code>novaLinha</code></li>
 <li>Entrada: <code>lerTexto</code>, <code>lerNumero</code> (simulados)</li>
 </ul>
-<h2 id="prximos-passos">🚀 Próximos Passos</h2>
-<h3 id="ideias-para-novas-bibliotecas">Ideias para Novas Bibliotecas</h3>
+<h2>Próximos Passos</h2>
+<h3>Ideias para Novas Bibliotecas</h3>
 <ol><li><strong><code>data</code></strong> - Manipulação de datas e tempo</li>
 <li><strong><code>arquivo</code></strong> - Operações com arquivos e diretórios</li>
 <li><strong><code>rede</code></strong> - Requisições HTTP básicas</li>
@@ -884,7 +1399,7 @@ imprima minhalib.funcao(-1); // Deve gerar erro apropriado
 <li><strong><code>lista</code></strong> - Operações avançadas com arrays</li>
 <li><strong><code>crypto</code></strong> - Funções de hash e criptografia básica</li>
 </ol>
-<h3 id="recursos-avanados-futuros">Recursos Avançados Futuros</h3>
+<h3>Recursos Avançados Futuros</h3>
 <ul>
 <li><strong>Bibliotecas dinâmicas</strong>: Carregamento de bibliotecas externas</li>
 <li><strong>Namespaces aninhados</strong>: <code>biblioteca.modulo.funcao</code></li>
@@ -894,9 +1409,37 @@ imprima minhalib.funcao(-1); // Deve gerar erro apropriado
 
                     
                     
+                    <div class="page-navigation">
+                        
+                        <a href="../import_exemplos/" class="prev-page">
+                            <svg class="lucide-icon icon-arrow-left page-nav-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m12 19-7-7 7-7" />
+  <path d="M19 12H5" />
+</svg>
+                            <span>
+                                <small>Previous</small>
+                                <strong>Exemplos de Import</strong>
+                            </span>
+                        </a>
+                        
+                        
+                        
+                        <a href="../comentarios/" class="next-page">
+                            <span>
+                                <small>Next</small>
+                                <strong>Comentários</strong>
+                            </span>
+                            <svg class="lucide-icon icon-arrow-right page-nav-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14" />
+  <path d="m12 5 7 7-7 7" />
+</svg>
+                        </a>
+                        
+                    </div>
+                    
                 </div>
                 
-                <!-- DEBUG: {"headingsLength":42} -->
+                <!-- DEBUG: {"headingsLength":0} -->
                 
                 <!-- TOC sidebar -->
                 <div class="toc-sidebar">
@@ -907,15 +1450,19 @@ imprima minhalib.funcao(-1); // Deve gerar erro apropriado
     <ul class="toc-list">
       
         <li class="toc-item toc-level-2">
+          <a href="#criando-bibliotecas" class="toc-link">Criando Bibliotecas</a>
+        </li>
+      
+        <li class="toc-item toc-level-2">
           <a href="#arquitetura-do-sistema-de-bibliotecas" class="toc-link">Arquitetura do Sistema de Bibliotecas</a>
         </li>
       
-        <li class="toc-item toc-level-3">
+        <li class="toc-item toc-level-2">
           <a href="#fluxo-de-funcionamento" class="toc-link">Fluxo de Funcionamento</a>
         </li>
       
         <li class="toc-item toc-level-2">
-          <a href="#estrutura-de-uma-biblioteca" class="toc-link">📦 Estrutura de uma Biblioteca</a>
+          <a href="#estrutura-de-uma-biblioteca" class="toc-link">Estrutura de uma Biblioteca</a>
         </li>
       
         <li class="toc-item toc-level-3">
@@ -931,7 +1478,7 @@ imprima minhalib.funcao(-1); // Deve gerar erro apropriado
         </li>
       
         <li class="toc-item toc-level-2">
-          <a href="#processo-de-criao-de-nova-biblioteca" class="toc-link">🔧 Processo de Criação de Nova Biblioteca</a>
+          <a href="#processo-de-criao-de-nova-biblioteca" class="toc-link">Processo de Criação de Nova Biblioteca</a>
         </li>
       
         <li class="toc-item toc-level-3">
@@ -963,7 +1510,7 @@ imprima minhalib.funcao(-1); // Deve gerar erro apropriado
         </li>
       
         <li class="toc-item toc-level-2">
-          <a href="#exemplo-completo-biblioteca-de-arquivos" class="toc-link">📋 Exemplo Completo: Biblioteca de Arquivos</a>
+          <a href="#exemplo-completo-biblioteca-de-arquivos" class="toc-link">Exemplo Completo: Biblioteca de Arquivos</a>
         </li>
       
         <li class="toc-item toc-level-3">
@@ -975,7 +1522,7 @@ imprima minhalib.funcao(-1); // Deve gerar erro apropriado
         </li>
       
         <li class="toc-item toc-level-2">
-          <a href="#boas-prticas" class="toc-link">🛡️ Boas Práticas</a>
+          <a href="#boas-prticas" class="toc-link">Boas Práticas</a>
         </li>
       
         <li class="toc-item toc-level-3">
@@ -995,7 +1542,7 @@ imprima minhalib.funcao(-1); // Deve gerar erro apropriado
         </li>
       
         <li class="toc-item toc-level-2">
-          <a href="#tipos-de-dados-suportados" class="toc-link">🧪 Tipos de Dados Suportados</a>
+          <a href="#tipos-de-dados-suportados" class="toc-link">Tipos de Dados Suportados</a>
         </li>
       
         <li class="toc-item toc-level-3">
@@ -1011,7 +1558,7 @@ imprima minhalib.funcao(-1); // Deve gerar erro apropriado
         </li>
       
         <li class="toc-item toc-level-2">
-          <a href="#sistema-de-imports" class="toc-link">📊 Sistema de Imports</a>
+          <a href="#sistema-de-imports" class="toc-link">Sistema de Imports</a>
         </li>
       
         <li class="toc-item toc-level-3">
@@ -1027,7 +1574,7 @@ imprima minhalib.funcao(-1); // Deve gerar erro apropriado
         </li>
       
         <li class="toc-item toc-level-2">
-          <a href="#debugging-e-testes" class="toc-link">🔍 Debugging e Testes</a>
+          <a href="#debugging-e-testes" class="toc-link">Debugging e Testes</a>
         </li>
       
         <li class="toc-item toc-level-3">
@@ -1043,7 +1590,7 @@ imprima minhalib.funcao(-1); // Deve gerar erro apropriado
         </li>
       
         <li class="toc-item toc-level-2">
-          <a href="#bibliotecas-existentes-como-referncia" class="toc-link">📈 Bibliotecas Existentes como Referência</a>
+          <a href="#bibliotecas-existentes-como-referncia" class="toc-link">Bibliotecas Existentes como Referência</a>
         </li>
       
         <li class="toc-item toc-level-3">
@@ -1059,7 +1606,7 @@ imprima minhalib.funcao(-1); // Deve gerar erro apropriado
         </li>
       
         <li class="toc-item toc-level-2">
-          <a href="#prximos-passos" class="toc-link">🚀 Próximos Passos</a>
+          <a href="#prximos-passos" class="toc-link">Próximos Passos</a>
         </li>
       
         <li class="toc-item toc-level-3">
@@ -1079,7 +1626,7 @@ imprima minhalib.funcao(-1); // Deve gerar erro apropriado
         <footer class="page-footer">
             <div class="footer-content">
                 <div class="user-footer">
-                    © 2025 LiPo Docs — Desenvolvido com ❤️
+                    © 2025 LiPo Docs — Desenvolvido com todo carinho
                 </div>
                 <div class="branding-footer">
                     Build with <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path><path d="M12 5 9.04 7.96a2.17 2.17 0 0 0 0 3.08c.82.82 2.13.85 3 .07l2.07-1.9a2.82 2.82 0 0 1 3.79 0l2.96 2.66"></path><path d="m18 15-2-2"></path><path d="m15 18-2-2"></path></svg> <a href="https://docmd.mgks.dev" target="_blank" rel="noopener">docmd.</a>
@@ -1091,11 +1638,18 @@ imprima minhalib.funcao(-1); // Deve gerar erro apropriado
     <script src="../assets/js/docmd-main.js"></script>
 
     
-      <script src="../assets/js/docmd-image-lightbox.js"></script>
-    
 
     
     
+    
+    <div class="sponsor-ribbon">
+        <a href="https://github.com/karlaycosta/lipo_compiler" target="_blank" rel="noopener noreferrer" class="sponsor-link">
+            <svg class="lucide-icon icon-heart sponsor-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5" />
+</svg>
+            <span class="sponsor-text">Github LiPo</span>
+        </a>
+    </div>
     
 </body>
 </html>
